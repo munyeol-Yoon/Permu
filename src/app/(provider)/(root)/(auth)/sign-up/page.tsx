@@ -20,6 +20,9 @@ const SignUpPage = () => {
       <button className="border bg-yellow-200" onClick={handleLogin}>
         카카오로 회원가입
       </button>
+      <Link href="info" className="border bg-red-200">
+        임시 버튼
+      </Link>
     </div>
   );
 };

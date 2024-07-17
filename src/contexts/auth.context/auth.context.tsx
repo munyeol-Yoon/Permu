@@ -1,4 +1,5 @@
 'use client';
+import { UserInfo } from '@/types/types';
 import { Provider, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
@@ -9,6 +10,7 @@ type AuthContextValue = {
   me: User | null;
   logOut: () => void;
   logInWithProvider: (provider: Provider) => void;
+  postUserInfo: (userInfo: UserInfo) => void;
 };
 
 const initialValue: AuthContextValue = {
@@ -16,7 +18,8 @@ const initialValue: AuthContextValue = {
   isLoggedIn: false,
   me: null,
   logOut: () => {},
-  logInWithProvider: () => {}
+  logInWithProvider: () => {},
+  postUserInfo: () => {}
 };
 
 const AuthContext = createContext<AuthContextValue>(initialValue);
@@ -44,6 +47,20 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     init();
   };
 
+  const postUserInfo = async (userInfo: UserInfo) => {
+    if (!userInfo) return;
+
+    console.log('>>>>>', userInfo);
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/info`, {
+      method: 'POST',
+      body: JSON.stringify(userInfo)
+    });
+    const result = await response.json();
+    console.log(result);
+    // router.replace('/');
+  };
+
   const init = () => {
     setMe(null);
     setIsInitialized(false);
@@ -64,7 +81,8 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     isLoggedIn,
     me,
     logInWithProvider,
-    logOut
+    logOut,
+    postUserInfo
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
