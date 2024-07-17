@@ -1,12 +1,13 @@
 'use client';
 import { Provider, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
-import { createContext, PropsWithChildren, useContext, useState } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 type AuthContextValue = {
   isInitialized: boolean;
   isLoggedIn: boolean;
   me: User | null;
+  logOut: () => void;
   logInWithProvider: (provider: Provider) => void;
 };
 
@@ -14,6 +15,7 @@ const initialValue: AuthContextValue = {
   isInitialized: false,
   isLoggedIn: false,
   me: null,
+  logOut: () => {},
   logInWithProvider: () => {}
 };
 
@@ -32,11 +34,37 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     router.replace(data.url);
   };
 
+  const logOut = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-out`, {
+      method: 'DELETE'
+    });
+    const result = await response.json();
+    console.log(result);
+    router.replace('/log-in');
+    init();
+  };
+
+  const init = () => {
+    setMe(null);
+    setIsInitialized(false);
+  };
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`);
+      const { user } = await response.json();
+      // console.log('>>>>>', user);
+      if (user) setMe(user);
+    })();
+    setIsInitialized(true);
+  }, []);
+
   const value: AuthContextValue = {
     isInitialized,
     isLoggedIn,
     me,
-    logInWithProvider
+    logInWithProvider,
+    logOut
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
