@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     (async () => {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`);
       const { user } = await response.json();
-      // console.log('>>>>>', user);
+      console.log('>>>>>', user);
       if (user) setMe(user);
     })();
     setIsInitialized(true);

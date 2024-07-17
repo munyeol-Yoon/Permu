@@ -1,5 +1,6 @@
 'use client';
 import { useAuth } from '@/contexts/auth.context/auth.context';
+import Link from 'next/link';
 
 const LogInPage = () => {
   const { me, logInWithProvider, logOut } = useAuth();
@@ -12,6 +13,10 @@ const LogInPage = () => {
         <button className="border bg-yellow-200" onClick={handleLogin}>
           카카오 로그인
         </button>
+        <Link href="/sign-up" className="border bg-pink-200">
+          회원가입
+        </Link>
+        {/* 테스트용 */}
         <button className="border bg-blue-200" onClick={handleLogOut}>
           로그아웃
         </button>
