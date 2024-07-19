@@ -1,15 +1,16 @@
 'use client';
 
-import Button from '@/components/Button/Button';
+import Link from 'next/link';
 
 const Header = () => {
   return (
     <div>
-      <Button href="/">홈</Button>
-      <Button href="/log-in">로그인</Button>
-      <Button>로그아웃</Button>
-      <Button href="/sign-up">회원가입</Button>
-      <Button href="/mypage/cart">장바구니</Button>
+      <Link href="/">홈</Link>
+      <Link href="/auth/log-in">로그인</Link>
+      <button>로그아웃</button>
+      <Link href="/auth/sign-up">회원가입</Link>
+      <Link href="/search">검색</Link>
+      <Link href="/cart">장바구니</Link>
     </div>
   );
 };
