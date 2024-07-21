@@ -9,9 +9,8 @@ export const getProductById = async ({ params }: Params): Promise<Product> => {
 
 export const getWishesByUser = async (productId: string, userId: string): Promise<any> => {
   const { data, error } = await supabase.from('Wishes').select('*').eq('productId', productId);
-  const userLike = !!data?.find((like) => like.userId === userId);
   if (error) throw error;
-  return { data, userLike };
+  return data;
 };
 
 export const postWishByUser = async (productId: string, userId: string): Promise<void> => {
