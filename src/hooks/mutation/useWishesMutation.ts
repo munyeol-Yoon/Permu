@@ -1,4 +1,4 @@
-import supabase from '@/api/supabase';
+import { addProductWish, deleteProductWish } from '@/api/product';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type TWish =
@@ -8,21 +8,17 @@ type TWish =
     }
   | undefined;
 
-const handleAddLike = async (getLikes: TWish, productId: string, userId: string): Promise<void> => {
-  if (!getLikes?.userLike) {
-    const { error } = await supabase.from('Wishes').insert({ productId, userId });
-    if (error) throw error;
-  } else {
-    const { error } = await supabase.from('Wishes').delete().eq('userId', userId).eq('productId', productId);
-    if (error) throw error;
-  }
-};
-
 const useWishesMutation = (getLikes: TWish, productId: string, userId: string) => {
   const queryClient = useQueryClient();
 
   const addMutation = useMutation({
-    mutationFn: () => handleAddLike(getLikes, productId, userId),
+    mutationFn: async () => {
+      if (!getLikes?.userLike) {
+        await addProductWish(productId, userId);
+      } else {
+        await deleteProductWish(productId, userId);
+      }
+    },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['Wishes', productId] });
       const previousWishes = queryClient.getQueryData<TWish>(['Wishes', productId]);
