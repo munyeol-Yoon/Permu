@@ -1,11 +1,10 @@
 import { getProductById } from '@/api/product';
-import Wish from '@/components/products/wish';
+import Cart from '@/components/products/Cart';
+import Wish from '@/components/products/Wish';
 import Image from 'next/image';
-
 interface Params {
   params: { productId: string };
 }
-
 const ProductDetailPage = async ({ params }: Params) => {
   const product = await getProductById({ params });
   const discountPrice = product?.discount ? product?.price - product?.price / product?.discount : '';
@@ -23,8 +22,7 @@ const ProductDetailPage = async ({ params }: Params) => {
       <div>상품 상세 설명</div>
 
       <Wish />
-      <button>장바구니 넣기</button>
-      <button>바로 구매하기</button>
+      <Cart />
       <div>상품 상세 페이지</div>
     </div>
   );

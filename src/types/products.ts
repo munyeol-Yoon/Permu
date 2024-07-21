@@ -9,3 +9,9 @@ type Product = {
   updatedAt: string;
   discount: number;
 } | null;
+
+type Carts = {
+  userId: string;
+  productId: number | string;
+  count: number;
+}[];
