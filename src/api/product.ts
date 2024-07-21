@@ -6,7 +6,7 @@ export const getProductById = async ({ params }: Params): Promise<Product> => {
   if (error) throw error;
   return data;
 };
-export const addProductWish = async (productId: string, userId: string): Promise<void> => {
+export const postProductWish = async (productId: string, userId: string): Promise<void> => {
   const { error } = await supabase.from('Wishes').insert({ productId, userId });
   if (error) throw error;
 };
