@@ -1,5 +1,6 @@
 import { AuthProvider } from '@/contexts/auth.context/auth.context';
-import QueryProvider from '@/query/QueryProvider';
+import QueryProvider from '@/providers/QueryProvider';
+
 import { PropsWithChildren } from 'react';
 
 const ProviderLayout = ({ children }: PropsWithChildren) => {
