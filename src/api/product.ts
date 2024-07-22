@@ -6,37 +6,3 @@ export const getProductById = async ({ params }: Params): Promise<Product> => {
   if (error) throw error;
   return data;
 };
-
-export const getWishesByUser = async (productId: string, userId: string): Promise<any> => {
-  const { data, error } = await supabase.from('Wishes').select('*').eq('productId', productId);
-  if (error) throw error;
-  return data;
-};
-
-export const postWishByUser = async (productId: string, userId: string): Promise<void> => {
-  const { error } = await supabase.from('Wishes').insert({ productId, userId });
-  if (error) throw error;
-};
-export const deleteWishByUser = async (productId: string, userId: string): Promise<void> => {
-  const { error } = await supabase.from('Wishes').delete().eq('userId', userId).eq('productId', productId);
-  if (error) throw error;
-};
-
-export const postCartByUser = async (productId: string, userId: string, count: number): Promise<void> => {
-  const { error } = await supabase.from('Carts').insert({ productId, userId, count });
-  if (error) throw error;
-};
-export const patchCartByUser = async (productId: string, userId: string, count: number): Promise<void> => {
-  const { error } = await supabase.from('Carts').update({ productId, userId, count });
-  if (error) throw error;
-};
-export const deleteAllCartByUser = async (userId: string): Promise<void> => {
-  const { error } = await supabase.from('Carts').delete().eq('userId', userId);
-  if (error) throw error;
-};
-export const getCartsByUser = async (userId: string): Promise<any> => {
-  const { data, error } = await supabase.from('Carts').select(`*, Products (*)`).eq('userId', userId);
-  if (error) throw error;
-
-  return data;
-};

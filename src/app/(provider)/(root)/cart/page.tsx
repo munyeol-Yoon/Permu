@@ -1,6 +1,5 @@
 'use client';
 
-import { deleteAllCartByUser } from '@/api/product';
 import useCartsMutation from '@/hooks/mutation/useCartsMutation';
 import useCartsQuery from '@/hooks/query/useCartsQuery';
 import Image from 'next/image';
@@ -10,7 +9,7 @@ import { useEffect, useState } from 'react';
 const CartPage = () => {
   const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
   const { data: carts } = useCartsQuery(userId);
-  const addMutation = useCartsMutation();
+  const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(true);
   const [totalCost, setTotalCost] = useState<number>(0);
@@ -32,10 +31,8 @@ const CartPage = () => {
     }
   }, [carts?.data, selectedProducts]);
 
-  const handleCountCart = (productId: string, cal: boolean) => {
-    const count = carts?.data.find((cart: any) => cart.productId === productId)?.count;
-    const newCount = cal ? count + 1 : count - 1;
-    addMutation.mutate({ productId, userId, cal, count: newCount });
+  const handleCountCart = (productId: string, count: number) => {
+    patchMutation.mutate({ productId, userId, count });
   };
 
   const handleProductSelect = (productId: string): void => {
@@ -51,11 +48,14 @@ const CartPage = () => {
     if (state) setSelectedProducts(carts?.data.map((cart: any) => cart.productId) || []);
     else setSelectedProducts([]);
   };
-
+  const handleProductDelete = (productId: string): void => {
+    if (confirm('삭제 하시겠습니까?')) {
+      deleteMutation.mutate({ productId, userId });
+    }
+  };
   const handleAllDelete = async () => {
     if (confirm('전체 삭제 하시겠습니까?')) {
-      await deleteAllCartByUser(userId);
-      setSelectedProducts([]);
+      deleteAllMutation.mutate({ userId });
     }
   };
 
@@ -75,22 +75,30 @@ const CartPage = () => {
             checked={selectedProducts.includes(cart.productId)}
             onChange={() => handleProductSelect(cart.productId)}
           />
+
           <Link href={`/products/${cart.productId}`}>
             <Image src={cart.Products.thumbNailURL} width={100} height={100} alt={cart.productId} />
           </Link>
 
           <h1>{cart.Products.title}</h1>
           <p>{cart.Products.price}</p>
+          <p>
+            {cart.Products?.discount
+              ? parseInt(`${cart.Products.price - cart.Products.price / cart.Products.discount}`)
+              : null}
+          </p>
           <div>
-            <button onClick={() => handleCountCart(cart.productId, false)}>-</button>
+            <button onClick={() => handleCountCart(cart.productId, cart.count - 1)}>-</button>
             <span> {cart.count} </span>
-            <button onClick={() => handleCountCart(cart.productId, true)}>+</button>
+            <button onClick={() => handleCountCart(cart.productId, cart.count + 1)}>+</button>
           </div>
+
+          <button onClick={() => handleProductDelete(cart.Products.productId)}>X</button>
         </div>
       ))}
       <div className="flex flex-row">
         <h1>총 상품금액 </h1>
-        <span>{totalCost || 0}</span>
+        <span>{totalCost.toLocaleString() || 0}</span>
       </div>
       <button onClick={handleOrder}>주문하기</button>
     </div>

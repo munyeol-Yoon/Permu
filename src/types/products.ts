@@ -14,4 +14,11 @@ type Carts = {
   userId: string;
   productId: number | string;
   count: number;
+  Products: Product[];
 }[];
+
+type Wishes = {
+  wishId: string;
+  userId: string;
+  productId: number;
+};
