@@ -1,25 +1,27 @@
 'use client';
+import { fetchUser, logInWithProvider, logOut, postUserInfo } from '@/api/auth';
 import { UserInfo } from '@/types/types';
-import { Provider, User } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
+import { createContext, PropsWithChildren, useContext } from 'react';
 
 type AuthContextValue = {
   isInitialized: boolean;
   isLoggedIn: boolean;
-  me: User | null;
-  logOut: () => void;
-  logInWithProvider: (provider: Provider) => void;
-  postUserInfo: (userInfo: UserInfo) => void;
+  loggedUser: User | null;
+  logInMuatation: (provider: string) => void;
+  logOutMutation: () => void;
+  userInfoMutation: (userInfo: UserInfo) => void;
 };
 
 const initialValue: AuthContextValue = {
   isInitialized: false,
   isLoggedIn: false,
-  me: null,
-  logOut: () => {},
-  logInWithProvider: () => {},
-  postUserInfo: () => {}
+  loggedUser: null,
+  logInMuatation: () => {},
+  logOutMutation: () => {},
+  userInfoMutation: () => {}
 };
 
 const AuthContext = createContext<AuthContextValue>(initialValue);
@@ -27,62 +29,38 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
-  const [isInitialized, setIsInitialized] = useState<AuthContextValue['isInitialized']>(false);
-  const [me, setMe] = useState<AuthContextValue['me']>(null);
-  const isLoggedIn = !!me;
+  const queryClient = useQueryClient();
 
-  const logInWithProvider: AuthContextValue['logInWithProvider'] = async (provider) => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/provider?provider=${provider}`);
-    const data = await response.json();
-    router.replace(data.url);
-  };
+  const { data: user, isPending } = useQuery({ queryKey: ['loggedUser'], queryFn: () => fetchUser(), retry: false });
+  const isLoggedIn = !isPending;
+  const isInitialized = !!user;
 
-  const logOut = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-out`, {
-      method: 'DELETE'
-    });
-    const result = await response.json();
-    console.log(result);
-    router.replace('/log-in');
-    init();
-  };
+  const { mutate: logInMuatation } = useMutation({
+    mutationFn: (provider: string) => logInWithProvider(provider),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+      router.replace(data.url);
+    }
+  });
 
-  const postUserInfo = async (userInfo: UserInfo) => {
-    if (!userInfo) return;
+  const { mutate: logOutMutation } = useMutation({
+    mutationFn: () => logOut(),
+    onSuccess: () => router.replace('/auth/log-in')
+  });
 
-    console.log('>>>>>', userInfo);
-
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/info`, {
-      method: 'POST',
-      body: JSON.stringify(userInfo)
-    });
-    const result = await response.json();
-    console.log(result);
-    // router.replace('/');
-  };
-
-  const init = () => {
-    setMe(null);
-    setIsInitialized(false);
-  };
-
-  useEffect(() => {
-    (async () => {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`);
-      const { user } = await response.json();
-      console.log('>>>>>', user);
-      if (user) setMe(user);
-    })();
-    setIsInitialized(true);
-  }, []);
+  const { mutateAsync: userInfoMutation } = useMutation({
+    mutationFn: (userInfo: UserInfo) => postUserInfo(userInfo),
+    onSuccess: () => router.replace('/'),
+    onError: (error) => console.log(error)
+  });
 
   const value: AuthContextValue = {
     isInitialized,
     isLoggedIn,
-    me,
-    logInWithProvider,
-    logOut,
-    postUserInfo
+    loggedUser: user,
+    logOutMutation,
+    logInMuatation,
+    userInfoMutation
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

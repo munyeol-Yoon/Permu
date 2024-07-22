@@ -3,9 +3,9 @@ import { useAuth } from '@/contexts/auth.context/auth.context';
 import Link from 'next/link';
 
 const LogInPage = () => {
-  const { me, logInWithProvider, logOut } = useAuth();
-  const handleLogin = () => logInWithProvider('kakao');
-  const handleLogOut = () => logOut();
+  const { loggedUser: me, logInMuatation, logOutMutation } = useAuth();
+  const handleLogin = () => logInMuatation('kakao');
+  const handleLogOut = () => logOutMutation();
   return (
     <>
       <p>로그인 여부 :{me?.email}</p>

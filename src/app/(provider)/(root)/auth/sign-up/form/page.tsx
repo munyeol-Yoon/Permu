@@ -9,7 +9,7 @@ const initialValue = {
 };
 
 const SignUpFormPage = () => {
-  const { me, postUserInfo } = useAuth();
+  const { loggedUser: me, userInfoMutation } = useAuth();
   const userId = me ? me.id : null;
 
   const [gender, setGender] = useState<UserInfo['gender']>(initialValue['gender']);
@@ -30,7 +30,7 @@ const SignUpFormPage = () => {
       return;
     }
     const userInfo: TUserInfo = { gender, age, userId };
-    await postUserInfo(userInfo);
+    await userInfoMutation(userInfo);
   };
 
   return (

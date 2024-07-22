@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('🔥', request);
     const { searchParams } = new URL(request.url);
     const provider = searchParams.get('provider');
 
@@ -16,9 +17,9 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    if (data) return NextResponse.json(data, { status: 200 });
-    if (error) return NextResponse.json({ error: '로그인 실패', details: error.message });
+    if (error) return NextResponse.json({ success: false, details: error.message });
+    return NextResponse.json(data);
   } catch (error) {
-    return NextResponse.json({ error: '로그인 처리 중 네트워크 오류', details: error });
+    return NextResponse.json({ success: false, details: error });
   }
 }
