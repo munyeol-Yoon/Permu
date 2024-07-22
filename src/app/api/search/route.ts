@@ -1,5 +1,24 @@
 import { createClient } from '@/app/supabase/server';
+import { extractHangul } from 'es-hangul';
 import { NextRequest, NextResponse } from 'next/server';
+
+function getChosung(str: string): string {
+  const INITIALS = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+  const BASE_CODE = 0xac00;
+  const INITIAL_COUNT = 19;
+  const MEDIAL_COUNT = 21;
+  const FINAL_COUNT = 28;
+
+  return str
+    .split('')
+    .map((char) => {
+      const code = char.charCodeAt(0);
+      if (code < BASE_CODE || code > 0xd7a3) return '';
+      const initialIndex = Math.floor((code - BASE_CODE) / (MEDIAL_COUNT * FINAL_COUNT));
+      return INITIALS[initialIndex];
+    })
+    .join('');
+}
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,14 +31,20 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ success: false, detail: '쿼리 파라미터가 필요합니다.' }, { status: 400 });
     }
 
-    const { data, error } = await supabase.from('Products').select('*').ilike('title', `%${searchQuery}`);
+    const extractQuery = extractHangul(searchQuery);
+    console.log(extractQuery);
+
+    const chosungQuery = getChosung(extractQuery);
+    console.log(chosungQuery);
+
+    const { data, error } = await supabase.from('Products').select('*').ilike('title', `%${chosungQuery}%`);
 
     if (error) {
       throw error;
     }
 
-    return NextResponse.json({ success: true, detail: '조회 성공', data });
+    return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
   } catch (err) {
-    return NextResponse.json({ success: false, detail: err });
+    return NextResponse.json({ success: false, detail: err }, { status: 500 });
   }
 }
