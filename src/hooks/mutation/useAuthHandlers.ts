@@ -20,8 +20,7 @@ const useAuthHandlers = () => {
   const { mutate: logOutMutation } = useMutation({
     mutationFn: () => logOut(),
     onSuccess: () => {
-      // queryClient.setQueryData(['loggedUser'], null);
-      queryClient.removeQueries({ queryKey: ['loggedUser'] });
+      queryClient.setQueryData(['loggedUser'], null);
       router.replace('/auth/log-in');
     }
   });
