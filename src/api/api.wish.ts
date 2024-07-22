@@ -9,7 +9,11 @@ export const deleteWishByUser = async (productId: number, userId: string): Promi
   if (error) throw error;
 };
 export const getWishesByUser = async (productId: number, userId: string): Promise<Wish[]> => {
-  const { data, error } = await supabase.from('Wishes').select('*').eq('productId', productId).eq('userId', userId);
+  const { data, error } = await supabase
+    .from('Wishes')
+    .select('userId,productId')
+    .eq('productId', productId)
+    .eq('userId', userId);
   if (error) throw error;
   return data;
 };

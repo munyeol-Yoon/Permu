@@ -19,9 +19,17 @@ export const deleteCartByUser = async (productId: number, userId: string): Promi
 export const getCartsByUser = async (userId: string): Promise<Cart[]> => {
   const { data, error } = await supabase
     .from('Carts')
-    .select(`*, Products (*)`)
+    .select(`*, Products (category,title,price,thumbNailURL,discount)`)
     .eq('userId', userId)
     .order('productId', { ascending: false });
   if (error) throw error;
-  return data;
+
+  const cartsWithDiscountedPrice = data?.map((cart: Cart) => ({
+    ...cart,
+    Products: {
+      ...cart.Products,
+      discountedPrice: cart.Products.price - (cart.Products.price * cart.Products.discount) / 100
+    }
+  }));
+  return cartsWithDiscountedPrice;
 };

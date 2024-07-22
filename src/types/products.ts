@@ -8,17 +8,23 @@ type Product = {
   ImagesURL: string;
   updatedAt: string;
   discount: number;
+  discountedPrice: number;
 };
+type ProductWithoutSpecificFields = Omit<Product, 'productId' | 'createdAt' | 'ImagesURL' | 'updatedAt'>;
 
 type Cart = {
   userId: string;
   productId: number;
   count: number;
-  Products: Product;
+  Products: ProductWithoutSpecificFields;
 };
 
 type Wish = {
-  wishId: string;
   userId: string;
   productId: number;
+};
+
+type Coupon = {
+  couponId: string;
+  discount: number;
 };
