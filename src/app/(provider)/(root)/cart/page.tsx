@@ -88,9 +88,9 @@ const CartPage = () => {
               : null}
           </p>
           <div>
-            <button onClick={() => handleCountCart(cart.productId, cart.count - 1, false)}>-</button>
+            <button onClick={() => handleCountCart(cart.productId, cart.count, false)}>-</button>
             <span> {cart.count} </span>
-            <button onClick={() => handleCountCart(cart.productId, cart.count + 1, true)}>+</button>
+            <button onClick={() => handleCountCart(cart.productId, cart.count, true)}>+</button>
           </div>
 
           <button onClick={() => handleProductDelete(cart.Products.productId)}>X</button>

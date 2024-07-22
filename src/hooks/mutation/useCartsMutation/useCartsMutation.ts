@@ -13,11 +13,37 @@ const useCartsMutation = () => {
     onError: () => {}
   });
   const patchMutation = useMutation({
-    mutationFn: async ({ productId, userId, count }: { productId: number; userId: string; count: number }) => {
-      await patchCartByUser(productId, userId, count);
+    mutationFn: async ({
+      productId,
+      userId,
+      count,
+      cal
+    }: {
+      productId: number;
+      userId: string;
+      count: number;
+      cal: boolean;
+    }) => {
+      if (cal) await patchCartByUser(productId, userId, count + 1);
+      else await patchCartByUser(productId, userId, count - 1);
     },
-    onSuccess: (data, variable) => {
-      queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
+    onMutate: async (variable) => {
+      await queryClient.cancelQueries({ queryKey: ['Carts', variable.userId] });
+      const previousCarts = queryClient.getQueryData<Cart[]>(['Carts', variable.userId]);
+
+      queryClient.setQueryData(['Carts', variable.userId], (oldCarts: { data: Cart[] }) => {
+        const filteredOldCarts = oldCarts.data.map((cart: Cart) => {
+          return cart.productId === variable.productId
+            ? { ...cart, count: variable.cal ? variable.count + 1 : variable.count - 1 }
+            : cart;
+        });
+        return { data: filteredOldCarts };
+      });
+
+      return { previousCarts };
+    },
+    onError: (err, addCart, context) => {
+      queryClient.setQueryData(['Carts', addCart.userId], context?.previousCarts);
     }
   });
   const deleteAllMutation = useMutation({
