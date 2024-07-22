@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 const useCartsMutation = () => {
   const queryClient = useQueryClient();
   const addMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: string; userId: string }) => {
+    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) => {
       await postCartByUser(productId, userId);
     },
     onSuccess: (data, variable) => {
@@ -13,7 +13,7 @@ const useCartsMutation = () => {
     onError: () => {}
   });
   const patchMutation = useMutation({
-    mutationFn: async ({ productId, userId, count }: { productId: string; userId: string; count: number }) => {
+    mutationFn: async ({ productId, userId, count }: { productId: number; userId: string; count: number }) => {
       await patchCartByUser(productId, userId, count);
     },
     onSuccess: (data, variable) => {
@@ -29,7 +29,7 @@ const useCartsMutation = () => {
     }
   });
   const deleteMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: string; userId: string }) => {
+    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) => {
       await deleteCartByUser(productId, userId);
     },
     onSuccess: (data, variable) => {

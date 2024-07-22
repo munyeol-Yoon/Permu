@@ -3,12 +3,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type TWish =
   | {
-      data: { productId: string; userId: string }[] | null;
+      data: { productId: number; userId: string }[] | null;
       userLike: boolean;
     }
   | undefined;
 
-const useWishesMutation = (getLikes: TWish, productId: string, userId: string) => {
+const useWishesMutation = ({ getLikes, productId, userId }: { getLikes: TWish; productId: number; userId: string }) => {
   const queryClient = useQueryClient();
 
   const addMutation = useMutation({

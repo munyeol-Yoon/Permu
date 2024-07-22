@@ -9,8 +9,8 @@ const Wish = () => {
   const { productId } = useParams<{ productId: string }>();
   const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
 
-  const { data: getLikes } = useWishesQuery(productId, userId);
-  const addMutation = useWishesMutation(getLikes, productId, userId);
+  const { data: getLikes } = useWishesQuery({ productId: Number(productId), userId });
+  const addMutation = useWishesMutation({ getLikes, productId: Number(productId), userId });
 
   return (
     <button onClick={() => addMutation.mutate()}>

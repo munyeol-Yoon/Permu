@@ -14,9 +14,10 @@ const Cart = () => {
   const { addMutation, patchMutation } = useCartsMutation();
   const handlePostCart = () => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
-      const matchCartProduct = carts?.data.find((cart: any) => cart.productId == productId);
-      if (matchCartProduct) patchMutation.mutate({ productId, userId, count: matchCartProduct.count + 1 });
-      else addMutation.mutate({ productId, userId });
+      const matchCartProduct = carts?.data.find((cart: Cart) => cart.productId === Number(productId));
+      if (matchCartProduct)
+        patchMutation.mutate({ productId: Number(productId), userId, count: matchCartProduct.count + 1 });
+      else addMutation.mutate({ productId: Number(productId), userId });
     }
   };
   return (

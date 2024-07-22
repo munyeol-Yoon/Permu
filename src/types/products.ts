@@ -1,5 +1,5 @@
 type Product = {
-  productId: number | string;
+  productId: number;
   createdAt: string;
   category: number;
   title: string;
@@ -8,16 +8,16 @@ type Product = {
   ImagesURL: string;
   updatedAt: string;
   discount: number;
-} | null;
+};
 
-type Carts = {
+type Cart = {
   userId: string;
-  productId: number | string;
+  productId: number;
   count: number;
-  Products: Product[];
-}[];
+  Products: Product;
+};
 
-type Wishes = {
+type Wish = {
   wishId: string;
   userId: string;
   productId: number;

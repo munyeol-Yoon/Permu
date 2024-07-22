@@ -10,19 +10,19 @@ const CartPage = () => {
   const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
   const { data: carts } = useCartsQuery(userId);
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
-  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(true);
   const [totalCost, setTotalCost] = useState<number>(0);
 
   useEffect(() => {
     if (carts?.data) {
-      setSelectedProducts(carts.data.map((cart: any) => cart.productId));
+      setSelectedProducts(carts.data.map((cart: Cart) => cart.productId));
     }
   }, [carts]);
 
   useEffect(() => {
     if (carts?.data) {
-      const newTotalCost = carts.data.reduce((acc: number, cur: any) => {
+      const newTotalCost = carts.data.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products.price * cur.count : acc;
       }, 0);
       setTotalCost(newTotalCost);
@@ -31,11 +31,11 @@ const CartPage = () => {
     }
   }, [carts?.data, selectedProducts]);
 
-  const handleCountCart = (productId: string, count: number) => {
-    patchMutation.mutate({ productId, userId, count });
+  const handleCountCart = (productId: number, count: number, cal: boolean) => {
+    patchMutation.mutate({ productId, userId, count, cal });
   };
 
-  const handleProductSelect = (productId: string): void => {
+  const handleProductSelect = (productId: number): void => {
     const updatedSelection = selectedProducts.includes(productId)
       ? selectedProducts.filter((id) => id !== productId)
       : [...selectedProducts, productId];
@@ -45,21 +45,21 @@ const CartPage = () => {
   const handleAllSelect = (): void => {
     const state = !isAllSelected;
     setIsAllSelected(state);
-    if (state) setSelectedProducts(carts?.data.map((cart: any) => cart.productId) || []);
+    if (state) setSelectedProducts(carts?.data.map((cart: Cart) => cart.productId) || []);
     else setSelectedProducts([]);
   };
-  const handleProductDelete = (productId: string): void => {
+  const handleProductDelete = (productId: number): void => {
     if (confirm('삭제 하시겠습니까?')) {
       deleteMutation.mutate({ productId, userId });
     }
   };
-  const handleAllDelete = async () => {
+  const handleAllDelete = async (): Promise<void> => {
     if (confirm('전체 삭제 하시겠습니까?')) {
       deleteAllMutation.mutate({ userId });
     }
   };
 
-  const handleOrder = () => {
+  const handleOrder = (): void => {
     alert('주문페이지로 가기');
   };
 
@@ -68,7 +68,7 @@ const CartPage = () => {
       <label>전체 선택</label>
       <input type="checkbox" checked={isAllSelected} onChange={handleAllSelect} />
       <button onClick={handleAllDelete}>전체 삭제</button>
-      {carts?.data.map((cart: any) => (
+      {carts?.data.map((cart: Cart) => (
         <div key={cart.productId}>
           <input
             type="checkbox"
@@ -77,20 +77,20 @@ const CartPage = () => {
           />
 
           <Link href={`/products/${cart.productId}`}>
-            <Image src={cart.Products.thumbNailURL} width={100} height={100} alt={cart.productId} />
+            <Image src={cart.Products.thumbNailURL} width={100} height={100} alt={`${cart.productId}`} />
           </Link>
 
           <h1>{cart.Products.title}</h1>
-          <p>{cart.Products.price}</p>
+          <p>{cart.Products.price.toLocaleString()}</p>
           <p>
             {cart.Products?.discount
-              ? parseInt(`${cart.Products.price - cart.Products.price / cart.Products.discount}`)
+              ? parseInt(`${cart.Products.price - cart.Products.price / cart.Products.discount}`).toLocaleString()
               : null}
           </p>
           <div>
-            <button onClick={() => handleCountCart(cart.productId, cart.count - 1)}>-</button>
+            <button onClick={() => handleCountCart(cart.productId, cart.count - 1, false)}>-</button>
             <span> {cart.count} </span>
-            <button onClick={() => handleCountCart(cart.productId, cart.count + 1)}>+</button>
+            <button onClick={() => handleCountCart(cart.productId, cart.count + 1, true)}>+</button>
           </div>
 
           <button onClick={() => handleProductDelete(cart.Products.productId)}>X</button>
