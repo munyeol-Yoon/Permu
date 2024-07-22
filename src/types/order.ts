@@ -10,7 +10,7 @@ export interface Order {
   payment: string;
 }
 
-enum OrderStatus {
+export enum OrderStatus {
   PENDING = 'pending',
   COMPLETED = 'completed',
   FAILED = 'failed',
