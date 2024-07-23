@@ -1,23 +1,27 @@
-import { Input } from '../ui/input';
+'use client';
+
+import useUserQuery from '@/hooks/query/useUserQuery';
 
 const OrdererForm = () => {
+  const { data: user } = useUserQuery();
+
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-2xl">주문 정보</h1>
 
       <div>
         <label htmlFor="orderer_name">주문자</label>
-        <Input id="orderer_name" />
+        <p id="orderer_name">{user?.name}</p>
       </div>
 
       <div>
         <label htmlFor="orderer_phone_number">휴대폰번호</label>
-        <Input id="orderer_phone_number" />
+        <p id="orderer_name">{user?.phone}</p>
       </div>
 
       <div>
         <label htmlFor="orderer_email">이메일</label>
-        <Input id="orderer_email" />
+        <p id="orderer_name">{user?.email}</p>
       </div>
     </div>
   );
