@@ -2,7 +2,7 @@ import { getWishesByUser } from '@/api/wish';
 import { useQuery } from '@tanstack/react-query';
 
 const useWishesQuery = ({ productId, userId }: { productId: number; userId: string }) => {
-  const result = useQuery({
+  return useQuery({
     queryKey: ['Wishes', productId],
     queryFn: async () => {
       const data = await getWishesByUser(productId, userId);
@@ -10,7 +10,6 @@ const useWishesQuery = ({ productId, userId }: { productId: number; userId: stri
       return { data, userLike };
     }
   });
-  return result;
 };
 
 export default useWishesQuery;

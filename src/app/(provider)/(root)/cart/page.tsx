@@ -18,19 +18,19 @@ const CartPage = () => {
   const [totalDiscountCost, setDiscountCost] = useState<number>(0);
 
   useEffect(() => {
-    if (carts?.data) {
-      const newTotalCost = carts.data.reduce((acc: number, cur: Cart) => {
+    if (carts) {
+      const newTotalCost = carts.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products.price * cur.count : acc;
       }, 0);
       setTotalCost(newTotalCost);
-      const newTotalDiscountCost = carts.data.reduce((acc: number, cur: Cart) => {
+      const newTotalDiscountCost = carts.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products.discountedPrice * cur.count : acc;
       }, 0);
       setDiscountCost(newTotalDiscountCost);
 
-      setIsAllSelected(selectedProducts.length === carts?.data.length);
+      setIsAllSelected(selectedProducts.length === carts.length);
     }
-  }, [carts?.data, selectedProducts]);
+  }, [carts, selectedProducts]);
 
   const handleCountCart = (productId: number, count: number, cal: boolean): void => {
     patchMutation.mutate({ productId, userId, count, cal });
@@ -46,7 +46,7 @@ const CartPage = () => {
   const handleAllSelect = (): void => {
     const state = !isAllSelected;
     setIsAllSelected(state);
-    if (state) setSelectedProducts(carts?.data.map((cart: Cart) => cart.productId) || []);
+    if (state) setSelectedProducts(carts?.map((cart: Cart) => cart.productId) || []);
     else setSelectedProducts([]);
   };
   const handleProductDelete = (productId: number): void => {
@@ -65,7 +65,7 @@ const CartPage = () => {
       <label htmlFor={inputId}>전체 선택</label>
       <input type="checkbox" id={inputId} checked={isAllSelected} onChange={handleAllSelect} />
       <button onClick={handleAllDelete}>전체 삭제</button>
-      {carts?.data.map((cart: Cart) => (
+      {carts?.map((cart: Cart) => (
         <div key={cart.productId}>
           <input
             type="checkbox"

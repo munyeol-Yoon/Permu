@@ -31,13 +31,13 @@ const useCartsMutation = () => {
       await queryClient.cancelQueries({ queryKey: ['Carts', variable.userId] });
       const previousCarts = queryClient.getQueryData<Cart[]>(['Carts', variable.userId]);
 
-      queryClient.setQueryData(['Carts', variable.userId], (oldCarts: { data: Cart[] }) => {
-        const filteredOldCarts = oldCarts.data.map((cart: Cart) => {
+      queryClient.setQueryData(['Carts', variable.userId], () => {
+        const filteredOldCarts = previousCarts?.map((cart: Cart) => {
           return cart.productId === variable.productId
             ? { ...cart, count: variable.cal ? variable.count + 1 : variable.count - 1 }
             : cart;
         });
-        return { data: filteredOldCarts };
+        return filteredOldCarts;
       });
 
       return { previousCarts };

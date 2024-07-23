@@ -2,14 +2,10 @@ import { getCartsByUser } from '@/api/cart';
 import { useQuery } from '@tanstack/react-query';
 
 const useCartsQuery = (userId: string) => {
-  const result = useQuery({
+  return useQuery({
     queryKey: ['Carts', userId],
-    queryFn: async () => {
-      const data = await getCartsByUser(userId);
-      return { data };
-    }
+    queryFn: () => getCartsByUser(userId)
   });
-  return result;
 };
 
 export default useCartsQuery;
