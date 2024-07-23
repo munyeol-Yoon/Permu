@@ -9,7 +9,7 @@ const MyCouponPage = () => {
       {userCoupons?.map((coupon) => (
         <ul key={coupon.couponId}>
           <li>
-            {coupon.couponId} : {coupon.discount}
+            {coupon.name} : {coupon.discount}
           </li>
         </ul>
       ))}

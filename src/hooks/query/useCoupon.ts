@@ -6,9 +6,9 @@ import { useQuery } from '@tanstack/react-query';
 
 const useCoupon = () => {
   const { loggedUser } = useAuth();
-  const userId: Tables<'users'>['id'] = loggedUser ? loggedUser.id : '';
+  const userId: Tables<'Users'>['id'] = loggedUser ? loggedUser.id : '';
 
-  return useQuery({
+  return useQuery<Tables<'Coupon'>[], Error>({
     queryKey: ['user', 'coupon'],
     queryFn: () => getUserCoupons(userId),
     enabled: !!userId
