@@ -13,7 +13,7 @@ const Cart = () => {
   const { data: carts } = useCartsQuery(userId);
 
   const { addMutation, patchMutation } = useCartsMutation();
-  const handlePostCart = () => {
+  const handlePostCart = (): void => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
       const matchCartProduct = carts?.data.find((cart: Cart) => cart.productId === Number(productId));
       if (matchCartProduct)

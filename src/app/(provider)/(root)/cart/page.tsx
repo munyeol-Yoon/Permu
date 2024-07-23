@@ -32,7 +32,7 @@ const CartPage = () => {
     }
   }, [carts?.data, selectedProducts]);
 
-  const handleCountCart = (productId: number, count: number, cal: boolean) => {
+  const handleCountCart = (productId: number, count: number, cal: boolean): void => {
     patchMutation.mutate({ productId, userId, count, cal });
   };
 
