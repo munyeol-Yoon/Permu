@@ -19,11 +19,17 @@ const ProductDetailPage = async ({ params }: Params) => {
       </div>
       <h3 className="font-bold text-2xl">{product?.title}</h3>
       <div className="flex flex-row justify-between border-b-2">
-        <div>
+        {product?.discount > 0 ? (
+          <>
+            <div>
+              <span className="text-[30px] font-medium">{product?.discountedPrice.toLocaleString()}원</span>
+              <span className="text-xl text-gray-500 line-through">{product?.price.toLocaleString()}원</span>
+            </div>
+            <span className="text-[#F00] font-medium">{product?.discount}% SALE</span>
+          </>
+        ) : (
           <span className="text-[30px] font-medium">{product?.discountedPrice.toLocaleString()}원</span>
-          <span className="text-xl text-gray-500 line-through">{product?.price.toLocaleString()}원</span>
-        </div>
-        <span className="text-[#F00] font-medium">{product?.discount}% SALE</span>
+        )}
       </div>
 
       <ToggleContent trigger={'달콤한 호박 | 말랑말랑 | 불가리안 로즈'} className="border-none">
