@@ -3,7 +3,6 @@ export interface Order {
   deliverId: string;
   userId: string;
   couponId: string;
-  productId: number;
   orderStatus: OrderStatus;
   orderMemo: string;
   total: number;
