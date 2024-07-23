@@ -27,12 +27,9 @@ const Cart = () => {
     }
   };
   return (
-    <>
-      <Button variant="secondary" onClick={handlePostCart}>
-        쇼핑백에 추가
-      </Button>
-      <Button onClick={() => router.push('/order/delivery')}>바로 구매하기</Button>
-    </>
+    <Button variant="secondary" onClick={handlePostCart}>
+      쇼핑백에 추가
+    </Button>
   );
 };
 
