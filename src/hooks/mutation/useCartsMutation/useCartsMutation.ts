@@ -1,4 +1,4 @@
-import { deleteAllCartByUser, deleteCartByUser, patchCartByUser, postCartByUser } from '@/api/api.cart';
+import { deleteAllCartByUser, deleteCartByUser, patchCartByUser, postCartByUser } from '@/api/cart';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCartsMutation = () => {

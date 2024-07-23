@@ -1,4 +1,4 @@
-import { getCartsByUser } from '@/api/api.cart';
+import { getCartsByUser } from '@/api/cart';
 import { useQuery } from '@tanstack/react-query';
 
 const useCartsQuery = (userId: string) => {

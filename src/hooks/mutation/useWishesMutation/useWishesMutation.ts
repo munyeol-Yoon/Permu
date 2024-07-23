@@ -1,4 +1,4 @@
-import { deleteWishByUser, postWishByUser } from '@/api/api.wish';
+import { deleteWishByUser, postWishByUser } from '@/api/wish';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type TWish =

@@ -1,4 +1,4 @@
-import { getWishesByUser } from '@/api/api.wish';
+import { getWishesByUser } from '@/api/wish';
 import { useQuery } from '@tanstack/react-query';
 
 const useWishesQuery = ({ productId, userId }: { productId: number; userId: string }) => {
