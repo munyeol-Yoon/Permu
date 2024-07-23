@@ -4,7 +4,6 @@ export interface Order {
   userId: string;
   couponId: string;
   orderStatus: OrderStatus;
-  orderMemo: string;
   total: number;
   payment: string;
 }
