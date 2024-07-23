@@ -27,7 +27,10 @@ const useAuthHandlers = () => {
 
   const { mutateAsync: userInfoMutation } = useMutation<unknown, Error, UserInfo>({
     mutationFn: (userInfo) => postUserInfo(userInfo),
-    onSuccess: () => router.replace('/'),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+      router.replace('/');
+    },
     onError: (error) => console.log(error)
   });
 

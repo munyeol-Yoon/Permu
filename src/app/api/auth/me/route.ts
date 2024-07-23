@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const user = authData.user;
 
     const { data: userData, error: userDataError } = await supabase
-      .from('users')
+      .from('Users')
       .select('*')
       .eq('id', user.id)
       .single();

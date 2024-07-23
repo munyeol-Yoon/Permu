@@ -1,12 +1,14 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import useAuthHandlers from '@/hooks/mutation/useAuthHandlers';
-import { TUserInfo, UserInfo } from '@/types/types';
+import { UserInfo } from '@/types/types';
+import { phoneNumberCheck } from '@/utils/phoneNumberCheck';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
 
 const initialValue = {
-  gender: 1,
-  age: 14
+  gender: 'M',
+  birth: new Date().toISOString().split('T')[0]
 };
 
 const SignUpFormPage = () => {
@@ -15,34 +17,54 @@ const SignUpFormPage = () => {
   const userId = me ? me.id : null;
 
   const [gender, setGender] = useState<UserInfo['gender']>(initialValue['gender']);
-  const [age, setAge] = useState<UserInfo['age']>(initialValue['age']);
+  const [birth, setBirth] = useState<string>(initialValue['birth']);
+  const [phone, setPhone] = useState<string>('');
 
   const handleGenderChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setGender(parseInt(e.target.value));
+    setGender(e.target.value);
   };
 
-  const handleAgeChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setAge(parseInt(e.target.value) || initialValue['age']);
+  const handleBirthChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    console.log(e.target.value);
+    console.log(initialValue.birth);
+    setBirth(e.target.value || initialValue['birth']);
+  };
+
+  const handlePhoneChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setPhone(e.target.value);
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+
     if (!userId) {
       console.error('유저아이디 없음');
       return;
     }
-    const userInfo: TUserInfo = { gender, age, userId };
-    await userInfoMutation(userInfo);
+
+    if (phoneNumberCheck(phone)) {
+      const userInfo: UserInfo = { gender, birth, phone };
+      await userInfoMutation(userInfo);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      성별: {gender === 1 ? '남자' : '여자'} 나이: {age}
+      <p>성별: {gender === 'M' ? '남자' : '여자'}</p>
+      <p>생년월일: {birth}</p>
+      <p>휴대전화번호 : {phone}</p>
       <div>
         <p>성별</p>
         <div>
           <label htmlFor="male">남자</label>
-          <input type="radio" id="male" name="gender" value="1" checked={gender === 1} onChange={handleGenderChange} />
+          <input
+            type="radio"
+            id="male"
+            name="gender"
+            value="M"
+            checked={gender === 'M'}
+            onChange={handleGenderChange}
+          />
         </div>
         <div>
           <label htmlFor="female">여자</label>
@@ -50,23 +72,22 @@ const SignUpFormPage = () => {
             type="radio"
             id="female"
             name="gender"
-            value="2"
-            checked={gender === 2}
+            value="F"
+            checked={gender === 'F'}
             onChange={handleGenderChange}
           />
         </div>
       </div>
       <div>
-        <label htmlFor="age">나이</label>
-        <input
-          type="number"
-          id="age"
-          className="border"
-          value={age || initialValue['age']}
-          onChange={handleAgeChange}
-        />
+        <label htmlFor="birth">생년월일</label>
+        <input type="date" id="birth" className="border" value={birth} onChange={handleBirthChange} />
       </div>
-      <button className="border bg-green-200">제출하기</button>
+      <div>
+        <label htmlFor="phone">휴대폰 번호</label>
+        <input type="tel" id="phone" className="border" value={phone} onChange={handlePhoneChange} />
+      </div>
+
+      <Button>제출하기</Button>
     </form>
   );
 };

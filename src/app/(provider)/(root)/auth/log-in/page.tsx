@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 const LogInPage = () => {
   const { loggedUser: me } = useAuth();
-  console.log('...', me);
   const { logInMuatation } = useAuthHandlers();
   const handleLogin = () => logInMuatation('kakao');
   return (

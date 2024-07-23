@@ -1,8 +1,7 @@
-import { Tables } from './supabase';
-
 export type UserInfo = {
-  gender: Tables<'users'>['gender'];
-  age: Tables<'users'>['age'];
+  gender: string;
+  birth: string;
+  phone: string;
 };
 
-export type TUserInfo = UserInfo & { userId: Tables<'users'>['id'] };
+// export type TUserInfo = UserInfo & { userId: Tables<'users'>['id'] };
