@@ -1,8 +1,8 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import useCartsMutation from '@/hooks/mutation/useCartsMutation';
 import useCartsQuery from '@/hooks/query/useCartsQuery';
-import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 
 const Cart = () => {
@@ -28,8 +28,10 @@ const Cart = () => {
   };
   return (
     <>
-      <button onClick={handlePostCart}>쇼핑백에 추가</button>
-      <Link href="/order/delivery">바로 구매하기</Link>
+      <Button variant="secondary" onClick={handlePostCart}>
+        쇼핑백에 추가
+      </Button>
+      <Button onClick={() => router.push('/order/delivery')}>바로 구매하기</Button>
     </>
   );
 };

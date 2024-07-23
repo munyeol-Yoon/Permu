@@ -1,4 +1,5 @@
 'use client';
+import { Button } from '@/components/ui/button';
 import useWishesMutation from '@/hooks/mutation/useWishesMutation';
 import useWishesQuery from '@/hooks/query/useWishesQuery';
 import { useParams } from 'next/navigation';
@@ -13,10 +14,11 @@ const Wish = () => {
   const addMutation = useWishesMutation({ getLikes, productId: Number(productId), userId });
 
   return (
-    <button onClick={() => addMutation.mutate()}>
-      <span>{getLikes?.userLike ? PUSHED_HEART : DEFAULT_HEART}</span>
-      <span>찜하기</span>
-    </button>
+    <Button variant="outline" onClick={() => addMutation.mutate()}>
+      <span>
+        {getLikes?.userLike ? PUSHED_HEART : DEFAULT_HEART} 좋아요 {getLikes?.data.length}
+      </span>
+    </Button>
   );
 };
 
