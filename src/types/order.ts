@@ -9,6 +9,12 @@ export interface Order {
   payment: string;
 }
 
+export interface OrderDetail {
+  orderDetailId: string;
+  orderId: string;
+  productId: number;
+}
+
 export enum OrderStatus {
   PENDING = 'pending',
   COMPLETED = 'completed',
