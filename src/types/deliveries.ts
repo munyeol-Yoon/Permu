@@ -6,6 +6,8 @@ export interface DeliveryInfo {
   address: string;
   deliverState: DeliveryStatus;
   phone: string;
+  name: string;
+  deliverMemo: string;
 }
 
 export enum DeliveryStatus {
