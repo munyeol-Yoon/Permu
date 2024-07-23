@@ -1,6 +1,6 @@
 import { Input } from '../ui/input';
 
-const OrderForm = () => {
+const OrdererForm = () => {
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-2xl">주문 정보</h1>
@@ -23,4 +23,4 @@ const OrderForm = () => {
   );
 };
 
-export default OrderForm;
+export default OrdererForm;
