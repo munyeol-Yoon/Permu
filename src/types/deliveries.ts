@@ -5,7 +5,7 @@ export interface DeliveryInfo {
   arrivalDate: string;
   address: string;
   deliverState: DeliveryStatus;
-  phone: number;
+  phone: string;
 }
 
 export enum DeliveryStatus {
