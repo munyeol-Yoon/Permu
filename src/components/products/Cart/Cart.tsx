@@ -28,7 +28,7 @@ const Cart = () => {
   };
   return (
     <>
-      <button onClick={handlePostCart}>장바구니 넣기</button>
+      <button onClick={handlePostCart}>쇼핑백에 추가</button>
       <Link href="/order/delivery">바로 구매하기</Link>
     </>
   );

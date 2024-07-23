@@ -1,4 +1,6 @@
-import supabase from './supabase';
+import { createClient } from '@/app/supabase/client';
+
+const supabase = createClient();
 
 export const postWishByUser = async (productId: number, userId: string): Promise<void> => {
   const { error } = await supabase.from('Wishes').insert({ productId, userId });

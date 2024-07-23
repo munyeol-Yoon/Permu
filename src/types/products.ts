@@ -26,5 +26,8 @@ type Wish = {
 
 type Coupon = {
   couponId: string;
+  userId: string;
   discount: number;
+  issueDate: string;
+  expirationDate: string;
 };

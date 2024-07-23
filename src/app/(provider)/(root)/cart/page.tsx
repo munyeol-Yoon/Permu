@@ -1,5 +1,6 @@
 'use client';
 
+import Coupon from '@/components/products/Coupon';
 import useCartsMutation from '@/hooks/mutation/useCartsMutation';
 import useCartsQuery from '@/hooks/query/useCartsQuery';
 import Image from 'next/image';
@@ -12,16 +13,9 @@ const CartPage = () => {
   const { data: carts } = useCartsQuery(userId);
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
-  const [isAllSelected, setIsAllSelected] = useState<boolean>(true);
+  const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>(0);
   const [totalDiscountCost, setDiscountCost] = useState<number>(0);
-  const [coupons, setCoupons] = useState<Coupon[] | null>(null);
-
-  useEffect(() => {
-    if (carts?.data) {
-      setSelectedProducts(carts.data.map((cart: Cart) => cart.productId));
-    }
-  }, [carts]);
 
   useEffect(() => {
     if (carts?.data) {
@@ -33,7 +27,8 @@ const CartPage = () => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products.discountedPrice * cur.count : acc;
       }, 0);
       setDiscountCost(newTotalDiscountCost);
-      setIsAllSelected(selectedProducts.length === carts.data.length);
+
+      setIsAllSelected(selectedProducts.length === carts?.data.length);
     }
   }, [carts?.data, selectedProducts]);
 
@@ -65,13 +60,6 @@ const CartPage = () => {
     }
   };
 
-  const handleSelectCoupon = (discount: number): void => {
-    //마일리지 적용된 총합 금액 로직 짤 함수
-  };
-  const handleOrder = (): void => {
-    alert('주문페이지로 가기');
-  };
-
   return (
     <div>
       <label htmlFor={inputId}>전체 선택</label>
@@ -92,7 +80,7 @@ const CartPage = () => {
           <h1>{cart.Products.title}</h1>
           <p>
             {(cart.Products.price * cart.count).toLocaleString()} -&gt;
-            {(cart.Products.discountedPrice * cart.count).toLocaleString()}
+            {(cart.Products.discountedPrice * cart.count).toLocaleString()} {cart.Products.discount}%
           </p>
           <div>
             <button onClick={() => handleCountCart(cart.productId, cart.count, false)}>-</button>
@@ -103,22 +91,7 @@ const CartPage = () => {
           <button onClick={() => handleProductDelete(cart.productId)}>X</button>
         </div>
       ))}
-      <div className="flex flex-row">
-        <h1>총 상품금액 </h1>
-        <p>
-          {totalCost.toLocaleString()} -&gt; {totalDiscountCost.toLocaleString()}
-        </p>
-      </div>
-
-      <div>
-        <span>마일리지</span>
-        {coupons?.map((coupon) => (
-          <p key={coupon.couponId}>
-            <button onClick={() => handleSelectCoupon(coupon.discount)}>{coupon.discount}</button>
-          </p>
-        ))}
-      </div>
-      <button onClick={handleOrder}>주문하기</button>
+      <Coupon totalCost={totalCost} totalDiscountCost={totalDiscountCost} />
     </div>
   );
 };

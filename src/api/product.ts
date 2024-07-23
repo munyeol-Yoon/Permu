@@ -1,5 +1,7 @@
+import { createClient } from '@/app/supabase/client';
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher';
-import supabase from './supabase';
+
+const supabase = createClient();
 
 export const getProductById = async ({ params }: Params): Promise<Product> => {
   const { data, error } = await supabase.from('Products').select('*').eq('productId', params.productId).single();

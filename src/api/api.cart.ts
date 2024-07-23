@@ -1,10 +1,15 @@
-import supabase from './supabase';
+import { createClient } from '@/app/supabase/client';
+
+const supabase = createClient();
 
 export const postCartByUser = async (productId: number, userId: string): Promise<void> => {
   const { error } = await supabase.from('Carts').insert({ productId, userId, count: 1 });
   if (error) throw error;
 };
 export const patchCartByUser = async (productId: number, userId: string, count: number): Promise<void> => {
+  if (count < 1) {
+    throw new Error('Count must be at least 1');
+  }
   const { error } = await supabase.from('Carts').update({ count }).eq('productId', productId).eq('userId', userId);
   if (error) throw error;
 };
