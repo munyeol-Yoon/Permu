@@ -1,3 +1,6 @@
+Need to install the following packages:
+supabase@1.187.3
+Ok to proceed? (y) 
 export type Json =
   | string
   | number
@@ -9,34 +12,339 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      users: {
+      Carts: {
         Row: {
-          age: number | null
-          createdAt: string
-          email: string
-          gender: number | null
-          id: string
+          count: number | null
+          productId: number
+          userId: string
         }
         Insert: {
-          age?: number | null
-          createdAt?: string
-          email: string
-          gender?: number | null
-          id: string
+          count?: number | null
+          productId: number
+          userId: string
         }
         Update: {
-          age?: number | null
-          createdAt?: string
-          email?: string
-          gender?: number | null
-          id?: string
+          count?: number | null
+          productId?: number
+          userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "users_id_fkey"
-            columns: ["id"]
+            foreignKeyName: "Carts_productId_fkey"
+            columns: ["productId"]
+            isOneToOne: false
+            referencedRelation: "Products"
+            referencedColumns: ["productId"]
+          },
+          {
+            foreignKeyName: "Carts_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Coupon: {
+        Row: {
+          couponId: string
+          discount: number | null
+          expirationDate: string | null
+          issueDate: string | null
+          name: string | null
+          status: string | null
+          userId: string
+        }
+        Insert: {
+          couponId?: string
+          discount?: number | null
+          expirationDate?: string | null
+          issueDate?: string | null
+          name?: string | null
+          status?: string | null
+          userId?: string
+        }
+        Update: {
+          couponId?: string
+          discount?: number | null
+          expirationDate?: string | null
+          issueDate?: string | null
+          name?: string | null
+          status?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Coupon_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Deliveries: {
+        Row: {
+          address: string | null
+          arrivalDate: string | null
+          deliverId: string
+          deliverMemo: string | null
+          deliverState: string | null
+          departureDate: string | null
+          name: string | null
+          phone: string | null
+          userId: string | null
+        }
+        Insert: {
+          address?: string | null
+          arrivalDate?: string | null
+          deliverId: string
+          deliverMemo?: string | null
+          deliverState?: string | null
+          departureDate?: string | null
+          name?: string | null
+          phone?: string | null
+          userId?: string | null
+        }
+        Update: {
+          address?: string | null
+          arrivalDate?: string | null
+          deliverId?: string
+          deliverMemo?: string | null
+          deliverState?: string | null
+          departureDate?: string | null
+          name?: string | null
+          phone?: string | null
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Deliveries_deliverId_fkey"
+            columns: ["deliverId"]
             isOneToOne: true
-            referencedRelation: "users"
+            referencedRelation: "Orders"
+            referencedColumns: ["deliverId"]
+          },
+          {
+            foreignKeyName: "Deliveries_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Mileages: {
+        Row: {
+          count: number | null
+          expirationDate: string | null
+          issueDate: string | null
+          mileageId: string
+          userId: string | null
+        }
+        Insert: {
+          count?: number | null
+          expirationDate?: string | null
+          issueDate?: string | null
+          mileageId?: string
+          userId?: string | null
+        }
+        Update: {
+          count?: number | null
+          expirationDate?: string | null
+          issueDate?: string | null
+          mileageId?: string
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Mileages_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Orders: {
+        Row: {
+          couponId: string | null
+          deliverId: string | null
+          orderId: string
+          orderStatus: string | null
+          payment: string | null
+          total: number | null
+          userId: string | null
+        }
+        Insert: {
+          couponId?: string | null
+          deliverId?: string | null
+          orderId?: string
+          orderStatus?: string | null
+          payment?: string | null
+          total?: number | null
+          userId?: string | null
+        }
+        Update: {
+          couponId?: string | null
+          deliverId?: string | null
+          orderId?: string
+          orderStatus?: string | null
+          payment?: string | null
+          total?: number | null
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Orders_couponId_fkey"
+            columns: ["couponId"]
+            isOneToOne: false
+            referencedRelation: "Coupon"
+            referencedColumns: ["couponId"]
+          },
+          {
+            foreignKeyName: "Orders_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      OrdersDetail: {
+        Row: {
+          orderDetailId: string
+          orderId: string
+          productId: number
+        }
+        Insert: {
+          orderDetailId?: string
+          orderId?: string
+          productId: number
+        }
+        Update: {
+          orderDetailId?: string
+          orderId?: string
+          productId?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "OrdersDetail_orderId_fkey"
+            columns: ["orderId"]
+            isOneToOne: false
+            referencedRelation: "Orders"
+            referencedColumns: ["orderId"]
+          },
+          {
+            foreignKeyName: "OrdersDetail_productId_fkey"
+            columns: ["productId"]
+            isOneToOne: false
+            referencedRelation: "Products"
+            referencedColumns: ["productId"]
+          },
+        ]
+      }
+      Products: {
+        Row: {
+          category: number | null
+          createdAt: string
+          discount: number | null
+          ImagesURL: string | null
+          price: number | null
+          productId: number
+          thumbNailURL: string | null
+          title: string | null
+          updatedAt: string | null
+        }
+        Insert: {
+          category?: number | null
+          createdAt?: string
+          discount?: number | null
+          ImagesURL?: string | null
+          price?: number | null
+          productId?: number
+          thumbNailURL?: string | null
+          title?: string | null
+          updatedAt?: string | null
+        }
+        Update: {
+          category?: number | null
+          createdAt?: string
+          discount?: number | null
+          ImagesURL?: string | null
+          price?: number | null
+          productId?: number
+          thumbNailURL?: string | null
+          title?: string | null
+          updatedAt?: string | null
+        }
+        Relationships: []
+      }
+      Users: {
+        Row: {
+          birth: string | null
+          createdAt: string
+          email: string
+          gender: string | null
+          id: string
+          mileage: number | null
+          name: string | null
+          phone: string | null
+          updatedAt: string | null
+        }
+        Insert: {
+          birth?: string | null
+          createdAt?: string
+          email: string
+          gender?: string | null
+          id?: string
+          mileage?: number | null
+          name?: string | null
+          phone?: string | null
+          updatedAt?: string | null
+        }
+        Update: {
+          birth?: string | null
+          createdAt?: string
+          email?: string
+          gender?: string | null
+          id?: string
+          mileage?: number | null
+          name?: string | null
+          phone?: string | null
+          updatedAt?: string | null
+        }
+        Relationships: []
+      }
+      Wishes: {
+        Row: {
+          productId: number | null
+          userId: string
+          wishId: string
+        }
+        Insert: {
+          productId?: number | null
+          userId?: string
+          wishId?: string
+        }
+        Update: {
+          productId?: number | null
+          userId?: string
+          wishId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Wish_productId_fkey"
+            columns: ["productId"]
+            isOneToOne: false
+            referencedRelation: "Products"
+            referencedColumns: ["productId"]
+          },
+          {
+            foreignKeyName: "Wish_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
             referencedColumns: ["id"]
           },
         ]
