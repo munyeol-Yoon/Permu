@@ -32,12 +32,10 @@ export async function GET(req: NextRequest) {
     }
 
     const extractQuery = extractHangul(searchQuery);
-    console.log(extractQuery);
 
-    const chosungQuery = getChosung(extractQuery);
-    console.log(chosungQuery);
+    // const chosungQuery = getChosung(extractQuery);
 
-    const { data, error } = await supabase.from('Products').select('*').ilike('title', `%${chosungQuery}%`);
+    const { data, error } = await supabase.from('Products').select('*').ilike('title', `%${extractQuery}%`);
 
     if (error) {
       throw error;
