@@ -1,4 +1,3 @@
-import { getProductById } from '@/api/product';
 import ToggleContent from '@/components/Accordion/Accordion';
 import BuyNow from '@/components/products/BuyNow';
 import Cart from '@/components/products/Cart';
@@ -8,9 +7,15 @@ import Image from 'next/image';
 interface Params {
   params: { productId: string };
 }
-const ProductDetailPage = async ({ params }: Params) => {
-  const product = await getProductById({ params });
+export const fetchDetailProduct = async ({ params }: Params): Promise<Product> => {
+  const productId = params.productId;
 
+  const response = await fetch(`http://localhost:3000/api/products?productId=${productId}`);
+  const data = await response.json();
+  return data;
+};
+const ProductDetailPage = async ({ params }: Params) => {
+  const product = await fetchDetailProduct({ params });
   return (
     <div>
       <div>
@@ -22,22 +27,18 @@ const ProductDetailPage = async ({ params }: Params) => {
         {product?.discount > 0 ? (
           <>
             <div>
-              <span className="text-[30px] font-medium">{product?.discountedPrice.toLocaleString()}원</span>
-              <span className="text-xl text-gray-500 line-through">{product?.price.toLocaleString()}원</span>
+              <span className="text-[30px] font-medium">{product?.discountedPrice}원</span>
+              <span className="text-xl text-gray-500 line-through">{product?.price}원</span>
             </div>
             <span className="text-[#F00] font-medium">{product?.discount}% SALE</span>
           </>
         ) : (
-          <span className="text-[30px] font-medium">{product?.discountedPrice.toLocaleString()}원</span>
+          <span className="text-[30px] font-medium">{product?.discountedPrice}원</span>
         )}
       </div>
 
       <ToggleContent trigger={'달콤한 호박 | 말랑말랑 | 불가리안 로즈'} className="border-none">
-        달콤한 호박과 일랑일랑, 그리고 불가리안 로즈가 조화를 이루는 이 향수는 정교하고 매혹적인 조합일 것입니다.호박의
-        부드러운 달콤함이 일랑일랑의 상큼한 꽃 향과 어우러지면서, 불가리안 로즈의 우아하고 깊은 꽃 향이더해집니다. 이
-        향수는 유럽 피안 여름의 햇살 아래에서 상상할 수 있는 바와 같이, 부드럽고 섬세한 향기를 지닐것입니다. 여름의
-        따뜻한 햇볕 속에서 호박의 달콤함이 더욱 풍부하게 느껴지며, 일랑일랑과 불가리안 로즈가 그 특별한 순간을 감싸주는
-        느낌을 줄 것입니다
+        {product?.content}
       </ToggleContent>
 
       <div className="flex flex-row gap-[10px] px-5">

@@ -11,12 +11,10 @@ const CartPage = () => {
   const inputId = useId();
   const userId = null;
   const { data: carts } = useCartsQuery(userId ?? '');
+  const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [localCarts, setLocalCarts] = useState<Cart[]>([]);
   const displayedCarts = userId ? carts : localCarts;
-  const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
-  const [selectedProducts, setSelectedProducts] = useState<number[]>(
-    JSON.parse(localStorage.getItem('selectedCarts') || '[]')
-  );
+  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>(0);
   const [totalDiscountCost, setDiscountCost] = useState<number>(0);

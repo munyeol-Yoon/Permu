@@ -1,6 +1,6 @@
 'use client';
 
-import { getProductById } from '@/api/product';
+import { fetchDetailProduct } from '@/app/(provider)/(root)/products/[productId]/page';
 import { Button } from '@/components/ui/button';
 import useCartsMutation from '@/hooks/mutation/useCartsMutation';
 import useCartsQuery from '@/hooks/query/useCartsQuery';
@@ -34,7 +34,7 @@ const Cart = () => {
       else {
         if (userId) addMutation.mutate({ productId: Number(productId), userId });
         else {
-          const product = await getProductById({ params: { productId } });
+          const product = await fetchDetailProduct({ params: { productId } });
           localStorage.setItem(
             'carts',
             JSON.stringify(

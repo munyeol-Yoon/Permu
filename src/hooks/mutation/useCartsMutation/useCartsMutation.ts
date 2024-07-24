@@ -4,7 +4,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 const useCartsMutation = () => {
   const queryClient = useQueryClient();
   const addMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) => await postCartByUser(productId, userId),
+    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) =>
+      await postCartByUser(productId, userId),
     onSuccess: (data, variable) => {
       queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
     },
@@ -18,7 +19,7 @@ const useCartsMutation = () => {
       cal
     }: {
       productId: number;
-      userId: string | null;
+      userId: string;
       count: number;
       cal: boolean;
     }) => {

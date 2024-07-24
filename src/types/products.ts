@@ -1,9 +1,10 @@
 type Product = {
   productId: number;
   createdAt: string;
-  category: number;
+  categoryId: string;
   title: string;
   price: number;
+  content: string;
   thumbNailURL: string;
   ImagesURL: string;
   updatedAt: string;
