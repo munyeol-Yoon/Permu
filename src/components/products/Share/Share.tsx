@@ -14,7 +14,7 @@ const Share = ({ product }: { product: Product }) => {
     script.integrity = 'sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4';
     script.crossOrigin = 'anonymous';
     script.onload = () => {
-      window.Kakao.init('d7d03a1ed0f163c44f968759889d79fb');
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_APP_KEY!);
     };
     document.head.appendChild(script);
   }, []);
