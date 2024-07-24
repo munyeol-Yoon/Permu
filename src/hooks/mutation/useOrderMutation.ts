@@ -28,11 +28,15 @@ const useOrderMutation = () => {
         orderId,
         deliverId,
         userId,
-        total: totalPrice
+        total: totalPrice,
+        couponId: coupon.couponId
       };
       const deliveries: DeliveryInfo = { ...deliveryInfo, deliverId };
 
-      await fetch('/api/order', { method: 'POST', body: JSON.stringify({ order, deliveries, productIdList }) });
+      await fetch('/api/order', {
+        method: 'POST',
+        body: JSON.stringify({ order, deliveries, productIdList, mileageAmount })
+      });
     }
   });
 
