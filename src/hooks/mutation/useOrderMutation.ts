@@ -1,5 +1,5 @@
 import { DeliveryInfo } from '@/types/deliveries';
-import { Order, OrderDetail, OrderStatus } from '@/types/order';
+import { Order, OrderStatus } from '@/types/order';
 import { useMutation } from '@tanstack/react-query';
 
 const useOrderMutation = () => {
@@ -11,7 +11,7 @@ const useOrderMutation = () => {
     }: {
       orderInfo: Order;
       deliveryInfo: DeliveryInfo;
-      productId: number;
+      productId: number[];
     }) => {
       const orderId = crypto.randomUUID();
       const deliverId = crypto.randomUUID();
@@ -24,11 +24,15 @@ const useOrderMutation = () => {
         orderStatus: OrderStatus.PENDING,
         payment: 'TOSS'
       };
-      const orderDetail: OrderDetail = { orderId, productId };
       const deliveries: DeliveryInfo = { ...deliveryInfo, deliverId };
 
       await fetch('/api/order', { method: 'POST', body: JSON.stringify(order) });
-      await fetch('/api/orderDetail', { method: 'POST', body: JSON.stringify(orderDetail) });
+
+      productId.forEach(
+        async (v) =>
+          await fetch('/api/orderDetail', { method: 'POST', body: JSON.stringify({ orderId, productId: v }) })
+      );
+
       await fetch('/api/deliveries', { method: 'POST', body: JSON.stringify(deliveries) });
     }
   });

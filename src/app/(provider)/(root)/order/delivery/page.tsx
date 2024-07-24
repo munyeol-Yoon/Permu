@@ -21,8 +21,9 @@ const DeliveryPage = () => {
   const receiverMemoRef = useRef('');
 
   const handleClick = () => {
+    const total = orderInfo?.productList.reduce((acc, cur) => acc + cur.price, 0);
     mutate({
-      orderInfo: { total: 10000, userId: orderInfo.user.id },
+      orderInfo: { total, userId: orderInfo.user.id },
       deliveryInfo: {
         name: receiverNameRef.current,
         address: receiverAddressRef.current,
@@ -32,13 +33,13 @@ const DeliveryPage = () => {
         deliverState: DeliveryStatus.PENDING,
         userId: orderInfo.user.id
       },
-      productId: 1
+      productId: orderInfo.productList.map((v) => v.productId)
     });
   };
 
   return (
     <div className="max-w-[600px] mx-auto flex flex-col gap-4">
-      <ul>{orderInfo?.productList.map((product) => <ProductItem key={product.productId} />)}</ul>
+      <ul>{orderInfo?.productList.map((product) => <ProductItem key={product.productId} product={product} />)}</ul>
 
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl">주문 정보</h1>
