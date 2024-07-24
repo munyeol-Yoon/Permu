@@ -9,7 +9,7 @@ export interface Order {
 }
 
 export interface OrderDetail {
-  orderDetailId: string;
+  orderDetailId?: string;
   orderId: string;
   productId: number;
 }
