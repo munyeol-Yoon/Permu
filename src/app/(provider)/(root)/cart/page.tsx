@@ -10,53 +10,96 @@ import { useEffect, useId, useState } from 'react';
 const CartPage = () => {
   const inputId = useId();
   const userId = null;
-  const { data: carts } = useCartsQuery(userId);
+  const { data: carts } = useCartsQuery(userId ?? '');
+  const [localCarts, setLocalCarts] = useState<Cart[]>([]);
+  const displayedCarts = userId ? carts : localCarts;
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<number[]>(
+    JSON.parse(localStorage.getItem('selectedCarts') || '[]')
+  );
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>(0);
   const [totalDiscountCost, setDiscountCost] = useState<number>(0);
 
   useEffect(() => {
-    if (carts) {
-      const newTotalCost = carts.reduce((acc: number, cur: Cart) => {
+    if (displayedCarts) {
+      const newTotalCost = displayedCarts!.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products?.price * cur.count : acc;
       }, 0);
       setTotalCost(newTotalCost);
-      const newTotalDiscountCost = carts.reduce((acc: number, cur: Cart) => {
+      const newTotalDiscountCost = displayedCarts!.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products?.discountedPrice * cur.count : acc;
       }, 0);
       setDiscountCost(newTotalDiscountCost);
 
-      setIsAllSelected(selectedProducts.length === carts.length);
+      setIsAllSelected(selectedProducts.length === displayedCarts.length);
     }
-  }, [carts, selectedProducts]);
+  }, [carts, displayedCarts, selectedProducts]);
+
+  useEffect(() => {
+    const a = JSON.parse(localStorage.getItem('carts') || '[]');
+    const b = JSON.parse(localStorage.getItem('selectedCarts') || '[]');
+    setLocalCarts(a);
+    setSelectedProducts(b);
+  }, []);
 
   const handleCountCart = (productId: number, count: number, cal: boolean): void => {
-    patchMutation.mutate({ productId, userId, count, cal });
+    if (userId) patchMutation.mutate({ productId, userId, count, cal });
+    else {
+      const updatedCarts = displayedCarts!.map((cart: Cart) => {
+        if (cart.productId === productId) {
+          return { ...cart, count: cal ? count + 1 : count - 1 };
+        }
+        return cart;
+      }, []);
+      setLocalCarts(updatedCarts);
+      localStorage.setItem('carts', JSON.stringify(updatedCarts));
+    }
   };
 
   const handleProductSelect = (productId: number): void => {
     const updatedSelection = selectedProducts.includes(productId)
-      ? selectedProducts.filter((id) => id !== productId)
+      ? selectedProducts.filter((id: number) => id !== productId)
       : [...selectedProducts, productId];
+
     setSelectedProducts(updatedSelection);
+    localStorage.setItem('selectedCarts', JSON.stringify(updatedSelection));
   };
 
   const handleAllSelect = (): void => {
     const state = !isAllSelected;
     setIsAllSelected(state);
-    if (state) setSelectedProducts(carts?.map((cart: Cart) => cart.productId) || []);
-    else setSelectedProducts([]);
+    setSelectedProducts(state ? displayedCarts!.map((cart: Cart) => cart.productId) : []);
+    localStorage.setItem(
+      'selectedCarts',
+      JSON.stringify(state ? displayedCarts!.map((cart: Cart) => cart.productId) : [])
+    );
   };
+
   const handleProductDelete = (productId: number): void => {
     if (confirm('삭제 하시겠습니까?')) {
-      deleteMutation.mutate({ productId, userId });
+      if (userId) deleteMutation.mutate({ productId, userId });
+      else {
+        setLocalCarts(localCarts.filter((cart: Cart) => cart.productId !== productId));
+        setSelectedProducts(selectedProducts.filter((id: number) => id !== productId));
+        localStorage.setItem(
+          'selectedCarts',
+          JSON.stringify(selectedProducts.filter((id: number) => id !== productId))
+        );
+        localStorage.setItem('carts', JSON.stringify(localCarts.filter((cart: Cart) => cart.productId !== productId)));
+      }
     }
   };
+
   const handleAllDelete = async (): Promise<void> => {
     if (confirm('전체 삭제 하시겠습니까?')) {
-      deleteAllMutation.mutate({ userId });
+      if (userId) deleteAllMutation.mutate({ userId });
+      else {
+        setLocalCarts([]);
+        setSelectedProducts([]);
+        localStorage.removeItem('selectedCarts');
+        localStorage.removeItem('carts');
+      }
     }
   };
 
@@ -65,7 +108,7 @@ const CartPage = () => {
       <label htmlFor={inputId}>전체 선택</label>
       <input type="checkbox" id={inputId} checked={isAllSelected} onChange={handleAllSelect} />
       <button onClick={handleAllDelete}>전체 삭제</button>
-      {carts?.map((cart: Cart) => (
+      {displayedCarts?.map((cart: Cart) => (
         <div key={cart.productId}>
           <input
             type="checkbox"

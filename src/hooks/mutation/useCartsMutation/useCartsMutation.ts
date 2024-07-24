@@ -1,30 +1,10 @@
 import { deleteAllCartByUser, deleteCartByUser, patchCartByUser, postCartByUser } from '@/api/cart';
-import { getProductById } from '@/api/product';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCartsMutation = () => {
   const queryClient = useQueryClient();
-  const localCarts = JSON.parse(localStorage.getItem('carts') || '[]');
   const addMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: number; userId: string | null }) => {
-      if (userId) {
-        await postCartByUser(productId, userId);
-      } else {
-        const product = await getProductById({ params: { productId } });
-        localStorage.setItem(
-          'carts',
-          JSON.stringify(
-            localCarts.concat({
-              productId,
-              userId,
-              count: 1,
-              select: false,
-              Products: product
-            })
-          )
-        );
-      }
-    },
+    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) => await postCartByUser(productId, userId),
     onSuccess: (data, variable) => {
       queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
     },
@@ -45,15 +25,6 @@ const useCartsMutation = () => {
       if (userId) {
         if (cal) await patchCartByUser(productId, userId, count + 1);
         else await patchCartByUser(productId, userId, count - 1);
-      } else {
-        const updatedCarts = localCarts.map((cart: Cart) => {
-          if (cart.productId === productId) {
-            return { ...cart, count: cal ? count + 1 : count - 1 };
-          }
-          return cart;
-        });
-
-        localStorage.setItem('carts', JSON.stringify(updatedCarts));
       }
     },
     onMutate: async (variable) => {
@@ -76,20 +47,14 @@ const useCartsMutation = () => {
     }
   });
   const deleteAllMutation = useMutation({
-    mutationFn: async ({ userId }: { userId: string | null }) => {
-      if (userId) await deleteAllCartByUser(userId);
-      else localStorage.removeItem('carts');
-    },
+    mutationFn: async ({ userId }: { userId: string }) => await deleteAllCartByUser(userId),
     onSuccess: (data, variable) => {
       queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
     }
   });
   const deleteMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: number; userId: string | null }) => {
-      if (userId) await deleteCartByUser(productId, userId);
-      else
-        localStorage.setItem('carts', JSON.stringify(localCarts.filter((cart: Cart) => cart.productId !== productId)));
-    },
+    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) =>
+      await deleteCartByUser(productId, userId),
     onSuccess: (data, variable) => {
       queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
     }
