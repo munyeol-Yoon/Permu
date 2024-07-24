@@ -9,7 +9,7 @@ import { useEffect, useId, useState } from 'react';
 
 const CartPage = () => {
   const inputId = useId();
-  const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
+  const userId = null;
   const { data: carts } = useCartsQuery(userId);
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
@@ -20,11 +20,11 @@ const CartPage = () => {
   useEffect(() => {
     if (carts) {
       const newTotalCost = carts.reduce((acc: number, cur: Cart) => {
-        return selectedProducts.includes(cur.productId) ? acc + cur.Products.price * cur.count : acc;
+        return selectedProducts.includes(cur.productId) ? acc + cur.Products?.price * cur.count : acc;
       }, 0);
       setTotalCost(newTotalCost);
       const newTotalDiscountCost = carts.reduce((acc: number, cur: Cart) => {
-        return selectedProducts.includes(cur.productId) ? acc + cur.Products.discountedPrice * cur.count : acc;
+        return selectedProducts.includes(cur.productId) ? acc + cur.Products?.discountedPrice * cur.count : acc;
       }, 0);
       setDiscountCost(newTotalDiscountCost);
 
@@ -74,13 +74,13 @@ const CartPage = () => {
           />
 
           <Link href={`/products/${cart.productId}`}>
-            <Image src={cart.Products.thumbNailURL} width={100} height={100} alt={`${cart.productId}`} />
+            <Image src={cart.Products?.thumbNailURL} width={100} height={100} alt={`${cart.productId}`} />
           </Link>
 
-          <h1>{cart.Products.title}</h1>
+          <h1>{cart.Products?.title}</h1>
           <p>
-            {(cart.Products.price * cart.count).toLocaleString()} -&gt;
-            {(cart.Products.discountedPrice * cart.count).toLocaleString()} {cart.Products.discount}%
+            {(cart.Products?.price * cart.count).toLocaleString()} -&gt;
+            {(cart.Products?.discountedPrice * cart.count).toLocaleString()} {cart.Products?.discount}%
           </p>
           <div>
             <button onClick={() => handleCountCart(cart.productId, cart.count, false)}>-</button>

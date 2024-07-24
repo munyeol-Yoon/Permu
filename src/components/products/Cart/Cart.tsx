@@ -8,14 +8,14 @@ import { useParams, useRouter } from 'next/navigation';
 const Cart = () => {
   const router = useRouter();
   const { productId } = useParams<{ productId: string }>();
-  const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
-
+  const userId = null;
   const { data: carts } = useCartsQuery(userId);
 
   const { addMutation, patchMutation } = useCartsMutation();
   const handlePostCart = () => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
       const matchCartProduct = carts?.find((cart: Cart) => cart.productId === Number(productId));
+
       if (matchCartProduct)
         patchMutation.mutate({ productId: Number(productId), userId, cal: true, count: matchCartProduct.count });
       else addMutation.mutate({ productId: Number(productId), userId });
