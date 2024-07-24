@@ -45,7 +45,7 @@ const ProductDetailPage = async ({ params }: Params) => {
         <Cart />
       </div>
       <div className="flex flex-row gap-[10px] px-5">
-        <Share />
+        <Share product={product} />
         <Wish />
       </div>
       <ToggleContent trigger={'제품 상세정보'}>제품 상세정보</ToggleContent>
