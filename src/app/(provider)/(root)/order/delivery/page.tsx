@@ -3,7 +3,9 @@
 import ProductItem from '@/components/OrderPage/ProductItem';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import useOrderMutation from '@/hooks/mutation/useOrderMutation';
 import useOrderInfoQuery from '@/hooks/query/useOrderInfoQuery';
+import { DeliveryStatus } from '@/types/deliveries';
 import { useRef } from 'react';
 
 // 솔루션 1 : useRef 활용 -> 리렌더링 이슈 최소화
@@ -11,6 +13,7 @@ import { useRef } from 'react';
 
 const DeliveryPage = () => {
   const { data: orderInfo } = useOrderInfoQuery();
+  const { mutate } = useOrderMutation();
 
   const receiverNameRef = useRef('');
   const receiverAddressRef = useRef('');
@@ -18,7 +21,19 @@ const DeliveryPage = () => {
   const receiverMemoRef = useRef('');
 
   const handleClick = () => {
-    console.log(receiverNameRef);
+    mutate({
+      orderInfo: { total: 10000, userId: orderInfo.user.id },
+      deliveryInfo: {
+        name: receiverNameRef.current,
+        address: receiverAddressRef.current,
+        phone: receiverPhoneNumberRef.current,
+        deliverMemo: receiverMemoRef.current,
+        arrivalDate: new Date(),
+        deliverState: DeliveryStatus.PENDING,
+        userId: orderInfo.user.id
+      },
+      productId: 1
+    });
   };
 
   return (

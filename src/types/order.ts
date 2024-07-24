@@ -1,11 +1,11 @@
 export interface Order {
-  orderId: string;
-  deliverId: string;
+  orderId?: string;
+  deliverId?: string;
   userId: string;
-  couponId: string;
-  orderStatus: OrderStatus;
+  couponId?: string;
+  orderStatus?: OrderStatus;
   total: number;
-  payment: string;
+  payment?: string;
 }
 
 export interface OrderDetail {

@@ -1,8 +1,8 @@
 export interface DeliveryInfo {
-  deliverId: string;
+  deliverId?: string;
   userId: string;
-  departureDate: string;
-  arrivalDate: string;
+  departureDate?: string;
+  arrivalDate: Date;
   address: string;
   deliverState: DeliveryStatus;
   phone: string;
