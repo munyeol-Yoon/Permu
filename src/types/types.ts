@@ -1,7 +1,6 @@
-export type UserInfo = {
-  gender: string;
-  birth: string;
-  phone: string;
-};
+import { User } from '@supabase/supabase-js';
+import { Tables } from './supabase';
 
-// export type TUserInfo = UserInfo & { userId: Tables<'users'>['id'] };
+export type UserInfo = Pick<Tables<'Users'>, 'gender' | 'birth' | 'phone'>;
+
+export type LoggedUser = User & { userData: Tables<'Users'> };

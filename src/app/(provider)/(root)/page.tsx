@@ -11,7 +11,10 @@ const RootPage = () => {
     <div>
       하위~ {loggedUser?.email}
       <Button onClick={() => logOutMutation()}>로그아웃 </Button>
-      <Link href="user/coupon">쿠폰페이지</Link>
+      <div className="flex flex-col gap-y-3">
+        <Link href="user/coupon">쿠폰페이지</Link>
+        <Link href="user">마이페이지</Link>
+      </div>
     </div>
   );
 };
