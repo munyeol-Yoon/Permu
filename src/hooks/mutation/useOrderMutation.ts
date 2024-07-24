@@ -22,7 +22,7 @@ const useOrderMutation = () => {
       const deliverId = crypto.randomUUID();
 
       const userId = orderInfo.user.id;
-      const productList = orderInfo.productList.map((v: { productId: number }) => v.productId);
+      const productIdList = orderInfo.productList.map((v: { productId: number }) => v.productId);
 
       const order: Order = {
         orderId,
@@ -32,14 +32,7 @@ const useOrderMutation = () => {
       };
       const deliveries: DeliveryInfo = { ...deliveryInfo, deliverId };
 
-      await fetch('/api/order', { method: 'POST', body: JSON.stringify(order) });
-
-      productList.forEach(
-        async (v: number) =>
-          await fetch('/api/orderDetail', { method: 'POST', body: JSON.stringify({ orderId, productId: v }) })
-      );
-
-      await fetch('/api/deliveries', { method: 'POST', body: JSON.stringify(deliveries) });
+      await fetch('/api/order', { method: 'POST', body: JSON.stringify({ order, deliveries, productIdList }) });
     }
   });
 
