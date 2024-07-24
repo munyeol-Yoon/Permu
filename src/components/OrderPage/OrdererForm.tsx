@@ -1,27 +1,29 @@
-'use client';
+interface OrdererFormProps {
+  user: {
+    name: string;
+    phone: string;
+    email: string;
+  };
+}
 
-import useUserQuery from '@/hooks/query/useUserQuery';
-
-const OrdererForm = () => {
-  const { data: user } = useUserQuery();
-
+const OrdererForm = ({ user }: OrdererFormProps) => {
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-2xl">주문 정보</h1>
 
       <div>
         <label htmlFor="orderer_name">주문자</label>
-        <p id="orderer_name">{user?.name}</p>
+        <p id="orderer_name">{user.name}</p>
       </div>
 
       <div>
         <label htmlFor="orderer_phone_number">휴대폰번호</label>
-        <p id="orderer_name">{user?.phone}</p>
+        <p id="orderer_name">{user.phone}</p>
       </div>
 
       <div>
         <label htmlFor="orderer_email">이메일</label>
-        <p id="orderer_name">{user?.email}</p>
+        <p id="orderer_name">{user.email}</p>
       </div>
     </div>
   );
