@@ -4,9 +4,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 const useCartsMutation = () => {
   const queryClient = useQueryClient();
   const addMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) => {
-      await postCartByUser(productId, userId);
-    },
+    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) =>
+      await postCartByUser(productId, userId),
     onSuccess: (data, variable) => {
       queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
     },
@@ -24,8 +23,10 @@ const useCartsMutation = () => {
       count: number;
       cal: boolean;
     }) => {
-      if (cal) await patchCartByUser(productId, userId, count + 1);
-      else await patchCartByUser(productId, userId, count - 1);
+      if (userId) {
+        if (cal) await patchCartByUser(productId, userId, count + 1);
+        else await patchCartByUser(productId, userId, count - 1);
+      }
     },
     onMutate: async (variable) => {
       await queryClient.cancelQueries({ queryKey: ['Carts', variable.userId] });
@@ -47,17 +48,14 @@ const useCartsMutation = () => {
     }
   });
   const deleteAllMutation = useMutation({
-    mutationFn: async ({ userId }: { userId: string }) => {
-      await deleteAllCartByUser(userId);
-    },
+    mutationFn: async ({ userId }: { userId: string }) => await deleteAllCartByUser(userId),
     onSuccess: (data, variable) => {
       queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
     }
   });
   const deleteMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) => {
-      await deleteCartByUser(productId, userId);
-    },
+    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) =>
+      await deleteCartByUser(productId, userId),
     onSuccess: (data, variable) => {
       queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
     }
