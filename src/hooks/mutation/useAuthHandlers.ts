@@ -8,8 +8,7 @@ const useAuthHandlers = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  // any 타입 바뀌야함
-  const { mutate: logInMuatation } = useMutation<any, Error, Provider>({
+  const { mutate: logInMuatation } = useMutation<{ provider: string; url: string }, Error, Provider>({
     mutationFn: (provider) => logInWithProvider(provider),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
@@ -25,7 +24,7 @@ const useAuthHandlers = () => {
     }
   });
 
-  const { mutateAsync: userInfoMutation } = useMutation<unknown, Error, UserInfo>({
+  const { mutateAsync: userInfoMutation } = useMutation<void, Error, UserInfo>({
     mutationFn: (userInfo) => postUserInfo(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });

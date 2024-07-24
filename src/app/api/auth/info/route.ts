@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (userError) throw new Error(userError.message);
+    if (!user) throw new Error('User notFound');
 
     const {
       id: userId,
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await supabase
       .from('Users')
-      .update({ gender, birth, phone, name })
+      .update({ gender, birth, phone, name, isNew: false })
       .eq('id', userId)
       .select('*');
 

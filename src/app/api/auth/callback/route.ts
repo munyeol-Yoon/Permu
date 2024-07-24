@@ -10,8 +10,22 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
+    const { error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+
+    // 에러 발생 시 이동할 곳이 없음
+    if (!sessionError) {
+      const { data, error: userError } = await supabase.auth.getUser();
+
+      if (data && !userError) {
+        const { data: user, error: userDataError } = await supabase
+          .from('Users')
+          .select('isNew')
+          .eq('id', data.user.id)
+          .single();
+
+        if (user?.isNew) return NextResponse.redirect(`${origin}/auth/sign-up/form`);
+      }
+
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
