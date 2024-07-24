@@ -3,12 +3,16 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import useSearchQuery from '@/hooks/query/useSearchQuery';
+import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
 import { useEffect, useState } from 'react';
 
 const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const { data, error, isLoading, refetch } = useSearchQuery(search, isEnabled);
+  const { recentSearchTerms, saveSearchTerm } = useRecentSearchTerms();
+
+  // TODO : 디바운싱 필요
 
   useEffect(() => {
     if (isEnabled) {
@@ -22,6 +26,7 @@ const SearchPage = () => {
   };
 
   const handleSearchClick = () => {
+    saveSearchTerm(search);
     setIsEnabled(true);
   };
 
@@ -38,7 +43,14 @@ const SearchPage = () => {
         <Input onChange={handleInputChange} value={search} />
         <Button onClick={handleSearchClick}>검색</Button>
       </section>
-      <section>최근 검색어</section>
+      <section>
+        <h2>최근 검색어</h2>
+        <ul>
+          {recentSearchTerms.map((term, index) => (
+            <li key={index}>{term}</li>
+          ))}
+        </ul>
+      </section>
       <section>인기 검색어</section>
       <section>검색 결과 리스트</section>
     </div>
