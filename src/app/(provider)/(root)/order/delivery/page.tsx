@@ -16,6 +16,7 @@ const DeliveryPage = () => {
   const { mutateAsync } = useOrderMutation();
 
   const [selectedCoupon, setSelectedCoupon] = useState(null);
+  const [mileageAmount, setMileageAmount] = useState(0);
 
   const receiverNameRef = useRef('');
   const receiverAddressRef = useRef('');
@@ -30,16 +31,15 @@ const DeliveryPage = () => {
   }, [orderInfo, selectedCoupon]);
 
   const handleOrder = async () => {
-    await mutateAsync({
-      deliveryInfo: {
-        userId: orderInfo.user.id,
-        name: receiverNameRef.current,
-        address: receiverAddressRef.current,
-        phone: receiverPhoneNumberRef.current,
-        deliverMemo: receiverMemoRef.current,
-        arrivalDate: new Date()
-      }
-    });
+    const deliveryInfo = {
+      userId: orderInfo.user.id,
+      name: receiverNameRef.current,
+      address: receiverAddressRef.current,
+      phone: receiverPhoneNumberRef.current,
+      deliverMemo: receiverMemoRef.current,
+      arrivalDate: new Date()
+    };
+    await mutateAsync({ deliveryInfo, totalPrice, coupon: selectedCoupon, mileageAmount });
   };
 
   return (
@@ -108,11 +108,11 @@ const DeliveryPage = () => {
 
       <div className="flex flex-col gap-2">
         <p className="text-2xl">마일리지 조회 및 사용</p>
-        <Input />
+        <Input value={mileageAmount} onChange={(e) => setMileageAmount(Number(e.target.value))} />
         <p className="text-sm text-gray-400">사용 가능한 마일리지 : {orderInfo?.user.mileage}</p>
       </div>
 
-      <div className="flex gap-4 text-sm">
+      <div className="flex justify-end gap-4 text-sm">
         <h2 className="text-gray-400">최종 결제 금액</h2>
         <p className="text-amber-700">{totalPrice}원</p>
       </div>

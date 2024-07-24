@@ -7,11 +7,20 @@ const useOrderMutation = () => {
   const { data: orderInfo } = useOrderInfoQuery();
 
   const result = useMutation({
-    mutationFn: async ({ deliveryInfo }: { deliveryInfo: DeliveryInfo }) => {
+    mutationFn: async ({
+      deliveryInfo,
+      totalPrice,
+      coupon,
+      mileageAmount
+    }: {
+      deliveryInfo: DeliveryInfo;
+      totalPrice: number;
+      coupon: any;
+      mileageAmount: number;
+    }) => {
       const orderId = crypto.randomUUID();
       const deliverId = crypto.randomUUID();
 
-      const totalPrice = orderInfo.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
       const userId = orderInfo.user.id;
       const productList = orderInfo.productList.map((v: { productId: number }) => v.productId);
 
