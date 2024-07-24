@@ -11,12 +11,12 @@ const useOrderMutation = () => {
       deliveryInfo,
       totalPrice,
       coupon,
-      mileageAmount
+      updatedMileageAmount
     }: {
       deliveryInfo: DeliveryInfo;
       totalPrice: number;
       coupon: any;
-      mileageAmount: number;
+      updatedMileageAmount: number;
     }) => {
       const orderId = crypto.randomUUID();
       const deliverId = crypto.randomUUID();
@@ -35,7 +35,7 @@ const useOrderMutation = () => {
 
       await fetch('/api/order', {
         method: 'POST',
-        body: JSON.stringify({ order, deliveries, productIdList, mileageAmount })
+        body: JSON.stringify({ order, deliveries, productIdList, updatedMileageAmount })
       });
     }
   });

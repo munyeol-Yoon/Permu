@@ -26,9 +26,9 @@ const DeliveryPage = () => {
   const totalPrice = useMemo(() => {
     const initialPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
     const couponPrice = selectedCoupon ? selectedCoupon.discount : 0;
-    const finalPrice = initialPrice - couponPrice;
+    const finalPrice = initialPrice - couponPrice - mileageAmount;
     return finalPrice;
-  }, [orderInfo, selectedCoupon]);
+  }, [mileageAmount, orderInfo, selectedCoupon]);
 
   const handleOrder = async () => {
     const deliveryInfo = {
@@ -39,7 +39,8 @@ const DeliveryPage = () => {
       deliverMemo: receiverMemoRef.current,
       arrivalDate: new Date()
     };
-    await mutateAsync({ deliveryInfo, totalPrice, coupon: selectedCoupon, mileageAmount });
+    const updatedMileageAmount = orderInfo.user.mileage - mileageAmount;
+    await mutateAsync({ deliveryInfo, totalPrice, coupon: selectedCoupon, updatedMileageAmount });
   };
 
   return (
