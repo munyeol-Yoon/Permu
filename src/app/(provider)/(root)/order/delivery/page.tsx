@@ -92,19 +92,23 @@ const DeliveryPage = () => {
 
       <div className="flex flex-col gap-2">
         <p className="text-2xl">쿠폰 조회 및 적용</p>
-        {orderInfo?.coupon.map((v: any, idx: number) => (
-          <div key={idx} className="flex items-center gap-4">
-            <Checkbox
-              id={`coupon_${idx}`}
-              checked={selectedCoupon?.couponId === v.couponId}
-              onClick={() => setSelectedCoupon(v)}
-            />
-            <label htmlFor={`coupon_${idx}`} className="flex item-center gap-4">
-              <p className="text-red-400">쿠폰 {idx + 1}번</p>
-              <p>할인 금액 : {v.discount}원</p>
-            </label>
-          </div>
-        ))}
+        {orderInfo?.coupon.map(
+          (v: any, idx: number) =>
+            v.status !== 'used' &&
+            v.status !== 'expired' && (
+              <div key={idx} className="flex items-center gap-4">
+                <Checkbox
+                  id={`coupon_${idx}`}
+                  checked={selectedCoupon?.couponId === v.couponId}
+                  onClick={() => setSelectedCoupon(v)}
+                />
+                <label htmlFor={`coupon_${idx}`} className="flex item-center gap-4">
+                  <p className="text-red-400">쿠폰 {idx + 1}번</p>
+                  <p>할인 금액 : {v.discount}원</p>
+                </label>
+              </div>
+            )
+        )}
       </div>
 
       <div className="flex flex-col gap-2">
