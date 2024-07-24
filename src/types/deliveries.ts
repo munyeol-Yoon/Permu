@@ -1,13 +1,13 @@
 export interface DeliveryInfo {
   deliverId?: string;
   userId: string;
-  departureDate?: string;
   arrivalDate: Date;
   address: string;
-  deliverState: DeliveryStatus;
   phone: string;
   name: string;
   deliverMemo: string;
+  departureDate?: string;
+  deliverState?: DeliveryStatus;
 }
 
 export enum DeliveryStatus {

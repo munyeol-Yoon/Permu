@@ -1,35 +1,32 @@
 import { DeliveryInfo } from '@/types/deliveries';
-import { Order, OrderStatus } from '@/types/order';
+import { Order } from '@/types/order';
 import { useMutation } from '@tanstack/react-query';
+import useOrderInfoQuery from '../query/useOrderInfoQuery';
 
 const useOrderMutation = () => {
+  const { data: orderInfo } = useOrderInfoQuery();
+
   const result = useMutation({
-    mutationFn: async ({
-      orderInfo,
-      deliveryInfo,
-      productId
-    }: {
-      orderInfo: Order;
-      deliveryInfo: DeliveryInfo;
-      productId: number[];
-    }) => {
+    mutationFn: async ({ deliveryInfo }: { deliveryInfo: DeliveryInfo }) => {
       const orderId = crypto.randomUUID();
       const deliverId = crypto.randomUUID();
 
+      const totalPrice = orderInfo.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
+      const userId = orderInfo.user.id;
+      const productList = orderInfo.productList.map((v: { productId: number }) => v.productId);
+
       const order: Order = {
-        ...orderInfo,
         orderId,
         deliverId,
-        couponId: orderInfo?.couponId,
-        orderStatus: OrderStatus.PENDING,
-        payment: 'TOSS'
+        userId,
+        total: totalPrice
       };
       const deliveries: DeliveryInfo = { ...deliveryInfo, deliverId };
 
       await fetch('/api/order', { method: 'POST', body: JSON.stringify(order) });
 
-      productId.forEach(
-        async (v) =>
+      productList.forEach(
+        async (v: number) =>
           await fetch('/api/orderDetail', { method: 'POST', body: JSON.stringify({ orderId, productId: v }) })
       );
 

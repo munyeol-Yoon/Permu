@@ -2,44 +2,49 @@
 
 import ProductItem from '@/components/OrderPage/ProductItem';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import useOrderMutation from '@/hooks/mutation/useOrderMutation';
 import useOrderInfoQuery from '@/hooks/query/useOrderInfoQuery';
-import { DeliveryStatus } from '@/types/deliveries';
-import { useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 // 솔루션 1 : useRef 활용 -> 리렌더링 이슈 최소화
 // 솔루션 2 : 컴포넌화 굳이 할 필요 없으니까 하지않는다
 
 const DeliveryPage = () => {
   const { data: orderInfo } = useOrderInfoQuery();
-  const { mutate } = useOrderMutation();
+  const { mutateAsync } = useOrderMutation();
+
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
   const receiverNameRef = useRef('');
   const receiverAddressRef = useRef('');
   const receiverPhoneNumberRef = useRef('');
   const receiverMemoRef = useRef('');
 
-  const handleClick = () => {
-    const total = orderInfo?.productList.reduce((acc, cur) => acc + cur.price, 0);
-    mutate({
-      orderInfo: { total, userId: orderInfo.user.id },
+  const totalPrice = useMemo(() => {
+    const initialPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
+    const couponPrice = selectedCoupon ? selectedCoupon.discount : 0;
+    const finalPrice = initialPrice - couponPrice;
+    return finalPrice;
+  }, [orderInfo, selectedCoupon]);
+
+  const handleOrder = async () => {
+    await mutateAsync({
       deliveryInfo: {
+        userId: orderInfo.user.id,
         name: receiverNameRef.current,
         address: receiverAddressRef.current,
         phone: receiverPhoneNumberRef.current,
         deliverMemo: receiverMemoRef.current,
-        arrivalDate: new Date(),
-        deliverState: DeliveryStatus.PENDING,
-        userId: orderInfo.user.id
-      },
-      productId: orderInfo.productList.map((v) => v.productId)
+        arrivalDate: new Date()
+      }
     });
   };
 
   return (
-    <div className="max-w-[600px] mx-auto flex flex-col gap-4">
-      <ul>{orderInfo?.productList.map((product) => <ProductItem key={product.productId} product={product} />)}</ul>
+    <div className="max-w-[600px] mx-auto flex flex-col gap-4 py-12">
+      <ul>{orderInfo?.productList.map((product: any) => <ProductItem key={product.productId} product={product} />)}</ul>
 
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl">주문 정보</h1>
@@ -84,7 +89,35 @@ const DeliveryPage = () => {
         </div>
       </div>
 
-      <Button onClick={handleClick}>주문하기</Button>
+      <div className="flex flex-col gap-2">
+        <p className="text-2xl">쿠폰 조회 및 적용</p>
+        {orderInfo?.coupon.map((v: any, idx: number) => (
+          <div key={idx} className="flex items-center gap-4">
+            <Checkbox
+              id={`coupon_${idx}`}
+              checked={selectedCoupon?.couponId === v.couponId}
+              onClick={() => setSelectedCoupon(v)}
+            />
+            <label htmlFor={`coupon_${idx}`} className="flex item-center gap-4">
+              <p className="text-red-400">쿠폰 {idx + 1}번</p>
+              <p>할인 금액 : {v.discount}원</p>
+            </label>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <p className="text-2xl">마일리지 조회 및 사용</p>
+        <Input />
+        <p className="text-sm text-gray-400">사용 가능한 마일리지 : {orderInfo?.user.mileage}</p>
+      </div>
+
+      <div className="flex gap-4 text-sm">
+        <h2 className="text-gray-400">최종 결제 금액</h2>
+        <p className="text-amber-700">{totalPrice}원</p>
+      </div>
+
+      <Button onClick={handleOrder}>주문하기</Button>
     </div>
   );
 };
