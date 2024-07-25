@@ -6,7 +6,7 @@ import useOrderInfoQuery from '../query/useOrderInfoQuery';
 const useOrderMutation = () => {
   const { data: orderInfo } = useOrderInfoQuery();
 
-  const result = useMutation({
+  return useMutation({
     mutationFn: async ({
       deliveryInfo,
       totalPrice,
@@ -39,8 +39,6 @@ const useOrderMutation = () => {
       });
     }
   });
-
-  return result;
 };
 
 export default useOrderMutation;
