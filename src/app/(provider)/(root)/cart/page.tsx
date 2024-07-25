@@ -9,11 +9,12 @@ import { useEffect, useId, useState } from 'react';
 
 const CartPage = () => {
   const inputId = useId();
-  const userId = null;
-  const { data: carts } = useCartsQuery(userId ?? '');
+  const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
+  const { data: carts } = useCartsQuery(userId);
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [localCarts, setLocalCarts] = useState<Cart[]>([]);
-  const displayedCarts = userId ? carts : localCarts;
+  //const displayedCarts = userId ? carts : localCarts;
+  const displayedCarts = carts;
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>(0);
@@ -21,11 +22,11 @@ const CartPage = () => {
 
   useEffect(() => {
     if (displayedCarts) {
-      const newTotalCost = displayedCarts!.reduce((acc: number, cur: Cart) => {
+      const newTotalCost = displayedCarts.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products?.price * cur.count : acc;
       }, 0);
       setTotalCost(newTotalCost);
-      const newTotalDiscountCost = displayedCarts!.reduce((acc: number, cur: Cart) => {
+      const newTotalDiscountCost = displayedCarts.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products?.discountedPrice * cur.count : acc;
       }, 0);
       setDiscountCost(newTotalDiscountCost);
@@ -34,12 +35,14 @@ const CartPage = () => {
     }
   }, [carts, displayedCarts, selectedProducts]);
 
-  useEffect(() => {
-    const a = JSON.parse(localStorage.getItem('carts') || '[]');
-    const b = JSON.parse(localStorage.getItem('selectedCarts') || '[]');
-    setLocalCarts(a);
-    setSelectedProducts(b);
-  }, []);
+  // useEffect(() => {
+  //   if (!userId) {
+  //     const carts = JSON.parse(localStorage.getItem('carts') || '[]');
+  //     const selectedCarts = JSON.parse(localStorage.getItem('selectedCarts') || '[]');
+  //     setLocalCarts(carts);
+  //     setSelectedProducts(selectedCarts);
+  //   }
+  // }, []);
 
   const handleCountCart = (productId: number, count: number, cal: boolean): void => {
     if (userId) patchMutation.mutate({ productId, userId, count, cal });
@@ -51,7 +54,7 @@ const CartPage = () => {
         return cart;
       }, []);
       setLocalCarts(updatedCarts);
-      localStorage.setItem('carts', JSON.stringify(updatedCarts));
+      //localStorage.setItem('carts', JSON.stringify(updatedCarts));
     }
   };
 
@@ -61,17 +64,17 @@ const CartPage = () => {
       : [...selectedProducts, productId];
 
     setSelectedProducts(updatedSelection);
-    localStorage.setItem('selectedCarts', JSON.stringify(updatedSelection));
+    // localStorage.setItem('selectedCarts', JSON.stringify(updatedSelection));
   };
 
   const handleAllSelect = (): void => {
     const state = !isAllSelected;
     setIsAllSelected(state);
     setSelectedProducts(state ? displayedCarts!.map((cart: Cart) => cart.productId) : []);
-    localStorage.setItem(
-      'selectedCarts',
-      JSON.stringify(state ? displayedCarts!.map((cart: Cart) => cart.productId) : [])
-    );
+    // localStorage.setItem(
+    //   'selectedCarts',
+    //   JSON.stringify(state ? displayedCarts!.map((cart: Cart) => cart.productId) : [])
+    // );
   };
 
   const handleProductDelete = (productId: number): void => {
@@ -80,11 +83,11 @@ const CartPage = () => {
       else {
         setLocalCarts(localCarts.filter((cart: Cart) => cart.productId !== productId));
         setSelectedProducts(selectedProducts.filter((id: number) => id !== productId));
-        localStorage.setItem(
-          'selectedCarts',
-          JSON.stringify(selectedProducts.filter((id: number) => id !== productId))
-        );
-        localStorage.setItem('carts', JSON.stringify(localCarts.filter((cart: Cart) => cart.productId !== productId)));
+        // localStorage.setItem(
+        //   'selectedCarts',
+        //   JSON.stringify(selectedProducts.filter((id: number) => id !== productId))
+        // );
+        // localStorage.setItem('carts', JSON.stringify(localCarts.filter((cart: Cart) => cart.productId !== productId)));
       }
     }
   };
@@ -95,8 +98,8 @@ const CartPage = () => {
       else {
         setLocalCarts([]);
         setSelectedProducts([]);
-        localStorage.removeItem('selectedCarts');
-        localStorage.removeItem('carts');
+        // localStorage.removeItem('selectedCarts');
+        // localStorage.removeItem('carts');
       }
     }
   };

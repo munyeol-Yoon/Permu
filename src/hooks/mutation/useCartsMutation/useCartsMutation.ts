@@ -22,12 +22,7 @@ const useCartsMutation = () => {
       userId: string;
       count: number;
       cal: boolean;
-    }) => {
-      if (userId) {
-        if (cal) await patchCartByUser(productId, userId, count + 1);
-        else await patchCartByUser(productId, userId, count - 1);
-      }
-    },
+    }) => patchCartByUser({ productId, userId, count: cal ? count + 1 : count - 1 }),
     onMutate: async (variable) => {
       await queryClient.cancelQueries({ queryKey: ['Carts', variable.userId] });
       const previousCarts = queryClient.getQueryData<Cart[]>(['Carts', variable.userId]);
@@ -40,7 +35,6 @@ const useCartsMutation = () => {
         });
         return filteredOldCarts;
       });
-
       return { previousCarts };
     },
     onError: (err, addCart, context) => {

@@ -1,40 +1,52 @@
-import { createClient } from '@/app/supabase/client';
-
-const supabase = createClient();
-
 export const postCartByUser = async (productId: number, userId: string): Promise<void> => {
-  const { error } = await supabase.from('Carts').insert({ productId, userId, count: 1 });
-  if (error) throw error;
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/create?productId=${productId}&userId=${userId}`,
+    {
+      method: 'POST'
+    }
+  );
+  const data = await response.json();
+  return data;
 };
-export const patchCartByUser = async (productId: number, userId: string, count: number): Promise<void> => {
-  if (count < 1) {
-    throw new Error('Count must be at least 1');
-  }
-  const { error } = await supabase.from('Carts').update({ count }).eq('productId', productId).eq('userId', userId);
-  if (error) throw error;
+export const patchCartByUser = async ({
+  productId,
+  userId,
+  count
+}: {
+  productId: number;
+  userId: string;
+  count: number;
+}): Promise<void> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/update?productId=${productId}&userId=${userId}&count=${count}`,
+    {
+      method: 'PATCH'
+    }
+  );
+  const data = await response.json();
+  return data;
 };
 export const deleteAllCartByUser = async (userId: string): Promise<void> => {
-  const { error } = await supabase.from('Carts').delete().eq('userId', userId);
-  if (error) throw error;
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/delete/all?userId=${userId}`, {
+    method: 'DELETE'
+  });
+  const data = await response.json();
+  return data;
 };
 export const deleteCartByUser = async (productId: number, userId: string): Promise<void> => {
-  const { error } = await supabase.from('Carts').delete().eq('userId', userId).eq('productId', productId);
-  if (error) throw error;
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/delete?productId=${productId}&userId=${userId}`,
+    {
+      method: 'DELETE'
+    }
+  );
+  const data = await response.json();
+  return data;
 };
 export const getCartsByUser = async (userId: string): Promise<Cart[]> => {
-  const { data, error } = await supabase
-    .from('Carts')
-    .select(`*, Products (category,title,price,thumbNailURL,discount)`)
-    .eq('userId', userId)
-    .order('productId', { ascending: false });
-  if (error) throw error;
-
-  const cartsWithDiscountedPrice = data?.map((cart: Cart) => ({
-    ...cart,
-    Products: {
-      ...cart.Products,
-      discountedPrice: cart.Products.price - (cart.Products.price * cart.Products.discount) / 100
-    }
-  }));
-  return cartsWithDiscountedPrice;
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/read?userId=${userId}`, {
+    method: 'GET'
+  });
+  const data = await response.json();
+  return data;
 };
