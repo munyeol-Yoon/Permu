@@ -1,11 +1,12 @@
 'use client';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+
+import { useAuthMutation } from '@/hooks/mutation';
 import Link from 'next/link';
 
 const SignUpPage = () => {
-  const { logInWithProvider } = useAuth();
+  const { logInMutation } = useAuthMutation();
 
-  const handleLogin = () => logInWithProvider('kakao');
+  const handleLogin = () => logInMutation('kakao');
   return (
     <div>
       <Link href="log-in" className="text-2xl">

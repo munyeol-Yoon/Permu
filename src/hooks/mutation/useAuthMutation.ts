@@ -8,7 +8,7 @@ const useAuthMutation = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { mutate: logInMuatation } = useMutation<{ provider: string; url: string }, Error, Provider>({
+  const { mutate: logInMutation } = useMutation<{ provider: string; url: string }, Error, Provider>({
     mutationFn: (provider) => logInWithProvider(provider),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
@@ -33,7 +33,7 @@ const useAuthMutation = () => {
     // onError: (error) => console.log(error)
   });
 
-  return { logInMuatation, logOutMutation, userInfoMutation };
+  return { logInMutation, logOutMutation, userInfoMutation };
 };
 
 export default useAuthMutation;
