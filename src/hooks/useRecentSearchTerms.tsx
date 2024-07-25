@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 type UseRecentSearchTerms = {
   recentSearchTerms: string[];
   saveSearchTerm: (term: string) => void;
+  deleteSearchTerm: (term: string) => void;
 };
 
 const useRecentSearchTerms = (): UseRecentSearchTerms => {
@@ -19,7 +20,13 @@ const useRecentSearchTerms = (): UseRecentSearchTerms => {
     setRecentSearchTerms(updatedTerms);
   };
 
-  return { recentSearchTerms, saveSearchTerm };
+  const deleteSearchTerm = (term: string) => {
+    const updateTerms = recentSearchTerms.filter((target) => target !== term);
+    localStorage.setItem('recentSearchTerms', JSON.stringify(updateTerms));
+    setRecentSearchTerms(updateTerms);
+  };
+
+  return { recentSearchTerms, saveSearchTerm, deleteSearchTerm };
 };
 
 export default useRecentSearchTerms;

@@ -10,9 +10,12 @@ const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const { data, error, isLoading, refetch } = useSearchQuery(search, isEnabled);
-  const { recentSearchTerms, saveSearchTerm } = useRecentSearchTerms();
+  const { recentSearchTerms, saveSearchTerm, deleteSearchTerm } = useRecentSearchTerms();
 
   // TODO : 디바운싱 필요
+  // TODO : 인기 검색어
+  // TODO : 검색창에 입력시 현재 화면이 가려지며 검색된 결과가 실시간으로 리스트로 표시되어야함. 이부분 논의 필요.
+  // TODO : 검색 결과 페이지.
 
   useEffect(() => {
     if (isEnabled) {
@@ -28,6 +31,10 @@ const SearchPage = () => {
   const handleSearchClick = () => {
     saveSearchTerm(search);
     setIsEnabled(true);
+  };
+
+  const handleDeleteClick = (term: string) => {
+    deleteSearchTerm(term);
   };
 
   console.log(data);
@@ -47,7 +54,10 @@ const SearchPage = () => {
         <h2>최근 검색어</h2>
         <ul>
           {recentSearchTerms.map((term, index) => (
-            <li key={index}>{term}</li>
+            <li key={index}>
+              <span>{term}</span>
+              <Button onClick={() => handleDeleteClick(term)}>X</Button>
+            </li>
           ))}
         </ul>
       </section>
