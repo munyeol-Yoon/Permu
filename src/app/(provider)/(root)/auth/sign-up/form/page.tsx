@@ -25,8 +25,8 @@ const SignUpFormPage = () => {
   };
 
   const handleBirthChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    console.log(e.target.value);
-    console.log(initialValue.birth);
+    // console.log(e.target.value);
+    // console.log(initialValue.birth);
     setBirth(e.target.value || initialValue['birth']);
   };
 
@@ -93,4 +93,3 @@ const SignUpFormPage = () => {
 };
 
 export default SignUpFormPage;
-

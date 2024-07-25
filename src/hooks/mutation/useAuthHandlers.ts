@@ -29,8 +29,8 @@ const useAuthHandlers = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       router.replace('/');
-    },
-    onError: (error) => console.log(error)
+    }
+    // onError: (error) => console.log(error)
   });
 
   return { logInMuatation, logOutMutation, userInfoMutation };
