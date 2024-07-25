@@ -1,6 +1,3 @@
-Need to install the following packages:
-supabase@1.187.3
-Ok to proceed? (y) 
 export type Json =
   | string
   | number
@@ -45,6 +42,61 @@ export type Database = {
           },
         ]
       }
+      Categories: {
+        Row: {
+          categoryId: string
+          categoryName: string | null
+          code: number | null
+          productTitle: string
+        }
+        Insert: {
+          categoryId?: string
+          categoryName?: string | null
+          code?: number | null
+          productTitle: string
+        }
+        Update: {
+          categoryId?: string
+          categoryName?: string | null
+          code?: number | null
+          productTitle?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Categories_categoryId_fkey"
+            columns: ["categoryId"]
+            isOneToOne: true
+            referencedRelation: "Categories"
+            referencedColumns: ["categoryId"]
+          },
+        ]
+      }
+      CategoryDetail: {
+        Row: {
+          categoryDetailId: string
+          categoryId: string
+          name: string | null
+        }
+        Insert: {
+          categoryDetailId?: string
+          categoryId?: string
+          name?: string | null
+        }
+        Update: {
+          categoryDetailId?: string
+          categoryId?: string
+          name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "CategoryDetail_categoryId_fkey"
+            columns: ["categoryId"]
+            isOneToOne: false
+            referencedRelation: "Categories"
+            referencedColumns: ["categoryId"]
+          },
+        ]
+      }
       Coupon: {
         Row: {
           couponId: string
@@ -85,36 +137,36 @@ export type Database = {
       }
       Deliveries: {
         Row: {
-          address: string | null
+          address: string
           arrivalDate: string | null
           deliverId: string
           deliverMemo: string | null
-          deliverState: string | null
+          deliverState: string
           departureDate: string | null
-          name: string | null
-          phone: string | null
+          name: string
+          phone: string
           userId: string | null
         }
         Insert: {
-          address?: string | null
+          address: string
           arrivalDate?: string | null
           deliverId: string
           deliverMemo?: string | null
-          deliverState?: string | null
+          deliverState?: string
           departureDate?: string | null
-          name?: string | null
-          phone?: string | null
+          name: string
+          phone: string
           userId?: string | null
         }
         Update: {
-          address?: string | null
+          address?: string
           arrivalDate?: string | null
           deliverId?: string
           deliverMemo?: string | null
-          deliverState?: string | null
+          deliverState?: string
           departureDate?: string | null
-          name?: string | null
-          phone?: string | null
+          name?: string
+          phone?: string
           userId?: string | null
         }
         Relationships: [
@@ -171,27 +223,27 @@ export type Database = {
           couponId: string | null
           deliverId: string | null
           orderId: string
-          orderStatus: string | null
-          payment: string | null
-          total: number | null
+          orderStatus: string
+          payment: string
+          total: number
           userId: string | null
         }
         Insert: {
           couponId?: string | null
           deliverId?: string | null
           orderId?: string
-          orderStatus?: string | null
-          payment?: string | null
-          total?: number | null
+          orderStatus?: string
+          payment?: string
+          total: number
           userId?: string | null
         }
         Update: {
           couponId?: string | null
           deliverId?: string | null
           orderId?: string
-          orderStatus?: string | null
-          payment?: string | null
-          total?: number | null
+          orderStatus?: string
+          payment?: string
+          total?: number
           userId?: string | null
         }
         Relationships: [
@@ -213,16 +265,19 @@ export type Database = {
       }
       OrdersDetail: {
         Row: {
+          count: number
           orderDetailId: string
           orderId: string
           productId: number
         }
         Insert: {
+          count?: number
           orderDetailId?: string
-          orderId?: string
+          orderId: string
           productId: number
         }
         Update: {
+          count?: number
           orderDetailId?: string
           orderId?: string
           productId?: number
@@ -246,10 +301,11 @@ export type Database = {
       }
       Products: {
         Row: {
-          category: number | null
+          categoryId: string | null
+          content: string | null
           createdAt: string
           discount: number | null
-          ImagesURL: string | null
+          ImagesURL: Json | null
           price: number | null
           productId: number
           thumbNailURL: string | null
@@ -257,10 +313,11 @@ export type Database = {
           updatedAt: string | null
         }
         Insert: {
-          category?: number | null
+          categoryId?: string | null
+          content?: string | null
           createdAt?: string
           discount?: number | null
-          ImagesURL?: string | null
+          ImagesURL?: Json | null
           price?: number | null
           productId?: number
           thumbNailURL?: string | null
@@ -268,10 +325,11 @@ export type Database = {
           updatedAt?: string | null
         }
         Update: {
-          category?: number | null
+          categoryId?: string | null
+          content?: string | null
           createdAt?: string
           discount?: number | null
-          ImagesURL?: string | null
+          ImagesURL?: Json | null
           price?: number | null
           productId?: number
           thumbNailURL?: string | null
@@ -287,6 +345,7 @@ export type Database = {
           email: string
           gender: string | null
           id: string
+          isNew: boolean | null
           mileage: number | null
           name: string | null
           phone: string | null
@@ -298,6 +357,7 @@ export type Database = {
           email: string
           gender?: string | null
           id?: string
+          isNew?: boolean | null
           mileage?: number | null
           name?: string | null
           phone?: string | null
@@ -309,6 +369,7 @@ export type Database = {
           email?: string
           gender?: string | null
           id?: string
+          isNew?: boolean | null
           mileage?: number | null
           name?: string | null
           phone?: string | null
