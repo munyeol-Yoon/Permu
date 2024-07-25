@@ -4,8 +4,8 @@ import { ProductItem } from '@/components/OrderPage';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import useOrderMutation from '@/hooks/mutation/useOrderMutation';
-import useOrderInfoQuery from '@/hooks/query/useOrderInfoQuery';
+import { useOrderMutation } from '@/hooks/mutation';
+import { useOrderInfoQuery } from '@/hooks/query';
 import { useRouter } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
 

@@ -1,6 +1,6 @@
 'use client';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import useAuthMutation from '@/hooks/mutation/useAuthHandlers';
+import { useAuthMutation } from '@/hooks/mutation';
 import Link from 'next/link';
 
 const LogInPage = () => {

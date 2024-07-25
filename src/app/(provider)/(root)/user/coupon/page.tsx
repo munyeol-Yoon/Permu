@@ -1,8 +1,8 @@
 'use client';
-import useCoupon from '@/hooks/query/useCoupon';
+import { useCouponQuery } from '@/hooks/query';
 
 const MyCouponPage = () => {
-  const { data: userCoupons } = useCoupon();
+  const { data: userCoupons } = useCouponQuery();
   return (
     <div>
       MyCouponPage
@@ -18,4 +18,3 @@ const MyCouponPage = () => {
 };
 
 export default MyCouponPage;
-

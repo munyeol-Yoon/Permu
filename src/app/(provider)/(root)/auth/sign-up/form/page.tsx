@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import useAuthMutation from '@/hooks/mutation/useAuthHandlers';
+import { useAuthMutation } from '@/hooks/mutation';
 import { UserInfo } from '@/types/types';
 import { phoneNumberCheck } from '@/utils/phoneNumberCheck';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
