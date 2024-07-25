@@ -1,13 +1,13 @@
 'use client';
 import { fetchUser } from '@/api/auth';
-import { User } from '@supabase/supabase-js';
+import { LoggedUser } from '@/types/types';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 
 type AuthContextValue = {
   isInitialized: boolean;
   isLoggedIn: boolean;
-  loggedUser: User | null;
+  loggedUser: LoggedUser | null;
 };
 
 const initialValue: AuthContextValue = {

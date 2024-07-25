@@ -1,4 +1,5 @@
 import { createClient } from '@/supabase/server';
+import { LoggedUser } from '@/types/types';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -17,8 +18,7 @@ export async function GET(request: NextRequest) {
       .eq('id', user.id)
       .single();
     if (userDataError) return NextResponse.json({ success: false, details: userDataError.message });
-
-    const userResponse = { ...user, userData };
+    const userResponse: LoggedUser = { ...user, userData };
 
     return NextResponse.json({ user: userResponse });
   } catch (error) {
