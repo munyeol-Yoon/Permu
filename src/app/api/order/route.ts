@@ -13,7 +13,7 @@ export const POST = async (request: NextRequest) => {
   await insertOrder(orderInfo);
   await insertDeliveryInfo(deliveryInfo);
 
-  productIdList.forEach(async (productId: number) => await insertOrderDetail({ orderId, productId }));
+  await Promise.all(productIdList.map((productId: number) => insertOrderDetail({ orderId, productId })));
 
   if (couponId) {
     await updateCouponStatus(couponId, 'used');
