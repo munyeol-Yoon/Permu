@@ -11,7 +11,8 @@ interface Params {
 }
 
 const ProductDetailPage = async ({ params }: Params) => {
-  const product = await fetchDetailProduct({ params });
+  const { productId } = params;
+  const product = await fetchDetailProduct(productId);
   return (
     <div>
       <div>
