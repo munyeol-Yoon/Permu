@@ -1,9 +1,8 @@
-import { createClient } from '@/app/supabase/client';
+import { createClient } from '@/supabase/server';
 
-const supabase = createClient();
+export const updateCouponStatus = async (couponId: string, newStatus: string) => {
+  const supabase = createClient();
+  const { error } = await supabase.from('Coupon').update({ status: newStatus }).eq('couponId', couponId);
 
-export const getCouponByUser = async (userId: string): Promise<Coupon[]> => {
-  const { data, error } = await supabase.from('Coupon').select('*').eq('userId', userId);
-  if (error) throw error;
-  return data;
+  if (error) throw new Error(error.message);
 };
