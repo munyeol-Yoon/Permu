@@ -1,6 +1,6 @@
 export const postCartByUser = async (productId: number, userId: string): Promise<void> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/create?productId=${productId}&userId=${userId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts?productId=${productId}&userId=${userId}`,
     {
       method: 'POST'
     }
@@ -18,7 +18,7 @@ export const patchCartByUser = async ({
   count: number;
 }): Promise<void> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/update?productId=${productId}&userId=${userId}&count=${count}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts?productId=${productId}&userId=${userId}&count=${count}`,
     {
       method: 'PATCH'
     }
@@ -27,7 +27,7 @@ export const patchCartByUser = async ({
   return data;
 };
 export const deleteAllCartByUser = async (userId: string): Promise<void> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/delete/all?userId=${userId}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts?userId=${userId}&isAll=true`, {
     method: 'DELETE'
   });
   const data = await response.json();
@@ -35,7 +35,7 @@ export const deleteAllCartByUser = async (userId: string): Promise<void> => {
 };
 export const deleteCartByUser = async (productId: number, userId: string): Promise<void> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/delete?productId=${productId}&userId=${userId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/carts?productId=${productId}&userId=${userId}&isAll=false`,
     {
       method: 'DELETE'
     }
@@ -44,7 +44,7 @@ export const deleteCartByUser = async (productId: number, userId: string): Promi
   return data;
 };
 export const getCartsByUser = async (userId: string): Promise<Cart[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/read?userId=${userId}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts?userId=${userId}`, {
     method: 'GET'
   });
   const data = await response.json();
