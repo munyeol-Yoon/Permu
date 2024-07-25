@@ -1,6 +1,5 @@
 'use client';
-
-import { fetchDetailProduct } from '@/app/(provider)/(root)/products/[productId]/page';
+import { fetchDetailProduct } from '@/api/product';
 import { Button } from '@/components/ui/button';
 import useCartsMutation from '@/hooks/mutation/useCartsMutation';
 import useCartsQuery from '@/hooks/query/useCartsQuery';

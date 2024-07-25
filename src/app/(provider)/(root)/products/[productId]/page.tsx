@@ -1,3 +1,4 @@
+import { fetchDetailProduct } from '@/api/product';
 import ToggleContent from '@/components/Accordion/Accordion';
 import BuyNow from '@/components/products/BuyNow';
 import Cart from '@/components/products/Cart';
@@ -7,13 +8,7 @@ import Image from 'next/image';
 interface Params {
   params: { productId: string };
 }
-export const fetchDetailProduct = async ({ params }: Params): Promise<Product> => {
-  const productId = params.productId;
 
-  const response = await fetch(`http://localhost:3000/api/products?productId=${productId}`);
-  const data = await response.json();
-  return data;
-};
 const ProductDetailPage = async ({ params }: Params) => {
   const product = await fetchDetailProduct({ params });
   return (
