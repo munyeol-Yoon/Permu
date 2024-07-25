@@ -1,11 +1,11 @@
 'use client';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import useAuthHandlers from '@/hooks/mutation/useAuthHandlers';
+import useAuthMutation from '@/hooks/mutation/useAuthHandlers';
 import Link from 'next/link';
 
 const LogInPage = () => {
   const { loggedUser: me } = useAuth();
-  const { logInMuatation } = useAuthHandlers();
+  const { logInMuatation } = useAuthMutation();
   const handleLogin = () => logInMuatation('kakao');
   return (
     <>
@@ -23,4 +23,3 @@ const LogInPage = () => {
 };
 
 export default LogInPage;
-
