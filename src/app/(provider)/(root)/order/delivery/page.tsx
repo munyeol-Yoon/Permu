@@ -6,12 +6,15 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import useOrderMutation from '@/hooks/mutation/useOrderMutation';
 import useOrderInfoQuery from '@/hooks/query/useOrderInfoQuery';
+import { useRouter } from 'next/navigation';
 import { useMemo, useRef, useState } from 'react';
 
 // 솔루션 1 : useRef 활용 -> 리렌더링 이슈 최소화
 // 솔루션 2 : 컴포넌화 굳이 할 필요 없으니까 하지않는다
 
 const DeliveryPage = () => {
+  const router = useRouter();
+
   const { data: orderInfo } = useOrderInfoQuery();
   const { mutateAsync } = useOrderMutation();
 
@@ -41,6 +44,7 @@ const DeliveryPage = () => {
     };
     const updatedMileageAmount = orderInfo.user.mileage - mileageAmount;
     await mutateAsync({ deliveryInfo, totalPrice, coupon: selectedCoupon, updatedMileageAmount });
+    router.push('/order/complete');
   };
 
   return (
