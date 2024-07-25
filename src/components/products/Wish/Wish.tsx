@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import useWishesMutation from '@/hooks/mutation/useWishesMutation';
-import useWishesQuery from '@/hooks/query/useWishesQuery';
+import { useWishesMutation } from '@/hooks/mutation';
+import { useWishesQuery } from '@/hooks/query';
 import { useParams } from 'next/navigation';
 const DEFAULT_HEART = '🤍';
 const PUSHED_HEART = '❤️';

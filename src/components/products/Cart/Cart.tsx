@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import useCartsMutation from '@/hooks/mutation/useCartsMutation';
-import useCartsQuery from '@/hooks/query/useCartsQuery';
+import { useCartsMutation } from '@/hooks/mutation';
+import { useCartsQuery } from '@/hooks/query';
 import { useParams, useRouter } from 'next/navigation';
 
 const Cart = () => {

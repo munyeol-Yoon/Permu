@@ -1,8 +1,8 @@
 'use client';
 
 import Coupon from '@/components/products/Coupon';
-import useCartsMutation from '@/hooks/mutation/useCartsMutation';
-import useCartsQuery from '@/hooks/query/useCartsQuery';
+import { useCartsMutation } from '@/hooks/mutation';
+import { useCartsQuery } from '@/hooks/query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useId, useState } from 'react';
