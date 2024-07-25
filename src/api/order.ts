@@ -1,4 +1,4 @@
-import { createClient } from '@/app/supabase/server';
+import { createClient } from '@/supabase/server';
 import { Order, OrderDetail } from '@/types/order';
 
 // Orders Table

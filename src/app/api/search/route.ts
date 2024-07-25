@@ -1,4 +1,4 @@
-import { createClient } from '@/app/supabase/server';
+import { createClient } from '@/supabase/server';
 import { extractHangul } from 'es-hangul';
 import { NextRequest, NextResponse } from 'next/server';
 

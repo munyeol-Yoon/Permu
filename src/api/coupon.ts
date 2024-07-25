@@ -1,4 +1,4 @@
-import { createClient } from '@/app/supabase/server';
+import { createClient } from '@/supabase/server';
 
 export const updateCouponStatus = async (couponId: string, newStatus: string) => {
   const supabase = createClient();

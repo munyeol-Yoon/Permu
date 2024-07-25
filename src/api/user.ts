@@ -1,4 +1,4 @@
-import { createClient } from '@/app/supabase/server';
+import { createClient } from '@/supabase/server';
 
 export const updateUserMileage = async (userId: string, newMileageAmount: number) => {
   const supabase = createClient();
