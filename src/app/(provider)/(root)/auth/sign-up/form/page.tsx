@@ -1,7 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import useAuthHandlers from '@/hooks/mutation/useAuthHandlers';
+import { useAuthMutation } from '@/hooks/mutation';
 import { UserInfo } from '@/types/types';
 import { phoneNumberCheck } from '@/utils/phoneNumberCheck';
 import { ChangeEventHandler, FormEventHandler, useState } from 'react';
@@ -13,7 +13,7 @@ const initialValue = {
 
 const SignUpFormPage = () => {
   const { loggedUser: me } = useAuth();
-  const { userInfoMutation } = useAuthHandlers();
+  const { userInfoMutation } = useAuthMutation();
   const userId = me ? me.id : null;
 
   const [gender, setGender] = useState<UserInfo['gender']>(initialValue['gender']);

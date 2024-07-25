@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts/auth.context/auth.context';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 
-const useCoupon = () => {
+const useCouponQuery = () => {
   const { loggedUser } = useAuth();
   const userId: Tables<'Users'>['id'] = loggedUser ? loggedUser.id : '';
 
@@ -15,4 +15,4 @@ const useCoupon = () => {
   });
 };
 
-export default useCoupon;
+export default useCouponQuery;

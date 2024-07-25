@@ -1,12 +1,12 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import useAuthHandlers from '@/hooks/mutation/useAuthHandlers';
+import { useAuthMutation } from '@/hooks/mutation';
 import Link from 'next/link';
 
 const RootPage = () => {
   const { loggedUser } = useAuth();
-  const { logOutMutation } = useAuthHandlers();
+  const { logOutMutation } = useAuthMutation();
   return (
     <div>
       하위~ {loggedUser?.email}

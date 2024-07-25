@@ -4,7 +4,7 @@ import { Provider } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
-const useAuthHandlers = () => {
+const useAuthMutation = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -36,4 +36,4 @@ const useAuthHandlers = () => {
   return { logInMuatation, logOutMutation, userInfoMutation };
 };
 
-export default useAuthHandlers;
+export default useAuthMutation;

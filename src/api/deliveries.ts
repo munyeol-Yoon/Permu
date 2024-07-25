@@ -1,4 +1,4 @@
-import { createClient } from '@/app/supabase/server';
+import { createClient } from '@/supabase/server';
 import { DeliveryInfo } from '@/types/deliveries';
 
 export const insertDeliveryInfo = async (deliveryInfo: DeliveryInfo) => {

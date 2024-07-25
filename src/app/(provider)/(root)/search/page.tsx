@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import useSearchQuery from '@/hooks/query/useSearchQuery';
+import { useSearchQuery } from '@/hooks/query';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
 import { useEffect, useState } from 'react';
 

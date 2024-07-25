@@ -1,4 +1,4 @@
-import { createClient } from '@/app/supabase/server';
+import { createClient } from '@/supabase/server';
 
 export const getOrderInfoByUserId = async (userId: string) => {
   const supabase = createClient();
