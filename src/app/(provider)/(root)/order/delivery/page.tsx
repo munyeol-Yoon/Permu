@@ -1,6 +1,6 @@
 'use client';
 
-import ProductItem from '@/components/OrderPage/ProductItem';
+import { ProductItem } from '@/components/OrderPage';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
