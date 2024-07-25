@@ -1,7 +1,5 @@
-const PATH = 'http://localhost:3000/api';
-
 export const getSearchProducts = async (search: string) => {
-  const res = await fetch(`${PATH}/search?query=${search}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search?query=${search}`);
 
   if (!res.ok) {
     throw new Error('response 에러');
