@@ -1,4 +1,4 @@
-import { deleteWishByUser, fetchPostWishByUser } from '@/api/wish';
+import { fetchDeleteWishByUser, fetchPostWishByUser } from '@/api/wish';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type TWish =
@@ -16,7 +16,7 @@ const useWishesMutation = ({ getLikes, productId, userId }: { getLikes: TWish; p
       if (!getLikes?.userLike) {
         await fetchPostWishByUser({ productId, userId });
       } else {
-        await deleteWishByUser(productId, userId);
+        await fetchDeleteWishByUser({ productId, userId });
       }
     },
     onMutate: async () => {

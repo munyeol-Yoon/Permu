@@ -1,13 +1,8 @@
-import { createClient } from '@/app/supabase/client';
-
-const supabase = createClient();
-export const fetchPostWishByUser = async ({
-  productId,
-  userId
-}: {
+type Tfetch = {
   productId: number;
   userId: string;
-}): Promise<void> => {
+};
+export const fetchPostWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes/create?productId=${productId}&userId=${userId}`,
     {
@@ -18,19 +13,18 @@ export const fetchPostWishByUser = async ({
   const data = await response.json();
   return data;
 };
-
-export const deleteWishByUser = async (productId: number, userId: string): Promise<void> => {
-  const { error } = await supabase.from('Wishes').delete().eq('userId', userId).eq('productId', productId);
-  if (error) throw error;
+export const fetchDeleteWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes/delete?productId=${productId}&userId=${userId}`,
+    {
+      method: 'DELETE'
+    }
+  );
+  const data = await response.json();
+  return data;
 };
 
-export const fetchWishByUser = async ({
-  productId,
-  userId
-}: {
-  productId: number;
-  userId: string;
-}): Promise<Wish[]> => {
+export const fetchWishByUser = async ({ productId, userId }: Tfetch): Promise<Wish[]> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes/read?productId=${productId}&userId=${userId}`,
     {
