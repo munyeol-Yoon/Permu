@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     const { data } = await supabase
       .from('Carts')
-      .select(`*, Products (categoryId,title,price,thumbNailURL,discount)`)
+      .select('*, Products (categoryId,title,price,thumbNailURL,discount)')
       .eq('userId', userId)
       .order('productId', { ascending: false });
 
@@ -66,7 +66,6 @@ export async function PATCH(request: NextRequest) {
   try {
     const supabase = createClient();
     const { searchParams } = new URL(request.url);
-    console.log(searchParams);
     const userId = searchParams.get('userId') as string;
     const productId = searchParams.get('productId') as string;
     const count = searchParams.get('count') as string;
