@@ -1,8 +1,10 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
 import Link from 'next/link';
+
+// TODO : 선택 안하면 다음 이동 막기
+
 const AgreementPage = () => {
   return (
     <>
@@ -16,8 +18,12 @@ const AgreementPage = () => {
       <Tabs defaultValue="a" className="px-12">
         <TabsList className="flex">
           <TabsTrigger value="a">약관동의</TabsTrigger>
-          <TabsTrigger value="b">계정생성</TabsTrigger>
-          <TabsTrigger value="c">가입완료</TabsTrigger>
+          <TabsTrigger value="b" disabled>
+            계정생성
+          </TabsTrigger>
+          <TabsTrigger value="c" disabled>
+            가입완료
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="a">
@@ -57,7 +63,7 @@ const AgreementPage = () => {
         </div>
 
         <div className="flex flex-col">
-          <Button>다음</Button>
+          <Button href="email-confirm">다음</Button>
           <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
             이전
           </Button>
