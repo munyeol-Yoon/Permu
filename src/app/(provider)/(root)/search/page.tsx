@@ -12,9 +12,8 @@ const SearchPage = () => {
   const { data, error, isLoading, refetch } = useSearchQuery(search);
   const { recentSearchTerms, saveSearchTerm, deleteSearchTerm } = useRecentSearchTerms();
 
-  // TODO : 디바운싱 필요
   // TODO : 인기 검색어
-  // TODO : 검색창에 입력시 현재 화면이 가려지며 검색된 결과가 실시간으로 리스트로 표시되어야함. 이부분 논의 필요.
+  // TODO : 검색창에 입력시 현재 화면이 가려지며 검색된 결과가 실시간으로 리스트로 표시되어야함.
   // TODO : 검색 결과 페이지.
 
   const debouncedSearch = useCallback(
