@@ -14,7 +14,6 @@ interface Params {
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
   const product = await fetchDetailProduct(productId);
-
   return (
     <div>
       <div className="relative aspect-square">
@@ -23,8 +22,8 @@ const ProductDetailPage = async ({ params }: Params) => {
           <Image key={index} src={ImageURL} fill className="object-cover" alt={product!.title} />
         ))}
       </div>
-      <h3 className="font-bold text-2xl px-5 py-2.5">{product?.title}</h3>
-      <div className="flex flex-row justify-between items-center gap-[10px] px-5 py-2.5 w-full border-b-2">
+      <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
+      <div className="flex-row-10 justify-between p-5-2 w-full items-center border-b-2">
         {product?.discount > 0 ? (
           <>
             <span className="text-[30px] font-medium">{product?.discountedPrice}원</span>
@@ -35,27 +34,26 @@ const ProductDetailPage = async ({ params }: Params) => {
           <span className="text-[30px] font-medium">{product?.discountedPrice}원</span>
         )}
       </div>
-      <div className="min-h-[213px] flex flex-col gap-[10px] px-5 py-2.5">
+      <div className="min-h-[213px] flex-col-10 p-5-2">
         <span>달콤한 호박 | 말랑말랑 | 불가리안 로즈</span>
         <p>{product?.content}</p>
       </div>
 
-      <div className="px-5 py-2.5">
+      <div className="p-5-2">
         <span>사이즈</span>
       </div>
-      <div className="flex flex-row justify-between gap-[10px] px-5 py-2.5 w-full">
+      <div className="flex-row-10 justify-between p-5-2 w-full">
         <Cart />
         <BuyNow />
       </div>
 
-      <div className="flex flex-row justify-between gap-[10px] px-5 py-2.5 w-full">
+      <div className="flex-row-10 justify-between p-5-2 w-full">
         <Share product={product} />
         <Wish />
       </div>
       <Information />
-
-      <Accordion type="single" collapsible>
-        <Toggle trigger={'배송 및 반품'}>
+      <Accordion type="multiple">
+        <Toggle trigger="배송 및 반품" value={false}>
           <h5>배송 안내</h5>
           <p>
             3만원 이상 구매하실 경우 배송 비용은 무료입니다. 주문일로부터 1-2 영업일 이내 출고됩니다. 배송은 지역 택배사
@@ -71,7 +69,7 @@ const ProductDetailPage = async ({ params }: Params) => {
             수령 후 반품 접수 바랍니다.
           </p>
         </Toggle>
-        <Toggle trigger={'사업자 정보'}>
+        <Toggle trigger="사업자 정보" value={false}>
           <h5>정보 안내</h5>
           <p>
             (주) 퍼뮤 | 대표자 : 조윤정 | 주소 : 서울특별시 서울특별시 개인정보보호책임자 : 조윤정 | 호스팅사업자 : (주)
