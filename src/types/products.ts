@@ -6,7 +6,7 @@ type Product = {
   price: number;
   content: string;
   thumbNailURL: string;
-  ImagesURL: string;
+  ImagesURL: string[];
   updatedAt: string;
   discount: number;
   discountedPrice: number;

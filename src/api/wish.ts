@@ -1,8 +1,8 @@
 type Tfetch = {
   productId: number;
-  userId: string;
+  userId: string | null;
 };
-export const fetchPostWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
+export const postWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes?productId=${productId}&userId=${userId}`,
     {
@@ -13,7 +13,7 @@ export const fetchPostWishByUser = async ({ productId, userId }: Tfetch): Promis
   const data = await response.json();
   return data;
 };
-export const fetchDeleteWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
+export const deleteWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes?productId=${productId}&userId=${userId}`,
     {
@@ -24,7 +24,7 @@ export const fetchDeleteWishByUser = async ({ productId, userId }: Tfetch): Prom
   return data;
 };
 
-export const fetchWishByUser = async ({ productId, userId }: Tfetch): Promise<Wish[]> => {
+export const getWishByUser = async ({ productId, userId }: Tfetch): Promise<Wish[]> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes?productId=${productId}&userId=${userId}`,
     {
