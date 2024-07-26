@@ -1,4 +1,4 @@
-const Detail = () => {
+const DetailPage = () => {
   return (
     <div>
       <div>상세정보다</div>
@@ -6,4 +6,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default DetailPage;
