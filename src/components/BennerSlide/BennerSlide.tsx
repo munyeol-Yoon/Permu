@@ -31,7 +31,9 @@ const BennerSlide = () => {
         <CarouselContent className="h-full">
           {mockData.map((item, idx) => (
             <CarouselItem key={idx} className=" h-full">
-              <div className=" h-full flex items-center justify-center">
+              <div className="h-full flex items-center justify-center relative">
+                {/* 임시 오버레이 */}
+                <div className='bg-[rgba(0,0,0,0.3)] absolute top-0 left-0 bottom-0 right-0'></div>
                 <Image
                   className="w-full h-full"
                   src={item.eventMainImg}
@@ -39,6 +41,10 @@ const BennerSlide = () => {
                   height={600}
                   alt={`메인 배너${idx + 1}`}
                 />
+                <div className='absolute left-[14px] bottom-[51px]'>
+                  <h2 className='font-bold text-[30px] text-white'>Permeate 신규 런칭 이벤트</h2>
+                  <p className='text-[26px] text-white mt-[21px]'>추천 상품 최대 30% 쿠폰증정 </p>
+                </div>
               </div>
             </CarouselItem>
           ))}
