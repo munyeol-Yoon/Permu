@@ -56,7 +56,7 @@ const Cart = () => {
     }
   };
   return (
-    <Button variant="secondary" onClick={handlePostCart}>
+    <Button variant="outline" onClick={handlePostCart}>
       쇼핑백에 추가
     </Button>
   );

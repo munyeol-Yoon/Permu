@@ -1,22 +1,28 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useWishesMutation } from '@/hooks/mutation';
 import { useWishesQuery } from '@/hooks/query';
-import { useParams } from 'next/navigation';
-const DEFAULT_HEART = '🤍';
-const PUSHED_HEART = '❤️';
+import { useParams, useRouter } from 'next/navigation';
 
 const Wish = () => {
+  const router = useRouter();
   const { productId } = useParams<{ productId: string }>();
-  const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
-
+  const { loggedUser } = useAuth();
+  const userId = loggedUser?.id || null;
   const { data: getLikes } = useWishesQuery({ productId: Number(productId), userId });
-  const addMutation = useWishesMutation({ getLikes, productId: Number(productId), userId });
+  const addMutation = useWishesMutation({ getLikes, productId: Number(productId) });
 
+  const handleWish = () => {
+    if (!loggedUser) {
+      alert('로그인하셈');
+      router.push('/auth/log-in');
+    } else addMutation.mutate();
+  };
   return (
-    <Button variant="outline" onClick={() => addMutation.mutate()}>
+    <Button variant={getLikes?.userLike ? 'default' : 'outline'} onClick={handleWish}>
       <span>
-        {getLikes?.userLike ? PUSHED_HEART : DEFAULT_HEART} 좋아요 {getLikes?.data.length}
+        🤍 좋아요 <span className="font-bold">{getLikes?.data.length}</span>
       </span>
     </Button>
   );
