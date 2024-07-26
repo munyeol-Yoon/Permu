@@ -1,9 +1,10 @@
-import Image from "next/image";
-import CategoryMore from "../CategoryMore";
-import CategoryProductCard from "../CategoryProductCard";
-import { CategoryMoreProps } from "../CategoryMore/CategoryMore";
+import Image from 'next/image';
+import CategoryMore from '../CategoryMore';
+import CategoryProductCard from '../CategoryProductCard';
+import { CategoryMoreProps } from '../CategoryMore/CategoryMore';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
-function CategorySection({title}: CategoryMoreProps) {
+function CategorySection({ title }: CategoryMoreProps) {
   return (
     <div className="flex flex-col mt-[46px]">
       <CategoryMore title={title} />
@@ -20,11 +21,17 @@ function CategorySection({title}: CategoryMoreProps) {
 
       {/* 임시 */}
       <div className="flex">
-        {Array(4)
-          .fill(0)
-          .map((_, idx) => (
-            <CategoryProductCard key={idx} />
-          ))}
+        <Carousel>
+          <CarouselContent className="w-full">
+            {Array(4)
+              .fill(0)
+              .map((_, idx) => (
+                <CarouselItem key={idx} className="basis-1/4">
+                  <CategoryProductCard />
+                </CarouselItem>
+              ))}
+          </CarouselContent>
+        </Carousel>
       </div>
     </div>
   );
