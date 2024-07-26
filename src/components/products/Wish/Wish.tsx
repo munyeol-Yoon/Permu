@@ -9,9 +9,10 @@ const Wish = () => {
   const router = useRouter();
   const { productId } = useParams<{ productId: string }>();
   const { loggedUser } = useAuth();
-  const userId = loggedUser?.id || null;
-  const { data: getLikes } = useWishesQuery({ productId: Number(productId), userId });
-  const addMutation = useWishesMutation({ getLikes, productId: Number(productId) });
+  const { data: getLikes } = useWishesQuery({ productId: Number(productId) });
+  const userLike = !!getLikes?.data.find((like: Wish) => like.userId == loggedUser?.id);
+
+  const addMutation = useWishesMutation({ getLikes: { data: getLikes?.data, userLike }, productId: Number(productId) });
 
   const handleWish = () => {
     if (!loggedUser) {
@@ -20,7 +21,7 @@ const Wish = () => {
     } else addMutation.mutate();
   };
   return (
-    <Button variant={getLikes?.userLike ? 'default' : 'outline'} onClick={handleWish}>
+    <Button variant={userLike ? 'default' : 'outline'} onClick={handleWish}>
       <span>
         🤍 좋아요 <span className="font-bold">{getLikes?.data.length}</span>
       </span>

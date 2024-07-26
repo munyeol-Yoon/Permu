@@ -1,14 +1,13 @@
-import { getWishByUser } from '@/api/wish';
+import { getWishById } from '@/api/wish';
 import { useQuery } from '@tanstack/react-query';
 
-const useWishesQuery = ({ productId, userId }: { productId: number; userId: string | null }) => {
+const useWishesQuery = ({ productId }: { productId: number }) => {
   return useQuery({
     queryKey: ['Wishes', productId],
     queryFn: async () => {
-      const data = await getWishByUser({ productId, userId });
-      const userLike = !!data?.find((like: Wish) => like.userId === `${userId}`);
+      const data = await getWishById({ productId });
 
-      return { data, userLike };
+      return { data };
     }
   });
 };
