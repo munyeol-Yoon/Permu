@@ -4,7 +4,7 @@ import CategoryProductCard from '../CategoryProductCard';
 import { CategoryMoreProps } from '../CategoryMore/CategoryMore';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
-function CategorySection({ title }: CategoryMoreProps) {
+const CategorySection = ({ title }: CategoryMoreProps) => {
   return (
     <div className="flex flex-col mt-[46px]">
       <CategoryMore title={title} />

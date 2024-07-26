@@ -5,7 +5,7 @@ export interface CategoryMoreProps {
     title: string;
 }
 
-function CategoryMore({title}: CategoryMoreProps) {
+const CategoryMore = ({title}: CategoryMoreProps) => {
   return (
     <div className="flex justify-between items-center mb-[16px]">
       <h2 className="text-xl">{title}</h2>

@@ -7,7 +7,7 @@ interface itemProps {
   };
 }
 
-function EventLinkCard({ item }: itemProps) {
+const EventLinkCard = ({ item }: itemProps) => {
   return (
     <div className="flex flex-col items-center">
       <Link href="/" className="w-[72px] h-[72px]">

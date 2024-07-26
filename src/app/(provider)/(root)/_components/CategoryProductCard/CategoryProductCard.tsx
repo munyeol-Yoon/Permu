@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-function CategoryProductCard() {
+const CategoryProductCard = () => {
   return (
     <div className="w-[160px] h-[100px] rounded-[8px] relative">
       <Image

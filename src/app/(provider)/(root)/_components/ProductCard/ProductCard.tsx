@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-function ProductCard() {
+const ProductCard = () => {
   return (
     <div className="w-[180px] flex flex-col">
       <Image

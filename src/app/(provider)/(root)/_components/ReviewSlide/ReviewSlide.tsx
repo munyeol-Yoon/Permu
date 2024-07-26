@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import options from "./../../../../../../public/options.svg"
 
-function ReviewSlide() {
+const ReviewSlide = () => {
   return (
     <div className="w-[320px]">
       <div className="relative">

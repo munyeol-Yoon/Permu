@@ -2,7 +2,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import mockData from './../../mockup/eventBenner.json';
 import Image from 'next/image';
 
-function BennerSlide() {
+const BennerSlide = () => {
   return (
     <div className="h-[600px]">
       <Carousel className="w-full h-full">
