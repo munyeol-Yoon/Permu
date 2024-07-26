@@ -7,8 +7,11 @@ import { PropsWithChildren } from 'react';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 3000 * 60,
+      staleTime: 1000 * 60 * 3,
       refetchOnWindowFocus: false
+    },
+    mutations: {
+      retry: 1
     }
   }
 });
