@@ -1,7 +1,6 @@
 type Product = {
   productId: number;
   createdAt: string;
-  categoryId: string;
   title: string;
   price: number;
   content: string;
