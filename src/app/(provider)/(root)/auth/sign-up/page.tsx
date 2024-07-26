@@ -26,7 +26,9 @@ const SignUpPage = () => {
           카카오톡으로 가입하기
         </Button>
         <Button>Google 아이디로 가입하기</Button>
-        <Button variant="outline">이메일로 가입하기</Button>
+        <Button href="sign-up/agreement" variant="outline">
+          이메일로 가입하기
+        </Button>
       </div>
     </>
   );
