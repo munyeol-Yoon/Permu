@@ -1,11 +1,13 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
-
-type Ttype = {
-  value: string;
-  label: string;
-  content: React.ReactNode;
+type TabsProps = {
+  tabs: {
+    value: string;
+    label: string;
+    content: React.ReactNode;
+  }[];
 };
-const Tab = ({ tabs }: { tabs: Ttype[] }) => {
+
+const Tab = ({ tabs }: TabsProps) => {
   return (
     <Tabs defaultValue={tabs[0].value}>
       <TabsList className="w-full">

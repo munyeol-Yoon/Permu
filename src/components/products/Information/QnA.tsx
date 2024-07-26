@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 
-const QnA = () => {
+const QnAPage = () => {
   return (
     <div>
       <Button variant={'default'}>상품 Q&A 작성하기</Button>
@@ -9,4 +9,4 @@ const QnA = () => {
   );
 };
 
-export default QnA;
+export default QnAPage;

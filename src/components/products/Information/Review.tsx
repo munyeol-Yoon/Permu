@@ -1,5 +1,5 @@
-const Review = () => {
+const ReviewPage = () => {
   return <div>리뷰쓰라고</div>;
 };
 
-export default Review;
+export default ReviewPage;
