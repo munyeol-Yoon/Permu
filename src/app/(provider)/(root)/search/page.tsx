@@ -4,12 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useSearchQuery } from '@/hooks/query';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
-import { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import { useCallback, useState } from 'react';
 
 const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
-  const [isEnabled, setIsEnabled] = useState<boolean>(false);
-  const { data, error, isLoading, refetch } = useSearchQuery(search, isEnabled);
+  const { data, error, isLoading, refetch } = useSearchQuery(search);
   const { recentSearchTerms, saveSearchTerm, deleteSearchTerm } = useRecentSearchTerms();
 
   // TODO : 디바운싱 필요
@@ -17,27 +17,29 @@ const SearchPage = () => {
   // TODO : 검색창에 입력시 현재 화면이 가려지며 검색된 결과가 실시간으로 리스트로 표시되어야함. 이부분 논의 필요.
   // TODO : 검색 결과 페이지.
 
-  useEffect(() => {
-    if (isEnabled) {
+  const debouncedSearch = useCallback(
+    debounce((searchTerm: string) => {
+      console.log(`API 호출 : ${searchTerm}`);
+      console.log(data);
       refetch();
-      setIsEnabled(false);
-    }
-  }, [isEnabled, refetch]);
+    }, 1000),
+    [refetch]
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+    debouncedSearch(e.target.value);
   };
 
   const handleSearchClick = () => {
+    console.log(`검색 버튼 클릭 ${search}`);
     saveSearchTerm(search);
-    setIsEnabled(true);
+    refetch();
   };
 
   const handleDeleteClick = (term: string) => {
     deleteSearchTerm(term);
   };
-
-  console.log(data);
 
   return (
     <div>
@@ -62,7 +64,7 @@ const SearchPage = () => {
         </ul>
       </section>
       <section>인기 검색어</section>
-      <section>검색 결과 리스트</section>
+      <section>관련 검색어 리스트</section>
     </div>
   );
 };
