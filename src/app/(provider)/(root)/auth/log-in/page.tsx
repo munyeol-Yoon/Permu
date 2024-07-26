@@ -54,12 +54,9 @@ const LogInPage = () => {
                 <Button className=" bg-yellow-400 text-black" onClick={handleLogin}>
                   카카오 로그인
                 </Button>
-                <Button className="outline bg-white text-black" onClick={handleLogin}>
+                <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
                   회원가입
                 </Button>
-                {/* <Link href="/auth/sign-up" className="border bg-pink-200">
-                  실제 회원가입
-                </Link> */}
               </div>
             </div>
           </TabsContent>
@@ -72,21 +69,14 @@ const LogInPage = () => {
 
                 <div className="flex flex-col">
                   <Button>주문내역 조회하기</Button>
-                  <Button className="outline bg-white text-black" onClick={handleLogin}>
+                  <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
                     회원가입
                   </Button>
-                  {/* <Link href="/auth/sign-up" className="border bg-pink-200">
-                  실제 회원가입
-                </Link> */}
                 </div>
               </form>
             </div>
           </TabsContent>
         </Tabs>
-
-        {/* <Button className="outline bg-white text-black" onClick={handleLogin}>
-                회원가입
-              </Button> */}
       </div>
     </>
   );
