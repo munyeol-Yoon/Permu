@@ -1,17 +1,13 @@
 import { useId } from 'react';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 
-const Toggle = ({
-  trigger,
-  className,
-  children,
-  value = true
-}: {
+type ToggleProps = {
   trigger: string;
   className?: string;
   children: React.ReactNode;
-  value?: boolean;
-}) => {
+  value: boolean;
+};
+const Toggle = ({ trigger, className, children, value = true }: ToggleProps) => {
   const id = useId();
   return (
     <AccordionItem value={value ? id : 'same'} className={className}>

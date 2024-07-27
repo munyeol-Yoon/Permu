@@ -1,13 +1,13 @@
 import { deleteWishByUser, postWishByUser } from '@/api/wish';
 import { useAuth } from '@/contexts/auth.context/auth.context';
+import { TWish } from '@/types/products';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-type TWish = {
-  data: { productId: number; userId: string }[] | undefined;
-  userLike: boolean;
+type TWishMutation = {
+  getLikes: { data: TWish[]; userLike: boolean };
+  productId: number;
 };
-
-const useWishesMutation = ({ getLikes, productId }: { getLikes: TWish; productId: number }) => {
+const useWishesMutation = ({ getLikes, productId }: TWishMutation) => {
   const queryClient = useQueryClient();
   const { loggedUser } = useAuth();
   const addMutation = useMutation({
@@ -21,13 +21,13 @@ const useWishesMutation = ({ getLikes, productId }: { getLikes: TWish; productId
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['Wishes', productId] });
-      const previousWishes = queryClient.getQueryData<TWish>(['Wishes', productId]);
+      const previousWishes = queryClient.getQueryData<{ data: TWish[] }>(['Wishes', productId]);
 
       queryClient.setQueryData(['Wishes', productId], () => {
         return !getLikes?.userLike
           ? { data: [...(previousWishes?.data || []), { productId, userId: loggedUser?.id }], userLike: true }
           : {
-              data: previousWishes?.data?.filter((like) => !(like.userId === `${loggedUser?.id}`)) || [],
+              data: previousWishes?.data?.filter((like: TWish) => !(like.userId === `${loggedUser?.id}`)) || [],
               userLike: false
             };
       });

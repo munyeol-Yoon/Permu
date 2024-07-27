@@ -1,8 +1,5 @@
-type Tfetch = {
-  productId: number;
-  userId: string;
-};
-export const postWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
+import { TWish, TWishId } from '@/types/products';
+export const postWishByUser = async ({ productId, userId }: TWish): Promise<void> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes?productId=${productId}&userId=${userId}`,
     {
@@ -13,7 +10,7 @@ export const postWishByUser = async ({ productId, userId }: Tfetch): Promise<voi
   const data = await response.json();
   return data;
 };
-export const deleteWishByUser = async ({ productId, userId }: Tfetch): Promise<void> => {
+export const deleteWishByUser = async ({ productId, userId }: TWish): Promise<void> => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes?productId=${productId}&userId=${userId}`,
     {
@@ -24,7 +21,7 @@ export const deleteWishByUser = async ({ productId, userId }: Tfetch): Promise<v
   return data;
 };
 
-export const getWishById = async ({ productId }: { productId: number }): Promise<Wish[]> => {
+export const getWishById = async ({ productId }: TWishId): Promise<TWish[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes?productId=${productId}`, {
     method: 'GET'
   });
