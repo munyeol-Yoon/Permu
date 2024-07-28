@@ -2,9 +2,9 @@
 
 import { getRelatedSearchProducts } from '@/api/product';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { useSearchQuery } from '@/hooks/query';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
+import SearchButtonSVG from '@@/public/searchButton.svg';
 import { debounce } from 'lodash';
 import Image from 'next/image';
 import { useCallback, useState } from 'react';
@@ -55,14 +55,21 @@ const SearchPage = () => {
 
   return (
     <div>
-      <section className="flex justify-between items-center mb-4">
-        <Button>{'<'}</Button>
-        <h2 className="flew-grow text-center">검색</h2>
-        <div className="w-10"></div>
-      </section>
-      <section className="flex justify-center items-center">
-        <Input onChange={handleInputChange} value={search} />
-        <Button onClick={handleSearchClick}>검색</Button>
+      <section className="flex justify-center items-center self-stretch">
+        {/* <Input onChange={handleInputChange} value={search} className="flex justify-between items-center" />
+        <Button onClick={handleSearchClick}>검색</Button> */}
+        <div className="relative w-full ml-11 mr-11">
+          <input
+            type="text"
+            placeholder="여름 시즌 추천템 20% 할인"
+            className="rounded-[4px] bg-[#b3b3b320] w-full px-2.5 py-0 pr-[60px] h-[42px]"
+            onChange={handleInputChange}
+            value={search}
+          />
+          <button onClick={handleSearchClick} className="absolute right-0 top-0 bottom-0 px-3 py-1">
+            <SearchButtonSVG />
+          </button>
+        </div>
       </section>
       <section>
         <h2>최근 검색어</h2>
