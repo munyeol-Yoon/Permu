@@ -5,8 +5,8 @@ import { useAuthMutation } from '@/hooks/mutation';
 import Link from 'next/link';
 
 const LogInPage = () => {
-  const { logInMutation } = useAuthMutation();
-  const handleLogin = () => logInMutation('kakao');
+  const { logInWithProviderMutation } = useAuthMutation();
+  const handleLogin = () => logInWithProviderMutation('kakao');
   return (
     <>
       <div className="flex relative p-5">

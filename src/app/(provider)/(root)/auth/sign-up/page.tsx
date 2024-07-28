@@ -8,9 +8,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const SignUpPage = () => {
-  const { logInMutation } = useAuthMutation();
+  const { logInWithProviderMutation } = useAuthMutation();
 
-  const handleLogin = (provider: Provider) => logInMutation(provider);
+  const handleLogin = (provider: Provider) => logInWithProviderMutation(provider);
   return (
     <>
       <div className="flex relative p-5">
