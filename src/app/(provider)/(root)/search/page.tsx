@@ -1,7 +1,6 @@
 'use client';
 
 import { getRelatedSearchProducts } from '@/api/product';
-import { Button } from '@/components/ui/button';
 import { useSearchQuery } from '@/hooks/query';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
 import SearchButtonSVG from '@@/public/searchButton.svg';
@@ -27,7 +26,7 @@ const SearchPage = () => {
 
       try {
         const relatedData = await getRelatedSearchProducts(searchTerm);
-        setRelatedSearches(relatedData.data);
+        setRelatedSearches(relatedData.data || []);
         console.log(relatedData.data);
       } catch (err) {
         console.error(err);
@@ -84,20 +83,28 @@ const SearchPage = () => {
           </button>
         </div>
       </section>
-      <section>
+      <section className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0">
         <h2>최근 검색어</h2>
-        <ul>
-          {recentSearchTerms.map((term, index) => (
-            <li key={index}>
-              <span>{term}</span>
-              <Button onClick={() => handleDeleteClick(term)}>X</Button>
-            </li>
-          ))}
-        </ul>
+        <h2 className="text-gray-300">모두 삭제</h2>
       </section>
-      {/* <section>인기 검색어</section> 후순위 */}
+      {recentSearchTerms.length > 0 ? (
+        <section className="flex flex-wrap justify-between items-center self-stretch h-[56px] px-[50px] py-0 gap-[8px]">
+          <ul className="flex flex-wrap gap-[10px]">
+            {recentSearchTerms.map((term, index) => (
+              <li
+                key={index}
+                className="flex h-[32px] py-0 px-[16px] justify-center items-center gap-[10px] rounded-sm border border-gray-300 bg-white text-gray-400"
+              >
+                <span>{term}</span>
+                <button onClick={() => handleDeleteClick(term)}>X</button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : (
+        ''
+      )}
       <section>
-        <h2>관련 검색어 리스트</h2>
         {relatedSearches.map((item, index) => (
           <li key={index}>
             <span>{item.title}</span>
