@@ -70,7 +70,7 @@ const DeliveryPage = () => {
             <DropdownMenuTrigger className="flex justify-between items-center px-2.5 py-1.5 border border-[#B3B3B3] w-full text-start text-xs text-[#B3B3B3]">
               <p>배송 시 요청사항을 선택해주세요</p>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
-                <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" stroke-miterlimit="10" />
+                <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -164,7 +164,7 @@ const DeliveryPage = () => {
           <div className="flex justify-between items-center py-2.5">
             <p>사용 금액</p>
             <div className="flex items-center gap-6">
-              <Input value="10,000" className="max-w-[353px] h-9 py-1.5 text-xl font-bold text-[#0348FF] text-right" />
+              <Input className="max-w-[353px] h-9 py-1.5 text-xl font-bold text-[#0348FF] text-right" />
               <p className="font-bold">P</p>
             </div>
           </div>
@@ -226,7 +226,7 @@ const DeliveryPage = () => {
         <div className="flex justify-between items-center px-5">
           <p className="text-xs">주문 내용을 확인했으며 서비스 약관 및 결제에 동의합니다.</p>
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
-            <path d="M1 0.945312L8.99998 8.05642L17 0.945313" stroke="black" stroke-miterlimit="10" />
+            <path d="M1 0.945312L8.99998 8.05642L17 0.945313" stroke="black" strokeMiterlimit="10" />
           </svg>
         </div>
       </div>
@@ -234,7 +234,7 @@ const DeliveryPage = () => {
       <div className="fixed bottom-0 h-[96px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
         <div className="py-3 flex justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
-            <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" stroke-miterlimit="10" />
+            <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
           </svg>
         </div>
         <div className="flex justify-center items-center h-full">
