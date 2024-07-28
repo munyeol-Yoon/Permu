@@ -7,7 +7,8 @@ const useCartsQuery = () => {
   const userId = loggedUser?.id;
   return useQuery({
     queryKey: ['Carts', userId],
-    queryFn: () => getCartsByUser(userId ?? '')
+    queryFn: () => getCartsByUser(userId ?? ''),
+    initialData: []
   });
 };
 
