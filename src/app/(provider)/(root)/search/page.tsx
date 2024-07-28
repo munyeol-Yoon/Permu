@@ -53,6 +53,11 @@ const SearchPage = () => {
     deleteSearchTerm(term);
   };
 
+  const handleClearClick = () => {
+    setSearch('');
+    debouncedSearch.cancel();
+  };
+
   return (
     <div>
       <section className="flex justify-center items-center self-stretch">
@@ -66,6 +71,14 @@ const SearchPage = () => {
             onChange={handleInputChange}
             value={search}
           />
+          {search && (
+            <button
+              onClick={handleClearClick}
+              className="absolute right-[50px] top-1/2 transform -translate-y-1/2 px-2.5 py-1 rounded-full w-6 h-6 text-white bg-gray-400 flex items-center justify-center"
+            >
+              X
+            </button>
+          )}
           <button onClick={handleSearchClick} className="absolute right-0 top-0 bottom-0 px-3 py-1">
             <SearchButtonSVG />
           </button>
