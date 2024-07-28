@@ -9,41 +9,49 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/auth.context/auth.context';
+import { useOrderMutation } from '@/hooks/mutation';
+import { useOrderInfoQuery } from '@/hooks/query';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const DeliveryPage = () => {
-  // const router = useRouter();
+  const router = useRouter();
 
-  // const { data: orderInfo } = useOrderInfoQuery();
-  // const { mutateAsync } = useOrderMutation();
+  const { loggedUser } = useAuth();
+  const { data: orderInfo } = useOrderInfoQuery();
+  const { mutateAsync } = useOrderMutation();
 
-  // const [selectedCoupon, setSelectedCoupon] = useState(null);
-  // const [mileageAmount, setMileageAmount] = useState(0);
+  useEffect(() => {
+    console.log(orderInfo);
+  }, [orderInfo]);
 
-  // const receiverNameRef = useRef('');
-  // const receiverAddressRef = useRef('');
-  // const receiverPhoneNumberRef = useRef('');
-  // const receiverMemoRef = useRef('');
+  const [selectedCoupon, setSelectedCoupon] = useState<{ discount: number } | null>(null);
+  const [mileageAmount, setMileageAmount] = useState(0);
 
-  // const totalPrice = useMemo(() => {
-  //   const initialPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
-  //   const couponPrice = selectedCoupon ? selectedCoupon.discount : 0;
-  //   const finalPrice = initialPrice - couponPrice - mileageAmount;
-  //   return finalPrice;
-  // }, [mileageAmount, orderInfo, selectedCoupon]);
+  const receiverMemoRef = useRef('');
 
-  // const handleOrder = async () => {
-  //   const deliveryInfo = {
-  //     userId: orderInfo.user.id,
-  //     name: receiverNameRef.current,
-  //     address: receiverAddressRef.current,
-  //     phone: receiverPhoneNumberRef.current,
-  //     deliverMemo: receiverMemoRef.current,
-  //     arrivalDate: new Date()
-  //   };
-  //   const updatedMileageAmount = orderInfo.user.mileage - mileageAmount;
-  //   await mutateAsync({ deliveryInfo, totalPrice, coupon: selectedCoupon, updatedMileageAmount });
-  //   router.push('/order/complete');
-  // };
+  const totalPrice = useMemo(() => {
+    const initialPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
+    const couponPrice = selectedCoupon ? selectedCoupon.discount : 0;
+    const finalPrice = initialPrice - couponPrice - mileageAmount;
+    return finalPrice;
+  }, [mileageAmount, orderInfo, selectedCoupon]);
+
+  const handleOrder = async () => {
+    const deliveryInfo = {
+      userId: orderInfo.user.id,
+      name: orderInfo.user.name,
+      address: '서울시 목업구 더미동',
+      phone: orderInfo.user.phone,
+      deliverMemo: receiverMemoRef.current,
+      arrivalDate: new Date()
+    };
+    const updatedMileageAmount = orderInfo.user.mileage - mileageAmount;
+    await mutateAsync({ deliveryInfo, totalPrice, coupon: selectedCoupon, updatedMileageAmount });
+    router.push('/order/complete');
+  };
 
   return (
     <div className="relative max-w-[600px] pt-[60px] pb-[120px] w-full flex flex-col gap-5">
@@ -59,16 +67,17 @@ const DeliveryPage = () => {
           <p className="text-[#0348FF] font-bold text-sm">배송지 변경</p>
         </div>
         <div className="px-5">
-          <p className="font-semibold mb-2.5">조윤정</p>
-          <p className="text-xs mb-3">010-0000-0000</p>
-          <p className="text-xs text-[#B3B3B3] mb-1.5">서울시 노원구 중계동</p>
+          <p className="font-semibold mb-2.5">{loggedUser?.userData.name}</p>
+          <p className="text-xs mb-3">{loggedUser?.userData.phone}</p>
+          <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 배송지 정보 넣기</p>
           <Input
             placeholder="직접 입력하기"
+            onChange={(e) => (receiverMemoRef.current = e.target.value)}
             className="border-b border-x-0 border-t-0 rounded-none placeholder:text-[B3B3B3] text-xs focus-visible:ring-0 mb-3"
           />
           <DropdownMenu>
             <DropdownMenuTrigger className="flex justify-between items-center px-2.5 py-1.5 border border-[#B3B3B3] w-full text-start text-xs text-[#B3B3B3]">
-              <p>배송 시 요청사항을 선택해주세요</p>
+              <p>TODO: 배송 시 요청사항 리스트 넣기</p>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
                 <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
               </svg>
@@ -87,66 +96,34 @@ const DeliveryPage = () => {
           <p className="text-xl font-bold">상품정보</p>
         </div>
         <div className="flex flex-col gap-5">
-          <div className="flex items-center px-5">
-            <Checkbox />
-            <div className="bg-gray-300 min-w-[100px] min-h-[100px] mx-[33px]" />
-            <div className="flex flex-col px-2.5 w-full">
-              <div className="flex justify-between items-center">
-                <p className="text-xs mb-1">브랜드명</p>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                  <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-                </svg>
+          {orderInfo?.productList.length ? (
+            orderInfo.productList.map((productItem: any) => (
+              <div key={productItem.productId} className="flex items-center px-5">
+                <Checkbox />
+                <div className="relative aspect-video max-w-[100px] h-[100px] bg-black overflow-hidden mx-[33px]">
+                  <Image src={productItem.thumbNailURL} width={100} height={100} alt="" className="absolute" />
+                </div>
+                <div className="flex flex-col px-2.5 w-full">
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs mb-1">{productItem.title}</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
+                      <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
+                    </svg>
+                  </div>
+                  <p className="font-semibold mb-2.5">{productItem.content}</p>
+                  <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 해당 제품의 옵션 추가</p>
+                  <div className="flex justify-between items-center w-full">
+                    <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
+                      TODO: 해당 제품의 옵션 변경
+                    </Button>
+                    <p className="text-xs">{productItem.price}원</p>
+                  </div>
+                </div>
               </div>
-              <p className="font-semibold mb-2.5">제품명</p>
-              <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
-              <div className="flex justify-between items-center w-full">
-                <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                  옵션 변경
-                </Button>
-                <p>88,000원</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center px-5">
-            <Checkbox />
-            <div className="bg-gray-300 min-w-[100px] min-h-[100px] mx-[33px]" />
-            <div className="flex flex-col px-2.5 w-full">
-              <div className="flex justify-between items-center">
-                <p className="text-xs mb-1">브랜드명</p>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                  <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-                </svg>
-              </div>
-              <p className="font-semibold mb-2.5">제품명</p>
-              <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
-              <div className="flex justify-between items-center w-full">
-                <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                  옵션 변경
-                </Button>
-                <p>88,000원</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center px-5">
-            <Checkbox />
-            <div className="bg-gray-300 min-w-[100px] min-h-[100px] mx-[33px]" />
-            <div className="flex flex-col px-2.5 w-full">
-              <div className="flex justify-between items-center">
-                <p className="text-xs mb-1">브랜드명</p>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                  <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-                </svg>
-              </div>
-              <p className="font-semibold mb-2.5">제품명</p>
-              <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
-              <div className="flex justify-between items-center w-full">
-                <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                  옵션 변경
-                </Button>
-                <p>88,000원</p>
-              </div>
-            </div>
-          </div>
+            ))
+          ) : (
+            <p>장바구니에 상품이 없습니다.</p>
+          )}
         </div>
       </div>
 
@@ -238,7 +215,9 @@ const DeliveryPage = () => {
           </svg>
         </div>
         <div className="flex justify-center items-center h-full">
-          <p className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">총 2개 | 123.000원 구매하기</p>
+          <button onClick={handleOrder} className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
+            총 2개 | 123.000원 구매하기
+          </button>
         </div>
       </div>
     </div>
