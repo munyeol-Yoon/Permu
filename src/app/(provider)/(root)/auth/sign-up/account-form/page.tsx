@@ -108,9 +108,9 @@ const AccountForm = () => {
         </div>
 
         <div className="flex flex-col">
-          <Button href="email-confirm">다음</Button>
-          <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
-            이전
+          <Button href="complete">다음</Button>
+          <Button href="email-confirm" className="bg-blue-600 text-white">
+            인증 메일 보내기
           </Button>
         </div>
       </div>

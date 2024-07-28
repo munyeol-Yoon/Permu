@@ -45,6 +45,8 @@ const EmailConfirmPage = () => {
           <Button variant="outline" href="agreement" className=" bg-white text-black">
             이전
           </Button>
+
+          <Button href="account-form">(테스트)회원가입 폼으로 이동</Button>
         </div>
       </div>
     </>
