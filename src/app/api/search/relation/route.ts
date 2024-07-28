@@ -23,6 +23,7 @@ export const GET = async (req: NextRequest) => {
     thumbNailURL,
     Categories:Categories (
       categoryId,
+      code,
       categoryName,
       CategoryDetail:CategoryDetail (
         categoryDetailId,
