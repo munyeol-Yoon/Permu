@@ -4,15 +4,17 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordi
 const Toggle = ({
   trigger,
   className,
-  children
+  children,
+  value = true
 }: {
   trigger: string;
   className?: string;
   children: React.ReactNode;
+  value?: boolean;
 }) => {
   const id = useId();
   return (
-    <AccordionItem value={id} className={className}>
+    <AccordionItem value={value ? id : 'same'} className={className}>
       <AccordionTrigger>{trigger}</AccordionTrigger>
       <AccordionContent>{children}</AccordionContent>
     </AccordionItem>
