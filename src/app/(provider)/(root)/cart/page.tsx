@@ -3,19 +3,16 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
 import Image from 'next/image';
-import { useId, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 const CartPage = () => {
-  const inputId = useId();
-  const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
+  const { loggedUser } = useAuth();
   const { data: carts } = useCartsQuery();
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
-  const [localCarts, setLocalCarts] = useState<Cart[]>([]);
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
-  const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
 
   const totalPrice = useMemo(() => {
     if (carts?.length) {
@@ -23,72 +20,15 @@ const CartPage = () => {
     }
   }, [carts]);
 
-  // useEffect(() => {
-  //   if (!userId) {
-  //     const carts = JSON.parse(localStorage.getItem('carts') || '[]');
-  //     const selectedCarts = JSON.parse(localStorage.getItem('selectedCarts') || '[]');
-  //     setLocalCarts(carts);
-  //     setSelectedProducts(selectedCarts);
-  //   }
-  // }, []);
-
-  const handleCountCart = (productId: number, count: number, cal: boolean): void => {
-    if (userId) patchMutation.mutate({ productId, userId, count, cal });
-    else {
-      const updatedCarts = carts!.map((cart: Cart) => {
-        if (cart.productId === productId) {
-          return { ...cart, count: cal ? count + 1 : count - 1 };
-        }
-        return cart;
-      }, []);
-      setLocalCarts(updatedCarts);
-      //localStorage.setItem('carts', JSON.stringify(updatedCarts));
-    }
-  };
-
-  const handleProductSelect = (productId: number): void => {
-    const updatedSelection = selectedProducts.includes(productId)
-      ? selectedProducts.filter((id: number) => id !== productId)
-      : [...selectedProducts, productId];
-
-    setSelectedProducts(updatedSelection);
-    // localStorage.setItem('selectedCarts', JSON.stringify(updatedSelection));
-  };
-
-  const handleAllSelect = (): void => {
-    const state = !isAllSelected;
-    setIsAllSelected(state);
-    setSelectedProducts(state ? carts!.map((cart: Cart) => cart.productId) : []);
-    // localStorage.setItem(
-    //   'selectedCarts',
-    //   JSON.stringify(state ? carts!.map((cart: Cart) => cart.productId) : [])
-    // );
-  };
-
   const handleProductDelete = (productId: number): void => {
     if (confirm('삭제 하시겠습니까?')) {
-      if (userId) deleteMutation.mutate({ productId, userId });
-      else {
-        setLocalCarts(localCarts.filter((cart: Cart) => cart.productId !== productId));
-        setSelectedProducts(selectedProducts.filter((id: number) => id !== productId));
-        // localStorage.setItem(
-        //   'selectedCarts',
-        //   JSON.stringify(selectedProducts.filter((id: number) => id !== productId))
-        // );
-        // localStorage.setItem('carts', JSON.stringify(localCarts.filter((cart: Cart) => cart.productId !== productId)));
-      }
+      if (loggedUser) deleteMutation.mutate({ productId, userId: loggedUser.id });
     }
   };
 
   const handleAllDelete = async (): Promise<void> => {
     if (confirm('전체 삭제 하시겠습니까?')) {
-      if (userId) deleteAllMutation.mutate({ userId });
-      else {
-        setLocalCarts([]);
-        setSelectedProducts([]);
-        // localStorage.removeItem('selectedCarts');
-        // localStorage.removeItem('carts');
-      }
+      if (loggedUser) deleteAllMutation.mutate({ userId: loggedUser.id });
     }
   };
 
@@ -103,7 +43,7 @@ const CartPage = () => {
       </div>
 
       <div className="flex flex-col gap-5">
-        {carts?.length &&
+        {carts?.length ? (
           carts.map((cartItem) => (
             <div key={cartItem.productId} className="flex items-center px-5">
               <Checkbox />
@@ -113,7 +53,14 @@ const CartPage = () => {
               <div className="flex flex-col px-2.5 w-full">
                 <div className="flex justify-between items-center">
                   <p className="text-xs mb-1">{cartItem.Products.title}</p>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="13"
+                    viewBox="0 0 14 13"
+                    fill="none"
+                    onClick={() => handleProductDelete(cartItem.productId)}
+                  >
                     <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
                   </svg>
                 </div>
@@ -127,7 +74,10 @@ const CartPage = () => {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <p>장바구니에 상품이 없습니다.</p>
+        )}
       </div>
 
       <div className="fixed bottom-0 h-[340px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
@@ -167,39 +117,6 @@ const CartPage = () => {
         </div>
       </div>
     </div>
-
-    // <div>
-    //   <label htmlFor={inputId}>전체 선택</label>
-    //   <input type="checkbox" id={inputId} checked={isAllSelected} onChange={handleAllSelect} />
-    //   <button onClick={handleAllDelete}>전체 삭제</button>
-    //   {carts?.map((cart: Cart) => (
-    //     <div key={cart.productId}>
-    //       <input
-    //         type="checkbox"
-    //         checked={selectedProducts.includes(cart.productId)}
-    //         onChange={() => handleProductSelect(cart.productId)}
-    //       />
-
-    //       <Link href={`/products/${cart.productId}`}>
-    //         <Image src={cart.Products?.thumbNailURL} width={100} height={100} alt={`${cart.productId}`} />
-    //       </Link>
-
-    //       <h1>{cart.Products?.title}</h1>
-    //       <p>
-    //         {(cart.Products?.price * cart.count).toLocaleString()} -&gt;
-    //         {(cart.Products?.discountedPrice * cart.count).toLocaleString()} {cart.Products?.discount}%
-    //       </p>
-    //       <div>
-    //         <button onClick={() => handleCountCart(cart.productId, cart.count, false)}>-</button>
-    //         <span> {cart.count} </span>
-    //         <button onClick={() => handleCountCart(cart.productId, cart.count, true)}>+</button>
-    //       </div>
-
-    //       <button onClick={() => handleProductDelete(cart.productId)}>X</button>
-    //     </div>
-    //   ))}
-    //   <Coupon totalCost={totalCost} totalDiscountCost={totalDiscountCost} />
-    // </div>
   );
 };
 
