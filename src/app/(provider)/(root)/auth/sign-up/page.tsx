@@ -3,13 +3,14 @@
 import signUpImg from '@/assets/sign-up.png';
 import { Button } from '@/components/ui/button';
 import { useAuthMutation } from '@/hooks/mutation';
+import { Provider } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const SignUpPage = () => {
-  const { logInMutation } = useAuthMutation();
+  const { logInWithProviderMutation } = useAuthMutation();
 
-  const handleLogin = () => logInMutation('kakao');
+  const handleLogin = (provider: Provider) => logInWithProviderMutation(provider);
   return (
     <>
       <div className="flex relative p-5">
@@ -22,10 +23,10 @@ const SignUpPage = () => {
       <Image src={signUpImg} width={600} height={600} alt="회원가입 해택" />
 
       <div className="flex flex-col px-[100px]">
-        <Button className="bg-yellow-400 text-black" onClick={handleLogin}>
+        <Button className="bg-yellow-400 text-black" onClick={() => handleLogin('kakao')}>
           카카오톡으로 가입하기
         </Button>
-        <Button>Google 아이디로 가입하기</Button>
+        <Button onClick={() => handleLogin('google')}>Google 아이디로 가입하기</Button>
         <Button href="sign-up/agreement" variant="outline">
           이메일로 가입하기
         </Button>
