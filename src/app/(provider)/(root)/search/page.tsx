@@ -12,7 +12,7 @@ const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
   const [relatedSearches, setRelatedSearches] = useState<any[]>([]);
   const { data, error, isLoading, refetch } = useSearchQuery(search);
-  const { recentSearchTerms, saveSearchTerm, deleteSearchTerm } = useRecentSearchTerms();
+  const { recentSearchTerms, saveSearchTerm, deleteSearchTerm, clearAllSearchTerms } = useRecentSearchTerms();
 
   // TODO : 인기 검색어 MVP 이후로 연기
   // TODO : 검색창에 입력시 현재 화면이 가려지며 검색된 결과가 실시간으로 리스트로 표시되어야함.
@@ -57,6 +57,10 @@ const SearchPage = () => {
     debouncedSearch.cancel();
   };
 
+  const handleClearAllTermsClick = () => {
+    clearAllSearchTerms();
+  };
+
   return (
     <div>
       <section className="flex justify-center items-center self-stretch">
@@ -85,7 +89,9 @@ const SearchPage = () => {
       </section>
       <section className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0">
         <h2>최근 검색어</h2>
-        <h2 className="text-gray-300">모두 삭제</h2>
+        <h2 onClick={handleClearAllTermsClick} className="text-gray-300 cursor-pointer">
+          모두 삭제
+        </h2>
       </section>
       {recentSearchTerms.length > 0 ? (
         <section className="flex flex-wrap justify-between items-center self-stretch h-[56px] px-[50px] py-0 gap-[8px]">
