@@ -5,8 +5,8 @@ import Link from 'next/link';
 
 const LogInPage = () => {
   const { loggedUser: me } = useAuth();
-  const { logInMuatation } = useAuthMutation();
-  const handleLogin = () => logInMuatation('kakao');
+  const { logInMutation } = useAuthMutation();
+  const handleLogin = () => logInMutation('kakao');
   return (
     <>
       <p>로그인 여부 :{me ? me?.email : '안됨'}</p>
