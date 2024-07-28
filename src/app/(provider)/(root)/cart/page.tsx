@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useMemo } from 'react';
 
 const CartPage = () => {
@@ -111,9 +112,12 @@ const CartPage = () => {
         </div>
         <div className="flex flex-col justify-center items-center gap-[34px] h-full font-bold max-w-[400px] w-full">
           <p className="w-full text-center bg-black text-white px-5 py-[11.5px] rounded-sm">쇼핑 계속하기</p>
-          <p className="w-full text-center bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
+          <Link
+            href="/order/delivery"
+            className="w-full text-center bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm"
+          >
             총 {carts?.length ?? 0}개 | {totalPrice}원 구매하기
-          </p>
+          </Link>
         </div>
       </div>
     </div>
