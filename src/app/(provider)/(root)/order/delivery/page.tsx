@@ -14,7 +14,7 @@ import { useOrderMutation } from '@/hooks/mutation';
 import { useOrderInfoQuery } from '@/hooks/query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 const DeliveryPage = () => {
   const router = useRouter();
@@ -22,10 +22,6 @@ const DeliveryPage = () => {
   const { loggedUser } = useAuth();
   const { data: orderInfo } = useOrderInfoQuery();
   const { mutateAsync } = useOrderMutation();
-
-  useEffect(() => {
-    console.log(orderInfo);
-  }, [orderInfo]);
 
   const [selectedCoupon, setSelectedCoupon] = useState<{ discount: number } | null>(null);
   const [mileageAmount, setMileageAmount] = useState(0);
