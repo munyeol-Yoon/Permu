@@ -10,7 +10,7 @@ import { useEffect, useId, useState } from 'react';
 const CartPage = () => {
   const inputId = useId();
   const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
-  const { data: carts } = useCartsQuery(userId);
+  const { data: carts } = useCartsQuery();
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [localCarts, setLocalCarts] = useState<Cart[]>([]);
   //const carts = userId ? carts : localCarts;
