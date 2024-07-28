@@ -14,25 +14,25 @@ const EmailConfirmPage = () => {
       <div className="px-12">
         <div>
           <p className="py-5 border-b">인증 받을 메일 주소</p>
-          <div className="py-5 flex">
+          <div className="py-5 flex items-center">
             <label htmlFor="email" className="w-1/4">
               이메일
             </label>
             <input
               type="email"
               id="email"
-              className="border-b px-[70px] text-center grow"
+              className="border-b px-[40px] py-4 text-center grow"
               placeholder="이메일 주소를 입력해주세요"
             />
           </div>
-          <div className="py-5 flex ">
+          <div className="py-5 flex items-center  ">
             <label htmlFor="email" className="w-1/4">
               이메일 확인
             </label>
             <input
               type="email"
               id="email"
-              className="border-b px-[70px] text-center grow"
+              className="border-b px-[40px] py-[20px] text-center grow"
               placeholder="이메일 주소를 한번 더 입력해주세요"
             />
           </div>
