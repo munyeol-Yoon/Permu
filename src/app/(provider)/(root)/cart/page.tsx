@@ -13,27 +13,26 @@ const CartPage = () => {
   const { data: carts } = useCartsQuery(userId);
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [localCarts, setLocalCarts] = useState<Cart[]>([]);
-  //const displayedCarts = userId ? carts : localCarts;
-  const displayedCarts = carts;
+  //const carts = userId ? carts : localCarts;
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
   const [totalCost, setTotalCost] = useState<number>(0);
   const [totalDiscountCost, setDiscountCost] = useState<number>(0);
 
   useEffect(() => {
-    if (displayedCarts) {
-      const newTotalCost = displayedCarts.reduce((acc: number, cur: Cart) => {
+    if (carts?.length) {
+      const newTotalCost = carts.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products?.price * cur.count : acc;
       }, 0);
       setTotalCost(newTotalCost);
-      const newTotalDiscountCost = displayedCarts.reduce((acc: number, cur: Cart) => {
+      const newTotalDiscountCost = carts.reduce((acc: number, cur: Cart) => {
         return selectedProducts.includes(cur.productId) ? acc + cur.Products?.discountedPrice * cur.count : acc;
       }, 0);
       setDiscountCost(newTotalDiscountCost);
 
-      setIsAllSelected(selectedProducts.length === displayedCarts.length);
+      setIsAllSelected(selectedProducts.length === carts.length);
     }
-  }, [carts, displayedCarts, selectedProducts]);
+  }, [carts, selectedProducts]);
 
   // useEffect(() => {
   //   if (!userId) {
@@ -47,7 +46,7 @@ const CartPage = () => {
   const handleCountCart = (productId: number, count: number, cal: boolean): void => {
     if (userId) patchMutation.mutate({ productId, userId, count, cal });
     else {
-      const updatedCarts = displayedCarts!.map((cart: Cart) => {
+      const updatedCarts = carts!.map((cart: Cart) => {
         if (cart.productId === productId) {
           return { ...cart, count: cal ? count + 1 : count - 1 };
         }
@@ -70,10 +69,10 @@ const CartPage = () => {
   const handleAllSelect = (): void => {
     const state = !isAllSelected;
     setIsAllSelected(state);
-    setSelectedProducts(state ? displayedCarts!.map((cart: Cart) => cart.productId) : []);
+    setSelectedProducts(state ? carts!.map((cart: Cart) => cart.productId) : []);
     // localStorage.setItem(
     //   'selectedCarts',
-    //   JSON.stringify(state ? displayedCarts!.map((cart: Cart) => cart.productId) : [])
+    //   JSON.stringify(state ? carts!.map((cart: Cart) => cart.productId) : [])
     // );
   };
 
@@ -160,7 +159,7 @@ const CartPage = () => {
       <div className="fixed bottom-0 h-[340px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
         <div className="py-3 flex justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
-            <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" stroke-miterlimit="10" />
+            <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
           </svg>
         </div>
         <div className="flex flex-col w-full p-5 gap-5">
@@ -199,7 +198,7 @@ const CartPage = () => {
     //   <label htmlFor={inputId}>전체 선택</label>
     //   <input type="checkbox" id={inputId} checked={isAllSelected} onChange={handleAllSelect} />
     //   <button onClick={handleAllDelete}>전체 삭제</button>
-    //   {displayedCarts?.map((cart: Cart) => (
+    //   {carts?.map((cart: Cart) => (
     //     <div key={cart.productId}>
     //       <input
     //         type="checkbox"
