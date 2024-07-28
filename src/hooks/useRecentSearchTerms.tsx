@@ -15,6 +15,8 @@ const useRecentSearchTerms = (): UseRecentSearchTerms => {
   }, []);
 
   const saveSearchTerm = (term: string) => {
+    if (term.trim() === '') return;
+
     const updatedTerms = [term, ...recentSearchTerms.filter((target) => target !== term)].slice(0, 10);
     localStorage.setItem('recentSearchTerms', JSON.stringify(updatedTerms));
     setRecentSearchTerms(updatedTerms);
