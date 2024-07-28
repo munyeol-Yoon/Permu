@@ -4,11 +4,10 @@ import { useQuery } from '@tanstack/react-query';
 
 const useCartsQuery = () => {
   const { loggedUser } = useAuth();
-  const userId = loggedUser?.id;
+
   return useQuery({
-    queryKey: ['Carts', userId],
-    queryFn: () => getCartsByUser(userId ?? ''),
-    initialData: []
+    queryKey: ['Carts', loggedUser?.id],
+    queryFn: () => getCartsByUser(loggedUser?.id ?? '')
   });
 };
 

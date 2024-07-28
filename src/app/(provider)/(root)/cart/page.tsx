@@ -5,7 +5,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
-import { useEffect, useId, useState } from 'react';
+import Image from 'next/image';
+import { useId, useMemo, useState } from 'react';
 
 const CartPage = () => {
   const inputId = useId();
@@ -13,26 +14,14 @@ const CartPage = () => {
   const { data: carts } = useCartsQuery();
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
   const [localCarts, setLocalCarts] = useState<Cart[]>([]);
-  //const carts = userId ? carts : localCarts;
   const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
-  const [totalCost, setTotalCost] = useState<number>(0);
-  const [totalDiscountCost, setDiscountCost] = useState<number>(0);
 
-  useEffect(() => {
+  const totalPrice = useMemo(() => {
     if (carts?.length) {
-      const newTotalCost = carts.reduce((acc: number, cur: Cart) => {
-        return selectedProducts.includes(cur.productId) ? acc + cur.Products?.price * cur.count : acc;
-      }, 0);
-      setTotalCost(newTotalCost);
-      const newTotalDiscountCost = carts.reduce((acc: number, cur: Cart) => {
-        return selectedProducts.includes(cur.productId) ? acc + cur.Products?.discountedPrice * cur.count : acc;
-      }, 0);
-      setDiscountCost(newTotalDiscountCost);
-
-      setIsAllSelected(selectedProducts.length === carts.length);
+      return carts?.reduce((acc: number, cur: Cart) => acc + cur.Products.discountedPrice, 0);
     }
-  }, [carts, selectedProducts]);
+  }, [carts]);
 
   // useEffect(() => {
   //   if (!userId) {
@@ -108,52 +97,37 @@ const CartPage = () => {
       <div className="flex justify-between px-[50px] py-5 mb-[52px] border-b border-b-[#B3B3B3]">
         <div className="flex items-center gap-4">
           <Checkbox />
-          <p className="text-xl">전체 2개</p>
+          <p className="text-xl">전체 {carts?.length ?? 0}개</p>
         </div>
         <p className="text-xl text-[#B3B3B3]">선택 삭제</p>
       </div>
 
       <div className="flex flex-col gap-5">
-        <div className="flex items-center px-5">
-          <Checkbox />
-          <div className="bg-gray-300 min-w-[100px] min-h-[100px] mx-[33px]" />
-          <div className="flex flex-col px-2.5 w-full">
-            <div className="flex justify-between items-center">
-              <p className="text-xs mb-1">브랜드명</p>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-              </svg>
+        {carts?.length &&
+          carts.map((cartItem) => (
+            <div key={cartItem.productId} className="flex items-center px-5">
+              <Checkbox />
+              <div className="relative aspect-video max-w-[100px] h-[100px] bg-black overflow-hidden mx-[33px]">
+                <Image src={cartItem.Products.thumbNailURL} width={100} height={100} alt="" className="absolute" />
+              </div>
+              <div className="flex flex-col px-2.5 w-full">
+                <div className="flex justify-between items-center">
+                  <p className="text-xs mb-1">{cartItem.Products.title}</p>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
+                    <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
+                  </svg>
+                </div>
+                <p className="font-semibold mb-2.5">{cartItem.Products.content}</p>
+                <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 해당 제품의 옵션 추가</p>
+                <div className="flex justify-between items-center w-full">
+                  <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
+                    TODO: 해당 제품의 옵션 변경
+                  </Button>
+                  <p className="text-xs">{cartItem.Products.discountedPrice ?? cartItem.Products.price}원</p>
+                </div>
+              </div>
             </div>
-            <p className="font-semibold mb-2.5">제품명</p>
-            <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
-            <div className="flex justify-between items-center w-full">
-              <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                옵션 변경
-              </Button>
-              <p className="text-xs">88,000원</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center px-5">
-          <Checkbox />
-          <div className="bg-gray-300 min-w-[100px] min-h-[100px] mx-[33px]" />
-          <div className="flex flex-col px-2.5 w-full">
-            <div className="flex justify-between items-center">
-              <p className="text-xs mb-1">브랜드명</p>
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-              </svg>
-            </div>
-            <p className="font-semibold mb-2.5">제품명</p>
-            <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
-            <div className="flex justify-between items-center w-full">
-              <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                옵션 변경
-              </Button>
-              <p className="text-xs">88,000원</p>
-            </div>
-          </div>
-        </div>
+          ))}
       </div>
 
       <div className="fixed bottom-0 h-[340px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
@@ -188,7 +162,7 @@ const CartPage = () => {
         <div className="flex flex-col justify-center items-center gap-[34px] h-full font-bold max-w-[400px] w-full">
           <p className="w-full text-center bg-black text-white px-5 py-[11.5px] rounded-sm">쇼핑 계속하기</p>
           <p className="w-full text-center bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
-            총 2개 | 123.000원 구매하기
+            총 {carts?.length ?? 0}개 | {totalPrice}원 구매하기
           </p>
         </div>
       </div>
