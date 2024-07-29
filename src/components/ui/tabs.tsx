@@ -7,7 +7,6 @@ import { cn } from '@/utils/cn';
 
 const Tabs = TabsPrimitive.Root;
 
-
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
@@ -19,7 +18,6 @@ const TabsList = React.forwardRef<
   />
 ));
 TabsList.displayName = TabsPrimitive.List.displayName;
-
 
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,

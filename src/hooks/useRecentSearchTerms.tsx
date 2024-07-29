@@ -4,6 +4,7 @@ type UseRecentSearchTerms = {
   recentSearchTerms: string[];
   saveSearchTerm: (term: string) => void;
   deleteSearchTerm: (term: string) => void;
+  clearAllSearchTerms: () => void;
 };
 
 const useRecentSearchTerms = (): UseRecentSearchTerms => {
@@ -15,6 +16,8 @@ const useRecentSearchTerms = (): UseRecentSearchTerms => {
   }, []);
 
   const saveSearchTerm = (term: string) => {
+    if (term.trim() === '') return;
+
     const updatedTerms = [term, ...recentSearchTerms.filter((target) => target !== term)].slice(0, 10);
     localStorage.setItem('recentSearchTerms', JSON.stringify(updatedTerms));
     setRecentSearchTerms(updatedTerms);
@@ -26,7 +29,12 @@ const useRecentSearchTerms = (): UseRecentSearchTerms => {
     setRecentSearchTerms(updateTerms);
   };
 
-  return { recentSearchTerms, saveSearchTerm, deleteSearchTerm };
+  const clearAllSearchTerms = () => {
+    localStorage.removeItem('recentSearchTerms');
+    setRecentSearchTerms([]);
+  };
+
+  return { recentSearchTerms, saveSearchTerm, deleteSearchTerm, clearAllSearchTerms };
 };
 
 export default useRecentSearchTerms;

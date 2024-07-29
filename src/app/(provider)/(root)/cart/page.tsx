@@ -121,6 +121,39 @@ const CartPage = () => {
         </div>
       </div>
     </div>
+
+    // <div>
+    //   <label htmlFor={inputId}>전체 선택</label>
+    //   <input type="checkbox" id={inputId} checked={isAllSelected} onChange={handleAllSelect} />
+    //   <button onClick={handleAllDelete}>전체 삭제</button>
+    //   {displayedCarts?.map((cart: Cart) => (
+    //     <div key={cart.productId}>
+    //       <input
+    //         type="checkbox"
+    //         checked={selectedProducts.includes(cart.productId)}
+    //         onChange={() => handleProductSelect(cart.productId)}
+    //       />
+
+    //       <Link href={`/products/${cart.productId}`}>
+    //         <Image src={cart.Products?.thumbNailURL} width={100} height={100} alt={`${cart.productId}`} />
+    //       </Link>
+
+    //       <h1>{cart.Products?.title}</h1>
+    //       <p>
+    //         {(cart.Products?.price * cart.count).toLocaleString()} -&gt;
+    //         {(cart.Products?.discountedPrice * cart.count).toLocaleString()} {cart.Products?.discount}%
+    //       </p>
+    //       <div>
+    //         <button onClick={() => handleCountCart(cart.productId, cart.count, false)}>-</button>
+    //         <span> {cart.count} </span>
+    //         <button onClick={() => handleCountCart(cart.productId, cart.count, true)}>+</button>
+    //       </div>
+
+    //       <button onClick={() => handleProductDelete(cart.productId)}>X</button>
+    //     </div>
+    //   ))}
+    //   <Coupon totalCost={totalCost} totalDiscountCost={totalDiscountCost} />
+    // </div>
   );
 };
 
