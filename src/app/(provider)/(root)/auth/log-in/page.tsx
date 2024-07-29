@@ -1,23 +1,83 @@
 'use client';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuthMutation } from '@/hooks/mutation';
 import Link from 'next/link';
 
 const LogInPage = () => {
-  const { loggedUser: me } = useAuth();
-  const { logInMuatation } = useAuthMutation();
-  const handleLogin = () => logInMuatation('kakao');
+  const { logInWithProviderMutation } = useAuthMutation();
+  const handleLogin = () => logInWithProviderMutation('kakao');
+  
   return (
     <>
-      <p>로그인 여부 :{me ? me?.email : '안됨'}</p>
-      <div className="flex flex-col gap-5">
-        <button className="border bg-yellow-200" onClick={handleLogin}>
-          카카오 로그인
-        </button>
-        <Link href="/auth/sign-up" className="border bg-pink-200">
-          회원가입
-        </Link>
+      <div className="flex flex-col grow">
+        <div className="flex relative p-5">
+          <Link href="/" className="absolute">
+            ⬅️
+          </Link>
+          <h1 className="mx-auto">로그인</h1>
+        </div>
+
+        <Tabs defaultValue="member" className="px-12">
+          <TabsList className="flex">
+            <TabsTrigger value="member">가입 회원</TabsTrigger>
+            <TabsTrigger value="guest">비회원 주문 조회</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="member">
+            <div className="w-full px-[50px]">
+              <form className="flex flex-col gap-y-4 mt-28">
+                <input type="email" id="id" className="border p-2.5 rounded" placeholder="아이디를 입력해주세요" />
+                <input
+                  type="password"
+                  id="password"
+                  className="border p-2.5 rounded mb-10"
+                  placeholder="비밀번호를 입력해주세요"
+                />
+                <Button>로그인</Button>
+              </form>
+
+              <div className="flex justify-between">
+                <label htmlFor="auto-login">
+                  <input type="radio" id="auto-login" />
+                  자동 로그인
+                </label>
+
+                {/* Link로 변경 */}
+                <div className="flex">
+                  <p>아이디 찾기</p>|<p>비밀번호 찾기</p>
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                <Button className=" bg-yellow-400 text-black" onClick={handleLogin}>
+                  카카오 로그인
+                </Button>
+                <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
+                  회원가입
+                </Button>
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="guest">
+            <div className="px-[50px]">
+              <form className="flex flex-col gap-y-4 mt-28">
+                <input type="text" id="guestId" className="border p-2.5 rounded" placeholder="주문자명" />
+                <input type="text" id="orderId" className="border p-2.5 rounded mb-10" placeholder="주문번호" />
+
+                <div className="flex flex-col">
+                  <Button>주문내역 조회하기</Button>
+                  <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
+                    회원가입
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
+      <div className="bg-blue-500">이벤트 배너 컴포넌트</div>
     </>
   );
 };
