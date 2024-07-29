@@ -1,10 +1,13 @@
 import { getCartsByUser } from '@/api/cart';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useQuery } from '@tanstack/react-query';
 
-const useCartsQuery = (userId: string) => {
+const useCartsQuery = () => {
+  const { loggedUser } = useAuth();
+
   return useQuery({
-    queryKey: ['Carts', userId],
-    queryFn: () => getCartsByUser(userId)
+    queryKey: ['Carts', loggedUser?.id],
+    queryFn: () => getCartsByUser(loggedUser?.id ?? '')
   });
 };
 

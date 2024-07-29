@@ -29,7 +29,7 @@ const useOrderMutation = () => {
         deliverId,
         userId,
         total: totalPrice,
-        couponId: coupon.couponId
+        couponId: coupon?.couponId
       };
       const deliveries: DeliveryInfo = { ...deliveryInfo, deliverId };
 

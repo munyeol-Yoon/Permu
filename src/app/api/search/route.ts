@@ -20,7 +20,7 @@ function getChosung(str: string): string {
     .join('');
 }
 
-export async function GET(req: NextRequest) {
+export const GET = async (req: NextRequest) => {
   try {
     const supabase = createClient();
 
@@ -45,4 +45,4 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     return NextResponse.json({ success: false, detail: err }, { status: 500 });
   }
-}
+};

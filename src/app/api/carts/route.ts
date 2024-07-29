@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     const { data } = await supabase
       .from('Carts')
-      .select('*, Products (categoryId,title,price,thumbNailURL,discount)')
+      .select('*, Products (*)')
       .eq('userId', userId)
       .order('productId', { ascending: false });
 
