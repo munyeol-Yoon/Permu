@@ -23,14 +23,12 @@ const ProductDetailPage = async ({ params }: Params) => {
       </div>
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
       <div className="flex-row-10 justify-between p-5-2 w-full items-center border-b-2">
-        {product.discount || 0 > 0 ? (
+        <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
+        {(product.discount || 0) > 0 && (
           <>
-            <span className="text-[30px] font-medium">{product.discountedPrice}원</span>
-            <span className="text-xl text-gray-500 line-through flex-1">{product?.price}원</span>
-            <span className="text-[#F00] font-medium">{product?.discount}% SALE</span>
+            <span className="text-xl text-gray-500 line-through flex-1">{(product.price || 0).toLocaleString()}원</span>
+            <span className="text-[#F00] font-medium">{product.discount}% SALE</span>
           </>
-        ) : (
-          <span className="text-[30px] font-medium">{product.discountedPrice}원</span>
         )}
       </div>
       <div className="min-h-[213px] flex-col-10 p-5-2">
