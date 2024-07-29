@@ -39,14 +39,16 @@ const EmailConfirmPage = () => {
         </div>
 
         <div className="flex flex-col">
-          <Button href="email-confirm" className="bg-blue-600 text-white">
-            인증 메일 보내기
+          <Button asChild className="bg-blue-600 text-white">
+            <Link href="email-confirm">인증 메일 보내기</Link>
           </Button>
-          <Button variant="outline" href="agreement" className=" bg-white text-black">
-            이전
+          <Button variant="outline" asChild className=" bg-white text-black">
+            <Link href="agreement">이전</Link>
           </Button>
 
-          <Button href="account-form">(테스트)회원가입 폼으로 이동</Button>
+          <Button asChild>
+            <Link href="account-form">(테스트)회원가입 폼으로 이동</Link>
+          </Button>
         </div>
       </div>
     </>

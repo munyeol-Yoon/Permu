@@ -7,7 +7,7 @@ import Link from 'next/link';
 const LogInPage = () => {
   const { logInWithProviderMutation } = useAuthMutation();
   const handleLogin = () => logInWithProviderMutation('kakao');
-  
+
   return (
     <>
       <div className="flex flex-col grow">
@@ -53,8 +53,8 @@ const LogInPage = () => {
                 <Button className=" bg-yellow-400 text-black" onClick={handleLogin}>
                   카카오 로그인
                 </Button>
-                <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
-                  회원가입
+                <Button variant="outline" asChild className=" bg-white text-black">
+                  <Link href="/auth/sign-up">회원가입</Link>
                 </Button>
               </div>
             </div>
@@ -68,8 +68,8 @@ const LogInPage = () => {
 
                 <div className="flex flex-col">
                   <Button>주문내역 조회하기</Button>
-                  <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
-                    회원가입
+                  <Button variant="outline" asChild className=" bg-white text-black">
+                    <Link href="/auth/sign-up">회원가입</Link>
                   </Button>
                 </div>
               </form>

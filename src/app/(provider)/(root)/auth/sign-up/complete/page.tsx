@@ -29,8 +29,8 @@ function SignUpCompletePage() {
 
           <p>조윤정 회원님</p>
           <p>010-0000-0000</p>
-          <Button href="/auth/log-in" className="bg-blue-600 text-white">
-            로그인 하기
+          <Button asChild className="bg-blue-600 text-white">
+            <Link href="/auth/log-in">로그인 하기</Link>
           </Button>
         </div>
       </div>

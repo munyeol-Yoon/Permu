@@ -65,9 +65,11 @@ const AgreementPage = () => {
         </Tabs>
 
         <div className="flex flex-col">
-          <Button href="email-confirm">다음</Button>
-          <Button variant="outline" href="/auth/sign-up" className=" bg-white text-black">
-            이전
+          <Button asChild>
+            <Link href="email-confirm">다음</Link>
+          </Button>
+          <Button asChild variant="outline" className=" bg-white text-black">
+            <Link href="/auth/sign-up">이전</Link>
           </Button>
         </div>
       </div>
