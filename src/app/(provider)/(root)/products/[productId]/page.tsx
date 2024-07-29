@@ -1,4 +1,4 @@
-import { fetchDetailProduct } from '@/api/product';
+import { getDetailProduct } from '@/api/product';
 import BuyNow from '@/components/products/BuyNow';
 import Cart from '@/components/products/Cart';
 import Information from '@/components/products/Information';
@@ -6,32 +6,29 @@ import Share from '@/components/products/Share/Share';
 import Wish from '@/components/products/Wish';
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
+import { Params } from '@/types/products';
 import Image from 'next/image';
-interface Params {
-  params: { productId: string };
-}
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
-  const product = await fetchDetailProduct(productId);
+  const product = await getDetailProduct(productId);
+
   return (
     <div>
       <div className="relative aspect-square">
-        <Image src={product!.thumbNailURL} fill alt={product!.title} />
-        {product.ImagesURL.map((ImageURL: string, index: number) => (
-          <Image key={index} src={ImageURL} fill className="object-cover" alt={product!.title} />
+        <Image src={product.thumbNailURL || ''} fill alt={product.title || ''} />
+        {product.ImagesURL.map((ImageURL, index: number) => (
+          <Image key={index} src={ImageURL} fill className="object-cover" alt={product.title || ''} />
         ))}
       </div>
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
       <div className="flex-row-10 justify-between p-5-2 w-full items-center border-b-2">
-        {product?.discount > 0 ? (
+        <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
+        {(product.discount || 0) > 0 && (
           <>
-            <span className="text-[30px] font-medium">{product?.discountedPrice}원</span>
-            <span className="text-xl text-gray-500 line-through flex-1">{product?.price}원</span>
-            <span className="text-[#F00] font-medium">{product?.discount}% SALE</span>
+            <span className="text-xl text-gray-500 line-through flex-1">{(product.price || 0).toLocaleString()}원</span>
+            <span className="text-[#F00] font-medium">{product.discount}% SALE</span>
           </>
-        ) : (
-          <span className="text-[30px] font-medium">{product?.discountedPrice}원</span>
         )}
       </div>
       <div className="min-h-[213px] flex-col-10 p-5-2">

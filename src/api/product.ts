@@ -1,3 +1,5 @@
+import { Product } from '@/types/products';
+
 export const getSearchProducts = async (search: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search?query=${search}`);
 

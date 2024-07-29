@@ -1,13 +1,16 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { Product } from '@/types/products';
 import { useEffect } from 'react';
 declare global {
   interface Window {
     Kakao: any;
   }
 }
-
-const Share = ({ product }: { product: Product }) => {
+type ProductProps = {
+  product: Product;
+};
+const Share = ({ product }: ProductProps) => {
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js';

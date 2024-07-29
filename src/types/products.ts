@@ -1,30 +1,20 @@
-type Product = {
-  productId: number;
-  createdAt: string;
-  title: string;
-  price: number;
-  content: string;
-  thumbNailURL: string;
-  ImagesURL: string[];
-  updatedAt: string;
-  discount: number;
-  discountedPrice: number;
-};
-type ProductWithoutSpecificFields = Omit<Product, 'productId' | 'createdAt' | 'ImagesURL' | 'updatedAt'>;
+import { Tables } from '@/types/supabase';
 
-type Cart = {
+type ProductWithoutSpecificFields = Omit<Tables<'Products'>, 'productId' | 'createdAt' | 'ImagesURL' | 'updatedAt'>;
+export type TWish = Omit<Tables<'Wishes'>, 'wishId'>;
+export type TWishId = Omit<TWish, 'userId'>;
+export type Product = Omit<Tables<'Products'>, 'ImagesURL'> & { discountedPrice: number; ImagesURL: string[] };
+export interface Params {
+  params: { productId: string };
+}
+export type Cart = {
   userId: string;
   productId: number;
   count: number;
   Products: ProductWithoutSpecificFields;
 };
 
-type Wish = {
-  userId: string;
-  productId: number;
-};
-
-type Coupon = {
+export type Coupon = {
   couponId: string;
   userId: string;
   discount: number;
