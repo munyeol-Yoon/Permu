@@ -1,7 +1,6 @@
 import { cn } from '@/utils/cn';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import Link from 'next/link';
 import * as React from 'react';
 
 const buttonVariants = cva(
@@ -29,18 +28,16 @@ const buttonVariants = cva(
     }
   }
 );
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean;
+}
 
-type ButtonBaseProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
-  VariantProps<typeof buttonVariants> & { asChild?: boolean };
-type LinkProps = React.ComponentProps<typeof Link> & { href: string };
-
-export type ButtonProps = ButtonBaseProps & Partial<LinkProps>;
-
-const Button = React.forwardRef<HTMLElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : props.href ? Link : 'button';
+    const Comp = asChild ? Slot : 'button';
 
-    // ref 타입 고쳐야함 (일단 유보,,, )
     return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
   }
 );

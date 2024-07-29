@@ -27,8 +27,8 @@ const SignUpPage = () => {
           카카오톡으로 가입하기
         </Button>
         <Button onClick={() => handleLogin('google')}>Google 아이디로 가입하기</Button>
-        <Button href="sign-up/agreement" variant="outline">
-          이메일로 가입하기
+        <Button asChild variant="outline">
+          <Link href="sign-up/agreement">이메일로 가입하기</Link>
         </Button>
       </div>
     </>
