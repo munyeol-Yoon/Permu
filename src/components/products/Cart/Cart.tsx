@@ -9,7 +9,7 @@ const Cart = () => {
   const { productId } = useParams<{ productId: string }>();
   const userId = 'c7b26340-92fc-4dc3-91ec-5151091251f2';
   // const localCarts = JSON.parse(localStorage.getItem('carts') || '[]');
-  const { data: carts } = useCartsQuery(userId);
+  const { data: carts } = useCartsQuery();
   const displayedCarts = carts;
   // const displayedCarts = userId ? carts?.details : localCarts;
 
@@ -17,7 +17,7 @@ const Cart = () => {
 
   const handlePostCart = async () => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
-      const matchCartProduct = displayedCarts?.find((cart: Cart) => cart.productId === Number(productId));
+      const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
 
       if (matchCartProduct)
         if (userId)

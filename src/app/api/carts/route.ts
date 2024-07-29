@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function DELETE(request: NextResponse) {
+export async function DELETE(request: NextRequest) {
   try {
     const supabase = createClient();
     const { searchParams } = new URL(request.url);
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       .eq('userId', userId)
       .order('productId', { ascending: false });
 
-    const cartsWithDiscountedPrice = data?.map((cart: Cart) => ({
+    const cartsWithDiscountedPrice = data?.map((cart: any) => ({
       ...cart,
       Products: {
         ...cart.Products,
