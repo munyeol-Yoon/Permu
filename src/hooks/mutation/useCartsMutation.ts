@@ -25,10 +25,10 @@ const useCartsMutation = () => {
     }) => patchCartByUser({ productId, userId, count: cal ? count + 1 : count - 1 }),
     onMutate: async (variable) => {
       await queryClient.cancelQueries({ queryKey: ['Carts', variable.userId] });
-      const previousCarts = queryClient.getQueryData<Cart[]>(['Carts', variable.userId]);
+      const previousCarts = queryClient.getQueryData<any[]>(['Carts', variable.userId]);
 
       queryClient.setQueryData(['Carts', variable.userId], () => {
-        const filteredOldCarts = previousCarts?.map((cart: Cart) => {
+        const filteredOldCarts = previousCarts?.map((cart: any) => {
           return cart.productId === variable.productId
             ? { ...cart, count: variable.cal ? variable.count + 1 : variable.count - 1 }
             : cart;

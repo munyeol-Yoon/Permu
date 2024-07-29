@@ -1,5 +1,5 @@
+import OptionsSVG from '@@/public/options.svg';
 import Image from 'next/image';
-import options from "@/../public/options.svg"
 
 const ReviewSlide = () => {
   return (
@@ -12,7 +12,7 @@ const ReviewSlide = () => {
           alt="고객 리뷰 제품 이미지1"
         />
         <button className="absolute top-[10px] right-[10px] bg-white rounded-full">
-          <Image src={options} width={24} height={24} alt="설정" />
+          <OptionsSVG className="w-6 h-6" />
         </button>
       </div>
 
@@ -26,6 +26,6 @@ const ReviewSlide = () => {
       </div>
     </div>
   );
-}
+};
 
 export default ReviewSlide;

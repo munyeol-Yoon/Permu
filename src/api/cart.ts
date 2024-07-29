@@ -43,7 +43,7 @@ export const deleteCartByUser = async (productId: number, userId: string): Promi
   const data = await response.json();
   return data;
 };
-export const getCartsByUser = async (userId: string): Promise<Cart[]> => {
+export const getCartsByUser = async (userId: string): Promise<any[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts?userId=${userId}`, {
     method: 'GET'
   });
