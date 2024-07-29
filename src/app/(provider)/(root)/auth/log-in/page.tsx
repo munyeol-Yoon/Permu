@@ -7,6 +7,7 @@ import Link from 'next/link';
 const LogInPage = () => {
   const { logInWithProviderMutation } = useAuthMutation();
   const handleLogin = () => logInWithProviderMutation('kakao');
+  
   return (
     <>
       <div className="flex flex-col grow">
