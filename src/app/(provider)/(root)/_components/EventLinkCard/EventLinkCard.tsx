@@ -4,6 +4,7 @@ import Link from 'next/link';
 interface itemProps {
   item: {
     ThumbnailImg: string;
+    title: string;
   };
 }
 
@@ -19,7 +20,7 @@ const EventLinkCard = ({ item }: itemProps) => {
           alt={`이벤트 이미지`}
         />
       </Link>
-      <span className="text-xs mt-1">첫구매 혜택</span>
+      <span className="text-xs mt-1">{item.title}</span>
     </div>
   );
 }

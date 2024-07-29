@@ -4,14 +4,14 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import mockData from './../../mockup/eventBenner.json';
 import Image from 'next/image';
 import { type CarouselApi } from '@/components/ui/carousel';
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 const BennerSlide = () => {
-  const [api, setApi] = React.useState<CarouselApi>();
-  const [current, setCurrent] = React.useState(0);
-  const [count, setCount] = React.useState(0);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [count, setCount] = useState(0);
   
-  React.useEffect(() => {
+  useEffect(() => {
     if (!api) {
       return
     }

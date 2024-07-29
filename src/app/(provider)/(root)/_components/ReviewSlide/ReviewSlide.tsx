@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import options from "./../../../../../../public/options.svg"
+import options from "@/../public/options.svg"
 
 const ReviewSlide = () => {
   return (

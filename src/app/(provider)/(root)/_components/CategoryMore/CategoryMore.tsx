@@ -1,5 +1,5 @@
 import Image from "next/image";
-import arrow from "./../../../../../../public/main_category_arrow.svg";
+import arrow from "@/../public/main_category_arrow.svg";
 
 export interface CategoryMoreProps {
     title: string;

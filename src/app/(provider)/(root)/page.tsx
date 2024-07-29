@@ -1,17 +1,12 @@
-import Image from 'next/image';
 import BennerSlide from '@/components/BennerSlide';
 import EventLinkCard from './_components/EventLinkCard';
 import CategoryMore from './_components/CategoryMore';
 import ProductCard from './_components/ProductCard';
 import CategorySection from './_components/CategorySection/CategorySection';
 import ReviewSlide from './_components/ReviewSlide/ReviewSlide';
-import mockData from './../../../mockup/eventBenner.json';
+import mockData from '@/mockup/eventBenner.json';
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel"
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
 const RootPage = () => {
   return (
@@ -34,7 +29,7 @@ const RootPage = () => {
             {Array(3)
               .fill(0)
               .map((_, idx) => (
-                <ProductCard key={idx} />
+                <ProductCard key={idx} brand="브랜드명" name="제품명" discountPercentage={10} price={30000} />
               ))}
           </div>
         </div>

@@ -1,6 +1,13 @@
-import Image from "next/image";
+import Image from 'next/image';
 
-const ProductCard = () => {
+interface ProductProps {
+  brand: string;
+  name: string;
+  price: number;
+  discountPercentage: number;
+}
+
+const ProductCard = ({ brand, name, price, discountPercentage }: ProductProps) => {
   return (
     <div className="w-[180px] flex flex-col">
       <Image
@@ -11,15 +18,15 @@ const ProductCard = () => {
         className="rounded"
       />
       <div className="flex flex-col">
-        <span className="text-[10px] mt-2">브랜드명</span>
-        <p className="text-[15px] font-semibold my-3">제품명</p>
+        <span className="text-[10px] mt-2">{brand}</span>
+        <p className="text-[15px] font-semibold my-3">{name}</p>
         <div className="flex justify-between">
-          <p className="text-[#FF0000]">10%</p>
-          <span className="font-semibold">89,382원</span>
+          <p className="text-[#FF0000]">{discountPercentage}%</p>
+          <span className="font-semibold">{price.toLocaleString()}원</span>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default ProductCard;
