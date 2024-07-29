@@ -17,7 +17,7 @@ const CartPage = () => {
 
   const totalPrice = useMemo(() => {
     if (carts?.length) {
-      return carts?.reduce((acc: number, cur: Cart) => acc + cur.Products.discountedPrice, 0);
+      return carts?.reduce((acc, cur) => acc + cur.Products.discountedPrice, 0);
     }
   }, [carts]);
 
