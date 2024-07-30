@@ -1,15 +1,11 @@
+import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
 const AccountForm = () => {
   return (
     <div>
-      <div className="flex relative p-5">
-        <Link href="/auth/log-in" className="absolute">
-          ⬅️
-        </Link>
-        <h1 className="mx-auto">회원가입</h1>
-      </div>
+      <Navbar title="회원가입" href="/auth/log-in" />
 
       <div className="px-12">
         <Tabs defaultValue="b">
@@ -24,8 +20,8 @@ const AccountForm = () => {
           </TabsList>
         </Tabs>
 
-        <div className="w-full bg-red mt-11">
-          <p className="py-5 border-b">기본정보</p>
+        <div className="w-full mt-11">
+          <h3 className="py-5 border-b">기본정보</h3>
           <div className="flex items-center">
             <label htmlFor="email" className="w-1/4">
               아이디
@@ -71,18 +67,29 @@ const AccountForm = () => {
             />
           </div>
           <div className="flex items-center">
+            <label htmlFor="birth" className="w-1/4">
+              생년월일
+            </label>
+            <input
+              type="date"
+              id="birth"
+              className="border-b px-[40px] py-4 text-center grow"
+              placeholder="생년월일을 입력해 주세요."
+            />
+          </div>
+          <div className="flex items-center">
             <p className="w-1/4">성별</p>
-            <div className="mx-auto py-4 ">
-              <label htmlFor="male">남자</label>
-              <input type="radio" id="male" name="gender" value="M" className="mr-10" />
-              <label htmlFor="female">여자</label>
-              <input type="radio" id="female" name="gender" value="F" />
+            <div className="mx-auto py-4">
+              <input type="radio" id="male" name="gender" value="M" className="mr-2" />
+              <label htmlFor="male">남성</label>
+              <input type="radio" id="female" name="gender" value="F" className="ml-10 mr-2" />
+              <label htmlFor="female">여성</label>
             </div>
           </div>
         </div>
 
         <div className="w-full bg-red mt-11">
-          <p className="py-5 border-b">부가정보</p>
+          <h3 className="py-5 border-b">부가정보</h3>
           <div className="flex items-center">
             <label htmlFor="address" className="w-1/4">
               주소
@@ -107,12 +114,12 @@ const AccountForm = () => {
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-12">
           <Button asChild>
             <Link href="complete">다음</Link>
           </Button>
-          <Button asChild className="bg-blue-600 text-white">
-            <Link href="email-confirm">인증 메일 보내기</Link>
+          <Button asChild variant="outline" className=" bg-white text-black">
+            <Link href="email-confirm">이전</Link>
           </Button>
         </div>
       </div>
