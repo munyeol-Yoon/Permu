@@ -1,10 +1,10 @@
 import BennerSlide from '@/components/BennerSlide';
-import EventLinkCard from './_components/EventLinkCard';
-import CategoryMore from './_components/CategoryMore';
-import ProductCard from './_components/ProductCard';
-import CategorySection from './_components/CategorySection/CategorySection';
-import ReviewSlide from './_components/ReviewSlide/ReviewSlide';
 import mockData from '@/mockup/eventBenner.json';
+import CategoryMore from './_components/CategoryMore';
+import CategorySection from './_components/CategorySection/CategorySection';
+import EventLinkCard from './_components/EventLinkCard';
+import ProductCard from './_components/ProductCard';
+import ReviewSlide from './_components/ReviewSlide/ReviewSlide';
 
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 

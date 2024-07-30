@@ -1,28 +1,34 @@
 import { getDetailProduct } from '@/api/product';
+
 import Bread from '@/components/Bread';
-import BuyNow from '@/components/products/BuyNow';
-import Cart from '@/components/products/Cart';
-import Information from '@/components/products/Information';
-import Share from '@/components/products/Share/Share';
-import Wish from '@/components/products/Wish';
+
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { Params } from '@/types/products';
-import BrandFilter from '@@/public/brandfillter.svg';
-import Image from 'next/image';
+
+import BennerSlide from '@/components/BennerSlide';
+import BrandBenner from '@/components/BrandBenner';
+import BuyNow from '../_components/BuyNow';
+import Cart from '../_components/Cart';
+import Information from '../_components/Information';
+import Share from '../_components/Share/Share';
+import Wish from '../_components/Wish';
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
   const product = await getDetailProduct(productId);
+  const Images = product.ImagesURL.map((ImageURL) => {
+    return { ImageURL, title: product.title || '' };
+  });
+  const brand = { krName: '샤넬', code: 200 }; //await getBrandsById(productId);
   return (
     <div>
-      <BrandBenner productId={productId} />
+      <BrandBenner>
+        <span className="text-white">{brand.krName}</span>
+        <span className="text-white">{brand.code}</span>
+      </BrandBenner>
       <div className="relative aspect-square">
-        <Image src={product.thumbNailURL || ''} fill alt={product.title || ''} />
-
-        {product.ImagesURL.map((ImageURL, index: number) => (
-          <Image key={index} src={ImageURL} fill className="object-cover" alt={product.title || ''} />
-        ))}
+        <BennerSlide Images={Images} />
       </div>
 
       <Bread />
@@ -86,16 +92,4 @@ const ProductDetailPage = async ({ params }: Params) => {
   );
 };
 
-const BrandBenner = async ({ productId }: Params['params']) => {
-  // const brand = await getBrandsById(productId); 나중에 브랜드 이름만 갖고올거임
-  return (
-    <div className="relative">
-      <BrandFilter className="w-full h-full" />
-      <div className="absolute top-[2px] z-10 flex-row-10 justify-between p-5-2 w-full h-full">
-        <span className="text-white">BrandName</span>
-        <span className="text-white">223</span>
-      </div>
-    </div>
-  );
-};
 export default ProductDetailPage;
