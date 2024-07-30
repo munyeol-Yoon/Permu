@@ -1,20 +1,16 @@
+import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 const EmailConfirmPage = () => {
   return (
     <>
-      <div className="flex relative p-5">
-        <Link href="agreement" className="absolute">
-          ⬅️
-        </Link>
-        <h1 className="mx-auto">이메일 인증</h1>
-      </div>
+      <Navbar title="이메일 인증" href="agreement" />
 
       <div className="px-12">
         <div>
-          <p className="py-5 border-b">인증 받을 메일 주소</p>
-          <div className="py-5 flex items-center">
+          <h3 className="py-5 border-b">인증 받을 메일 주소</h3>
+          <div className="flex items-center">
             <label htmlFor="email" className="w-1/4">
               이메일
             </label>
@@ -25,7 +21,7 @@ const EmailConfirmPage = () => {
               placeholder="이메일 주소를 입력해주세요"
             />
           </div>
-          <div className="py-5 flex items-center  ">
+          <div className="flex items-center  ">
             <label htmlFor="email" className="w-1/4">
               이메일 확인
             </label>
@@ -38,7 +34,7 @@ const EmailConfirmPage = () => {
           </div>
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-12 px-[50px]">
           <Button asChild className="bg-blue-600 text-white">
             <Link href="email-confirm">인증 메일 보내기</Link>
           </Button>
