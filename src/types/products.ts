@@ -3,7 +3,12 @@ import { Tables } from '@/types/supabase';
 type ProductWithoutSpecificFields = Omit<Tables<'Products'>, 'productId' | 'createdAt' | 'ImagesURL' | 'updatedAt'>;
 export type TWish = Omit<Tables<'Wishes'>, 'wishId'>;
 export type TWishId = Omit<TWish, 'userId'>;
-export type Product = Omit<Tables<'Products'>, 'ImagesURL'> & { discountedPrice: number; ImagesURL: string[] };
+export type Product = Omit<Tables<'Products'>, 'ImagesURL' | 'size' | 'notes'> & {
+  discountedPrice: number;
+  ImagesURL: string[];
+  size: string[];
+  notes: string[];
+};
 export interface Params {
   params: { productId: string };
 }

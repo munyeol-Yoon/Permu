@@ -12,11 +12,12 @@ import Image from 'next/image';
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
   const product = await getDetailProduct(productId);
-
+  console.log(product);
   return (
     <div>
       <div className="relative aspect-square">
         <Image src={product.thumbNailURL || ''} fill alt={product.title || ''} />
+
         {product.ImagesURL.map((ImageURL, index: number) => (
           <Image key={index} src={ImageURL} fill className="object-cover" alt={product.title || ''} />
         ))}
@@ -32,12 +33,14 @@ const ProductDetailPage = async ({ params }: Params) => {
         )}
       </div>
       <div className="min-h-[213px] flex-col-10 p-5-2">
-        <span>달콤한 호박 | 말랑말랑 | 불가리안 로즈</span>
+        {product.notes?.map((note, index: number) => <div key={index}>{note}</div>)}
+
         <p>{product?.content}</p>
       </div>
 
       <div className="p-5-2">
         <span>사이즈</span>
+        {product.size?.map((size, index: number) => <div key={index}>{size}</div>)}
       </div>
       <div className="flex-row-10 justify-between p-5-2 w-full">
         <Cart />
