@@ -1,7 +1,7 @@
-import { getDetailProduct } from '@/api/product';
+import { getBrandsById } from '@/api/brand';
+import { getCategoryById, getDetailProduct } from '@/api/product';
 
 import Bread from '@/components/Bread';
-
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { Params } from '@/types/products';
@@ -20,18 +20,19 @@ const ProductDetailPage = async ({ params }: Params) => {
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
-  const brand = { krName: '샤넬', code: 200 }; //await getBrandsById(productId);
+  const brand = (await getBrandsById(product.brandId || 0)) || { krName: '' };
+  const category = await getCategoryById(productId);
   return (
     <div>
       <BrandBenner>
         <span className="text-white">{brand.krName}</span>
-        <span className="text-white">{brand.code}</span>
+        <span className="text-white">{product.brandId}</span>
       </BrandBenner>
       <div className="relative aspect-square">
         <BennerSlide Images={Images} />
       </div>
 
-      <Bread />
+      <Bread categoryName={category.categoryName} />
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
       <div className="flex-row-10 justify-between p-5-2 w-full border-b-2">
         <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>

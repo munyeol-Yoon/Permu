@@ -7,17 +7,20 @@ import {
   BreadcrumbSeparator
 } from '../ui/breadcrumb';
 
-const Bread = () => {
+type BreadProps = {
+  categoryName: string;
+};
+const Bread = ({ categoryName }: BreadProps) => {
   return (
     <div className="p-5-2 w-full">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/category">Space</BreadcrumbLink>
+            <BreadcrumbLink href="/products/category">Space</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+            <BreadcrumbPage>{categoryName}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

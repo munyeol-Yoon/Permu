@@ -29,3 +29,10 @@ export const getDetailProduct = async (productId: string): Promise<Product> => {
   const data = await response.json();
   return data;
 };
+
+export const getCategoryById = async (productId: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/category?productId=${productId}`);
+  if (!response.ok) throw new Error('response 에러');
+  const data = await response.json();
+  return data;
+};
