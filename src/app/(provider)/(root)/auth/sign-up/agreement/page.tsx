@@ -1,12 +1,17 @@
+'use client';
 import Navbar from '@/components/Navbar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
+import { useRef } from 'react';
 
 // TODO :선택 안하면 다음 이동 막기
 
 const AgreementPage = () => {
+  const confirmRef = useRef<HTMLInputElement>(null);
+  const emailConfirmRef = useRef<HTMLInputElement>(null);
+  const handleChange = () => {};
   return (
     <>
       <Navbar title="회원가입" href="/auth/log-in" />
@@ -43,7 +48,7 @@ const AgreementPage = () => {
 
               <label htmlFor="completeConfirm" className="flex justify-between p-5">
                 모든 약관을 확인하고 전체 동의합니다.
-                <input type="checkbox" id="completeConfirm" />
+                <input type="checkbox" id="completeConfirm" ref={confirmRef} />
               </label>
             </Accordion>
           </TabsContent>
@@ -52,7 +57,7 @@ const AgreementPage = () => {
         <div className="w-full bg-red mt-11">
           <h3 className="py-5 border-b">인증 수단 선택</h3>
           <label htmlFor="emailConfirm" className="block py-5 ">
-            <input type="checkbox" id="emailConfirm" className="mr-2.5" />
+            <input type="checkbox" id="emailConfirm" className="mr-2.5" ref={emailConfirmRef} />
             이메일 본인 인증
           </label>
         </div>
