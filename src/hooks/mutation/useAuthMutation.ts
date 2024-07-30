@@ -28,6 +28,7 @@ const useAuthMutation = () => {
     mutationFn: (loginForm) => signUpWithEmail(loginForm),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+      console.log('>>>>>>', data);
       router.replace('/');
     }
   });
