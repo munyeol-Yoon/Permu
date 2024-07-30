@@ -1,4 +1,4 @@
-import { getBrandsById } from '@/api/brand';
+import { getBrandById } from '@/api/brand';
 import { getCategoryById, getDetailProduct } from '@/api/product';
 
 import Bread from '@/components/Bread';
@@ -20,19 +20,19 @@ const ProductDetailPage = async ({ params }: Params) => {
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
-  const brand = (await getBrandsById(product.brandId || 0)) || { krName: '' };
+  const brand = await getBrandById(`${product.brandId}`);
   const category = await getCategoryById(productId);
   return (
     <div>
       <BrandBenner>
-        <span className="text-white">{brand.krName}</span>
+        <span className="text-white">{brand?.krName}</span>
         <span className="text-white">{product.brandId}</span>
       </BrandBenner>
       <div className="relative aspect-square">
         <BennerSlide Images={Images} />
       </div>
 
-      <Bread categoryName={category.categoryName} />
+      <Bread categoryName={category.categoryName ?? ''} />
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
       <div className="flex-row-10 justify-between p-5-2 w-full border-b-2">
         <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
@@ -44,14 +44,14 @@ const ProductDetailPage = async ({ params }: Params) => {
         )}
       </div>
       <div className="min-h-[213px] flex-col-10 p-5-2">
-        {product.notes?.map((note, index: number) => <span key={index}>{note}</span>)}
+        <span className="flex-row-10">{product.notes?.join(' | ')}</span>
 
         <p>{product?.content}</p>
       </div>
 
       <div className="p-5-2">
         <span>사이즈</span>
-        {product.size?.map((size, index: number) => <span key={index}>{size}</span>)}
+        <div className="flex-row-10">{product.size?.map((size, index: number) => <span key={index}>{size}</span>)}</div>
       </div>
       <div className="flex-row-20 justify-between p-5-2 w-full">
         <Cart />

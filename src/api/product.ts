@@ -1,4 +1,5 @@
 import { Product } from '@/types/products';
+import { Tables } from '@/types/supabase';
 
 export const getSearchProducts = async (search: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search?query=${search}`);
@@ -30,7 +31,7 @@ export const getDetailProduct = async (productId: string): Promise<Product> => {
   return data;
 };
 
-export const getCategoryById = async (productId: string) => {
+export const getCategoryById = async (productId: string): Promise<Tables<'Categories'>> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/category?productId=${productId}`);
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();

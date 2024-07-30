@@ -5,9 +5,9 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = createClient();
     const { searchParams } = new URL(request.url);
-    const productId = searchParams.get('productId') as string;
+    const brandId = searchParams.get('brandId') as string;
 
-    const { data } = await supabase.from('Brands').select('brandId,krName,enName').eq('productId', productId).single();
+    const { data } = await supabase.from('Brands').select('*').eq('brandId', brandId).single();
 
     return NextResponse.json(data);
   } catch (error) {
