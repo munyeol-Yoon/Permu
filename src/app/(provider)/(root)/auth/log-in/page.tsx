@@ -1,14 +1,14 @@
 'use client';
-import Navbar from '@/components/Navbar/Navbar';
+import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuthMutation } from '@/hooks/mutation';
+import { Provider } from '@supabase/supabase-js';
 import Link from 'next/link';
 
 const LogInPage = () => {
   const { logInWithProviderMutation } = useAuthMutation();
-  const handleKakaoLogin = () => logInWithProviderMutation('kakao');
-  const handleGoogleLogin = () => logInWithProviderMutation('google');
+  const handleLogin = (provider: Provider) => logInWithProviderMutation(provider);
 
   return (
     <>
@@ -48,10 +48,10 @@ const LogInPage = () => {
                 </div>
 
                 <div className="flex flex-col">
-                  <Button className="bg-yellow-400 text-black" onClick={handleKakaoLogin}>
+                  <Button className="bg-yellow-400 text-black" onClick={() => handleLogin('kakao')}>
                     카카오 로그인
                   </Button>
-                  <Button variant="outline" onClick={handleGoogleLogin}>
+                  <Button variant="outline" onClick={() => handleLogin('google')}>
                     구글 로그인
                   </Button>
                   <Button variant="outline" asChild className=" bg-white text-black">
