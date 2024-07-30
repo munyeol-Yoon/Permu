@@ -12,7 +12,6 @@ import Image from 'next/image';
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
   const product = await getDetailProduct(productId);
-  console.log(product);
   return (
     <div>
       <div className="relative aspect-square">
@@ -33,14 +32,14 @@ const ProductDetailPage = async ({ params }: Params) => {
         )}
       </div>
       <div className="min-h-[213px] flex-col-10 p-5-2">
-        {product.notes?.map((note, index: number) => <div key={index}>{note}</div>)}
+        {product.notes?.map((note, index: number) => <span key={index}>{note}</span>)}
 
         <p>{product?.content}</p>
       </div>
 
       <div className="p-5-2">
         <span>사이즈</span>
-        {product.size?.map((size, index: number) => <div key={index}>{size}</div>)}
+        {product.size?.map((size, index: number) => <span key={index}>{size}</span>)}
       </div>
       <div className="flex-row-10 justify-between p-5-2 w-full">
         <Cart />
