@@ -5,10 +5,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuthMutation } from '@/hooks/mutation';
 import { Provider } from '@supabase/supabase-js';
 import Link from 'next/link';
+import { ChangeEventHandler, FormEventHandler, useRef } from 'react';
 
 const LogInPage = () => {
-  const { logInWithProviderMutation } = useAuthMutation();
-  const handleLogin = (provider: Provider) => logInWithProviderMutation(provider);
+  const { logInWithProviderMutation, logInWithEmailMutation, signUpWithEmailMutation } = useAuthMutation();
+  const idRef = useRef<HTMLInputElement>(null);
+  const pwRef = useRef<HTMLInputElement>(null);
+
+  const handleOAuthLogin = (provider: Provider) => logInWithProviderMutation(provider);
+
+  const handleIdChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (idRef.current) idRef.current.value = e.target.value;
+  };
+  const handlePwChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (pwRef.current) pwRef.current.value = e.target.value;
+  };
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    if (idRef.current && pwRef.current)
+      logInWithEmailMutation({ email: idRef.current.value, password: pwRef.current.value });
+    // signUpWithEmailMutation({ email: idRef.current.value, password: pwRef.current.value });
+  };
 
   return (
     <>
@@ -24,13 +41,22 @@ const LogInPage = () => {
           <div className="mt-28">
             <TabsContent value="member">
               <div className="w-full px-[50px]">
-                <form className="flex flex-col gap-y-4">
-                  <input type="email" id="id" className="border p-2.5 rounded" placeholder="아이디를 입력해주세요" />
+                <form className="flex flex-col gap-y-4" onSubmit={handleSubmit}>
+                  <input
+                    type="email"
+                    id="id"
+                    className="border p-2.5 rounded"
+                    placeholder="아이디를 입력해주세요"
+                    ref={idRef}
+                    onChange={handleIdChange}
+                  />
                   <input
                     type="password"
                     id="password"
                     className="border p-2.5 rounded"
                     placeholder="비밀번호를 입력해주세요"
+                    ref={pwRef}
+                    onChange={handlePwChange}
                   />
                   <Button className="mt-[50px]">로그인</Button>
                 </form>
@@ -48,10 +74,10 @@ const LogInPage = () => {
                 </div>
 
                 <div className="flex flex-col">
-                  <Button className="bg-yellow-400 text-black" onClick={() => handleLogin('kakao')}>
+                  <Button className="bg-yellow-400 text-black" onClick={() => handleOAuthLogin('kakao')}>
                     카카오 로그인
                   </Button>
-                  <Button variant="outline" onClick={() => handleLogin('google')}>
+                  <Button variant="outline" onClick={() => handleOAuthLogin('google')}>
                     구글 로그인
                   </Button>
                   <Button variant="outline" asChild className=" bg-white text-black">

@@ -1,4 +1,4 @@
-import { loginWithEmail, logInWithProvider, logOut, postUserInfo } from '@/api/auth';
+import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signUpWithEmail } from '@/api/auth';
 import { LoginForm, UserInfo } from '@/types/types';
 import { Provider } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -20,8 +20,15 @@ const useAuthMutation = () => {
     mutationFn: (loginForm) => loginWithEmail(loginForm),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
-      // console.log(data);
-      // router.replace('/');
+      router.replace('/');
+    }
+  });
+
+  const { mutate: signUpWithEmailMutation } = useMutation<void, Error, LoginForm>({
+    mutationFn: (loginForm) => signUpWithEmail(loginForm),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+      router.replace('/');
     }
   });
 
@@ -34,7 +41,7 @@ const useAuthMutation = () => {
   });
 
   const { mutateAsync: userInfoMutation } = useMutation<void, Error, UserInfo>({
-    mutationFn: (userInfo) => postUserInfo(userInfo),
+    mutationFn: (userInfo) => patchUserInfo(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       router.replace('/');
@@ -42,7 +49,13 @@ const useAuthMutation = () => {
     // onError: (error) => console.log(error)
   });
 
-  return { logInWithProviderMutation, logInWithEmailMutation, logOutMutation, userInfoMutation };
+  return {
+    logInWithProviderMutation,
+    logInWithEmailMutation,
+    signUpWithEmailMutation,
+    logOutMutation,
+    userInfoMutation
+  };
 };
 
 export default useAuthMutation;

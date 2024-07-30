@@ -10,10 +10,21 @@ export const logInWithProvider = async (provider: Provider) => {
 };
 
 export const loginWithEmail = async (loginForm: LoginForm) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-in`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/log-in`, {
+    method: 'POST',
+    body: JSON.stringify(loginForm)
+  });
   const result = await response.json();
-  console.log(result);
-  // if (result) return result;
+  return result;
+};
+
+export const signUpWithEmail = async (loginForm: LoginForm) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-up`, {
+    method: 'POST',
+    body: JSON.stringify(loginForm)
+  });
+  const result = await response.json();
+  return result;
 };
 
 export const logOut = async () => {
@@ -30,9 +41,9 @@ export const fetchUser = async () => {
   return user || null;
 };
 
-export const postUserInfo = async (userInfo: UserInfo) => {
+export const patchUserInfo = async (userInfo: UserInfo) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/info`, {
-    method: 'POST',
+    method: 'PATCH',
     body: JSON.stringify(userInfo)
   });
   const result = await response.json();

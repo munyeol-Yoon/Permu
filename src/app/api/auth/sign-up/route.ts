@@ -10,10 +10,10 @@ export async function POST(request: NextRequest) {
     const {
       data: { user },
       error
-    } = await supabase.auth.signInWithPassword({ email, password });
+    } = await supabase.auth.signUp({ email, password });
 
     if (error) return NextResponse.json({ success: false, details: error.message });
-    if (user) return NextResponse.json({ success: true, details: '로그인 성공' });
+    if (user) return NextResponse.json({ success: true, details: '회원가입 성공' });
   } catch (error) {
     return NextResponse.json({ success: false, details: error });
   }
