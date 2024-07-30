@@ -4,7 +4,11 @@ import { useRouter } from 'next/navigation';
 
 const BuyNow = () => {
   const router = useRouter();
-  return <Button onClick={() => router.push('/order/delivery')}>바로 구매하기</Button>;
+  return (
+    <Button className="w-full" onClick={() => router.push('/order/delivery')}>
+      바로 구매하기
+    </Button>
+  );
 };
 
 export default BuyNow;

@@ -1,4 +1,5 @@
 import { getDetailProduct } from '@/api/product';
+import Bread from '@/components/Bread';
 import BuyNow from '@/components/products/BuyNow';
 import Cart from '@/components/products/Cart';
 import Information from '@/components/products/Information';
@@ -7,6 +8,7 @@ import Wish from '@/components/products/Wish';
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { Params } from '@/types/products';
+import BrandFilter from '@@/public/brandfillter.svg';
 import Image from 'next/image';
 
 const ProductDetailPage = async ({ params }: Params) => {
@@ -14,6 +16,7 @@ const ProductDetailPage = async ({ params }: Params) => {
   const product = await getDetailProduct(productId);
   return (
     <div>
+      <BrandBenner productId={productId} />
       <div className="relative aspect-square">
         <Image src={product.thumbNailURL || ''} fill alt={product.title || ''} />
 
@@ -21,8 +24,10 @@ const ProductDetailPage = async ({ params }: Params) => {
           <Image key={index} src={ImageURL} fill className="object-cover" alt={product.title || ''} />
         ))}
       </div>
+
+      <Bread />
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
-      <div className="flex-row-10 justify-between p-5-2 w-full items-center border-b-2">
+      <div className="flex-row-10 justify-between p-5-2 w-full border-b-2">
         <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
         {(product.discount || 0) > 0 && (
           <>
@@ -41,12 +46,12 @@ const ProductDetailPage = async ({ params }: Params) => {
         <span>사이즈</span>
         {product.size?.map((size, index: number) => <span key={index}>{size}</span>)}
       </div>
-      <div className="flex-row-10 justify-between p-5-2 w-full">
+      <div className="flex-row-20 justify-between p-5-2 w-full">
         <Cart />
         <BuyNow />
       </div>
 
-      <div className="flex-row-10 justify-between p-5-2 w-full">
+      <div className="flex-row-20 justify-between p-5-2 w-full">
         <Share product={product} />
         <Wish />
       </div>
@@ -81,4 +86,16 @@ const ProductDetailPage = async ({ params }: Params) => {
   );
 };
 
+const BrandBenner = async ({ productId }: Params['params']) => {
+  // const brand = await getBrandsById(productId); 나중에 브랜드 이름만 갖고올거임
+  return (
+    <div className="relative">
+      <BrandFilter className="w-full h-full" />
+      <div className="absolute top-[2px] z-10 flex-row-10 justify-between p-5-2 w-full h-full">
+        <span className="text-white">BrandName</span>
+        <span className="text-white">223</span>
+      </div>
+    </div>
+  );
+};
 export default ProductDetailPage;
