@@ -4,7 +4,7 @@ export const getOrderInfoByUserId = async (userId: string) => {
   const supabase = createClient();
   const { data: orderInfo, error } = await supabase
     .from('Carts')
-    .select('*, Products (*), Users (*, Coupon(*))')
+    .select('*, Products (*, Brands (*)), Users (*, Coupon(*))')
     .eq('userId', userId);
 
   if (error) throw new Error(error.message);
