@@ -1,9 +1,10 @@
 import BennerSlide from '@/components/BennerSlide';
-import EventLinkCard from './_components/EventLinkCard';
-import CategorySection from './_components/CategorySection/CategorySection';
-import mockData from '@/mockup/eventBenner.json';
+
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
+import mockData from '@/mockup/eventBenner.json';
+import CategorySection from './_components/CategorySection/CategorySection';
+import EventLinkCard from './_components/EventLinkCard';
 
 const RootPage = () => {
   return (

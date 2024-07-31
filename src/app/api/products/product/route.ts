@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
     const productId = searchParams.get('productId');
 
     const { data, error } = await supabase.from('Products').select('*').eq('productId', productId).single();
-
     if (error) throw error;
     const productWithDiscountedPrice: Product = {
       ...data,
