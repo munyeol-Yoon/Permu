@@ -20,28 +20,42 @@ function getChosung(str: string): string {
     .join('');
 }
 
+// TODO : 브랜드 검색 및 초성 검색 추가해야하고 샤넬과 블랑쉐 같은 검색도 추가해야함
 export const GET = async (req: NextRequest) => {
   try {
     const supabase = createClient();
 
     const { searchParams } = new URL(req.url);
     const searchQuery = searchParams.get('query');
+    const categoryIdQuery = searchParams.get('categoryId');
 
-    if (!searchQuery) {
+    if (!searchQuery && !categoryIdQuery) {
       return NextResponse.json({ success: false, detail: '쿼리 파라미터가 필요합니다.' }, { status: 400 });
     }
 
-    const extractQuery = extractHangul(searchQuery);
+    if (searchQuery) {
+      const extractQuery = extractHangul(searchQuery);
 
-    // const chosungQuery = getChosung(extractQuery);
+      // const chosungQuery = getChosung(extractQuery);
 
-    const { data, error } = await supabase.from('Products').select('*').ilike('title', `%${extractQuery}%`);
+      const { data, error } = await supabase.from('Products').select('*').ilike('title', `%${extractQuery}%`);
 
-    if (error) {
-      throw error;
+      if (error) {
+        throw error;
+      }
+
+      return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
     }
 
-    return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
+    if (categoryIdQuery) {
+      const { data, error } = await supabase.from('Products').select('*').eq('categoryId', categoryIdQuery);
+
+      if (error) {
+        throw error;
+      }
+
+      return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
+    }
   } catch (err) {
     return NextResponse.json({ success: false, detail: err }, { status: 500 });
   }
