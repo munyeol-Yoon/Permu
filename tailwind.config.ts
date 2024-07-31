@@ -49,7 +49,7 @@ const config = {
         }
       },
       fontFamily: {
-        abhaya: ['"Abhaya Libre', 'serif']
+        abhaya: ['Abhaya Libre', 'serif']
       },
       rotate: {
         '0.362': '0.362deg'
