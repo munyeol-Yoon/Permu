@@ -9,7 +9,7 @@ interface CartItemProps {
 const CartItem = ({ cartItem }: CartItemProps) => {
   return (
     <li className="flex items-center px-5">
-      <Checkbox />
+      <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white" />
       <div className="relative aspect-square max-w-[100px] h-[120px] mx-[33px]">
         <Image src={cartItem.Products.thumbNailURL} fill alt="" className="absolute" />
       </div>
@@ -21,12 +21,27 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           </svg>
         </div>
         <p className="font-semibold mb-2.5">{cartItem.Products.title}</p>
-        <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 해당 제품의 옵션 추가</p>
+        <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
         <div className="flex justify-between items-center w-full">
-          <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-            TODO: 해당 제품의 옵션 변경
+          <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-1.5 h-auto m-0">
+            옵션 변경
           </Button>
-          <p className="text-xs">{cartItem.Products.discountedPrice ?? cartItem.Products.price}원</p>
+          <div className="relative flex items-center gap-[18px]">
+            {!!cartItem.Products.discount && (
+              <>
+                <p className="absolute -top-4 right-0 text-xs text-[#B3B3B3] line-through">
+                  {cartItem.Products.price.toLocaleString()}원
+                </p>
+                <p className="text-[10px] text-[#0348FF]">SALE {cartItem.Products.discount}%</p>
+              </>
+            )}
+            <p className="font-bold">
+              {cartItem.Products.discountedPrice
+                ? cartItem.Products.discountedPrice.toLocaleString()
+                : cartItem.Products.price.toLocaleString()}
+              원
+            </p>
+          </div>
         </div>
       </div>
     </li>
