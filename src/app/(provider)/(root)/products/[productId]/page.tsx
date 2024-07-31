@@ -8,6 +8,8 @@ import { Params } from '@/types/products';
 
 import BennerSlide from '@/components/BennerSlide';
 import BrandBenner from '@/components/BrandBenner';
+import CurrentProducts from '@/components/CurrentProducts';
+import CustomerReviews from '@/components/CustomerReviews';
 import DeliveryOptions from '../_components/DeliveryOptions';
 import Information from '../_components/Information';
 import Paying from '../_components/Paying';
@@ -23,7 +25,7 @@ const ProductDetailPage = async ({ params }: Params) => {
   const brand = await getBrandById(`${product.brandId}`);
   const category = await getCategoryById(product.categoryId ?? '');
   return (
-    <div className="h-[2800px]">
+    <div>
       <BrandBenner>
         <span className="text-white">{brand?.krName}</span>
         <span className="text-white">{product.brandId}</span>
@@ -82,6 +84,13 @@ const ProductDetailPage = async ({ params }: Params) => {
           </p>
         </Toggle>
       </Accordion>
+
+      <div className="p-5-2">
+        <CurrentProducts />
+      </div>
+      <div className="p-5-2 mb-[138px] overflow-hidden">
+        <CustomerReviews />
+      </div>
     </div>
   );
 };
