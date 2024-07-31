@@ -18,13 +18,15 @@ const categoryTransformData = (data: RouteCategory[]): RouteCategoriesByTitle =>
       result[categoryTitle].push(categoryGroup);
     }
 
-    categoryGroup.items.push({
-      categoryId: item.categoryId,
-      categoryTitle: item.categoryTitle,
-      categoryMainTitle: item.categoryMainTitle,
-      categorySubTitle: item.categorySubTitle || undefined,
-      code: item.code
-    });
+    if (!categoryGroup.items.find((item) => item.categorySubTitle === categorySubTitle)) {
+      categoryGroup.items.push({
+        categoryId: item.categoryId,
+        categoryTitle: item.categoryTitle,
+        categoryMainTitle: item.categoryMainTitle,
+        categorySubTitle: categorySubTitle || undefined,
+        code: item.code
+      });
+    }
   });
 
   return result;
