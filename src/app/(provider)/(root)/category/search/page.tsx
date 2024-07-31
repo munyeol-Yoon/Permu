@@ -7,12 +7,13 @@ import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
 import { debounce } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
   const { data: relatedSearches = [], refetch } = useRelatedSearchQuery(search);
   const { recentSearchTerms, saveSearchTerm, deleteSearchTerm, clearAllSearchTerms } = useRecentSearchTerms();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // TODO : 인기 검색어 MVP 이후로 연기
   // TODO : 연관 키워드 MVP 이후로 연기
@@ -30,6 +31,12 @@ const SearchPage = () => {
   useEffect(() => {
     debouncedSearch(search);
   }, [search, debouncedSearch]);
+
+  useEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -63,6 +70,7 @@ const SearchPage = () => {
           handleInputChange={handleInputChange}
           handleSearchClick={handleSearchClick}
           handleClearClick={handleClearClick}
+          ref={searchInputRef}
         />
       </section>
       {!search && (
