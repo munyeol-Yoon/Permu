@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import CategoryMore from '../CategoryMore';
+import CategoryMore from '@/components/CategoryMore';
 import CategoryProductCard from '../CategoryProductCard';
-import { CategoryMoreProps } from '../CategoryMore/CategoryMore';
+import { CategoryMoreProps } from '@/components/CategoryMore/CategoryMore';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const CategorySection = ({ title }: CategoryMoreProps) => {
