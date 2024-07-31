@@ -5,14 +5,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
-import useCart from '@/hooks/useCart';
-import Image from 'next/image';
+import { useCartsQuery } from '@/hooks/query';
 import Link from 'next/link';
 import { useEffect, useMemo } from 'react';
+import CartList from './_components/CartList';
 
 const CartPage = () => {
   const { loggedUser } = useAuth();
-  const { cartList } = useCart();
+  const { data: cartList } = useCartsQuery();
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
 
   useEffect(() => {
@@ -25,18 +25,6 @@ const CartPage = () => {
     }
   }, [cartList]);
 
-  const handleProductDelete = (productId: number): void => {
-    if (confirm('삭제 하시겠습니까?')) {
-      if (loggedUser) deleteMutation.mutate({ productId, userId: loggedUser.id });
-    }
-  };
-
-  const handleAllDelete = async (): Promise<void> => {
-    if (confirm('전체 삭제 하시겠습니까?')) {
-      if (loggedUser) deleteAllMutation.mutate({ userId: loggedUser.id });
-    }
-  };
-
   return (
     <div className="max-w-[600px] flex flex-col">
       <div className="flex justify-between px-[50px] py-5 mb-[52px] border-b border-b-[#B3B3B3]">
@@ -47,43 +35,7 @@ const CartPage = () => {
         <p className="text-xl text-[#B3B3B3]">선택 삭제</p>
       </div>
 
-      <div className="flex flex-col gap-5">
-        {cartList?.length ? (
-          cartList.map((cartItem) => (
-            <div key={cartItem.productId} className="flex items-center px-5">
-              <Checkbox />
-              <div className="relative aspect-square max-w-[100px] h-[120px] mx-[33px]">
-                <Image src={cartItem.Products.thumbNailURL} fill alt="" className="absolute" />
-              </div>
-              <div className="flex flex-col px-2.5 w-full">
-                <div className="flex justify-between items-center">
-                  <p className="text-xs mb-1">{cartItem.Products.Brands.enName}</p>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="13"
-                    viewBox="0 0 14 13"
-                    fill="none"
-                    onClick={() => handleProductDelete(cartItem.productId)}
-                  >
-                    <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-                  </svg>
-                </div>
-                <p className="font-semibold mb-2.5">{cartItem.Products.title}</p>
-                <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 해당 제품의 옵션 추가</p>
-                <div className="flex justify-between items-center w-full">
-                  <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                    TODO: 해당 제품의 옵션 변경
-                  </Button>
-                  <p className="text-xs">{cartItem.Products.discountedPrice ?? cartItem.Products.price}원</p>
-                </div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>장바구니에 상품이 없습니다.</p>
-        )}
-      </div>
+      {cartList?.length ? <CartList /> : <p>장바구니에 상품이 없습니다.</p>}
 
       <div className="fixed bottom-0 h-[340px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
         <div className="py-3 flex justify-center">
