@@ -71,18 +71,21 @@ export type Database = {
           isSelected: boolean
           productId: number
           userId: string
+          volume: number | null
         }
         Insert: {
           count?: number | null
           isSelected?: boolean
           productId: number
           userId: string
+          volume?: number | null
         }
         Update: {
           count?: number | null
           isSelected?: boolean
           productId?: number
           userId?: string
+          volume?: number | null
         }
         Relationships: [
           {
