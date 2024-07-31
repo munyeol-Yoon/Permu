@@ -2,7 +2,8 @@ import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signInWithOtp
 import {
   AUTH_LOG_IN_PATHNAME,
   AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME,
-  AUTH_SIGN_UP_COMPLETE_PATHNAME
+  AUTH_SIGN_UP_COMPLETE_PATHNAME,
+  HOME
 } from '@/constant/pathname';
 import { LoginForm } from '@/types/types';
 import { Provider, User } from '@supabase/supabase-js';
@@ -25,7 +26,7 @@ const useAuthMutation = () => {
     mutationFn: (loginForm) => loginWithEmail(loginForm),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
-      router.replace('/');
+      router.replace(HOME);
     }
   });
 
