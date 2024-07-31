@@ -4,9 +4,9 @@ import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useWishesMutation } from '@/hooks/mutation';
 import { useWishesQuery } from '@/hooks/query';
 import { Params, TWish } from '@/types/products';
-import WishSVG from '@@/public/default-wish-icon.svg';
-import SelectWishSVG from '@@/public/select-wish-icon.svg';
-import MainWishSVG from '@@/public/wish-icon.svg';
+import WishSVG from '@@/public/heart/default-wish-icon.svg';
+import SelectWishSVG from '@@/public/heart/select-wish-icon.svg';
+import MainWishSVG from '@@/public/heart/wish-icon.svg';
 import { useParams, useRouter } from 'next/navigation';
 
 const Wish = ({ inner = true }: { inner?: boolean }) => {

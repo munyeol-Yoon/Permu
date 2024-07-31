@@ -10,7 +10,7 @@ const DetailPage = ({ productDetail }: { productDetail: string }) => {
 
   return (
     <div className="relative w-full">
-      <div className={`overflow-hidden transition-all duration-500 ${!isExpanded && 'h-[200px]'}`}>
+      <div className={`overflow-hidden transition-all duration-500 ${!isExpanded && 'h-[243px]'}`}>
         <div className="relative aspect-square">
           <Image src={productDetail} alt={'상세 정보'} fill className="object-cover" />
         </div>
