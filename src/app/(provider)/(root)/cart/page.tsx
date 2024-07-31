@@ -1,6 +1,4 @@
-import CartDrawer from './_components/CartDrawer';
-import CartList from './_components/CartList';
-import CartSelector from './_components/CartSelector';
+import { CartDrawer, CartList, CartSelector } from './_components';
 
 const CartPage = () => {
   return (
