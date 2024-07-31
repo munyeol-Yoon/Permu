@@ -1,5 +1,7 @@
 'use client';
 
+import Toggle from '@/components/Toggle';
+import { Accordion } from '@/components/ui/accordion';
 import { useCategoryQuery } from '@/hooks/query';
 import SearchButtonSVG from '@@/public/searchButton.svg';
 import Link from 'next/link';
@@ -52,19 +54,24 @@ const CategoryPage = () => {
         </section>
       </Link>
       {/* 카테고리 부분 */}
-      <section className="flex justify-center items-center self-stretch">
+      <section className="flex flex-col items-stretch self-stretch">
         {Object.keys(categories).map((categoryTitle) => (
           <div key={categoryTitle}>
             <h2>{categoryTitle}</h2>
             {categories[categoryTitle].map((group) => (
-              <div key={group.mainTitle}>
-                <h3>{group.mainTitle}</h3>
-                {group.items.map((item) => (
-                  <div key={item.categoryId}>
-                    <p>{item.categorySubTitle ? item.categorySubTitle : '카테고리 준비중입니다.'}</p>
+              <Accordion type="multiple" key={group.mainTitle}>
+                <Toggle trigger={group.mainTitle} value={false}>
+                  <div>
+                    {group.items.map((item) => (
+                      <div key={item.categoryId}>
+                        <Link href={`/category/search/result?query=${item.categoryId}`}>
+                          <p>{item.categorySubTitle ? item.categorySubTitle : '카테고리 준비중입니다.'}</p>
+                        </Link>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </Toggle>
+              </Accordion>
             ))}
           </div>
         ))}
