@@ -40,9 +40,9 @@ const Wish = ({ inner = true }: { inner?: boolean }) => {
   } else {
     return (
       <div className="w-[176px]">
-        <div className="flex flex-col gap-0 items-center w-8 hover:cursor-pointer" onClick={handleWish}>
+        <div className="flex flex-col gap-1 items-center w-8 hover:cursor-pointer" onClick={handleWish}>
           <span>{userLike ? <MainWishSVG /> : <MainWishSVG />}</span>
-          <span className="font-bold ">{getLikes?.data.length.toLocaleString()}</span>
+          <span className="font-bold text-sm">{getLikes?.data.length.toLocaleString()}</span>
         </div>
       </div>
     );
