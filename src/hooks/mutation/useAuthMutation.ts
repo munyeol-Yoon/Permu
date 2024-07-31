@@ -1,4 +1,5 @@
-import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signUpWithEmail } from '@/api/auth';
+import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signUpWithEmail, verifyOtp } from '@/api/auth';
+import { AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME } from '@/constant/pathname';
 import { LoginForm, UserInfo } from '@/types/types';
 import { Provider } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -24,12 +25,23 @@ const useAuthMutation = () => {
     }
   });
 
-  const { mutate: signUpWithEmailMutation } = useMutation<void, Error, LoginForm>({
-    mutationFn: (loginForm) => signUpWithEmail(loginForm),
+  const { mutate: verifyOtpMutation } = useMutation({
+    mutationFn: (otp: { email: string; token: string }) => verifyOtp(otp),
+    onSuccess: (data) => {
+      router.replace(AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME);
+    },
+    onError: (error) => {
+      console.log(error);
+      alert('인증번호가 일치하지 않습니다. 새로운 인증번호를 발급해주세요.');
+    }
+  });
+
+  const { mutate: signUpWithEmailMutation } = useMutation<void, Error, string>({
+    mutationFn: (email) => signUpWithEmail(email),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       console.log('>>>>>>', data);
-      router.replace('/');
+      // router.replace('/');
     }
   });
 
@@ -53,6 +65,7 @@ const useAuthMutation = () => {
   return {
     logInWithProviderMutation,
     logInWithEmailMutation,
+    verifyOtpMutation,
     signUpWithEmailMutation,
     logOutMutation,
     userInfoMutation

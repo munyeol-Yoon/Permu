@@ -18,10 +18,20 @@ export const loginWithEmail = async (loginForm: LoginForm) => {
   return result;
 };
 
-export const signUpWithEmail = async (loginForm: LoginForm) => {
+export const verifyOtp = async (otp: { email: string; token: string }) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/otp`, {
+    method: 'POST',
+    body: JSON.stringify(otp)
+  });
+  const result = await response.json();
+  if (result.success) return result;
+  else throw new Error(result.details);
+};
+
+export const signUpWithEmail = async (email: string) => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/sign-up`, {
     method: 'POST',
-    body: JSON.stringify(loginForm)
+    body: JSON.stringify({ email })
   });
   const result = await response.json();
   return result;

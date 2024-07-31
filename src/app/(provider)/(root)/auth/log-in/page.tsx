@@ -2,6 +2,7 @@
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AUTH_SIGN_UP_PATHNAME } from '@/constant/pathname';
 import { useAuthMutation } from '@/hooks/mutation';
 import { Provider } from '@supabase/supabase-js';
 import Link from 'next/link';
@@ -96,7 +97,7 @@ const LogInPage = () => {
                   <div className="flex flex-col">
                     <Button>주문내역 조회하기</Button>
                     <Button variant="outline" asChild className=" bg-white text-black">
-                      <Link href="/auth/sign-up">회원가입</Link>
+                      <Link href={AUTH_SIGN_UP_PATHNAME}>회원가입</Link>
                     </Button>
                   </div>
                 </form>

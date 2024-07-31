@@ -3,6 +3,7 @@
 import signUpImg from '@/assets/sign-up.png';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
+import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_AGREEMENT_PATHNAME } from '@/constant/pathname';
 import { useAuthMutation } from '@/hooks/mutation';
 import { Provider } from '@supabase/supabase-js';
 import Image from 'next/image';
@@ -13,7 +14,7 @@ const SignUpPage = () => {
   const handleSignUp = (provider: Provider) => logInWithProviderMutation(provider);
   return (
     <>
-      <Navbar title="회원가입" href="log-in" />
+      <Navbar title="회원가입" href={AUTH_LOG_IN_PATHNAME} />
 
       <Image src={signUpImg} width={600} height={600} alt="회원가입 해택" />
 
@@ -23,7 +24,7 @@ const SignUpPage = () => {
         </Button>
         <Button onClick={() => handleSignUp('google')}>Google 아이디로 가입하기</Button>
         <Button asChild variant="outline">
-          <Link href="sign-up/agreement">이메일로 가입하기</Link>
+          <Link href={AUTH_SIGN_UP_AGREEMENT_PATHNAME}>이메일로 가입하기</Link>
         </Button>
       </div>
     </>

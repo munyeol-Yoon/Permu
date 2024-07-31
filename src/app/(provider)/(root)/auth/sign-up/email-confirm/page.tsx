@@ -1,15 +1,19 @@
 'use client';
+
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
+import { AUTH_SIGN_UP_AGREEMENT_PATHNAME } from '@/constant/pathname';
 import { useAuthMutation } from '@/hooks/mutation';
 import { validateEmail } from '@/utils/validateCheck';
 import Link from 'next/link';
-import { ChangeEventHandler, useRef } from 'react';
+import { ChangeEventHandler, useRef, useState } from 'react';
 
 const EmailConfirmPage = () => {
-  const { signUpWithEmailMutation } = useAuthMutation();
+  const { signUpWithEmailMutation, verifyOtpMutation } = useAuthMutation();
+  const [submit, setSubmit] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const emailCheckRef = useRef<HTMLInputElement>(null);
+  const confirmNums = useRef<HTMLInputElement>(null);
 
   const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (emailRef.current) emailRef.current.value = e.target.value;
@@ -17,6 +21,10 @@ const EmailConfirmPage = () => {
 
   const handleEmailCheckChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     if (emailCheckRef.current) emailCheckRef.current.value = e.target.value;
+  };
+
+  const handleConfirmChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (confirmNums.current) confirmNums.current.value = e.target.value;
   };
 
   const validateForm = () => {
@@ -36,17 +44,22 @@ const EmailConfirmPage = () => {
       return false;
     }
 
+    setSubmit(true);
     return true;
   };
 
-  const handleSubmit = () => {
-    if (validateForm() && emailRef.current && emailCheckRef.current)
-      signUpWithEmailMutation({ email: emailRef.current?.value, password: emailCheckRef.current?.value });
+  const handleSendEmail = () => {
+    if (validateForm() && emailRef.current && emailCheckRef.current) signUpWithEmailMutation(emailRef.current?.value);
+  };
+
+  const handleCheckConfirmEmail = () => {
+    if (emailRef.current && confirmNums.current)
+      verifyOtpMutation({ email: emailRef.current?.value, token: confirmNums.current?.value });
   };
 
   return (
     <>
-      <Navbar title="이메일 인증" href="agreement" />
+      <Navbar title="이메일 인증" href={AUTH_SIGN_UP_AGREEMENT_PATHNAME} />
 
       <div className="px-12">
         <div>
@@ -77,18 +90,37 @@ const EmailConfirmPage = () => {
               onChange={handleEmailCheckChange}
             />
           </div>
+
+          {submit && (
+            <div className="flex items-center">
+              <label htmlFor="otp" className="w-1/4">
+                인증번호
+              </label>
+              <input
+                type="text"
+                id="otp"
+                className="border-b px-[40px] py-[20px] text-center grow"
+                placeholder="인증 번호를 입력해주세요"
+                ref={confirmNums}
+                onChange={handleConfirmChange}
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col mt-12 px-[50px]">
-          <Button className="bg-blue-600 text-white" onClick={handleSubmit}>
-            인증 메일 보내기
-          </Button>
-          <Button variant="outline" asChild className=" bg-white text-black">
-            <Link href="agreement">이전</Link>
-          </Button>
+          {submit ? (
+            <Button className="bg-orange-600 text-white" onClick={handleCheckConfirmEmail} disabled={!submit}>
+              Confirm
+            </Button>
+          ) : (
+            <Button className="bg-blue-600 text-white" onClick={handleSendEmail} disabled={submit}>
+              인증 메일 보내기
+            </Button>
+          )}
 
-          <Button asChild>
-            <Link href="account-form">(테스트)회원가입 폼으로 이동</Link>
+          <Button variant="outline" asChild className="bg-white text-black">
+            <Link href={AUTH_SIGN_UP_AGREEMENT_PATHNAME}>이전</Link>
           </Button>
         </div>
       </div>
