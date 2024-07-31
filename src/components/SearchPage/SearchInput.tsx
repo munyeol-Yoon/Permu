@@ -1,4 +1,5 @@
 import SearchButtonSVG from '@@/public/searchButton.svg';
+import Link from 'next/link';
 
 interface SearchInputProps {
   search: string;
@@ -25,9 +26,11 @@ const SearchInput = ({ search, handleInputChange, handleSearchClick, handleClear
           X
         </button>
       )}
-      <button onClick={handleSearchClick} className="absolute right-0 top-0 bottom-0 px-3 py-1">
-        <SearchButtonSVG />
-      </button>
+      <Link href={`/category/search/result?query=${search}`}>
+        <button onClick={handleSearchClick} className="absolute right-0 top-0 bottom-0 px-3 py-1">
+          <SearchButtonSVG />
+        </button>
+      </Link>
     </div>
   );
 };

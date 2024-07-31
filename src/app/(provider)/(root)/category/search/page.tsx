@@ -1,53 +1,43 @@
 'use client';
 
-import { getRelatedSearchProducts } from '@/api/product';
 import RecentSearch from '@/components/SearchPage/RecentSearch';
 import SearchInput from '@/components/SearchPage/SearchInput';
-import { useSearchQuery } from '@/hooks/query';
+import useRelatedSearchQuery from '@/hooks/query/useRelatedSearchQuery';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
 import { debounce } from 'lodash';
 import Image from 'next/image';
-import { useCallback, useState } from 'react';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
 
 const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
-  const [relatedSearches, setRelatedSearches] = useState<any[]>([]);
-  const { data, error, isLoading, refetch } = useSearchQuery(search);
+  const { data: relatedSearches = [], refetch } = useRelatedSearchQuery(search);
   const { recentSearchTerms, saveSearchTerm, deleteSearchTerm, clearAllSearchTerms } = useRecentSearchTerms();
 
   // TODO : 인기 검색어 MVP 이후로 연기
-  // TODO : 검색창에 입력시 현재 화면이 가려지며 검색된 결과가 실시간으로 리스트로 표시되어야함.
+  // TODO : 연관 키워드 MVP 이후로 연기
   // TODO : UI 작업
   // TODO : 컴포넌트 분리 작업 필요
   // TODO : 검색 결과 페이지.
 
   const debouncedSearch = useCallback(
-    debounce(async (searchTerm: string) => {
-      console.log(`API 호출 : ${searchTerm}`);
-      console.log(data);
-
-      try {
-        const relatedData = await getRelatedSearchProducts(searchTerm);
-        setRelatedSearches(relatedData.data || []);
-        console.log(relatedData.data);
-      } catch (err) {
-        console.error(err);
-      }
-
+    debounce((searchTerm: string) => {
       refetch();
     }, 1000),
     [refetch]
   );
 
+  useEffect(() => {
+    debouncedSearch(search);
+  }, [search, debouncedSearch]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    debouncedSearch(e.target.value);
   };
 
   const handleSearchClick = () => {
     console.log(`검색 버튼 클릭 ${search}`);
     saveSearchTerm(search);
-    refetch();
   };
 
   const handleDeleteClick = (term: string) => {
@@ -75,11 +65,13 @@ const SearchPage = () => {
           handleClearClick={handleClearClick}
         />
       </section>
-      <RecentSearch
-        recentSearchTerms={recentSearchTerms}
-        handleDeleteClick={handleDeleteClick}
-        handleClearAllTermsClick={handleClearAllTermsClick}
-      />
+      {!search && (
+        <RecentSearch
+          recentSearchTerms={recentSearchTerms}
+          handleDeleteClick={handleDeleteClick}
+          handleClearAllTermsClick={handleClearAllTermsClick}
+        />
+      )}
 
       {/* 
       상단 정확히 일치하는 제품 -> 바로가기가 있어야함
@@ -87,65 +79,82 @@ const SearchPage = () => {
       중단 검색결과가 포함되어 있는 카테고리 -> 바로가기 X
        */}
 
-      {/* 정확히 일치하는 제품 */}
-      {/* TODO: 제품이 너무 많은데 제한이 있어야 하지 않을까? */}
-      {relatedSearches
-        .filter((item) => item.Categories.length === 0)
-        .map((item, index) => (
-          <section
-            key={index}
-            className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 relative overflow-hidden rounded-full">
-                <Image src={item.thumbNailURL} alt={item.title} layout="fill" className="object-cover" />
-              </div>
-              <div>
-                <span>{item.title}</span>
-              </div>
-            </div>
-            <div>
-              <button className="text-gray-300">바로가기</button>
-            </div>
-          </section>
-        ))}
-
-      {/* 검색결과가 포함되어 있는 카테고리 */}
-      {/* TODO: 카테고리 링크가 나오는 부분도 여러개가 나와야 하는 걸까? */}
-      {relatedSearches
-        .filter((item) => item.Categories.length > 0)
-        .map((item, index) => (
-          <section
-            key={index}
-            className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 relative overflow-hidden rounded-full">
-                <Image src={item.thumbNailURL} alt={item.title} layout="fill" className="object-cover" />
-              </div>
-              <div>
-                <span>{item.title}</span>
-                <div className="text-gray-500">
-                  {/* 관련 카테고리 */}
-                  {/* TODO: 코드(100) 로 오는 카테고리 이름을 어떻게 관리할까? */}
-                  {item.Categories.map((category: Categories, catIndex: number) => (
-                    <span key={category.categoryId}>
-                      {category.categoryName}
-                      {category.CategoryDetail.length > 0 && ' > '}
-                      {category.CategoryDetail.map((detail, detailIndex) => (
-                        <span key={detail.categoryDetailId}>
-                          {detail.name}
-                          {detailIndex < category.CategoryDetail.length - 1 && ' > '}
-                        </span>
-                      ))}
-                      {catIndex < item.Categories.length - 1 && ' > '}
-                    </span>
-                  ))}
+      {/* 이름이 정확히 일치하는 제품 오직 하나만! */}
+      {search &&
+        relatedSearches
+          .filter((item: RelatedSearchProduct) => item.title === search)
+          .slice(0, 1)
+          .map((item: RelatedSearchProduct, index) => (
+            <section
+              key={index}
+              className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 relative overflow-hidden rounded-full">
+                  <Image src={item.thumbNailURL} alt={item.title} layout="fill" className="object-cover" />
+                </div>
+                <div>
+                  <span>{item.title}</span>
                 </div>
               </div>
-            </div>
-          </section>
-        ))}
+              <div>
+                <Link href={`/products/${item.productId}`}>
+                  <button className="text-gray-300">바로가기</button>
+                </Link>
+              </div>
+            </section>
+          ))}
+
+      {/* 검색결과가 포함되어 있는 카테고리 */}
+      {search &&
+        relatedSearches
+          .filter((item: RelatedSearchProduct) => item.Categories)
+          .slice(0, 1)
+          .map((item: RelatedSearchProduct, index) => (
+            <section
+              key={index}
+              className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
+            >
+              <Link href={`/category/search/result?categoryId=${item.Categories?.categoryId}`}>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 relative overflow-hidden rounded-full">
+                    <Image src={item.thumbNailURL} alt={item.title} layout="fill" className="object-cover" />
+                  </div>
+                  <div>
+                    <span>{item.title}</span>
+                    <div className="text-gray-500">
+                      <span>
+                        {item.Categories?.categoryTitle}
+                        {item.Categories?.categorySubTitle && ' > ' + item.Categories.categorySubTitle}
+                        {item.Categories?.categoryMainTitle && ' > ' + item.Categories.categoryMainTitle}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </section>
+          ))}
+
+      {/* 비슷한 검색 -> 키워드 임시방편 */}
+      {search &&
+        relatedSearches
+          .filter((item) => item.Categories)
+          .slice(1)
+          .map((item, index) => (
+            <section
+              key={index}
+              className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 relative overflow-hidden rounded-full">
+                  <Image src={item.thumbNailURL} alt={item.title} layout="fill" className="object-cover" />
+                </div>
+                <div>
+                  <span>{item.title}</span>
+                </div>
+              </div>
+            </section>
+          ))}
     </div>
   );
 };
