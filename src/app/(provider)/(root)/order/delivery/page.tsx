@@ -276,7 +276,7 @@ const DeliveryPage = () => {
         </div>
         <div className="flex justify-center items-center h-full">
           <button onClick={handleOrder} className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
-            총 {orderInfo.productList.length}개 | {totalPaymentPrice}원 구매하기
+            총 {orderInfo?.productList?.length}개 | {totalPaymentPrice}원 구매하기
           </button>
         </div>
       </div>
