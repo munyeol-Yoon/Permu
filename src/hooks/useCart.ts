@@ -5,7 +5,7 @@ import { useCartsQuery } from './query';
 const useCart = () => {
   const { data: cartList } = useCartsQuery();
 
-  const { addMutation, patchMutation, deleteMutation, deleteAllMutation } = useCartsMutation();
+  const { addMutation, patchMutation, deleteMutation } = useCartsMutation();
 
   const addCartItem = useCallback(
     async (productId: number, userId: string) => {
@@ -39,15 +39,13 @@ const useCart = () => {
     [deleteMutation]
   );
 
-  const deleteAllCartItem = useCallback(
-    async (userId: string) => {
-      const { mutateAsync } = deleteAllMutation;
-      await mutateAsync({ userId });
-    },
-    [deleteAllMutation]
-  );
-
-  return { cartList, addCartItem, updateCartItemCount, updateCartItemSelected, deleteCartItem, deleteAllCartItem };
+  return {
+    cartList,
+    addCartItem,
+    updateCartItemCount,
+    updateCartItemSelected,
+    deleteCartItem
+  };
 };
 
 export default useCart;
