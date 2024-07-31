@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
@@ -92,34 +91,19 @@ const DeliveryPage = () => {
           <p className="text-xl font-bold">상품정보</p>
         </div>
         <div className="flex flex-col gap-5">
-          {orderInfo?.productList.length ? (
-            orderInfo.productList.map((productItem: any) => (
-              <div key={productItem.productId} className="flex items-center px-5">
-                <Checkbox />
-                <div className="relative aspect-video max-w-[100px] h-[100px] bg-black overflow-hidden mx-[33px]">
-                  <Image src={productItem.thumbNailURL} width={100} height={100} alt="" className="absolute" />
-                </div>
-                <div className="flex flex-col px-2.5 w-full">
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs mb-1">{productItem.title}</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                      <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-                    </svg>
-                  </div>
-                  <p className="font-semibold mb-2.5">{productItem.content}</p>
-                  <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 해당 제품의 옵션 추가</p>
-                  <div className="flex justify-between items-center w-full">
-                    <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                      TODO: 해당 제품의 옵션 변경
-                    </Button>
-                    <p className="text-xs">{productItem.price}원</p>
-                  </div>
-                </div>
+          {orderInfo?.productList?.map((productItem: any) => (
+            <div key={productItem.productId} className="flex items-center px-5">
+              <div className="relative aspect-square max-w-[100px] h-[100px] mx-[33px]">
+                <Image src={productItem.thumbNailURL} width={100} height={100} alt="" className="absolute" />
               </div>
-            ))
-          ) : (
-            <p>장바구니에 상품이 없습니다.</p>
-          )}
+              <div className="flex flex-col px-2.5 w-full">
+                <p className="text-xs mb-1">{productItem.Brands.enName}</p>
+                <p className="font-semibold mb-2.5">{productItem.title}</p>
+                <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
+                <p className="text-end font-bold">{productItem.price.toLocaleString()}원</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -131,7 +115,8 @@ const DeliveryPage = () => {
           <div className="flex justify-between items-center py-2.5">
             <p>보유</p>
             <p className="text-[#B3B3B3]">
-              <span className="text-base pr-2">사용 가능한 마일리지 잔액</span> 1,000P
+              <span className="text-base pr-2">사용 가능한 마일리지 잔액</span>
+              {loggedUser?.userData.mileage?.toLocaleString()}P
             </p>
           </div>
           <div className="flex justify-between items-center py-2.5">
