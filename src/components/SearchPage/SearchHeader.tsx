@@ -15,7 +15,9 @@ const SearchHeader = () => {
         <Link href={'/'}>
           <LogoSVG className="cursor-pointer" />
         </Link>
-        <XSVG className="cursor-pointer" />
+        <Link href={'/category'}>
+          <XSVG className="cursor-pointer" />
+        </Link>
       </header>
       <section className="flex justify-start items-center self-stretch py-[0px] pr-[9px] pl-[50px] h-[64px]">
         <MenuItem>
