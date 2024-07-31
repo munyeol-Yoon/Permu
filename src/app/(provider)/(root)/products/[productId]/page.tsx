@@ -8,9 +8,8 @@ import { Params } from '@/types/products';
 
 import BennerSlide from '@/components/BennerSlide';
 import BrandBenner from '@/components/BrandBenner';
-import BuyNow from '../_components/BuyNow';
-import Cart from '../_components/Cart';
 import Information from '../_components/Information';
+import Paying from '../_components/Paying';
 import Share from '../_components/Share/Share';
 import Wish from '../_components/Wish';
 
@@ -49,15 +48,35 @@ const ProductDetailPage = async ({ params }: Params) => {
         <p>{product?.content}</p>
       </div>
 
-      <div className="p-5-2">
-        <span>사이즈</span>
-        <div className="flex-row-10">{product.size?.map((size, index: number) => <span key={index}>{size}</span>)}</div>
-      </div>
-      <div className="flex-row-20 justify-between p-5-2 w-full">
-        <Cart />
-        <BuyNow />
-      </div>
+      <Paying size={product.size} />
+      <div>
+        <div className="flex-row-20 justify-between p-5-2 w-full">
+          <span className="text-gray-500">상품 배송 옵션</span>
+          <span className="text-gray-500">배송 혜택 모두 보기 &gt;</span>
+        </div>
 
+        <div className="grid grid-cols-3 gap-[10px] justify-between p-5-2 w-full flex-wrap">
+          <div className="bg-gray-100 pt-[18px] pr-[14px] pb-[17px] pl-[15px]">
+            <span className="font-bold text-[15px] leading-[22.5px]">배송 상품 50,000원 이상 구매시 무료배송</span>
+          </div>
+          <div className="bg-gray-100 pt-[18px] pr-[14px] pb-[17px] pl-[15px]">
+            <span className="font-bold text-[15px] leading-[22.5px]">
+              배송 상품 30,000원 이상 구매시 배송비 1,500원
+            </span>
+          </div>
+          <div className="bg-gray-100 pt-[18px] pr-[14px] pb-[17px] pl-[15px]">
+            <span className="font-bold text-[15px] leading-[22.5px]">
+              배송 상품 10,000원 이상 구매시 배송비 2,500원
+            </span>
+          </div>
+          <div className="bg-gray-100 pt-[18px] pr-[14px] pb-[17px] pl-[15px]">
+            <span className="font-bold text-[15px] leading-[22.5px]">카카오 페이로 구매 시 무료배송</span>
+          </div>
+          <div className="bg-gray-100 pt-[18px] pr-[14px] pb-[17px] pl-[15px]">
+            <span className="font-bold text-[15px] leading-[22.5px]">토스 페이로 구매 시 무료배송</span>
+          </div>
+        </div>
+      </div>
       <div className="flex-row-20 justify-between p-5-2 w-full">
         <Share product={product} />
         <Wish />
