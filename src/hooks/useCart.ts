@@ -7,40 +7,45 @@ const useCart = () => {
 
   const { addMutation, patchMutation, deleteMutation, deleteAllMutation } = useCartsMutation();
 
-  const addCartItem = useCallback(() => {
+  const addCartItem = useCallback(
     async (productId: number, userId: string) => {
       const { mutateAsync } = addMutation;
       await mutateAsync({ productId, userId });
-    };
-  }, [addMutation]);
+    },
+    [addMutation]
+  );
 
-  const updateCartItemCount = useCallback(() => {
+  const updateCartItemCount = useCallback(
     async (productId: number, userId: string, count: number) => {
       const { mutateAsync } = patchMutation;
       await mutateAsync({ productId, userId, count });
-    };
-  }, [patchMutation]);
+    },
+    [patchMutation]
+  );
 
-  const updateCartItemSelected = useCallback(() => {
+  const updateCartItemSelected = useCallback(
     async (productId: number, userId: string, isSelected: boolean) => {
       const { mutateAsync } = patchMutation;
       await mutateAsync({ productId, userId, isSelected });
-    };
-  }, [patchMutation]);
+    },
+    [patchMutation]
+  );
 
-  const deleteCartItem = useCallback(() => {
+  const deleteCartItem = useCallback(
     async (productId: number, userId: string) => {
       const { mutateAsync } = deleteMutation;
       await mutateAsync({ productId, userId });
-    };
-  }, [deleteMutation]);
+    },
+    [deleteMutation]
+  );
 
-  const deleteAllCartItem = useCallback(() => {
+  const deleteAllCartItem = useCallback(
     async (userId: string) => {
       const { mutateAsync } = deleteAllMutation;
       await mutateAsync({ userId });
-    };
-  }, [deleteAllMutation]);
+    },
+    [deleteAllMutation]
+  );
 
   return { cartList, addCartItem, updateCartItemCount, updateCartItemSelected, deleteCartItem, deleteAllCartItem };
 };
