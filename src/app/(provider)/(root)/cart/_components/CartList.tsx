@@ -1,3 +1,5 @@
+'use client';
+
 import { useCartsQuery } from '@/hooks/query';
 import CartEmpty from './CartEmpty';
 import CartItem from './CartItem';
