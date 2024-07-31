@@ -7,6 +7,7 @@ import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
 import { Params } from '@/types/products';
 import { useState } from 'react';
+import Wish from '../Wish';
 
 const Paying = ({ size }: { size: string[] }) => {
   const router = useRouter();
@@ -93,6 +94,13 @@ const Paying = ({ size }: { size: string[] }) => {
         <Button className="w-full" variant="outline" onClick={handlePostCart}>
           쇼핑백에 추가
         </Button>
+        <Button className="w-full" onClick={handleBuyNow}>
+          바로 구매하기
+        </Button>
+      </div>
+
+      <div className="flex-row-20 justify-between p-5-2 w-[598px] fixed bottom-0 z-10 bg-white border-t-[1.5px] border-gray-500">
+        <Wish inner={false} />
         <Button className="w-full" onClick={handleBuyNow}>
           바로 구매하기
         </Button>

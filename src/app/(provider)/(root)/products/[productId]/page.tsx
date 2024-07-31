@@ -22,7 +22,7 @@ const ProductDetailPage = async ({ params }: Params) => {
   const brand = await getBrandById(`${product.brandId}`);
   const category = await getCategoryById(product.categoryId ?? '');
   return (
-    <div>
+    <div className="h-[2800px]">
       <BrandBenner>
         <span className="text-white">{brand?.krName}</span>
         <span className="text-white">{product.brandId}</span>
