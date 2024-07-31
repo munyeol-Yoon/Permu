@@ -6,6 +6,7 @@ const CurrentProducts = () => {
     <div className="flex flex-col">
       <CategoryMore title="현재 판매중인 상품" />
       <div className="flex items-center justify-between">
+        {/* 임시 */}
         {Array(3)
           .fill(0)
           .map((_, idx) => (

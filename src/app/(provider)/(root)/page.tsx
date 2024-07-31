@@ -7,6 +7,7 @@ import ReviewSlide from './_components/ReviewSlide/ReviewSlide';
 import mockData from '@/mockup/eventBenner.json';
 
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+import CurrentProducts from '@/components/CurrentProducts/CurrentProducts';
 
 const RootPage = () => {
   return (
@@ -22,17 +23,7 @@ const RootPage = () => {
           ))}
         </div>
         {/* 현재 판매중인 상품 */}
-        <div className="flex flex-col">
-          <CategoryMore title="현재 판매중인 상품" />
-
-          <div className="flex items-center justify-between">
-            {Array(3)
-              .fill(0)
-              .map((_, idx) => (
-                <ProductCard key={idx} brand="브랜드명" name="제품명" discountPercentage={10} price={30000} />
-              ))}
-          </div>
-        </div>
+        <CurrentProducts />
         {/* 카테고리1 */}
         <CategorySection title="인기 급상승 제품 - 향수" />
 
