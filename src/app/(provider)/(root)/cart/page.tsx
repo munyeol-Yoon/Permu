@@ -1,12 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { useCartsQuery } from '@/hooks/query';
 import Link from 'next/link';
 import { useEffect, useMemo } from 'react';
 import CartList from './_components/CartList';
+import CartSelector from './_components/CartSelector';
 
 const CartPage = () => {
   const { data: cartList } = useCartsQuery();
@@ -23,16 +23,8 @@ const CartPage = () => {
 
   return (
     <div className="max-w-[600px] flex flex-col h-full">
-      <div className="flex justify-between px-[50px] py-5 mb-[52px] border-b border-b-[#B3B3B3]">
-        <div className="flex items-center gap-4">
-          <Checkbox />
-          <p className="text-xl">전체 {cartList?.length ?? 0}개</p>
-        </div>
-        <p className="text-xl text-[#B3B3B3]">선택 삭제</p>
-      </div>
-
+      <CartSelector />
       <CartList />
-
       {cartList && !cartList.length ? (
         <div>쇼핑 계속하기</div>
       ) : (
