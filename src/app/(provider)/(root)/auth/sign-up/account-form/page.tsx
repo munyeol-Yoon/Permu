@@ -1,13 +1,42 @@
+'use client';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  AUTH_LOG_IN_PATHNAME,
-  AUTH_SIGN_UP_COMPLETE_PATHNAME,
-  AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME
-} from '@/constant/pathname';
+import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
+import { useAuth } from '@/contexts/auth.context/auth.context';
+import { useAuthMutation } from '@/hooks/mutation';
 import Link from 'next/link';
+import { useRef } from 'react';
 const AccountForm = () => {
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordCheckRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const birthRef = useRef<HTMLInputElement>(null);
+  const genderMaleRef = useRef<HTMLInputElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+
+  const { loggedUser } = useAuth();
+  const { userInfoMutation } = useAuthMutation();
+  if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
+  const {
+    userData: { email }
+  } = loggedUser;
+
+  const handleSubmit = () => {
+    const userData = {
+      email,
+      password: passwordRef.current?.value || '',
+      // passwordCheck: passwordCheckRef.current?.value || '',
+      name: nameRef.current?.value || '',
+      birth: birthRef.current?.value || '',
+      gender: genderMaleRef.current?.checked ? 'M' : 'F',
+      // address: addressRef.current?.value || '',
+      phone: phoneRef.current?.value || ''
+    };
+    userInfoMutation(userData);
+  };
+
   return (
     <div>
       <Navbar title="회원가입" href={AUTH_LOG_IN_PATHNAME} />
@@ -36,6 +65,8 @@ const AccountForm = () => {
               id="email"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="아이디를 입력해 주세요."
+              value={email}
+              disabled
             />
           </div>
           <div className="flex items-center">
@@ -47,6 +78,7 @@ const AccountForm = () => {
               id="password"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="비밀번호를 입력해 주세요."
+              ref={passwordRef}
             />
           </div>
           <div className="flex items-center">
@@ -58,6 +90,7 @@ const AccountForm = () => {
               id="password-check"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="비밀번호 확인을 입력해 주세요."
+              ref={passwordCheckRef}
             />
           </div>
           <div className="flex items-center">
@@ -69,6 +102,7 @@ const AccountForm = () => {
               id="name"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="성함을 입력해 주세요."
+              ref={nameRef}
             />
           </div>
           <div className="flex items-center">
@@ -80,12 +114,13 @@ const AccountForm = () => {
               id="birth"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="생년월일을 입력해 주세요."
+              ref={birthRef}
             />
           </div>
           <div className="flex items-center">
             <p className="w-1/4">성별</p>
             <div className="mx-auto py-4">
-              <input type="radio" id="male" name="gender" value="M" className="mr-2" />
+              <input type="radio" id="male" name="gender" value="M" className="mr-2" ref={genderMaleRef} />
               <label htmlFor="male">남성</label>
               <input type="radio" id="female" name="gender" value="F" className="ml-10 mr-2" />
               <label htmlFor="female">여성</label>
@@ -96,17 +131,6 @@ const AccountForm = () => {
         <div className="w-full bg-red mt-11">
           <h3 className="py-5 border-b">부가정보</h3>
           <div className="flex items-center">
-            <label htmlFor="address" className="w-1/4">
-              주소
-            </label>
-            <input
-              type="address"
-              id="address"
-              className="border-b px-[40px] py-4 text-center grow"
-              placeholder="주소를 입력해 주세요."
-            />
-          </div>
-          <div className="flex items-center">
             <label htmlFor="tel" className="w-1/4">
               휴대폰번호
             </label>
@@ -115,14 +139,13 @@ const AccountForm = () => {
               id="tel"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="전화번호를 입력해 주세요."
+              ref={phoneRef}
             />
           </div>
         </div>
 
         <div className="flex flex-col mt-12">
-          <Button asChild>
-            <Link href={AUTH_SIGN_UP_COMPLETE_PATHNAME}>다음</Link>
-          </Button>
+          <Button onClick={handleSubmit}> 테스트{/* <Link href={AUTH_SIGN_UP_COMPLETE_PATHNAME}>다음</Link> */}</Button>
           <Button asChild variant="outline" className=" bg-white text-black">
             <Link href={AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME}>이전</Link>
           </Button>

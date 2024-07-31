@@ -1,6 +1,10 @@
 import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signUpWithEmail, verifyOtp } from '@/api/auth';
-import { AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME } from '@/constant/pathname';
-import { LoginForm, UserInfo } from '@/types/types';
+import {
+  AUTH_LOG_IN_PATHNAME,
+  AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME,
+  AUTH_SIGN_UP_COMPLETE_PATHNAME
+} from '@/constant/pathname';
+import { LoginForm } from '@/types/types';
 import { Provider } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
@@ -28,6 +32,7 @@ const useAuthMutation = () => {
   const { mutate: verifyOtpMutation } = useMutation({
     mutationFn: (otp: { email: string; token: string }) => verifyOtp(otp),
     onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       router.replace(AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME);
     },
     onError: (error) => {
@@ -39,7 +44,7 @@ const useAuthMutation = () => {
   const { mutate: sendVerificationEmailMutation } = useMutation<void, Error, string>({
     mutationFn: (email) => signUpWithEmail(email),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+      // queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       console.log('>>>>>>', data);
       // router.replace('/');
     }
@@ -49,17 +54,21 @@ const useAuthMutation = () => {
     mutationFn: () => logOut(),
     onSuccess: () => {
       queryClient.invalidateQueries();
-      router.replace('/auth/log-in');
+      router.replace(AUTH_LOG_IN_PATHNAME);
     }
   });
 
-  const { mutateAsync: userInfoMutation } = useMutation<void, Error, UserInfo>({
+  // 타입 수정
+  const { mutateAsync: userInfoMutation } = useMutation<any, Error, any>({
     mutationFn: (userInfo) => patchUserInfo(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
-      router.replace('/');
+      console.log('유저 정보 업뎃완료');
+      router.replace(AUTH_SIGN_UP_COMPLETE_PATHNAME);
+    },
+    onError: (error) => {
+      console.log('실패함', error);
     }
-    // onError: (error) => console.log(error)
   });
 
   return {

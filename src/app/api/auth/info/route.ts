@@ -1,8 +1,9 @@
 import { createClient } from '@/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
+export async function PATCH(request: NextRequest) {
   try {
+    const { email, password, ...res } = await request.json();
     const supabase = createClient();
     const {
       data: { user },
@@ -12,20 +13,18 @@ export async function POST(request: NextRequest) {
     if (userError) throw new Error(userError.message);
     if (!user) throw new Error('User notFound');
 
-    const {
-      id: userId,
-      user_metadata: { name }
-    } = user;
+    // 비밀번호 업데이트
+    const { data: passwordUpdate, error: passwordError } = await supabase.auth.updateUser({ password });
+    if (passwordError) throw new Error(passwordError.message);
 
-    const { gender, birth, phone } = await request.json();
-
-    const { data, error } = await supabase
+    //db 업데이트
+    const { data: infoUpdate, error: infoUpdateError } = await supabase
       .from('Users')
-      .update({ gender, birth, phone, name, isNew: false })
-      .eq('id', userId)
+      .update({ ...res, isNew: false })
+      .eq('id', user.id)
       .select('*');
 
-    if (error) return NextResponse.json({ success: false, details: error.message });
+    if (infoUpdateError) throw new Error(infoUpdateError.message);
     return NextResponse.json({ success: true, details: '회원 정보 갱신' });
   } catch (error) {
     return NextResponse.json({ success: false, details: error });

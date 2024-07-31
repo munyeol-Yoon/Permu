@@ -1,9 +1,17 @@
+'use client';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AUTH_LOG_IN_PATHNAME } from '@/constant/pathname';
+import { AUTH_LOG_IN_PATHNAME, HOME } from '@/constant/pathname';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import Link from 'next/link';
 function SignUpCompletePage() {
+  const { loggedUser } = useAuth();
+  if (!loggedUser) return <div>유저 없음</div>;
+
+  const {
+    userData: { name, phone }
+  } = loggedUser;
   return (
     <div>
       <Navbar title="로그인" href={AUTH_LOG_IN_PATHNAME} />
@@ -24,10 +32,10 @@ function SignUpCompletePage() {
         <div className="flex flex-col items-center justify-center">
           <div className="bg-blue-200 w-[180px] h-[180px]" />
 
-          <p>조윤정 회원님</p>
-          <p>010-0000-0000</p>
+          <p>{name} 회원님</p>
+          <p>{phone}</p>
           <Button asChild className="bg-blue-600 text-white mt-12 ">
-            <Link href={AUTH_LOG_IN_PATHNAME}>로그인 하기</Link>
+            <Link href={HOME}>홈으로 돌아가기</Link>
           </Button>
         </div>
       </div>
