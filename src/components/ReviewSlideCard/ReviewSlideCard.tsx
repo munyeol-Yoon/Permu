@@ -1,7 +1,7 @@
 import OptionsSVG from '@@/public/options.svg';
 import Image from 'next/image';
 
-const ReviewSlide = () => {
+const ReviewSlideCard = () => {
   return (
     <div className="w-[320px]">
       <div className="relative">
@@ -28,4 +28,4 @@ const ReviewSlide = () => {
   );
 };
 
-export default ReviewSlide;
+export default ReviewSlideCard;

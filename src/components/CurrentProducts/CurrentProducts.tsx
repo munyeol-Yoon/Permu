@@ -11,7 +11,7 @@ const CurrentProducts = () => {
           .fill(0)
           .map((_, idx) => (
             <ProductCard
-              key={idx} 
+              key={idx}
               brand="브랜드명" 
               name="제품명" 
               discountPercentage={10} 
