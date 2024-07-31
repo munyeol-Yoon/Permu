@@ -1,11 +1,11 @@
-import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signUpWithEmail, verifyOtp } from '@/api/auth';
+import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signInWithOtp, verifyOtp } from '@/api/auth';
 import {
   AUTH_LOG_IN_PATHNAME,
   AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME,
   AUTH_SIGN_UP_COMPLETE_PATHNAME
 } from '@/constant/pathname';
 import { LoginForm } from '@/types/types';
-import { Provider } from '@supabase/supabase-js';
+import { Provider, User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
@@ -29,24 +29,25 @@ const useAuthMutation = () => {
     }
   });
 
-  const { mutate: verifyOtpMutation } = useMutation({
-    mutationFn: (otp: { email: string; token: string }) => verifyOtp(otp),
+  const { mutate: sendVerificationEmailMutation } = useMutation<void, Error, string>({
+    mutationFn: (email) => signInWithOtp(email),
+    onSuccess: () => {
+      // queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+    },
+    onMutate: () => {
+      alert('이메일을 확인해주세요! 재전송은 1분 이후 가능합니다');
+    }
+  });
+
+  const { mutate: verifyOtpMutation } = useMutation<User, Error, { email: string; token: string }>({
+    mutationFn: (otp) => verifyOtp(otp),
     onSuccess: (data) => {
+      alert('인증번호 일치!');
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       router.replace(AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME);
     },
     onError: (error) => {
-      console.log(error);
       alert('인증번호가 일치하지 않습니다. 새로운 인증번호를 발급해주세요.');
-    }
-  });
-
-  const { mutate: sendVerificationEmailMutation } = useMutation<void, Error, string>({
-    mutationFn: (email) => signUpWithEmail(email),
-    onSuccess: (data) => {
-      // queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
-      console.log('>>>>>>', data);
-      // router.replace('/');
     }
   });
 
