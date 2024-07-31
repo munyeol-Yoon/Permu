@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { ChangeEventHandler, FormEventHandler, useRef } from 'react';
 
 const LogInPage = () => {
-  const { logInWithProviderMutation, logInWithEmailMutation, signUpWithEmailMutation } = useAuthMutation();
+  const { logInWithProviderMutation, logInWithEmailMutation } = useAuthMutation();
   const idRef = useRef<HTMLInputElement>(null);
   const pwRef = useRef<HTMLInputElement>(null);
 
@@ -25,7 +25,6 @@ const LogInPage = () => {
     e.preventDefault();
     if (idRef.current && pwRef.current)
       logInWithEmailMutation({ email: idRef.current.value, password: pwRef.current.value });
-    // signUpWithEmailMutation({ email: idRef.current.value, password: pwRef.current.value });
   };
 
   return (
@@ -81,8 +80,8 @@ const LogInPage = () => {
                   <Button variant="outline" onClick={() => handleOAuthLogin('google')}>
                     구글 로그인
                   </Button>
-                  <Button variant="outline" asChild className=" bg-white text-black">
-                    <Link href="/auth/sign-up">회원가입</Link>
+                  <Button variant="outline" asChild className="bg-white text-black">
+                    <Link href={AUTH_SIGN_UP_PATHNAME}>회원가입</Link>
                   </Button>
                 </div>
               </div>

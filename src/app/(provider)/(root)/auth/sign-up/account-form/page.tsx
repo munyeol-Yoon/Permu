@@ -1,11 +1,16 @@
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  AUTH_LOG_IN_PATHNAME,
+  AUTH_SIGN_UP_COMPLETE_PATHNAME,
+  AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME
+} from '@/constant/pathname';
 import Link from 'next/link';
 const AccountForm = () => {
   return (
     <div>
-      <Navbar title="회원가입" href="/auth/log-in" />
+      <Navbar title="회원가입" href={AUTH_LOG_IN_PATHNAME} />
 
       <div className="px-12">
         <Tabs defaultValue="b">
@@ -116,10 +121,10 @@ const AccountForm = () => {
 
         <div className="flex flex-col mt-12">
           <Button asChild>
-            <Link href="complete">다음</Link>
+            <Link href={AUTH_SIGN_UP_COMPLETE_PATHNAME}>다음</Link>
           </Button>
           <Button asChild variant="outline" className=" bg-white text-black">
-            <Link href="email-confirm">이전</Link>
+            <Link href={AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME}>이전</Link>
           </Button>
         </div>
       </div>

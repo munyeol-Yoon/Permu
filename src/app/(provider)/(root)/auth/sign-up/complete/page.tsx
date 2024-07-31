@@ -1,11 +1,12 @@
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AUTH_LOG_IN_PATHNAME } from '@/constant/pathname';
 import Link from 'next/link';
 function SignUpCompletePage() {
   return (
     <div>
-      <Navbar title="로그인" href="/auth/log-in" />
+      <Navbar title="로그인" href={AUTH_LOG_IN_PATHNAME} />
 
       <div className="px-12">
         <Tabs defaultValue="c">
@@ -26,7 +27,7 @@ function SignUpCompletePage() {
           <p>조윤정 회원님</p>
           <p>010-0000-0000</p>
           <Button asChild className="bg-blue-600 text-white mt-12 ">
-            <Link href="/auth/log-in">로그인 하기</Link>
+            <Link href={AUTH_LOG_IN_PATHNAME}>로그인 하기</Link>
           </Button>
         </div>
       </div>

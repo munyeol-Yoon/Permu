@@ -36,7 +36,7 @@ const useAuthMutation = () => {
     }
   });
 
-  const { mutate: signUpWithEmailMutation } = useMutation<void, Error, string>({
+  const { mutate: sendVerificationEmailMutation } = useMutation<void, Error, string>({
     mutationFn: (email) => signUpWithEmail(email),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
@@ -66,7 +66,7 @@ const useAuthMutation = () => {
     logInWithProviderMutation,
     logInWithEmailMutation,
     verifyOtpMutation,
-    signUpWithEmailMutation,
+    sendVerificationEmailMutation,
     logOutMutation,
     userInfoMutation
   };

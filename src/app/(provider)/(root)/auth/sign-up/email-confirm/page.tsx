@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { ChangeEventHandler, useRef, useState } from 'react';
 
 const EmailConfirmPage = () => {
-  const { signUpWithEmailMutation, verifyOtpMutation } = useAuthMutation();
+  const { sendVerificationEmailMutation, verifyOtpMutation } = useAuthMutation();
   const [submit, setSubmit] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const emailCheckRef = useRef<HTMLInputElement>(null);
@@ -48,11 +48,14 @@ const EmailConfirmPage = () => {
     return true;
   };
 
-  const handleSendEmail = () => {
-    if (validateForm() && emailRef.current && emailCheckRef.current) signUpWithEmailMutation(emailRef.current?.value);
+  // 인증 메일 보내기
+  const handleSendVerificationEmail = () => {
+    if (validateForm() && emailRef.current && emailCheckRef.current)
+      sendVerificationEmailMutation(emailRef.current?.value);
   };
 
-  const handleCheckConfirmEmail = () => {
+  // 인증 번호 검사
+  const handleVerifyEmailOtp = () => {
     if (emailRef.current && confirmNums.current)
       verifyOtpMutation({ email: emailRef.current?.value, token: confirmNums.current?.value });
   };
@@ -104,17 +107,18 @@ const EmailConfirmPage = () => {
                 ref={confirmNums}
                 onChange={handleConfirmChange}
               />
+              <Button onClick={handleSendVerificationEmail}>재인증</Button>
             </div>
           )}
         </div>
 
         <div className="flex flex-col mt-12 px-[50px]">
           {submit ? (
-            <Button className="bg-orange-600 text-white" onClick={handleCheckConfirmEmail} disabled={!submit}>
+            <Button className="bg-orange-600 text-white" onClick={handleVerifyEmailOtp} disabled={!submit}>
               Confirm
             </Button>
           ) : (
-            <Button className="bg-blue-600 text-white" onClick={handleSendEmail} disabled={submit}>
+            <Button className="bg-blue-600 text-white" onClick={handleSendVerificationEmail} disabled={submit}>
               인증 메일 보내기
             </Button>
           )}
