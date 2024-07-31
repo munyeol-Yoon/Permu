@@ -43,7 +43,7 @@ const CartItem = ({ cartItem }: CartItemProps) => {
   };
 
   const handleUpdateItemSelected = () => {
-    updateCartItemSelected(cartItem.productId, loggedUser!.id, cartItem.isSelected);
+    updateCartItemSelected(cartItem.productId, loggedUser!.id, !cartItem.isSelected);
   };
 
   const handleDeleteItem = () => {

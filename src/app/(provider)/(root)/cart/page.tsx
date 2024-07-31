@@ -4,16 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCartsQuery } from '@/hooks/query';
 import Link from 'next/link';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import CartList from './_components/CartList';
 import CartSelector from './_components/CartSelector';
 
 const CartPage = () => {
   const { data: cartList } = useCartsQuery();
-
-  useEffect(() => {
-    console.log(cartList);
-  }, [cartList]);
 
   const totalPrice = useMemo(() => {
     if (cartList?.length) {

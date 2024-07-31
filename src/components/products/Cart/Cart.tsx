@@ -20,8 +20,7 @@ const Cart = () => {
       const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
 
       if (matchCartProduct)
-        if (userId)
-          patchMutation.mutate({ productId: Number(productId), userId, cal: true, count: matchCartProduct.count });
+        if (userId) patchMutation.mutate({ productId: Number(productId), userId, count: matchCartProduct.count });
         else {
           // const updatedCarts = displayedCarts.map((cart: Cart) => {
           //   if (cart.productId === Number(productId)) {
