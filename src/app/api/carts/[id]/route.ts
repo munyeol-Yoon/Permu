@@ -8,7 +8,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     const { data } = await supabase
       .from('Carts')
-      .select('*, Products (*)')
+      .select('*, Products (*, Brands (*))')
       .eq('userId', userId)
       .order('productId', { ascending: false });
 

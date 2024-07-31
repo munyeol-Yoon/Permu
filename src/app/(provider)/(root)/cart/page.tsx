@@ -5,21 +5,25 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
-import { useCartsQuery } from '@/hooks/query';
+import useCart from '@/hooks/useCart';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 const CartPage = () => {
   const { loggedUser } = useAuth();
-  const { data: carts } = useCartsQuery();
+  const { cartList } = useCart();
   const { patchMutation, deleteAllMutation, deleteMutation } = useCartsMutation();
 
+  useEffect(() => {
+    console.log(cartList);
+  }, [cartList]);
+
   const totalPrice = useMemo(() => {
-    if (carts?.length) {
-      return carts?.reduce((acc, cur) => acc + cur.Products.discountedPrice, 0);
+    if (cartList?.length) {
+      return cartList?.reduce((acc, cur) => acc + cur.Products.discountedPrice, 0);
     }
-  }, [carts]);
+  }, [cartList]);
 
   const handleProductDelete = (productId: number): void => {
     if (confirm('삭제 하시겠습니까?')) {
@@ -38,22 +42,22 @@ const CartPage = () => {
       <div className="flex justify-between px-[50px] py-5 mb-[52px] border-b border-b-[#B3B3B3]">
         <div className="flex items-center gap-4">
           <Checkbox />
-          <p className="text-xl">전체 {carts?.length ?? 0}개</p>
+          <p className="text-xl">전체 {cartList?.length ?? 0}개</p>
         </div>
         <p className="text-xl text-[#B3B3B3]">선택 삭제</p>
       </div>
 
       <div className="flex flex-col gap-5">
-        {carts?.length ? (
-          carts.map((cartItem) => (
+        {cartList?.length ? (
+          cartList.map((cartItem) => (
             <div key={cartItem.productId} className="flex items-center px-5">
               <Checkbox />
-              <div className="relative aspect-video max-w-[100px] h-[100px] bg-black overflow-hidden mx-[33px]">
-                <Image src={cartItem.Products.thumbNailURL} width={100} height={100} alt="" className="absolute" />
+              <div className="relative aspect-square max-w-[100px] h-[120px] mx-[33px]">
+                <Image src={cartItem.Products.thumbNailURL} fill alt="" className="absolute" />
               </div>
               <div className="flex flex-col px-2.5 w-full">
                 <div className="flex justify-between items-center">
-                  <p className="text-xs mb-1">{cartItem.Products.title}</p>
+                  <p className="text-xs mb-1">{cartItem.Products.Brands.enName}</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="14"
@@ -65,7 +69,7 @@ const CartPage = () => {
                     <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
                   </svg>
                 </div>
-                <p className="font-semibold mb-2.5">{cartItem.Products.content}</p>
+                <p className="font-semibold mb-2.5">{cartItem.Products.title}</p>
                 <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 해당 제품의 옵션 추가</p>
                 <div className="flex justify-between items-center w-full">
                   <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
@@ -116,7 +120,7 @@ const CartPage = () => {
             href="/order/delivery"
             className="w-full text-center bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm"
           >
-            총 {carts?.length ?? 0}개 | {totalPrice}원 구매하기
+            총 {cartList?.length ?? 0}개 | {totalPrice}원 구매하기
           </Link>
         </div>
       </div>
