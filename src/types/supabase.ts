@@ -104,60 +104,26 @@ export type Database = {
       Categories: {
         Row: {
           categoryId: string
-          categoryName: string | null
+          categoryMainTitle: string | null
+          categorySubTitle: string | null
+          categoryTitle: string
           code: number | null
-          productId: number | null
-          productTitle: string
         }
         Insert: {
           categoryId?: string
-          categoryName?: string | null
+          categoryMainTitle?: string | null
+          categorySubTitle?: string | null
+          categoryTitle: string
           code?: number | null
-          productId?: number | null
-          productTitle: string
         }
         Update: {
           categoryId?: string
-          categoryName?: string | null
+          categoryMainTitle?: string | null
+          categorySubTitle?: string | null
+          categoryTitle?: string
           code?: number | null
-          productId?: number | null
-          productTitle?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "Categories_productId_fkey"
-            columns: ["productId"]
-            isOneToOne: false
-            referencedRelation: "Products"
-            referencedColumns: ["productId"]
-          },
-        ]
-      }
-      CategoryDetail: {
-        Row: {
-          categoryDetailId: string
-          categoryId: string
-          name: string | null
-        }
-        Insert: {
-          categoryDetailId?: string
-          categoryId?: string
-          name?: string | null
-        }
-        Update: {
-          categoryDetailId?: string
-          categoryId?: string
-          name?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "CategoryDetail_categoryId_fkey"
-            columns: ["categoryId"]
-            isOneToOne: false
-            referencedRelation: "Categories"
-            referencedColumns: ["categoryId"]
-          },
-        ]
+        Relationships: []
       }
       Coupon: {
         Row: {
@@ -368,6 +334,7 @@ export type Database = {
       Products: {
         Row: {
           brandId: number | null
+          categoryId: string | null
           content: string | null
           createdAt: string
           detailImageURL: string | null
@@ -384,6 +351,7 @@ export type Database = {
         }
         Insert: {
           brandId?: number | null
+          categoryId?: string | null
           content?: string | null
           createdAt?: string
           detailImageURL?: string | null
@@ -400,6 +368,7 @@ export type Database = {
         }
         Update: {
           brandId?: number | null
+          categoryId?: string | null
           content?: string | null
           createdAt?: string
           detailImageURL?: string | null
@@ -421,6 +390,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "Brands"
             referencedColumns: ["brandId"]
+          },
+          {
+            foreignKeyName: "Products_categoryId_fkey"
+            columns: ["categoryId"]
+            isOneToOne: false
+            referencedRelation: "Categories"
+            referencedColumns: ["categoryId"]
+          },
+          {
+            foreignKeyName: "Products_categoryId_fkey1"
+            columns: ["categoryId"]
+            isOneToOne: false
+            referencedRelation: "Categories"
+            referencedColumns: ["categoryId"]
           },
         ]
       }

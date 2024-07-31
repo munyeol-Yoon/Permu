@@ -5,13 +5,9 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = createClient();
     const { searchParams } = new URL(request.url);
-    const productId = searchParams.get('productId');
+    const categoryId = searchParams.get('categoryId');
 
-    const { data, error } = await supabase
-      .from('Categories')
-      .select('*')
-      .eq('productId', productId)
-      .single();
+    const { data, error } = await supabase.from('Categories').select('*').eq('categoryId', categoryId).single();
 
     if (error) throw error;
 

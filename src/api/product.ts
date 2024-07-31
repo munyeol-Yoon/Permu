@@ -31,8 +31,8 @@ export const getDetailProduct = async (productId: string): Promise<Product> => {
   return data;
 };
 
-export const getCategoryById = async (productId: string): Promise<Tables<'Categories'>> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/category?productId=${productId}`);
+export const getCategoryById = async (categoryId: string): Promise<Tables<'Categories'>> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/category?categoryId=${categoryId}`);
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
   return data;

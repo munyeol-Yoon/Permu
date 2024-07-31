@@ -21,7 +21,7 @@ const ProductDetailPage = async ({ params }: Params) => {
     return { ImageURL, title: product.title || '' };
   });
   const brand = await getBrandById(`${product.brandId}`);
-  const category = await getCategoryById(productId);
+  const category = await getCategoryById(product.categoryId ?? '');
   return (
     <div>
       <BrandBenner>
@@ -32,7 +32,7 @@ const ProductDetailPage = async ({ params }: Params) => {
         <BennerSlide Images={Images} />
       </div>
 
-      <Bread categoryName={category.categoryName ?? ''} />
+      <Bread categoryName={category.categoryMainTitle ?? ''} />
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
       <div className="flex-row-10 justify-between p-5-2 w-full border-b-2">
         <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
@@ -62,7 +62,7 @@ const ProductDetailPage = async ({ params }: Params) => {
         <Share product={product} />
         <Wish />
       </div>
-      <Information />
+      <Information productDetail={product.detailImageURL ?? ''} />
       <Accordion type="multiple">
         <Toggle trigger="배송 및 반품" value={false}>
           <h5>배송 안내</h5>
