@@ -27,18 +27,19 @@ export const logOut = async () => {
 };
 
 export const fetchUser = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/me`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user`);
   const { user } = await response.json();
   return user || null;
 };
 
 export const patchUserInfo = async (userInfo: UserInfo) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/info`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user`, {
     method: 'PATCH',
     body: JSON.stringify(userInfo)
   });
   const result = await response.json();
-  if (result) return result;
+  if (result.success) return result;
+  else throw new Error(result.details);
 };
 
 // otp
@@ -58,5 +59,6 @@ export const signInWithOtp = async (email: string) => {
     body: JSON.stringify({ email })
   });
   const result = await response.json();
-  return result;
+  if (result.success) return result;
+  else throw new Error(result.details);
 };

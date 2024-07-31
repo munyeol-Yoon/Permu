@@ -24,6 +24,5 @@ export const validateForm = ({ input, inputCheck, inputType }: ValidationInputPr
     alert('유효한 이메일 주소를 입력해주세요');
     return false;
   }
-
   return true;
 };

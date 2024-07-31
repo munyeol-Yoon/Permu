@@ -5,15 +5,16 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
+import { validateForm, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 const AccountForm = () => {
+  const [submit, setSubmit] = useState<boolean>(false);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordCheckRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
   const birthRef = useRef<HTMLInputElement>(null);
-  const genderMaleRef = useRef<HTMLInputElement>(null);
-  const addressRef = useRef<HTMLInputElement>(null);
+  const genderRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
 
   const { loggedUser } = useAuth();
@@ -23,17 +24,39 @@ const AccountForm = () => {
     userData: { email }
   } = loggedUser;
 
+  const validateInputs = (): boolean => {
+    return !!(passwordRef.current?.value &&
+    passwordCheckRef.current?.value &&
+    nameRef.current?.value &&
+    genderRef.current?.checked
+      ? 'M'
+      : 'F' && phoneRef.current?.value && birthRef.current?.value);
+  };
+
   const handleSubmit = () => {
+    if (!validateInputs()) {
+      alert('모든 입력란을 입력해주세요');
+      return;
+    }
+
+    const formField: ValidationInputProps = {
+      input: passwordRef.current!.value,
+      inputCheck: passwordCheckRef.current!.value,
+      inputType: 'password'
+    };
+
+    if (!validateForm(formField)) return;
+
     const userData = {
       email,
       password: passwordRef.current?.value || '',
-      // passwordCheck: passwordCheckRef.current?.value || '',
       name: nameRef.current?.value || '',
       birth: birthRef.current?.value || '',
-      gender: genderMaleRef.current?.checked ? 'M' : 'F',
-      // address: addressRef.current?.value || '',
+      gender: genderRef.current?.checked ? 'M' : 'F',
       phone: phoneRef.current?.value || ''
     };
+
+    setSubmit(true);
     userInfoMutation(userData);
   };
 
@@ -106,21 +129,9 @@ const AccountForm = () => {
             />
           </div>
           <div className="flex items-center">
-            <label htmlFor="birth" className="w-1/4">
-              생년월일
-            </label>
-            <input
-              type="date"
-              id="birth"
-              className="border-b px-[40px] py-4 text-center grow"
-              placeholder="생년월일을 입력해 주세요."
-              ref={birthRef}
-            />
-          </div>
-          <div className="flex items-center">
             <p className="w-1/4">성별</p>
             <div className="mx-auto py-4">
-              <input type="radio" id="male" name="gender" value="M" className="mr-2" ref={genderMaleRef} />
+              <input type="radio" id="male" name="gender" value="M" className="mr-2" ref={genderRef} />
               <label htmlFor="male">남성</label>
               <input type="radio" id="female" name="gender" value="F" className="ml-10 mr-2" />
               <label htmlFor="female">여성</label>
@@ -144,8 +155,21 @@ const AccountForm = () => {
           </div>
         </div>
 
+        <div className="flex items-center">
+          <label htmlFor="birth" className="w-1/4">
+            생년월일
+          </label>
+          <input
+            type="date"
+            id="birth"
+            className="border-b px-[40px] py-4 text-center grow"
+            placeholder="생년월일을 입력해 주세요."
+            ref={birthRef}
+          />
+        </div>
+
         <div className="flex flex-col mt-12">
-          <Button onClick={handleSubmit}> 테스트{/* <Link href={AUTH_SIGN_UP_COMPLETE_PATHNAME}>다음</Link> */}</Button>
+          <Button onClick={handleSubmit}>다음</Button>
           <Button asChild variant="outline" className=" bg-white text-black">
             <Link href={AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME}>이전</Link>
           </Button>

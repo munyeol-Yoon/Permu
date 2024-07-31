@@ -68,7 +68,7 @@ const useAuthMutation = () => {
       router.replace(AUTH_SIGN_UP_COMPLETE_PATHNAME);
     },
     onError: (error) => {
-      console.log('실패함', error);
+      alert(`업데이트 실패 : ${error.message}`);
     }
   });
 
