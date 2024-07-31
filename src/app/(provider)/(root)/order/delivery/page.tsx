@@ -100,7 +100,22 @@ const DeliveryPage = () => {
                 <p className="text-xs mb-1">{productItem.Brands.enName}</p>
                 <p className="font-semibold mb-2.5">{productItem.title}</p>
                 <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
-                <p className="text-end font-bold">{productItem.price.toLocaleString()}원</p>
+                <div className="relative flex justify-end items-center gap-[18px]">
+                  {!!productItem.discount && (
+                    <>
+                      <p className="absolute -top-4 right-0 text-xs text-[#B3B3B3] line-through">
+                        {productItem.price.toLocaleString()}원
+                      </p>
+                      <p className="text-[10px] text-[#0348FF]">SALE {productItem.discount}%</p>
+                    </>
+                  )}
+                  <p className="font-bold">
+                    {productItem.discountedPrice
+                      ? productItem.discountedPrice.toLocaleString()
+                      : productItem.price.toLocaleString()}
+                    원
+                  </p>
+                </div>
               </div>
             </div>
           ))}
