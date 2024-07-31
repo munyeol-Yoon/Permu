@@ -1,5 +1,3 @@
-'use client';
-
 import TopBanner from '../TopBanner';
 import Navbar from '../Navbar';
 import NavCategories from '../NavCategories';
