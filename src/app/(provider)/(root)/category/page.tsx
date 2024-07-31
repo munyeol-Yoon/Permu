@@ -1,7 +1,14 @@
+'use client';
+
+import { useCategoryQuery } from '@/hooks/query';
 import SearchButtonSVG from '@@/public/searchButton.svg';
 import Link from 'next/link';
 
 const CategoryPage = () => {
+  const { data } = useCategoryQuery();
+
+  console.log(data);
+
   return (
     <div>
       <Link href={'/category/search'}>
