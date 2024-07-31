@@ -9,21 +9,83 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      Addresses: {
+        Row: {
+          address: string | null
+          addressId: string
+          name: string | null
+          phone: string | null
+          userId: string | null
+        }
+        Insert: {
+          address?: string | null
+          addressId?: string
+          name?: string | null
+          phone?: string | null
+          userId?: string | null
+        }
+        Update: {
+          address?: string | null
+          addressId?: string
+          name?: string | null
+          phone?: string | null
+          userId?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Addresses_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      Brands: {
+        Row: {
+          brandId: number
+          enName: string | null
+          initialCons: string | null
+          krName: string | null
+          logoURL: string | null
+        }
+        Insert: {
+          brandId?: number
+          enName?: string | null
+          initialCons?: string | null
+          krName?: string | null
+          logoURL?: string | null
+        }
+        Update: {
+          brandId?: number
+          enName?: string | null
+          initialCons?: string | null
+          krName?: string | null
+          logoURL?: string | null
+        }
+        Relationships: []
+      }
       Carts: {
         Row: {
           count: number | null
+          isSelected: boolean
           productId: number
           userId: string
+          volume: number | null
         }
         Insert: {
           count?: number | null
+          isSelected?: boolean
           productId: number
           userId: string
+          volume?: number | null
         }
         Update: {
           count?: number | null
+          isSelected?: boolean
           productId?: number
           userId?: string
+          volume?: number | null
         }
         Relationships: [
           {
@@ -45,57 +107,26 @@ export type Database = {
       Categories: {
         Row: {
           categoryId: string
-          categoryName: string | null
+          categoryMainTitle: string | null
+          categorySubTitle: string | null
+          categoryTitle: string
           code: number | null
-          productTitle: string
         }
         Insert: {
           categoryId?: string
-          categoryName?: string | null
+          categoryMainTitle?: string | null
+          categorySubTitle?: string | null
+          categoryTitle: string
           code?: number | null
-          productTitle: string
         }
         Update: {
           categoryId?: string
-          categoryName?: string | null
+          categoryMainTitle?: string | null
+          categorySubTitle?: string | null
+          categoryTitle?: string
           code?: number | null
-          productTitle?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "Categories_categoryId_fkey"
-            columns: ["categoryId"]
-            isOneToOne: true
-            referencedRelation: "Categories"
-            referencedColumns: ["categoryId"]
-          },
-        ]
-      }
-      CategoryDetail: {
-        Row: {
-          categoryDetailId: string
-          categoryId: string
-          name: string | null
-        }
-        Insert: {
-          categoryDetailId?: string
-          categoryId?: string
-          name?: string | null
-        }
-        Update: {
-          categoryDetailId?: string
-          categoryId?: string
-          name?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "CategoryDetail_categoryId_fkey"
-            columns: ["categoryId"]
-            isOneToOne: false
-            referencedRelation: "Categories"
-            referencedColumns: ["categoryId"]
-          },
-        ]
+        Relationships: []
       }
       Coupon: {
         Row: {
@@ -137,7 +168,7 @@ export type Database = {
       }
       Deliveries: {
         Row: {
-          address: string
+          addressId: string | null
           arrivalDate: string | null
           deliverId: string
           deliverMemo: string | null
@@ -145,10 +176,9 @@ export type Database = {
           departureDate: string | null
           name: string
           phone: string
-          userId: string | null
         }
         Insert: {
-          address: string
+          addressId?: string | null
           arrivalDate?: string | null
           deliverId: string
           deliverMemo?: string | null
@@ -156,10 +186,9 @@ export type Database = {
           departureDate?: string | null
           name: string
           phone: string
-          userId?: string | null
         }
         Update: {
-          address?: string
+          addressId?: string | null
           arrivalDate?: string | null
           deliverId?: string
           deliverMemo?: string | null
@@ -167,22 +196,21 @@ export type Database = {
           departureDate?: string | null
           name?: string
           phone?: string
-          userId?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "Deliveries_addressId_fkey"
+            columns: ["addressId"]
+            isOneToOne: false
+            referencedRelation: "Addresses"
+            referencedColumns: ["addressId"]
+          },
           {
             foreignKeyName: "Deliveries_deliverId_fkey"
             columns: ["deliverId"]
             isOneToOne: true
             referencedRelation: "Orders"
             referencedColumns: ["deliverId"]
-          },
-          {
-            foreignKeyName: "Deliveries_userId_fkey"
-            columns: ["userId"]
-            isOneToOne: false
-            referencedRelation: "Users"
-            referencedColumns: ["id"]
           },
         ]
       }
@@ -255,6 +283,13 @@ export type Database = {
             referencedColumns: ["couponId"]
           },
           {
+            foreignKeyName: "Orders_deliverId_fkey"
+            columns: ["deliverId"]
+            isOneToOne: true
+            referencedRelation: "Deliveries"
+            referencedColumns: ["deliverId"]
+          },
+          {
             foreignKeyName: "Orders_userId_fkey"
             columns: ["userId"]
             isOneToOne: false
@@ -301,42 +336,79 @@ export type Database = {
       }
       Products: {
         Row: {
+          brandId: number | null
           categoryId: string | null
           content: string | null
           createdAt: string
+          detailImageURL: string | null
           discount: number | null
           ImagesURL: Json | null
+          notes: Json | null
           price: number | null
           productId: number
+          size: Json | null
+          status: boolean | null
           thumbNailURL: string | null
           title: string | null
           updatedAt: string | null
         }
         Insert: {
+          brandId?: number | null
           categoryId?: string | null
           content?: string | null
           createdAt?: string
+          detailImageURL?: string | null
           discount?: number | null
           ImagesURL?: Json | null
+          notes?: Json | null
           price?: number | null
           productId?: number
+          size?: Json | null
+          status?: boolean | null
           thumbNailURL?: string | null
           title?: string | null
           updatedAt?: string | null
         }
         Update: {
+          brandId?: number | null
           categoryId?: string | null
           content?: string | null
           createdAt?: string
+          detailImageURL?: string | null
           discount?: number | null
           ImagesURL?: Json | null
+          notes?: Json | null
           price?: number | null
           productId?: number
+          size?: Json | null
+          status?: boolean | null
           thumbNailURL?: string | null
           title?: string | null
           updatedAt?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "Products_brandId_fkey"
+            columns: ["brandId"]
+            isOneToOne: false
+            referencedRelation: "Brands"
+            referencedColumns: ["brandId"]
+          },
+          {
+            foreignKeyName: "Products_categoryId_fkey"
+            columns: ["categoryId"]
+            isOneToOne: false
+            referencedRelation: "Categories"
+            referencedColumns: ["categoryId"]
+          },
+          {
+            foreignKeyName: "Products_categoryId_fkey1"
+            columns: ["categoryId"]
+            isOneToOne: false
+            referencedRelation: "Categories"
+            referencedColumns: ["categoryId"]
+          },
+        ]
       }
       Users: {
         Row: {
@@ -415,7 +487,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      search_products_with_categories: {
+        Args: {
+          searchquery: string
+        }
+        Returns: {
+          productid: number
+          title: string
+          discount: number
+          price: number
+          content: string
+          thumbnailurl: string
+          categoryid: string
+          categoryname: string
+          categorydetailid: string
+          categorydetailname: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

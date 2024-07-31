@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Product } from '@/types/products';
+import ShareSVG from '@@/public/share-icon.svg';
 import { useEffect } from 'react';
 declare global {
   interface Window {
@@ -63,8 +64,11 @@ const Share = ({ product }: ProductProps) => {
   };
 
   return (
-    <Button variant="outline" onClick={handleShareProduct}>
-      공유하기
+    <Button className="w-full" variant="outline" onClick={handleShareProduct}>
+      <div className="flex-row-10 justify-center p-5-2 ">
+        <ShareSVG />
+        <span>공유하기</span>
+      </div>
     </Button>
   );
 };
