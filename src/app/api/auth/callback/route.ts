@@ -23,7 +23,7 @@ export async function GET(request: Request) {
           .eq('id', data.user.id)
           .single();
 
-        if (user?.isNew) return NextResponse.redirect(`${origin}/auth/sign-up/form`);
+        if (user?.isNew) return NextResponse.redirect(`${origin}/auth/sign-up/account-form`);
       }
 
       return NextResponse.redirect(`${origin}${next}`);

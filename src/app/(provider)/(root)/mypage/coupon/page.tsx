@@ -1,11 +1,11 @@
 'use client';
 import { useCouponQuery } from '@/hooks/query';
 
-const MyCouponPage = () => {
+const CouponListPage = () => {
   const { data: userCoupons } = useCouponQuery();
   return (
     <div>
-      MyCouponPage
+      CouponListPage
       {userCoupons?.map((coupon) => (
         <ul key={coupon.couponId}>
           <li>
@@ -17,4 +17,4 @@ const MyCouponPage = () => {
   );
 };
 
-export default MyCouponPage;
+export default CouponListPage;

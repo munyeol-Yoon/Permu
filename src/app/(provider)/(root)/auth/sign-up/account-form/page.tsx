@@ -1,15 +1,74 @@
+'use client';
+import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
+import { useAuth } from '@/contexts/auth.context/auth.context';
+import { useAuthMutation } from '@/hooks/mutation';
+import { validateForm, validatePhoneNumber, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
+import { useRef, useState } from 'react';
 const AccountForm = () => {
+  const [submit, setSubmit] = useState<boolean>(false);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordCheckRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const birthRef = useRef<HTMLInputElement>(null);
+  const genderRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+
+  const { loggedUser } = useAuth();
+  const { userInfoMutation } = useAuthMutation();
+  if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
+  const {
+    userData: { email }
+  } = loggedUser;
+
+  const validateInputs = (): boolean => {
+    return !!(passwordRef.current?.value &&
+    passwordCheckRef.current?.value &&
+    nameRef.current?.value &&
+    genderRef.current?.checked
+      ? 'M'
+      : 'F' && phoneRef.current?.value && birthRef.current?.value);
+  };
+
+  const handleSubmit = () => {
+    if (!validateInputs()) {
+      alert('모든 입력란을 입력해주세요');
+      return;
+    }
+
+    const phone = phoneRef.current?.value || '';
+    if (!validatePhoneNumber(phone)) {
+      alert('유효한 전화번호를 입력해주세요');
+      return;
+    }
+
+    const formField: ValidationInputProps = {
+      input: passwordRef.current!.value,
+      inputCheck: passwordCheckRef.current!.value,
+      inputType: 'password'
+    };
+
+    if (!validateForm(formField)) return;
+
+    const userData = {
+      email,
+      password: passwordRef.current?.value || '',
+      name: nameRef.current?.value || '',
+      birth: birthRef.current?.value || '',
+      gender: genderRef.current?.checked ? 'M' : 'F',
+      phone: phoneRef.current?.value || ''
+    };
+
+    setSubmit(true);
+    userInfoMutation(userData);
+  };
+
   return (
     <div>
-      <div className="flex relative p-5">
-        <Link href="/auth/log-in" className="absolute">
-          ⬅️
-        </Link>
-        <h1 className="mx-auto">회원가입</h1>
-      </div>
+      <Navbar title="회원가입" href={AUTH_LOG_IN_PATHNAME} />
 
       <div className="px-12">
         <Tabs defaultValue="b">
@@ -24,8 +83,8 @@ const AccountForm = () => {
           </TabsList>
         </Tabs>
 
-        <div className="w-full bg-red mt-11">
-          <p className="py-5 border-b">기본정보</p>
+        <div className="w-full mt-11">
+          <h3 className="py-5 border-b">기본정보</h3>
           <div className="flex items-center">
             <label htmlFor="email" className="w-1/4">
               아이디
@@ -35,6 +94,8 @@ const AccountForm = () => {
               id="email"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="아이디를 입력해 주세요."
+              value={email}
+              disabled
             />
           </div>
           <div className="flex items-center">
@@ -46,6 +107,7 @@ const AccountForm = () => {
               id="password"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="비밀번호를 입력해 주세요."
+              ref={passwordRef}
             />
           </div>
           <div className="flex items-center">
@@ -57,6 +119,7 @@ const AccountForm = () => {
               id="password-check"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="비밀번호 확인을 입력해 주세요."
+              ref={passwordCheckRef}
             />
           </div>
           <div className="flex items-center">
@@ -68,32 +131,22 @@ const AccountForm = () => {
               id="name"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="성함을 입력해 주세요."
+              ref={nameRef}
             />
           </div>
           <div className="flex items-center">
             <p className="w-1/4">성별</p>
-            <div className="mx-auto py-4 ">
-              <label htmlFor="male">남자</label>
-              <input type="radio" id="male" name="gender" value="M" className="mr-10" />
-              <label htmlFor="female">여자</label>
-              <input type="radio" id="female" name="gender" value="F" />
+            <div className="mx-auto py-4">
+              <input type="radio" id="male" name="gender" value="M" className="mr-2" ref={genderRef} />
+              <label htmlFor="male">남성</label>
+              <input type="radio" id="female" name="gender" value="F" className="ml-10 mr-2" />
+              <label htmlFor="female">여성</label>
             </div>
           </div>
         </div>
 
         <div className="w-full bg-red mt-11">
-          <p className="py-5 border-b">부가정보</p>
-          <div className="flex items-center">
-            <label htmlFor="address" className="w-1/4">
-              주소
-            </label>
-            <input
-              type="address"
-              id="address"
-              className="border-b px-[40px] py-4 text-center grow"
-              placeholder="주소를 입력해 주세요."
-            />
-          </div>
+          <h3 className="py-5 border-b">부가정보</h3>
           <div className="flex items-center">
             <label htmlFor="tel" className="w-1/4">
               휴대폰번호
@@ -103,16 +156,28 @@ const AccountForm = () => {
               id="tel"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="전화번호를 입력해 주세요."
+              ref={phoneRef}
             />
           </div>
         </div>
 
-        <div className="flex flex-col">
-          <Button asChild>
-            <Link href="complete">다음</Link>
-          </Button>
-          <Button asChild className="bg-blue-600 text-white">
-            <Link href="email-confirm">인증 메일 보내기</Link>
+        <div className="flex items-center">
+          <label htmlFor="birth" className="w-1/4">
+            생년월일
+          </label>
+          <input
+            type="date"
+            id="birth"
+            className="border-b px-[40px] py-4 text-center grow"
+            placeholder="생년월일을 입력해 주세요."
+            ref={birthRef}
+          />
+        </div>
+
+        <div className="flex flex-col mt-12">
+          <Button onClick={handleSubmit}>다음</Button>
+          <Button asChild variant="outline" className=" bg-white text-black">
+            <Link href={AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME}>이전</Link>
           </Button>
         </div>
       </div>

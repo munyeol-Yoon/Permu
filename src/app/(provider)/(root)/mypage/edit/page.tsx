@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 
-const MyEditPage = () => {
+const UserInfoEditPage = () => {
   const { loggedUser } = useAuth();
 
   if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
@@ -49,4 +49,4 @@ const MyEditPage = () => {
   );
 };
 
-export default MyEditPage;
+export default UserInfoEditPage;
