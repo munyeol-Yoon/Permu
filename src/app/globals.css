@@ -97,4 +97,13 @@ img {
   .p-5-2 {
     @apply px-5 py-2.5;
   }
+  .input-default {
+    @apply bg-background border border-input;
+  }
+  .input-search {
+    @apply bg-gray-500 border-none;
+  }
+  .input-border {
+    @apply border-b-[1.5px] px-[40px] py-[20px] grow;
+  }
 }
