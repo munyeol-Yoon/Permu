@@ -1,1 +1,1 @@
-export { BorderInput, DefaultInput, SearchInput } from './Input';
+export { default } from './Input';
