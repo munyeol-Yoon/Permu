@@ -80,7 +80,7 @@ img {
     @apply border-border;
   }
   body {
-    @apply bg-gray-100 text-foreground;
+    @apply bg-background text-foreground;
   }
   .flex-row-10 {
     @apply flex flex-row gap-[10px] items-center;
