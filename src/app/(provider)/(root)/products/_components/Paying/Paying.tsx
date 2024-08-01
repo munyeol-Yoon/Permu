@@ -29,7 +29,6 @@ const Paying = ({ size }: { size: string[] }) => {
           patchMutation.mutate({
             productId: Number(productId),
             userId: loggedUser.id,
-            cal: true,
             count: matchCartProduct.count
           });
         else {

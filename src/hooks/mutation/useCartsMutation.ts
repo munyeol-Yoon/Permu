@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCartsMutation = () => {
   const queryClient = useQueryClient();
+
   const addMutation = useMutation({
     mutationFn: async ({ productId, userId }: { productId: number; userId: string }) =>
       await postCartByUser(productId, userId),
@@ -11,42 +12,49 @@ const useCartsMutation = () => {
     },
     onError: () => {}
   });
+
   const patchMutation = useMutation({
     mutationFn: async ({
       productId,
       userId,
       count,
-      cal
+      isSelected
     }: {
       productId: number;
       userId: string;
-      count: number;
-      cal: boolean;
-    }) => patchCartByUser({ productId, userId, count: cal ? count + 1 : count - 1 }),
-    onMutate: async (variable) => {
-      await queryClient.cancelQueries({ queryKey: ['Carts', variable.userId] });
-      const previousCarts = queryClient.getQueryData<any[]>(['Carts', variable.userId]);
-
-      queryClient.setQueryData(['Carts', variable.userId], () => {
-        const filteredOldCarts = previousCarts?.map((cart: any) => {
-          return cart.productId === variable.productId
-            ? { ...cart, count: variable.cal ? variable.count + 1 : variable.count - 1 }
-            : cart;
-        });
-        return filteredOldCarts;
-      });
-      return { previousCarts };
-    },
-    onError: (err, addCart, context) => {
-      queryClient.setQueryData(['Carts', addCart.userId], context?.previousCarts);
+      count?: number;
+      isSelected?: boolean;
+    }) => await patchCartByUser({ userId, productId, count, isSelected }),
+    onSuccess: (data, variable) => {
+      queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
     }
+    // patchCartByUser({ productId, userId, count: cal ? count + 1 : count - 1 }),
+    // onMutate: async (variable) => {
+    //   await queryClient.cancelQueries({ queryKey: ['Carts', variable.userId] });
+    //   const previousCarts = queryClient.getQueryData<any[]>(['Carts', variable.userId]);
+
+    //   queryClient.setQueryData(['Carts', variable.userId], () => {
+    //     const filteredOldCarts = previousCarts?.map((cart: any) => {
+    //       return cart.productId === variable.productId
+    //         ? { ...cart, count: variable.cal ? variable.count + 1 : variable.count - 1 }
+    //         : cart;
+    //     });
+    //     return filteredOldCarts;
+    //   });
+    //   return { previousCarts };
+    // },
+    // onError: (err, addCart, context) => {
+    //   queryClient.setQueryData(['Carts', addCart.userId], context?.previousCarts);
+    // }
   });
+
   const deleteAllMutation = useMutation({
     mutationFn: async ({ userId }: { userId: string }) => await deleteAllCartByUser(userId),
     onSuccess: (data, variable) => {
       queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
     }
   });
+
   const deleteMutation = useMutation({
     mutationFn: async ({ productId, userId }: { productId: number; userId: string }) =>
       await deleteCartByUser(productId, userId),
