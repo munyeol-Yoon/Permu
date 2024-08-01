@@ -73,7 +73,7 @@ const DeliveryPage = () => {
     await mutateAsync({
       deliveryInfo,
       totalPrice: totalPaymentPrice,
-      coupon: selectedCoupon.couponId,
+      coupon: selectedCoupon?.couponId,
       updatedMileageAmount
     });
     router.push('/order/complete');
