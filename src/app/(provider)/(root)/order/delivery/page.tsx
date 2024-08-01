@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
   DropdownMenu,
@@ -12,9 +12,10 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useOrderMutation } from '@/hooks/mutation';
 import { useOrderInfoQuery } from '@/hooks/query';
+import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useMemo, useRef, useState } from 'react';
 
 const DeliveryPage = () => {
   const router = useRouter();
@@ -23,21 +24,45 @@ const DeliveryPage = () => {
   const { data: orderInfo } = useOrderInfoQuery();
   const { mutateAsync } = useOrderMutation();
 
-  const [selectedCoupon, setSelectedCoupon] = useState<{ discount: number } | null>(null);
+  const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
   const [mileageAmount, setMileageAmount] = useState(0);
 
   const receiverMemoRef = useRef('');
 
-  const totalPrice = useMemo(() => {
-    const initialPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
+  const totalDiscountedPrice = useMemo(() => {
+    const productDiscountPrice = orderInfo?.productList.reduce(
+      (acc: number, cur: { price: number; discountedPrice: number }) => acc + cur.price - cur.discountedPrice,
+      0
+    );
+    const couponDiscount = selectedCoupon ? selectedCoupon.discount : 0;
+    const finalDiscountedPrice = productDiscountPrice + couponDiscount + mileageAmount;
+    return finalDiscountedPrice;
+  }, [mileageAmount, orderInfo, selectedCoupon]);
+
+  const totalProductPrice = useMemo(() => {
+    const productPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
+    return productPrice ?? 0;
+  }, [orderInfo]);
+
+  const totalPaymentPrice = useMemo(() => {
+    const initialPrice = orderInfo?.productList.reduce(
+      (acc: number, cur: { discountedPrice: number }) => acc + cur.discountedPrice,
+      0
+    );
     const couponPrice = selectedCoupon ? selectedCoupon.discount : 0;
     const finalPrice = initialPrice - couponPrice - mileageAmount;
     return finalPrice;
   }, [mileageAmount, orderInfo, selectedCoupon]);
 
+  const handleChangeMileageAmount = (e: ChangeEvent<HTMLInputElement>) => {
+    if (Number(e.target.value) > loggedUser!.userData!.mileage!) return;
+    const validInputValue = e.target.value.replace(/[^0-9]/g, '');
+
+    setMileageAmount(Number(validInputValue));
+  };
+
   const handleOrder = async () => {
     const deliveryInfo = {
-      userId: orderInfo.user.id,
       name: orderInfo.user.name,
       address: '서울시 목업구 더미동',
       phone: orderInfo.user.phone,
@@ -45,7 +70,12 @@ const DeliveryPage = () => {
       arrivalDate: new Date()
     };
     const updatedMileageAmount = orderInfo.user.mileage - mileageAmount;
-    await mutateAsync({ deliveryInfo, totalPrice, coupon: selectedCoupon, updatedMileageAmount });
+    await mutateAsync({
+      deliveryInfo,
+      totalPrice: totalPaymentPrice,
+      coupon: selectedCoupon.couponId,
+      updatedMileageAmount
+    });
     router.push('/order/complete');
   };
 
@@ -92,34 +122,34 @@ const DeliveryPage = () => {
           <p className="text-xl font-bold">상품정보</p>
         </div>
         <div className="flex flex-col gap-5">
-          {orderInfo?.productList.length ? (
-            orderInfo.productList.map((productItem: any) => (
-              <div key={productItem.productId} className="flex items-center px-5">
-                <Checkbox />
-                <div className="relative aspect-video max-w-[100px] h-[100px] bg-black overflow-hidden mx-[33px]">
-                  <Image src={productItem.thumbNailURL} width={100} height={100} alt="" className="absolute" />
-                </div>
-                <div className="flex flex-col px-2.5 w-full">
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs mb-1">{productItem.title}</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                      <path d="M13 0.500001L1 12.5M13 12.5L1 0.5" stroke="#231815" />
-                    </svg>
-                  </div>
-                  <p className="font-semibold mb-2.5">{productItem.content}</p>
-                  <p className="text-xs text-[#B3B3B3] mb-1.5">TODO: 해당 제품의 옵션 추가</p>
-                  <div className="flex justify-between items-center w-full">
-                    <Button variant="outline" className="text-xs border-black rounded-none px-2.5 py-2">
-                      TODO: 해당 제품의 옵션 변경
-                    </Button>
-                    <p className="text-xs">{productItem.price}원</p>
-                  </div>
+          {orderInfo?.productList?.map((productItem: any) => (
+            <div key={productItem.productId} className="flex items-center px-5">
+              <div className="relative aspect-square max-w-[100px] h-[100px] mx-[33px]">
+                <Image src={productItem.thumbNailURL} width={100} height={100} alt="" className="absolute" />
+              </div>
+              <div className="flex flex-col px-2.5 w-full">
+                <p className="text-xs mb-1">{productItem.Brands.enName}</p>
+                <p className="font-semibold mb-2.5">{productItem.title}</p>
+                <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
+                <div className="relative flex justify-end items-center gap-[18px]">
+                  {!!productItem.discount && (
+                    <>
+                      <p className="absolute -top-4 right-0 text-xs text-[#B3B3B3] line-through">
+                        {productItem.price.toLocaleString()}원
+                      </p>
+                      <p className="text-[10px] text-[#0348FF]">SALE {productItem.discount}%</p>
+                    </>
+                  )}
+                  <p className="font-bold">
+                    {productItem.discountedPrice
+                      ? productItem.discountedPrice.toLocaleString()
+                      : productItem.price.toLocaleString()}
+                    원
+                  </p>
                 </div>
               </div>
-            ))
-          ) : (
-            <p>장바구니에 상품이 없습니다.</p>
-          )}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -131,13 +161,18 @@ const DeliveryPage = () => {
           <div className="flex justify-between items-center py-2.5">
             <p>보유</p>
             <p className="text-[#B3B3B3]">
-              <span className="text-base pr-2">사용 가능한 마일리지 잔액</span> 1,000P
+              <span className="text-base pr-2">사용 가능한 마일리지 잔액</span>
+              {loggedUser?.userData.mileage?.toLocaleString()}P
             </p>
           </div>
           <div className="flex justify-between items-center py-2.5">
             <p>사용 금액</p>
             <div className="flex items-center gap-6">
-              <Input className="max-w-[353px] h-9 py-1.5 text-xl font-bold text-[#0348FF] text-right" />
+              <Input
+                value={mileageAmount}
+                onChange={handleChangeMileageAmount}
+                className="max-w-[353px] h-9 py-1.5 text-xl font-bold text-[#0348FF] text-right"
+              />
               <p className="font-bold">P</p>
             </div>
           </div>
@@ -148,12 +183,41 @@ const DeliveryPage = () => {
         <div className="p-5 border-b-[0.5px] mb-5">
           <p className="text-xl font-bold">쿠폰 사용</p>
         </div>
-        <div className="flex flex-col px-5">
-          <div className="flex justify-between items-center py-2.5 text-xl">
-            <p>보유</p>
-            <div className="text-xs px-5 py-1.5 bg-[#0348FF] text-white rounded-sm">사용 가능한 쿠폰 확인하기</div>
-          </div>
-        </div>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="coupon_list" className="border-none">
+            <div className="flex justify-between items-center py-2.5 text-xl px-5 data-[state=open]:hidden mb-5">
+              <p>보유</p>
+              <AccordionTrigger withChevron={false} className="text-xs px-5 py-1.5 bg-[#0348FF] text-white rounded-sm">
+                사용 가능한 쿠폰 확인하기
+              </AccordionTrigger>
+            </div>
+            <AccordionContent className="bg-[#D9D9D9] py-[30px] flex flex-col gap-3.5">
+              {orderInfo?.coupon.map((couponItem: any) => {
+                const formattedIssueDate = dayjs(couponItem.issueDate).format('YYYY-MM-DD');
+                const formattedExpirationDate = dayjs(couponItem.expirationDate).format('YYYY-MM-DD');
+                return (
+                  <div
+                    key={couponItem.couponId}
+                    onClick={() => setSelectedCoupon(couponItem)}
+                    className="bg-white px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)]"
+                  >
+                    <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
+                    <p className="pb-2 text-xs text-[#B3B3B3]">
+                      {formattedIssueDate} - {formattedExpirationDate}
+                    </p>
+                    <p className="pb-2 text-[20px] text-[#0348FF] font-bold">
+                      {couponItem.discount.toLocaleString()}원
+                    </p>
+                    <div className="flex justify-between items-center">
+                      <p className="text-xs text-[#0348FF]">-{couponItem.discount.toLocaleString()}원 할인 혜택</p>
+                      <button className="bg-[#0348FF] text-white text-xs py-1.5 px-2.5 rounded-sm">적용하기</button>
+                    </div>
+                  </div>
+                );
+              })}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
 
       <div>
@@ -179,7 +243,7 @@ const DeliveryPage = () => {
         <div className="flex flex-col px-5 mb-5">
           <div className="flex justify-between items-center py-2.5 text-xl">
             <p>상품금액</p>
-            <p className="font-medium">162,000원</p>
+            <p className="font-medium">{totalProductPrice.toLocaleString()}원</p>
           </div>
           <div className="flex justify-between items-center py-2.5 text-xl">
             <p>배송비</p>
@@ -188,12 +252,12 @@ const DeliveryPage = () => {
           <div className="flex justify-between items-center py-2.5 text-xl">
             <p>할인금액</p>
             <p className="font-medium text-[#0348FF]">
-              <span className="text-base">SAVE</span> -7,000원
+              <span className="text-base">SAVE</span> -{totalDiscountedPrice.toLocaleString()}원
             </p>
           </div>
           <div className="flex justify-between items-center py-2.5 text-xl">
             <p className="font-bold">결제금액</p>
-            <p className="font-medium">159,000원</p>
+            <p className="font-medium">{totalPaymentPrice.toLocaleString()}원</p>
           </div>
         </div>
         <div className="flex justify-between items-center px-5">
@@ -212,7 +276,7 @@ const DeliveryPage = () => {
         </div>
         <div className="flex justify-center items-center h-full">
           <button onClick={handleOrder} className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
-            총 2개 | 123.000원 구매하기
+            총 {orderInfo?.productList?.length}개 | {totalPaymentPrice}원 구매하기
           </button>
         </div>
       </div>

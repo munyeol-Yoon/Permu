@@ -1,6 +1,5 @@
 export interface DeliveryInfo {
   deliverId?: string;
-  userId: string;
   arrivalDate: Date;
   address: string;
   phone: string;
