@@ -10,10 +10,14 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   const isCategoryPage = pathname.startsWith('/category');
 
   return (
-    <div className="h-screen w-screen container grid grid-cols-[1fr_600px]">
-      이벤트 배너
-      <div className="relative min-w-[600px] h-full border flex flex-col">
+    <div className="w-screen container grid grid-cols-2">
+      <div className="relative">
+        {/* <Image src={EventBenner} width={400} height={800} alt="이벤트" className="absolute object-cover right-0" /> */}
+      </div>
+
+      <div className="bg-white max-w-[600px] h-full border flex flex-col md:w-full">
         {isCategoryPage ? <SearchHeader /> : <Header />}
+
         {children}
       </div>
     </div>
