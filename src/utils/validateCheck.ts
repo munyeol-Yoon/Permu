@@ -6,6 +6,11 @@ export interface ValidationInputProps {
   inputType: InputTypes;
 }
 
+export const validatePhoneNumber = (tel: string) => {
+  let result = /^(01[016789]{1})-?[0-9]{3,4}-?[0-9]{4}$/;
+  return result.test(tel);
+};
+
 export const validateEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);

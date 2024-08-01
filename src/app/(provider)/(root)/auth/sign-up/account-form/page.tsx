@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
-import { validateForm, ValidationInputProps } from '@/utils/validateCheck';
+import { validateForm, validatePhoneNumber, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 const AccountForm = () => {
@@ -36,6 +36,12 @@ const AccountForm = () => {
   const handleSubmit = () => {
     if (!validateInputs()) {
       alert('모든 입력란을 입력해주세요');
+      return;
+    }
+
+    const phone = phoneRef.current?.value || '';
+    if (!validatePhoneNumber(phone)) {
+      alert('유효한 전화번호를 입력해주세요');
       return;
     }
 
