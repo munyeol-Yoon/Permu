@@ -1,7 +1,18 @@
 import { Product } from '@/types/products';
+import { Tables } from '@/types/supabase';
 
-export const getSearchProducts = async (search: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search?query=${search}`);
+export const getSearchProducts = async (search?: string, categoryId?: string) => {
+  const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search`);
+
+  if (search) {
+    url.searchParams.append('query', search);
+  }
+
+  if (categoryId) {
+    url.searchParams.append('categoryId', categoryId);
+  }
+
+  const res = await fetch(url.toString());
 
   if (!res.ok) {
     throw new Error('response 에러');
@@ -25,6 +36,14 @@ export const getRelatedSearchProducts = async (search: string) => {
 
 export const getDetailProduct = async (productId: string): Promise<Product> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/product?productId=${productId}`);
+  if (!response.ok) throw new Error('response 에러');
+  const data = await response.json();
+  return data;
+};
+
+export const getCategoryById = async (categoryId: string): Promise<Tables<'Categories'>> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/category?categoryId=${categoryId}`);
+  if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
   return data;
 };

@@ -5,4 +5,4 @@ export type UserInfo = Pick<Tables<'Users'>, 'gender' | 'birth' | 'phone'>;
 
 export type LoggedUser = User & { userData: Tables<'Users'> };
 
-export type LoginForm = { id: string; password: string };
+export type LoginForm = { email: string; password: string };

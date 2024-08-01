@@ -1,19 +1,32 @@
+'use client';
+
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import LogoSVG from '@@/public/logo.svg';
 import XSVG from '@@/public/x.svg';
+import Link from 'next/link';
 import MenuItem from './MenuItem';
-// TODO: 경로 논의 필요 @를 사용해야하지만 더 상위에 있는 폴더인점
 
 const SearchHeader = () => {
+  const { isLoggedIn } = useAuth();
+
   return (
     <>
       <header className="flex px-[20px] pl-[50px] justify-between items-center h-[64px]">
-        <LogoSVG className="cursor-pointer" />
-        <XSVG className="cursor-pointer" />
+        <Link href={'/'}>
+          <LogoSVG className="cursor-pointer" />
+        </Link>
+        <Link href={'/category'}>
+          <XSVG className="cursor-pointer" />
+        </Link>
       </header>
       <section className="flex justify-start items-center self-stretch py-[0px] pr-[9px] pl-[50px] h-[64px]">
-        <MenuItem>로그인</MenuItem>
+        <MenuItem>
+          {!isLoggedIn ? <Link href={'/auth/log-in'}>로그인</Link> : <Link href={'/user'}>마이페이지</Link>}
+        </MenuItem>
         <MenuItem>|</MenuItem>
-        <MenuItem>장바구니</MenuItem>
+        <MenuItem>
+          <Link href={'/cart'}>장바구니</Link>
+        </MenuItem>
       </section>
     </>
   );

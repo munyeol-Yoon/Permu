@@ -1,28 +1,42 @@
-import { getDetailProduct } from '@/api/product';
-import BuyNow from '@/components/products/BuyNow';
-import Cart from '@/components/products/Cart';
-import Information from '@/components/products/Information';
-import Share from '@/components/products/Share/Share';
-import Wish from '@/components/products/Wish';
+import { getBrandById } from '@/api/brand';
+import { getCategoryById, getDetailProduct } from '@/api/product';
+
+import Bread from '@/components/Bread';
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { Params } from '@/types/products';
-import Image from 'next/image';
+
+import BennerSlide from '@/components/BennerSlide';
+import BrandBenner from '@/components/BrandBenner';
+import CurrentProducts from '@/components/CurrentProducts';
+import CustomerReviews from '@/components/CustomerReviews';
+import DeliveryOptions from '../_components/DeliveryOptions';
+import Information from '../_components/Information';
+import Paying from '../_components/Paying';
+import Share from '../_components/Share/Share';
+import Wish from '../_components/Wish';
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
   const product = await getDetailProduct(productId);
-
+  const Images = product.ImagesURL.map((ImageURL) => {
+    return { ImageURL, title: product.title || '' };
+  });
+  const brand = await getBrandById(`${product.brandId}`);
+  const category = await getCategoryById(product.categoryId ?? '');
   return (
     <div>
+      <BrandBenner>
+        <span className="text-white">{brand?.krName}</span>
+        <span className="text-white">{product.brandId}</span>
+      </BrandBenner>
       <div className="relative aspect-square">
-        <Image src={product.thumbNailURL || ''} fill alt={product.title || ''} />
-        {product.ImagesURL.map((ImageURL, index: number) => (
-          <Image key={index} src={ImageURL} fill className="object-cover" alt={product.title || ''} />
-        ))}
+        <BennerSlide Images={Images} />
       </div>
+
+      <Bread categoryName={category.categoryMainTitle ?? ''} />
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
-      <div className="flex-row-10 justify-between p-5-2 w-full items-center border-b-2">
+      <div className="flex-row-10 justify-between p-5-2 w-full border-b-2">
         <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
         {(product.discount || 0) > 0 && (
           <>
@@ -32,23 +46,18 @@ const ProductDetailPage = async ({ params }: Params) => {
         )}
       </div>
       <div className="min-h-[213px] flex-col-10 p-5-2">
-        <span>달콤한 호박 | 말랑말랑 | 불가리안 로즈</span>
+        <span className="flex-row-10">{product.notes?.join(' | ')}</span>
+
         <p>{product?.content}</p>
       </div>
 
-      <div className="p-5-2">
-        <span>사이즈</span>
-      </div>
-      <div className="flex-row-10 justify-between p-5-2 w-full">
-        <Cart />
-        <BuyNow />
-      </div>
-
-      <div className="flex-row-10 justify-between p-5-2 w-full">
+      <Paying size={product.size} />
+      <DeliveryOptions />
+      <div className="flex-row-20 justify-between p-5-2 w-full">
         <Share product={product} />
         <Wish />
       </div>
-      <Information />
+      <Information productDetail={product.detailImageURL ?? ''} />
       <Accordion type="multiple">
         <Toggle trigger="배송 및 반품" value={false}>
           <h5>배송 안내</h5>
@@ -75,6 +84,13 @@ const ProductDetailPage = async ({ params }: Params) => {
           </p>
         </Toggle>
       </Accordion>
+
+      <div className="p-5-2">
+        <CurrentProducts />
+      </div>
+      <div className="p-5-2 mb-[138px] overflow-hidden">
+        <CustomerReviews />
+      </div>
     </div>
   );
 };

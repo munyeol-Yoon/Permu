@@ -1,11 +1,43 @@
-type CategoryDetail = {
-  categoryDetailId: string;
-  name: string;
+type Categories = {
+  code: number;
+  categoryId: string;
+  categoryTitle: string;
+  categorySubTitle: string;
+  categoryMainTitle: string;
 };
 
-type Categories = {
+type ProductWithCategory = {
+  productId: number;
+  title: string;
+  thumbNailURL: string;
+  price: number;
+  discount: number;
   categoryId: string;
-  categoryName: string;
-  code: number;
-  CategoryDetail: CategoryDetail[];
+  Categories: Categories;
 };
+
+// TODO: 검색페이지 수정시 이름 변경
+interface RouteCategory {
+  categoryId: string;
+  categoryTitle: string;
+  categoryMainTitle: string;
+  categorySubTitle?: string;
+  code: number;
+}
+
+interface RouteCategoryDetail {
+  categoryId: string;
+  categoryTitle: string;
+  categoryMainTitle: string;
+  categorySubTitle?: string;
+  code: number;
+}
+
+interface RouteCategoryGroup {
+  mainTitle: string;
+  items: RouteCategoryDetail[];
+}
+
+interface RouteCategoriesByTitle {
+  [title: string]: RouteCategoryGroup[];
+}
