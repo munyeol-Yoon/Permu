@@ -57,15 +57,24 @@ const CategoryPage = () => {
       <section className="flex flex-col items-stretch self-stretch">
         {Object.keys(categories).map((categoryTitle) => (
           <div key={categoryTitle}>
-            <h2>{categoryTitle}</h2>
+            <div className="flex h-16 pt-[20px] pb-[20.21px] justify-center items-center self-stretch border-b border-b-[#B3B3B3]">
+              <div className="flex w-[600px] px-[50px] items-center gap-[5px]">
+                <h2 className="transform rotate-[0.362deg] text-[#231815] font-abhaya text-[30px] not-italic font-normal leading-[22.5px] tracking-[9px]">
+                  {categoryTitle} -
+                </h2>
+              </div>
+            </div>
             {categories[categoryTitle].map((group) => (
               <Accordion type="multiple" key={group.mainTitle}>
-                <Toggle trigger={group.mainTitle} value={false}>
+                <Toggle trigger={group.mainTitle} value={false} className="px-8">
                   <div>
                     {group.items.map((item) => (
                       <div key={item.categoryId}>
                         <Link href={`/category/search/result?query=${item.categoryId}`}>
-                          <p>{item.categorySubTitle ? item.categorySubTitle : '카테고리 준비중입니다.'}</p>
+                          <div className="text-[#B3B3B3] hover:text-black">
+                            {' '}
+                            - {item.categorySubTitle ? item.categorySubTitle : '카테고리 준비중입니다.'}
+                          </div>
                         </Link>
                       </div>
                     ))}
