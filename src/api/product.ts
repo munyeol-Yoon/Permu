@@ -1,8 +1,18 @@
 import { Product } from '@/types/products';
 import { Tables } from '@/types/supabase';
 
-export const getSearchProducts = async (search: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search?query=${search}`);
+export const getSearchProducts = async (search?: string, categoryId?: string) => {
+  const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search`);
+
+  if (search) {
+    url.searchParams.append('query', search);
+  }
+
+  if (categoryId) {
+    url.searchParams.append('categoryId', categoryId);
+  }
+
+  const res = await fetch(url.toString());
 
   if (!res.ok) {
     throw new Error('response 에러');

@@ -1,6 +1,7 @@
 import { createClient } from '@/supabase/server';
 import { NextResponse } from 'next/server';
 
+// TODO: 어느 폴더에 함수를 둘지 생각.
 const categoryTransformData = (data: RouteCategory[]): RouteCategoriesByTitle => {
   const result: RouteCategoriesByTitle = {};
 

@@ -18,21 +18,22 @@ export const GET = async (req: NextRequest) => {
       .from('Products')
       .select(
         `
-    productId,
-    title,
-    thumbNailURL,
-    Categories:Categories (
-      categoryId,
-      code,
-      categoryName,
-      CategoryDetail:CategoryDetail (
-        categoryDetailId,
-        name
+        productId,
+        title,
+        thumbNailURL,
+        price,
+        discount,
+        categoryId,
+        Categories:Products_categoryId_fkey (
+          categoryId,
+          categoryTitle,
+          categoryMainTitle,
+          categorySubTitle,
+          code
+        )
+      `
       )
-    )
-    `
-      )
-      .or(`title.ilike.%${extractQuery}%`);
+      .ilike('title', `%${extractQuery}%`);
 
     if (error) {
       return NextResponse.json({ success: false, detail: error.message }, { status: 500 });
