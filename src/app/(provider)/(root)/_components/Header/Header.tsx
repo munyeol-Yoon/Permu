@@ -1,17 +1,17 @@
-'use client';
-
-import Link from 'next/link';
+import TopBanner from '../TopBanner';
+import Navbar from '../Navbar';
+import NavCategories from '../NavCategories';
 
 const Header = () => {
   return (
-    <div>
-      <Link href="/">홈</Link>
-      <Link href="/auth/log-in">로그인</Link>
-      <button>로그아웃</button>
-      <Link href="/auth/sign-up">회원가입</Link>
-      <Link href="/search">검색</Link>
-      <Link href="/cart">장바구니</Link>
-    </div>
+    <header>
+      {/* 위 */}
+      <TopBanner />
+      {/* 중간 */}
+      <Navbar />
+      {/* 밑 임시.*/}
+      <NavCategories />
+    </header>
   );
 };
 
