@@ -16,7 +16,7 @@ const Navbar = () => {
       </Link>
 
       <div className="flex justify-between items-center">
-        <Link href="/search">
+        <Link href="/category/search">
           <SearchSVG className="w-[28px] h-[28px] mr-[20px]" />
         </Link>
 

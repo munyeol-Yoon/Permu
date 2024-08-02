@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-interface ProductProps {
+export interface ProductProps {
   product: Product;
 }
 
@@ -15,6 +15,7 @@ const ProductCard = ({ product }: ProductProps) => {
   useEffect(() => {
     async function getBrands() {
       const brand = await getBrandById(`${product.brandId}`);
+      
       setBrand(brand);
     }
     getBrands();
