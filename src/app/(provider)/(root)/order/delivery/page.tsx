@@ -24,23 +24,30 @@ const DeliveryPage = () => {
 
   const { loggedUser } = useAuth();
   const { data: orderInfo } = useOrderInfoQuery();
-  const { mutateAsync, isSuccess: isOrderSuccess, isError: isOrderFailed } = useOrderMutation();
+  const { mutateAsync } = useOrderMutation();
   const { deleteCartItem } = useCart();
 
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
+  const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK'>('TOSS');
   const [mileageAmount, setMileageAmount] = useState(0);
 
   const receiverMemoRef = useRef('');
 
+  const totalProductDiscountPrice = useMemo(
+    () =>
+      orderInfo?.productList.reduce(
+        (acc: number, cur: { price: number; discountedPrice: number }) => acc + cur.price - cur.discountedPrice,
+        0
+      ),
+    [orderInfo]
+  );
+
   const totalDiscountedPrice = useMemo(() => {
-    const productDiscountPrice = orderInfo?.productList.reduce(
-      (acc: number, cur: { price: number; discountedPrice: number }) => acc + cur.price - cur.discountedPrice,
-      0
-    );
+    const productDiscountPrice = totalProductDiscountPrice;
     const couponDiscount = selectedCoupon ? selectedCoupon.discount : 0;
     const finalDiscountedPrice = productDiscountPrice + couponDiscount + mileageAmount;
     return finalDiscountedPrice;
-  }, [mileageAmount, orderInfo, selectedCoupon]);
+  }, [mileageAmount, selectedCoupon, totalProductDiscountPrice]);
 
   const totalProductPrice = useMemo(() => {
     const productPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
@@ -62,6 +69,16 @@ const DeliveryPage = () => {
     const validInputValue = e.target.value.replace(/[^0-9]/g, '');
 
     setMileageAmount(Number(validInputValue));
+  };
+
+  const handleSelectPayment = (payment: 'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK') => {
+    setSelectedPayment(payment);
+  };
+
+  const handleSelectCoupon = (coupon: any) => {
+    if (selectedCoupon === coupon) return setSelectedCoupon(null);
+
+    setSelectedCoupon(coupon);
   };
 
   const handleOrder = async () => {
@@ -207,7 +224,7 @@ const DeliveryPage = () => {
                   return (
                     <div
                       key={couponItem.couponId}
-                      onClick={() => setSelectedCoupon(couponItem)}
+                      onClick={() => handleSelectCoupon(couponItem)}
                       className={cn(
                         'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
                         couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
@@ -249,20 +266,81 @@ const DeliveryPage = () => {
       </div>
 
       <div>
-        <div className="p-5 border-b-[0.5px] mb-5">
+        <div className="p-5 border-b-[0.5px]">
           <p className="text-xl font-bold">결제 수단</p>
         </div>
-        <div className="flex items-center px-5 gap-4">
-          <Checkbox />
+        <div className="flex items-center gap-4 p-5 text-[20px] cursor-pointer">
+          <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="61" height="24" viewBox="0 0 61 24" fill="none">
+            <g clipPath="url(#clip0_632_2533)">
+              <path
+                d="M48.6842 23.8338H12.1705C5.44866 23.8338 0 18.5365 0 12.0004C0 5.46533 5.44866 0.167969 12.1705 0.167969H48.6842C55.406 0.167969 60.8557 5.46533 60.8557 12.0004C60.8557 18.5365 55.406 23.8338 48.6842 23.8338Z"
+                fill="#FFE000"
+              />
+              <path
+                d="M15.7304 5.78906C12.0611 5.78906 9.08789 8.07352 9.08789 10.8913C9.08789 12.5819 10.1618 14.0784 11.8106 15.0072L11.029 17.8469C10.9539 18.1193 11.2659 18.3363 11.507 18.1788L14.8997 15.9517C15.1721 15.9778 15.4486 15.9935 15.7304 15.9935C19.3997 15.9935 22.3729 13.7089 22.3729 10.8913C22.3729 8.07345 19.3997 5.78906 15.7304 5.78906ZM28.6357 8.46425V13.4767C28.761 13.4923 29.0772 13.5226 29.3767 13.5226C31.0162 13.5226 31.6466 12.4038 31.6466 10.6412C31.6466 9.0925 31.2218 8.15738 29.9131 8.15738C29.4874 8.15738 29.0146 8.28052 28.6357 8.46425ZM28.6357 15.04V18.1823H26.3346V6.59409H27.9574L28.2413 7.32986C28.7307 6.85497 29.4706 6.34884 30.6697 6.34884C32.9239 6.34884 33.9967 7.98935 33.98 10.6412C33.98 13.4151 32.3249 15.1934 29.9601 15.1934C29.503 15.1934 29.1565 15.1621 28.6357 15.04ZM40.167 12.8177V11.2847H39.1108C37.9274 11.2847 37.3283 11.699 37.3283 12.5266C37.3283 13.1548 37.6602 13.4616 38.3375 13.4616C38.9689 13.4616 39.7736 13.1548 40.167 12.8177ZM38.8582 9.85911H40.167V9.58364C40.167 8.66312 39.6316 8.23422 38.7007 8.23422C37.9911 8.23422 37.0768 8.43356 36.3359 8.78626L35.7045 7.28348C36.5248 6.73246 37.7865 6.34947 38.9053 6.34947C41.1125 6.34947 42.3116 7.48283 42.3116 9.64415V14.9634H40.6877L40.4508 14.2579C39.521 14.9174 38.6694 15.193 37.8971 15.193C36.2096 15.193 35.2641 14.212 35.2641 12.5569C35.2641 10.7941 36.5247 9.85911 38.8582 9.85911ZM49.0719 14.105C48.2683 16.1901 47.3062 17.7076 45.9036 18.5498L44.4842 17.2776C45.3045 16.5878 45.8868 15.9136 46.392 15.0098L43.3331 6.90096L45.6186 6.303L47.5744 12.8787L49.5134 6.27271L51.7686 6.88526L49.0719 14.105Z"
+                fill="#302A28"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_632_2533">
+                <rect width="60.8558" height="23.6658" fill="white" transform="translate(0 0.167969)" />
+              </clipPath>
+            </defs>
+          </svg>
+          <p>카카오페이</p>
+        </div>
+        <div
+          onClick={() => handleSelectPayment('TOSS')}
+          className="flex items-center gap-4 p-5 text-[20px] cursor-pointer"
+        >
+          <Checkbox
+            checked={selectedPayment === 'TOSS'}
+            className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none transition-colors"
+          />
+          <Image src="/toss.png" width={59} height={25} alt="" unoptimized />
           <p>토스페이</p>
+        </div>
+        <div className="flex items-center p-5 gap-4 text-[20px] cursor-pointer">
+          <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
+          <p>카드 일반 결제</p>
+        </div>
+        <div className="flex items-center gap-4 p-5 text-[20px] cursor-pointer">
+          <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
+          <p>무통장 입금</p>
         </div>
       </div>
 
-      <div>
-        <div className="p-5 border-b-[0.5px] mb-5">
-          <p className="text-xl font-bold">환불 방법</p>
-        </div>
-      </div>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="refund" className="border-b-[0.5px]">
+          <AccordionTrigger withChevron={false} className="flex justify-between p-5 [&[data-state=open]>svg]:rotate-0">
+            <p className="text-xl font-bold">환불 방법</p>
+            <svg
+              className="rotate-180 transition-transform"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="9"
+              viewBox="0 0 18 9"
+              fill="none"
+            >
+              <path d="M17 8.05469L9.00002 0.943577L1 8.05469" stroke="#302A28" strokeMiterlimit="10" />
+            </svg>
+          </AccordionTrigger>
+          <AccordionContent className="text-[10px] bg-[#B3B3B3] p-6">
+            <p>선택하신 결제 방법으로 환불해 드립니다.</p>
+            <ul className="list-disc list-inside">
+              <li>
+                입점업체 배송은 낮은 확률로 상품이 품절일 가능성이 있습니다. 이에 품절 시 빠르게 환불 처리해드립니다.
+              </li>
+              <li>
+                현금 환불의 경우, 예금정보가 일치해야 환불 처리가 가능합니다. 은행명, 계좌번호, 예금주명을 정확히 기재
+                부탁드립니다.
+              </li>
+              <li>환불받으신 날짜 기준으로 3~5일(주말 제외) 후 결제대행사에서 직접 고객님의 계좌로 환불 처리됩니다.</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       <div>
         <div className="p-5 border-b-[0.5px] mb-5">
@@ -277,13 +355,25 @@ const DeliveryPage = () => {
             <p>배송비</p>
             <p className="font-medium text-[#0348FF]">배송비 무료</p>
           </div>
-          <div className="flex justify-between items-center py-2.5 text-xl">
-            <p>할인금액</p>
-            <p className="font-medium text-[#0348FF]">
-              <span className="text-base">SAVE</span> -{totalDiscountedPrice.toLocaleString()}원
-            </p>
+          <div className="flex flex-col py-2.5 text-xl">
+            <div className="flex justify-between items-center py-5">
+              <p>할인금액</p>
+              <p className="font-medium text-[#0348FF]">
+                <span className="text-base">SAVE</span> -{totalDiscountedPrice.toLocaleString()}원
+              </p>
+            </div>
+            <div className="text-xs flex items-center justify-between px-[30px] py-4">
+              <p>쿠폰 할인금액</p>
+              <p>-{selectedCoupon ? selectedCoupon.discount.toLocaleString() : 0}원</p>
+            </div>
+            {totalProductDiscountPrice && (
+              <div className="text-xs flex items-center justify-between px-[30px] py-4">
+                <p>행사 할인금액</p>
+                <p>-{totalProductDiscountPrice.toLocaleString()}원</p>
+              </div>
+            )}
           </div>
-          <div className="flex justify-between items-center py-2.5 text-xl">
+          <div className="flex items-center justify-between py-2.5 text-xl">
             <p className="font-bold">결제금액</p>
             <p className="font-medium">{totalPaymentPrice.toLocaleString()}원</p>
           </div>
