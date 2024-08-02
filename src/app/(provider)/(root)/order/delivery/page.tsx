@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useOrderMutation } from '@/hooks/mutation';
 import { useOrderInfoQuery } from '@/hooks/query';
+import { cn } from '@/utils/cn';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -199,18 +200,35 @@ const DeliveryPage = () => {
                   <div
                     key={couponItem.couponId}
                     onClick={() => setSelectedCoupon(couponItem)}
-                    className="bg-white px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)]"
+                    className={cn(
+                      'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
+                      couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
+                    )}
                   >
                     <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
-                    <p className="pb-2 text-xs text-[#B3B3B3]">
+                    <p className={cn('pb-2 text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#B3B3B3]')}>
                       {formattedIssueDate} - {formattedExpirationDate}
                     </p>
-                    <p className="pb-2 text-[20px] text-[#0348FF] font-bold">
+                    <p
+                      className={cn(
+                        'pb-2 text-[20px] font-bold',
+                        couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
+                      )}
+                    >
                       {couponItem.discount.toLocaleString()}원
                     </p>
                     <div className="flex justify-between items-center">
-                      <p className="text-xs text-[#0348FF]">-{couponItem.discount.toLocaleString()}원 할인 혜택</p>
-                      <button className="bg-[#0348FF] text-white text-xs py-1.5 px-2.5 rounded-sm">적용하기</button>
+                      <p className={cn('text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]')}>
+                        -{couponItem.discount.toLocaleString()}원 할인 혜택
+                      </p>
+                      <button
+                        className={cn(
+                          'text-xs py-1.5 px-2.5 rounded-sm',
+                          couponItem === selectedCoupon ? 'bg-white text-[#0348FF]' : 'bg-[#0348FF] text-white'
+                        )}
+                      >
+                        적용하기
+                      </button>
                     </div>
                   </div>
                 );
