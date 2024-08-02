@@ -1,16 +1,8 @@
 'use client';
 import ProductCard from '@/components/ProductCard';
 import { useSearchQuery } from '@/hooks/query';
+import { Product } from '@/types/products';
 import { useSearchParams } from 'next/navigation';
-
-interface Product {
-  productId: number;
-  createdAt: string;
-  title: string;
-  price: number;
-  thumbNailURL: string;
-  discount: number;
-}
 
 const ResultPage = () => {
   const searchParams = useSearchParams();
@@ -20,17 +12,15 @@ const ResultPage = () => {
 
   if (error) console.log(error);
 
+  console.log(data)
+
   return (
     <div className="container mx-auto p-5">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.data.map((product: Product) => (
+        {data && data.data.map((productItem: Product) => (
           <ProductCard
-            key={product.productId}
-            brand="브랜드"
-            name={product.title}
-            discountPercentage={product.discount}
-            price={product.price}
-            thumbNailURL={product.thumbNailURL}
+            key={productItem.productId}
+            product={productItem}
           />
         ))}
       </div>
