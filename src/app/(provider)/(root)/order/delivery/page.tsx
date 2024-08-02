@@ -24,24 +24,30 @@ const DeliveryPage = () => {
 
   const { loggedUser } = useAuth();
   const { data: orderInfo } = useOrderInfoQuery();
-  const { mutateAsync, isSuccess: isOrderSuccess, isError: isOrderFailed } = useOrderMutation();
+  const { mutateAsync } = useOrderMutation();
   const { deleteCartItem } = useCart();
 
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
-  const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK' | null>(null);
+  const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK'>('TOSS');
   const [mileageAmount, setMileageAmount] = useState(0);
 
   const receiverMemoRef = useRef('');
 
+  const totalProductDiscountPrice = useMemo(
+    () =>
+      orderInfo?.productList.reduce(
+        (acc: number, cur: { price: number; discountedPrice: number }) => acc + cur.price - cur.discountedPrice,
+        0
+      ),
+    [orderInfo]
+  );
+
   const totalDiscountedPrice = useMemo(() => {
-    const productDiscountPrice = orderInfo?.productList.reduce(
-      (acc: number, cur: { price: number; discountedPrice: number }) => acc + cur.price - cur.discountedPrice,
-      0
-    );
+    const productDiscountPrice = totalProductDiscountPrice;
     const couponDiscount = selectedCoupon ? selectedCoupon.discount : 0;
     const finalDiscountedPrice = productDiscountPrice + couponDiscount + mileageAmount;
     return finalDiscountedPrice;
-  }, [mileageAmount, orderInfo, selectedCoupon]);
+  }, [mileageAmount, selectedCoupon, totalProductDiscountPrice]);
 
   const totalProductPrice = useMemo(() => {
     const productPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
@@ -65,10 +71,14 @@ const DeliveryPage = () => {
     setMileageAmount(Number(validInputValue));
   };
 
-  const handleChangePayment = (payment: 'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK') => {
-    if (selectedPayment === payment) return setSelectedPayment(null);
-
+  const handleSelectPayment = (payment: 'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK') => {
     setSelectedPayment(payment);
+  };
+
+  const handleSelectCoupon = (coupon: any) => {
+    if (selectedCoupon === coupon) return setSelectedCoupon(null);
+
+    setSelectedCoupon(coupon);
   };
 
   const handleOrder = async () => {
@@ -214,7 +224,7 @@ const DeliveryPage = () => {
                   return (
                     <div
                       key={couponItem.couponId}
-                      onClick={() => setSelectedCoupon(couponItem)}
+                      onClick={() => handleSelectCoupon(couponItem)}
                       className={cn(
                         'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
                         couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
@@ -259,10 +269,10 @@ const DeliveryPage = () => {
         <div className="p-5 border-b-[0.5px]">
           <p className="text-xl font-bold">결제 수단</p>
         </div>
-        <button className="flex items-center gap-4 p-5 text-[20px]" disabled>
+        <div className="flex items-center gap-4 p-5 text-[20px] cursor-pointer">
           <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
           <svg xmlns="http://www.w3.org/2000/svg" width="61" height="24" viewBox="0 0 61 24" fill="none">
-            <g clip-path="url(#clip0_632_2533)">
+            <g clipPath="url(#clip0_632_2533)">
               <path
                 d="M48.6842 23.8338H12.1705C5.44866 23.8338 0 18.5365 0 12.0004C0 5.46533 5.44866 0.167969 12.1705 0.167969H48.6842C55.406 0.167969 60.8557 5.46533 60.8557 12.0004C60.8557 18.5365 55.406 23.8338 48.6842 23.8338Z"
                 fill="#FFE000"
@@ -279,23 +289,26 @@ const DeliveryPage = () => {
             </defs>
           </svg>
           <p>카카오페이</p>
-        </button>
-        <button onClick={() => handleChangePayment('TOSS')} className="flex items-center gap-4 p-5 text-[20px]">
+        </div>
+        <div
+          onClick={() => handleSelectPayment('TOSS')}
+          className="flex items-center gap-4 p-5 text-[20px] cursor-pointer"
+        >
           <Checkbox
             checked={selectedPayment === 'TOSS'}
-            className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none"
+            className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none transition-colors"
           />
           <Image src="/toss.png" width={59} height={25} alt="" unoptimized />
           <p>토스페이</p>
-        </button>
-        <button className="flex items-center p-5 gap-4 text-[20px]" disabled>
+        </div>
+        <div className="flex items-center p-5 gap-4 text-[20px] cursor-pointer">
           <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
           <p>카드 일반 결제</p>
-        </button>
-        <button className="flex items-center gap-4 p-5 text-[20px]" disabled>
+        </div>
+        <div className="flex items-center gap-4 p-5 text-[20px] cursor-pointer">
           <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
           <p>무통장 입금</p>
-        </button>
+        </div>
       </div>
 
       <Accordion type="single" collapsible>
@@ -310,7 +323,7 @@ const DeliveryPage = () => {
               viewBox="0 0 18 9"
               fill="none"
             >
-              <path d="M17 8.05469L9.00002 0.943577L1 8.05469" stroke="#302A28" stroke-miterlimit="10" />
+              <path d="M17 8.05469L9.00002 0.943577L1 8.05469" stroke="#302A28" strokeMiterlimit="10" />
             </svg>
           </AccordionTrigger>
           <AccordionContent className="text-[10px] bg-[#B3B3B3] p-6">
@@ -342,13 +355,25 @@ const DeliveryPage = () => {
             <p>배송비</p>
             <p className="font-medium text-[#0348FF]">배송비 무료</p>
           </div>
-          <div className="flex justify-between items-center py-2.5 text-xl">
-            <p>할인금액</p>
-            <p className="font-medium text-[#0348FF]">
-              <span className="text-base">SAVE</span> -{totalDiscountedPrice.toLocaleString()}원
-            </p>
+          <div className="flex flex-col py-2.5 text-xl">
+            <div className="flex justify-between items-center py-5">
+              <p>할인금액</p>
+              <p className="font-medium text-[#0348FF]">
+                <span className="text-base">SAVE</span> -{totalDiscountedPrice.toLocaleString()}원
+              </p>
+            </div>
+            <div className="text-xs flex items-center justify-between px-[30px] py-4">
+              <p>쿠폰 할인금액</p>
+              <p>-{selectedCoupon ? selectedCoupon.discount.toLocaleString() : 0}원</p>
+            </div>
+            {totalProductDiscountPrice && (
+              <div className="text-xs flex items-center justify-between px-[30px] py-4">
+                <p>행사 할인금액</p>
+                <p>-{totalProductDiscountPrice.toLocaleString()}원</p>
+              </div>
+            )}
           </div>
-          <div className="flex justify-between items-center py-2.5 text-xl">
+          <div className="flex items-center justify-between py-2.5 text-xl">
             <p className="font-bold">결제금액</p>
             <p className="font-medium">{totalPaymentPrice.toLocaleString()}원</p>
           </div>
