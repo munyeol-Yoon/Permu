@@ -134,7 +134,7 @@ const DeliveryPage = () => {
               <div className="relative aspect-square max-w-[100px] mx-[33px]">
                 <Image src={productItem.thumbNailURL} width={100} height={100} alt="" />
               </div>
-              3
+
               <div className="flex flex-col px-2.5 w-full">
                 <p className="text-xs mb-1">{productItem.Brands.enName}</p>
                 <p className="font-semibold mb-2.5">{productItem.title}</p>
