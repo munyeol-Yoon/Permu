@@ -1,7 +1,10 @@
 'use client';
+import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
+import { HOME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import Link from 'next/link';
+import Profile from './_components/Profile';
 
 const MyMainPage = () => {
   const { loggedUser } = useAuth();
@@ -13,6 +16,10 @@ const MyMainPage = () => {
 
   return (
     <div className="flex flex-col">
+      <Navbar title="마이페이지" href={HOME} />
+
+      <Profile name={name || ''} />
+
       <div>
         <p>프로필 : </p>
         <p>이름 : {name}</p>
