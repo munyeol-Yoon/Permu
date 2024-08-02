@@ -1,10 +1,19 @@
+'use client';
 import { getProducts } from '@/api/product';
 import CategoryMore from '@/components/CategoryMore';
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/types/products';
+import { useEffect, useState } from 'react';
 
-const CurrentProducts = async ({ title, option }: { title: string; option: string }) => {
-  const products = await getProducts(option);
+const CurrentProducts = ({ title, option }: { title: string; option: string }) => {
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    async function getAllProducts() {
+      const products = await getProducts(option);
+      setProducts(products);
+    }
+    getAllProducts();
+  }, [option]);
   return (
     <div className="flex flex-col">
       <CategoryMore title={title} />
