@@ -1,7 +1,7 @@
 'use client';
 
 import { useCartsQuery } from '@/hooks/query';
-import { CartDrawer, CartEmpty, CartList, CartSelector } from './_components';
+import { CartAccordion, CartEmpty, CartList, CartSelector } from './_components';
 
 const CartPage = () => {
   const { data: cartList } = useCartsQuery();
@@ -11,10 +11,10 @@ const CartPage = () => {
   }
 
   return (
-    <div className="max-w-[600px] flex flex-col h-full">
+    <div className="relative max-w-[600px] flex flex-col h-full">
       <CartSelector />
       <CartList />
-      <CartDrawer />
+      <CartAccordion />
     </div>
   );
 };
