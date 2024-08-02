@@ -14,7 +14,6 @@ import InfoCard from './_components/InfoCard';
 import LinkCard from './_components/LinkCard';
 import Profile from './_components/Profile';
 // TODO : 쿠폰, 후기 데이터 가져오기
-// TODO : Navbar 이전 페이지, 홈으로 이동하도록 수정
 // TODO : 이동 가능한 부분 pointer
 
 const LINKS = [
@@ -39,7 +38,7 @@ const MyMainPage = () => {
 
   return (
     <div className="flex flex-col">
-      <Navbar title="마이페이지" href={HOME} />
+      <Navbar title="마이페이지" href={HOME} isHome />
 
       <Profile name={name || ''} />
 
