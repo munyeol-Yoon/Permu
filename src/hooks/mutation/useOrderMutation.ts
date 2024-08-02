@@ -10,12 +10,12 @@ const useOrderMutation = () => {
     mutationFn: async ({
       deliveryInfo,
       totalPrice,
-      coupon,
+      couponId,
       updatedMileageAmount
     }: {
       deliveryInfo: DeliveryInfo;
       totalPrice: number;
-      coupon: any;
+      couponId: string;
       updatedMileageAmount: number;
     }) => {
       const orderId = crypto.randomUUID();
@@ -29,7 +29,7 @@ const useOrderMutation = () => {
         deliverId,
         userId,
         total: totalPrice,
-        couponId: coupon?.couponId
+        couponId
       };
       const deliveries: DeliveryInfo = { ...deliveryInfo, deliverId };
 

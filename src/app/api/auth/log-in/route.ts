@@ -2,10 +2,9 @@ import { createClient } from '@/supabase/server';
 import { LoginForm } from '@/types/types';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const { id: email, password }: LoginForm = await request.json();
-
+    const { email, password }: LoginForm = await request.json();
     const supabase = createClient();
 
     const {

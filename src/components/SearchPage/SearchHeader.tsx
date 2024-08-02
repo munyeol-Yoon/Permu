@@ -12,8 +12,12 @@ const SearchHeader = () => {
   return (
     <>
       <header className="flex px-[20px] pl-[50px] justify-between items-center h-[64px]">
-        <LogoSVG className="cursor-pointer" />
-        <XSVG className="cursor-pointer" />
+        <Link href={'/'}>
+          <LogoSVG className="cursor-pointer" />
+        </Link>
+        <Link href={'/category'}>
+          <XSVG className="cursor-pointer" />
+        </Link>
       </header>
       <section className="flex justify-start items-center self-stretch py-[0px] pr-[9px] pl-[50px] h-[64px]">
         <MenuItem>

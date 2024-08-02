@@ -168,6 +168,7 @@ export type Database = {
       }
       Deliveries: {
         Row: {
+          address: string | null
           addressId: string | null
           arrivalDate: string | null
           deliverId: string
@@ -178,6 +179,7 @@ export type Database = {
           phone: string
         }
         Insert: {
+          address?: string | null
           addressId?: string | null
           arrivalDate?: string | null
           deliverId: string
@@ -188,6 +190,7 @@ export type Database = {
           phone: string
         }
         Update: {
+          address?: string | null
           addressId?: string | null
           arrivalDate?: string | null
           deliverId?: string
@@ -198,13 +201,6 @@ export type Database = {
           phone?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "Deliveries_addressId_fkey"
-            columns: ["addressId"]
-            isOneToOne: false
-            referencedRelation: "Addresses"
-            referencedColumns: ["addressId"]
-          },
           {
             foreignKeyName: "Deliveries_deliverId_fkey"
             columns: ["deliverId"]
@@ -281,13 +277,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "Coupon"
             referencedColumns: ["couponId"]
-          },
-          {
-            foreignKeyName: "Orders_deliverId_fkey"
-            columns: ["deliverId"]
-            isOneToOne: true
-            referencedRelation: "Deliveries"
-            referencedColumns: ["deliverId"]
           },
           {
             foreignKeyName: "Orders_userId_fkey"
