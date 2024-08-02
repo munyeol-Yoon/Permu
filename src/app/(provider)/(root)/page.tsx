@@ -7,7 +7,7 @@ import mockData from '@/mockup/eventBenner.json';
 import ArrowRightIcon from '@@/public/arrow/arrow-right.svg';
 import CategorySection from './_components/CategorySection/CategorySection';
 import EventLinkCard from './_components/EventLinkCard';
-const RootPage = async () => {
+const RootPage = () => {
   return (
     <main className="max-w-[600px] mx-auto my-0 h-full w-full overflow-hidden">
       {/* 슬라이드 */}
