@@ -32,8 +32,8 @@ const ProductCard = ({ product }: ProductProps) => {
           className="rounded bg-#FFFBEE"
         />
         <div className="flex flex-col">
-          <span className="text-[10px] mt-2 text-clamp-1">{brand?.krName}</span>
-          <p className="text-[15px] font-semibold my-3">{product.title || ''}</p>
+          <span className="text-[10px] mt-2 line-clamp-1">{brand?.krName}</span>
+          <p className="text-[15px] font-semibold my-3 line-clamp-1">{product.title || ''}</p>
           <div className="flex justify-between">
             <p className="text-[#FF0000]">{product.discount}%</p>
             <span className="font-semibold">{(product.price || 0).toLocaleString()}원</span>

@@ -21,7 +21,7 @@ const SearchHeader = () => {
       </header>
       <section className="flex justify-start items-center self-stretch py-[0px] pr-[9px] pl-[50px] h-[64px]">
         <MenuItem>
-          {!isLoggedIn ? <Link href={'/auth/log-in'}>로그인</Link> : <Link href={'/user'}>마이페이지</Link>}
+          {!isLoggedIn ? <Link href={'/auth/log-in'}>로그인</Link> : <Link href={'/mypage'}>마이페이지</Link>}
         </MenuItem>
         <MenuItem>|</MenuItem>
         <MenuItem>
