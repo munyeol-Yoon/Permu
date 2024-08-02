@@ -258,11 +258,36 @@ const DeliveryPage = () => {
         </div>
       </div>
 
-      <div>
-        <div className="p-5 border-b-[0.5px] mb-5">
-          <p className="text-xl font-bold">환불 방법</p>
-        </div>
-      </div>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="refund" className="border-b-[0.5px]">
+          <AccordionTrigger withChevron={false} className="flex justify-between p-5 [&[data-state=open]>svg]:rotate-0">
+            <p className="text-xl font-bold">환불 방법</p>
+            <svg
+              className="rotate-180 transition-transform"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="9"
+              viewBox="0 0 18 9"
+              fill="none"
+            >
+              <path d="M17 8.05469L9.00002 0.943577L1 8.05469" stroke="#302A28" stroke-miterlimit="10" />
+            </svg>
+          </AccordionTrigger>
+          <AccordionContent className="text-[10px] bg-[#B3B3B3] p-6">
+            <p>선택하신 결제 방법으로 환불해 드립니다.</p>
+            <ul className="list-disc list-inside">
+              <li>
+                입점업체 배송은 낮은 확률로 상품이 품절일 가능성이 있습니다. 이에 품절 시 빠르게 환불 처리해드립니다.
+              </li>
+              <li>
+                현금 환불의 경우, 예금정보가 일치해야 환불 처리가 가능합니다. 은행명, 계좌번호, 예금주명을 정확히 기재
+                부탁드립니다.
+              </li>
+              <li>환불받으신 날짜 기준으로 3~5일(주말 제외) 후 결제대행사에서 직접 고객님의 계좌로 환불 처리됩니다.</li>
+            </ul>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
       <div>
         <div className="p-5 border-b-[0.5px] mb-5">
