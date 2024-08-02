@@ -8,6 +8,7 @@ export type Product = Omit<Tables<'Products'>, 'ImagesURL' | 'size' | 'notes'> &
   ImagesURL: string[];
   size: string[];
   notes: string[];
+  brandId?: number; 
 };
 export interface Params {
   params: { productId: string };

@@ -25,8 +25,6 @@ const CartSelector = () => {
     await Promise.all(productIdList!.map((productId) => deleteCartItem(productId, loggedUser!.id)));
   };
 
-  if (cartList && !cartList.length) return null;
-
   return (
     <div className="flex justify-between px-[50px] py-5 mb-[52px] border-b border-b-[#B3B3B3]">
       <div className="flex items-center gap-4">

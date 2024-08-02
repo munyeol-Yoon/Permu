@@ -8,6 +8,8 @@ import Header from './_components/Header';
 const RootLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
   const isCategoryPage = pathname.startsWith('/category');
+  const isProductPage = pathname.startsWith('/products');
+  const isHomePage = pathname === '/';
 
   return (
     <div className="w-screen h-screen container grid grid-cols-1 md:grid-cols-[1fr_600px]">
@@ -16,7 +18,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
       </div>
 
       <div className="bg-white max-w-[600px] h-full border flex flex-col md:w-full">
-        {isCategoryPage ? <SearchHeader /> : <Header />}
+        {isCategoryPage ? <SearchHeader /> : (isProductPage || isHomePage) && <Header />}
 
         {children}
       </div>
