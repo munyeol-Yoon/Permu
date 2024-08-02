@@ -1,4 +1,4 @@
-import BackButton from '@@/public/backButton.svg';
+import BackButton from '@@/public/arrow/arrow-left.svg';
 import Link from 'next/link';
 interface NavbarProps {
   title: string;
