@@ -47,3 +47,11 @@ export const getCategoryById = async (categoryId: string): Promise<Tables<'Categ
   const data = await response.json();
   return data;
 };
+
+export const getProducts = async (option: string): Promise<Product[]> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?option=${option}`);
+
+  if (!response.ok) throw new Error('response 에러');
+  const data = await response.json();
+  return data;
+};
