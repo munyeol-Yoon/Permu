@@ -1,6 +1,7 @@
 'use client';
 import Navbar from '@/components/Navbar';
 import {
+  AUTH_LOG_IN_PATHNAME,
   HOME,
   MYPAGE_COUPON_PATHNAME,
   MYPAGE_EDIT_PATHNAME,
@@ -13,18 +14,28 @@ import InfoCard from './_components/InfoCard';
 import LinkCard from './_components/LinkCard';
 import Profile from './_components/Profile';
 // TODO : 쿠폰, 후기 데이터 가져오기
-// TODO : 로그인한 유저 없을 때 화면 만들기
 // TODO : Navbar 이전 페이지, 홈으로 이동하도록 수정
 // TODO : 이동 가능한 부분 pointer
-// TODO : 배송지 관리 물어보기
+
+const LINKS = [
+  { title: '주문/배송 내역', href: MYPAGE_ORDERS_PATHNAME },
+  { title: '취소/반품 내역 (미지원)' },
+  { title: '환불 / 고객상담 (미지원)' },
+  { title: '찜 리스트', href: MYPAGE_WISH_PATHNAME },
+  { title: '쿠폰 내역', href: MYPAGE_COUPON_PATHNAME },
+  { title: '마일리지 내역', href: MYPAGE_MILEAGE_PATHNAME },
+  { title: '회원 정보 변경', href: MYPAGE_EDIT_PATHNAME },
+  { title: '배송지 관리 (미지원)' },
+  { title: '사업자 정보' },
+  { title: '법적고지사항' },
+  { title: '고객지원' }
+];
 
 const MyMainPage = () => {
   const { loggedUser } = useAuth();
-  if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
 
-  const {
-    userData: { name, mileage }
-  } = loggedUser;
+  const name = loggedUser?.userData.name || '';
+  const mileage = loggedUser?.userData.mileage || 0;
 
   return (
     <div className="flex flex-col">
@@ -40,26 +51,10 @@ const MyMainPage = () => {
 
       <div className="bg-blue-500">이미지 배너</div>
 
-      <div className="flex flex-col bg-slate-100 gap-y-5">
-        <div>
-          <LinkCard title="주문/배송 내역" href={MYPAGE_ORDERS_PATHNAME} />
-          <LinkCard title="취소/반품 내역 (미지원)" />
-          <LinkCard title="환불 / 고객상담 (미지원)" />
-        </div>
-        <div>
-          <LinkCard title="찜 리스트" href={MYPAGE_WISH_PATHNAME} />
-          <LinkCard title="쿠폰 내역" href={MYPAGE_COUPON_PATHNAME} />
-          <LinkCard title="마일리지 내역" href={MYPAGE_MILEAGE_PATHNAME} />
-        </div>
-        <div>
-          <LinkCard title="회원 정보 변경" href={MYPAGE_EDIT_PATHNAME} />
-          <LinkCard title="배송지 관리" href={HOME} />
-        </div>
-        <div>
-          <LinkCard title="사업자 정보" />
-          <LinkCard title="법적고지사항" />
-          <LinkCard title="고객지원" />
-        </div>
+      <div className="flex flex-col bg-slate-100">
+        {LINKS.map((link) => (
+          <LinkCard key={link.title} title={link.title} href={loggedUser ? link.href : AUTH_LOG_IN_PATHNAME} />
+        ))}
       </div>
     </div>
   );
