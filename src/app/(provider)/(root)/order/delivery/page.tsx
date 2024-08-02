@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useOrderMutation } from '@/hooks/mutation';
 import { useOrderInfoQuery } from '@/hooks/query';
+import useCart from '@/hooks/useCart';
 import { cn } from '@/utils/cn';
 import dayjs from 'dayjs';
 import Image from 'next/image';
@@ -23,7 +24,8 @@ const DeliveryPage = () => {
 
   const { loggedUser } = useAuth();
   const { data: orderInfo } = useOrderInfoQuery();
-  const { mutateAsync } = useOrderMutation();
+  const { mutateAsync, isSuccess: isOrderSuccess, isError: isOrderFailed } = useOrderMutation();
+  const { deleteCartItem } = useCart();
 
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
   const [mileageAmount, setMileageAmount] = useState(0);
@@ -74,9 +76,13 @@ const DeliveryPage = () => {
     await mutateAsync({
       deliveryInfo,
       totalPrice: totalPaymentPrice,
-      coupon: selectedCoupon?.couponId,
+      couponId: selectedCoupon?.couponId,
       updatedMileageAmount
     });
+
+    await Promise.all(
+      orderInfo?.productList.map((productItem: any) => deleteCartItem(productItem.productId, loggedUser!.id))
+    );
     router.push('/order/complete');
   };
 
@@ -125,9 +131,10 @@ const DeliveryPage = () => {
         <div className="flex flex-col gap-5">
           {orderInfo?.productList?.map((productItem: any) => (
             <div key={productItem.productId} className="flex items-center px-5">
-              <div className="relative aspect-square max-w-[100px] h-[100px] mx-[33px]">
-                <Image src={productItem.thumbNailURL} width={100} height={100} alt="" className="absolute" />
+              <div className="relative aspect-square max-w-[100px] mx-[33px]">
+                <Image src={productItem.thumbNailURL} width={100} height={100} alt="" />
               </div>
+              3
               <div className="flex flex-col px-2.5 w-full">
                 <p className="text-xs mb-1">{productItem.Brands.enName}</p>
                 <p className="font-semibold mb-2.5">{productItem.title}</p>
@@ -196,42 +203,45 @@ const DeliveryPage = () => {
               {orderInfo?.coupon.map((couponItem: any) => {
                 const formattedIssueDate = dayjs(couponItem.issueDate).format('YYYY-MM-DD');
                 const formattedExpirationDate = dayjs(couponItem.expirationDate).format('YYYY-MM-DD');
-                return (
-                  <div
-                    key={couponItem.couponId}
-                    onClick={() => setSelectedCoupon(couponItem)}
-                    className={cn(
-                      'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
-                      couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
-                    )}
-                  >
-                    <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
-                    <p className={cn('pb-2 text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#B3B3B3]')}>
-                      {formattedIssueDate} - {formattedExpirationDate}
-                    </p>
-                    <p
+                if (couponItem.status === 'active')
+                  return (
+                    <div
+                      key={couponItem.couponId}
+                      onClick={() => setSelectedCoupon(couponItem)}
                       className={cn(
-                        'pb-2 text-[20px] font-bold',
-                        couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
+                        'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
+                        couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
                       )}
                     >
-                      {couponItem.discount.toLocaleString()}원
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <p className={cn('text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]')}>
-                        -{couponItem.discount.toLocaleString()}원 할인 혜택
+                      <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
+                      <p
+                        className={cn('pb-2 text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#B3B3B3]')}
+                      >
+                        {formattedIssueDate} - {formattedExpirationDate}
                       </p>
-                      <button
+                      <p
                         className={cn(
-                          'text-xs py-1.5 px-2.5 rounded-sm',
-                          couponItem === selectedCoupon ? 'bg-white text-[#0348FF]' : 'bg-[#0348FF] text-white'
+                          'pb-2 text-[20px] font-bold',
+                          couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
                         )}
                       >
-                        적용하기
-                      </button>
+                        {couponItem.discount.toLocaleString()}원
+                      </p>
+                      <div className="flex justify-between items-center">
+                        <p className={cn('text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]')}>
+                          -{couponItem.discount.toLocaleString()}원 할인 혜택
+                        </p>
+                        <button
+                          className={cn(
+                            'text-xs py-1.5 px-2.5 rounded-sm',
+                            couponItem === selectedCoupon ? 'bg-white text-[#0348FF]' : 'bg-[#0348FF] text-white'
+                          )}
+                        >
+                          적용하기
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
+                  );
               })}
             </AccordionContent>
           </AccordionItem>
@@ -287,14 +297,9 @@ const DeliveryPage = () => {
       </div>
 
       <div className="fixed bottom-0 h-[96px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
-        <div className="py-3 flex justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
-            <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
-          </svg>
-        </div>
         <div className="flex justify-center items-center h-full">
           <button onClick={handleOrder} className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
-            총 {orderInfo?.productList?.length}개 | {totalPaymentPrice}원 구매하기
+            총 {orderInfo?.productList?.length}개 | {totalPaymentPrice.toLocaleString()}원 구매하기
           </button>
         </div>
       </div>
