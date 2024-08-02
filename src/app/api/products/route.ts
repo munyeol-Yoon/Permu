@@ -17,10 +17,9 @@ export async function GET(request: NextRequest) {
           .order('createdAt', { ascending: true })
           .limit(3);
         return NextResponse.json(RecentData || []);
-      default:
-        const { data: DefaultData } = await supabase.from('Products').select('*').limit(3);
-        return NextResponse.json(DefaultData || []);
     }
+    const { data: DefaultData } = await supabase.from('Products').select('*').limit(3);
+    return NextResponse.json(DefaultData || []);
   } catch (error) {
     return NextResponse.json({ error });
   }
