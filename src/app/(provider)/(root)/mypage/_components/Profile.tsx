@@ -5,7 +5,7 @@ interface ProfileProps {
   name: string;
 }
 
-function Profile({ name }: ProfileProps) {
+const Profile = ({ name }: ProfileProps) => {
   return (
     <div className="flex p-5">
       {name ? (
@@ -31,6 +31,6 @@ function Profile({ name }: ProfileProps) {
       )}
     </div>
   );
-}
+};
 
 export default Profile;

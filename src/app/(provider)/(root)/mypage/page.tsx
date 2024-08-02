@@ -1,17 +1,17 @@
 'use client';
 import Navbar from '@/components/Navbar';
-import { Button } from '@/components/ui/button';
 import { HOME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import Link from 'next/link';
+import InfoCard from './_components/InfoCard';
 import Profile from './_components/Profile';
 
+// TODO : 쿠폰, 후기 데이터 가져오기
 const MyMainPage = () => {
   const { loggedUser } = useAuth();
   if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
 
   const {
-    userData: { name, mileage, phone }
+    userData: { name, mileage }
   } = loggedUser;
 
   return (
@@ -20,13 +20,16 @@ const MyMainPage = () => {
 
       <Profile name={name || ''} />
 
-      <div>
+      <div className="flex bg-slate-200 p-5 gap-x-2.5">
+        <InfoCard title="보유 마일리지">{mileage}p</InfoCard>
+        <InfoCard title="쿠폰">12</InfoCard>
+        <InfoCard title="후기">125개</InfoCard>
+      </div>
+      {/* <div>
         <p>프로필 : </p>
         <p>이름 : {name}</p>
         <p>전화번호 {phone}</p>
         <p>주소 : </p>
-        <p>쿠폰 : </p>
-        <p>마일리지 : {mileage}</p>
       </div>
       <div className="border-t">
         <Button>주문 내역</Button>
@@ -35,7 +38,7 @@ const MyMainPage = () => {
       </div>
       <Link className="border bg-blue-200 p-1 rounded" href="/user/edit">
         회원 정보 수정
-      </Link>
+      </Link> */}
     </div>
   );
 };
