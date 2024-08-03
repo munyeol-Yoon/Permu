@@ -53,5 +53,6 @@ export const getProducts = async (option: string): Promise<Product[]> => {
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
+  console.log(data);
   return data;
 };
