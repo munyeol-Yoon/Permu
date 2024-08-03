@@ -29,6 +29,8 @@ const RootPage = () => {
 
       {/* 고객리뷰: */}
       <CustomerReviews />
+
+      <CurrentProducts title={'지금 가장 많이 좋아요 받은 제품'} option="wish" />
     </main>
   );
 };

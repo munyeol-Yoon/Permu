@@ -1,5 +1,5 @@
 'use client';
-import { getProducts } from '@/api/product';
+import { getProducts, getProductsByWish } from '@/api/product';
 import CategoryMore from '@/components/CategoryMore';
 import ProductCard from '@/components/ProductCard';
 import { Product } from '@/types/products';
@@ -9,7 +9,7 @@ const CurrentProducts = ({ title, option }: { title: string; option: string }) =
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     async function getAllProducts() {
-      const products = await getProducts(option);
+      const products = option === 'wish' ? await getProductsByWish() : await getProducts(option);
       setProducts(products);
     }
     getAllProducts();

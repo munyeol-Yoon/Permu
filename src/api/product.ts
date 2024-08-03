@@ -53,6 +53,28 @@ export const getProducts = async (option: string): Promise<Product[]> => {
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
-  console.log(data);
   return data;
+};
+
+export const getProductsByWish = async (): Promise<Product[]> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes`, {
+    method: 'GET'
+  });
+  const data = await response.json();
+
+  const countMap = data.reduce((acc: number[], cur: { productId: number }) => {
+    acc[cur.productId] = (acc[cur.productId] || 0) + 1;
+    return acc;
+  }, {});
+
+  const result = Object.entries(countMap)
+    .map(([productId, count]) => ({
+      productId: +productId,
+      count: count as number
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 3);
+  const data2 = await Promise.all(result.map((product) => getDetailProduct(`${product.productId}`)));
+
+  return data2;
 };
