@@ -85,10 +85,9 @@ const ProductDetailPage = async ({ params }: Params) => {
         </Toggle>
       </Accordion>
 
-      <div className="p-5-2">
-        <CurrentProducts title={'현재 판매중인 상품'} option="" />
-      </div>
-      <div className="p-5-2 mb-[138px] overflow-hidden">
+      <CurrentProducts title={'현재 판매중인 상품'} option="" />
+
+      <div className="mb-[138px]">
         <CustomerReviews />
       </div>
     </div>

@@ -15,7 +15,7 @@ const CurrentProducts = ({ title, option }: { title: string; option: string }) =
     getAllProducts();
   }, [option]);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col p-5-2">
       <CategoryMore title={title} />
       <div className="flex items-center justify-between">
         {products.map((product: Product) => (
