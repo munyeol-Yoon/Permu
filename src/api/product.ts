@@ -74,7 +74,7 @@ export const getProductsByWish = async (): Promise<Product[]> => {
       count: count as number
     }))
     .sort((a, b) => b.count - a.count)
-    .slice(0, 3);
+    .slice(0, 10);
   const data2 = await Promise.all(result.map((product) => getDetailProduct(`${product.productId}`)));
 
   return data2;
