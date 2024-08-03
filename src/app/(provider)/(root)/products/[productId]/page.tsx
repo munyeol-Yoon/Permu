@@ -9,6 +9,7 @@ import BennerSlide from '@/components/BennerSlide';
 import BrandBenner from '@/components/BrandBenner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
+import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
 import Information from '../_components/Information';
 import Paying from '../_components/Paying';
@@ -21,7 +22,7 @@ const ProductDetailPage = async ({ params }: Params) => {
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
-  console.log(product);
+
   return (
     <div>
       <BrandBenner>
@@ -85,9 +86,10 @@ const ProductDetailPage = async ({ params }: Params) => {
 
       <CurrentProducts title={'현재 판매중인 상품'} option="" />
 
-      <div className="mb-[138px]">
-        <CustomerReviews />
-      </div>
+      <CustomerReviews />
+
+      <Footer />
+      <div className="mb-[138px]" />
     </div>
   );
 };

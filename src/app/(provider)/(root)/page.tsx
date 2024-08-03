@@ -6,6 +6,7 @@ import CustomerReviews from '@/components/CustomerReviews';
 import ArrowRightIcon from '@@/public/arrow/arrow-right.svg';
 import CategorySection from './_components/CategorySection/CategorySection';
 import EventLinkCard from './_components/EventLinkCard';
+import Footer from './_components/Footer';
 const RootPage = () => {
   return (
     <main className="max-w-[600px] mx-auto my-0 h-full w-full overflow-hidden">
@@ -31,6 +32,7 @@ const RootPage = () => {
       <CustomerReviews />
 
       <CurrentProducts title={'지금 가장 많이 좋아요 받은 제품'} option="wish" />
+      <Footer />
     </main>
   );
 };
