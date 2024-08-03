@@ -60,8 +60,9 @@ export const getProductsByWish = async (): Promise<Product[]> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes`, {
     method: 'GET'
   });
-  const data = await response.json();
 
+  if (!response.ok) throw new Error('response 에러');
+  const data = await response.json();
   const countMap = data.reduce((acc: number[], cur: { productId: number }) => {
     acc[cur.productId] = (acc[cur.productId] || 0) + 1;
     return acc;
