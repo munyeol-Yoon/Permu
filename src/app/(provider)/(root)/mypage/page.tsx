@@ -1,5 +1,6 @@
 'use client';
 import Navbar from '@/components/Navbar';
+import { Button } from '@/components/ui/button';
 import {
   AUTH_LOG_IN_PATHNAME,
   HOME,
@@ -10,6 +11,7 @@ import {
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
+import { useAuthMutation } from '@/hooks/mutation';
 import InfoCard from './_components/InfoCard';
 import LinkCard from './_components/LinkCard';
 import Profile from './_components/Profile';
@@ -32,14 +34,13 @@ const LINKS = [
 
 const MyMainPage = () => {
   const { loggedUser } = useAuth();
-
+  const { logOutMutation } = useAuthMutation();
   const name = loggedUser?.userData.name || '';
   const mileage = loggedUser?.userData.mileage || 0;
 
   return (
     <div className="flex flex-col">
       <Navbar title="마이페이지" href={HOME} isHome />
-
       <Profile name={name || ''} />
 
       <div className="flex bg-slate-200 p-5 gap-x-2.5">
@@ -47,8 +48,9 @@ const MyMainPage = () => {
         <InfoCard title="쿠폰">12</InfoCard>
         <InfoCard title="후기">125개</InfoCard>
       </div>
-
       <div className="bg-blue-500">이미지 배너</div>
+
+      {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
 
       <div className="flex flex-col bg-slate-100">
         {LINKS.map((link) => (
