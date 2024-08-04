@@ -5,6 +5,7 @@ import { MYPAGE } from '@/constant/pathname';
 import useOrderListQuery from '@/hooks/query/useOrderListQuery';
 import { MyOrder } from '@/types/myPage/order';
 import Arrow from '@@/public/arrow/arrow-bottom.svg';
+import Banner from '@@/public/banner/tempBanner.svg';
 import OrderCard from './_components/OrderCard';
 
 const OrderListPage = () => {
@@ -17,7 +18,7 @@ const OrderListPage = () => {
   return (
     <div>
       <Navbar title="주문/배송내역" href={MYPAGE} isHome />
-      <div className="bg-blue-500">이미지 배너</div>
+      <Banner className="mx-auto my-4" />
 
       <div className="px-[50px]">
         <div className="flex justify-between py-5">

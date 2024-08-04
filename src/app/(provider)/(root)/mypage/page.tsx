@@ -12,6 +12,7 @@ import {
 } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
+import Banner from '@@/public/banner/tempBanner.svg';
 import InfoCard from './_components/InfoCard';
 import LinkCard from './_components/LinkCard';
 import Profile from './_components/Profile';
@@ -48,14 +49,14 @@ const MyMainPage = () => {
         <InfoCard title="쿠폰">12</InfoCard>
         <InfoCard title="후기">125개</InfoCard>
       </div>
-      <div className="bg-blue-500">이미지 배너</div>
 
-      {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
+      <Banner className="mx-auto my-4" />
 
       <div className="flex flex-col bg-slate-100">
         {LINKS.map((link) => (
           <LinkCard key={link.title} title={link.title} href={loggedUser ? link.href : AUTH_LOG_IN_PATHNAME} />
         ))}
+        {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
       </div>
     </div>
   );

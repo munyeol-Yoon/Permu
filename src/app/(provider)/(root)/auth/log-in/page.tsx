@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AUTH_SIGN_UP_PATHNAME } from '@/constant/pathname';
 import { useAuthMutation } from '@/hooks/mutation';
+import Banner from '@@/public/banner/tempBanner.svg';
 import { Provider } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { ChangeEventHandler, FormEventHandler, useRef } from 'react';
-
 const LogInPage = () => {
   const { logInWithProviderMutation, logInWithEmailMutation } = useAuthMutation();
   const idRef = useRef<HTMLInputElement>(null);
@@ -105,7 +105,7 @@ const LogInPage = () => {
           </div>
         </Tabs>
       </div>
-      <div className="bg-blue-500">이벤트 배너 컴포넌트</div>
+      <Banner className="mx-auto my-4" />
     </>
   );
 };
