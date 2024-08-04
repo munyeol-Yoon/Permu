@@ -1,10 +1,19 @@
+'use client';
 import Navbar from '@/components/Navbar';
 import { Accordion } from '@/components/ui/accordion';
 import { MYPAGE } from '@/constant/pathname';
-
+import useOrderListQuery from '@/hooks/query/useOrderListQuery';
+import { MyOrder } from '@/types/myPage/order';
 import Arrow from '@@/public/arrow/arrow-bottom.svg';
 import OrderCard from './_components/OrderCard';
+
 const OrderListPage = () => {
+  const { data: OrderList, isPending } = useOrderListQuery();
+
+  if (isPending) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <Navbar title="주문/배송내역" href={MYPAGE} isHome />
@@ -25,11 +34,8 @@ const OrderListPage = () => {
           </div>
         </div>
 
-        {/* 배송 내역 컴포넌트 */}
         <Accordion type="single" collapsible>
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
+          {OrderList?.map((order: MyOrder) => <OrderCard key={order.orderId} order={order} />)}
         </Accordion>
       </div>
     </div>
