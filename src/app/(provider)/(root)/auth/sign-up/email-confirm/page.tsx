@@ -6,17 +6,28 @@ import { AUTH_SIGN_UP_AGREEMENT_PATHNAME } from '@/constant/pathname';
 import { useAuthMutation } from '@/hooks/mutation';
 import { validateForm, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const EmailConfirmPage = () => {
   const { sendVerificationEmailMutation, verifyOtpMutation } = useAuthMutation();
   const [submit, setSubmit] = useState<boolean>(false);
+  const [isResendDisabled, setIsResendDisabled] = useState<boolean>(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const emailCheckRef = useRef<HTMLInputElement>(null);
   const otpNums = useRef<HTMLInputElement>(null);
+  const timerId = useRef<NodeJS.Timeout | null>(null);
+
+  // 타이머 초기화
+  useEffect(() => {
+    return () => {
+      if (timerId.current) {
+        clearTimeout(timerId.current);
+      }
+    };
+  }, []);
 
   // 인증 메일 보내기
-  const handleSendVerificationEmail = () => {
+  const handleSendVerificationEmail = useCallback(() => {
     if (emailRef.current && emailCheckRef.current) {
       const formField: ValidationInputProps = {
         input: emailRef.current.value,
@@ -26,16 +37,29 @@ const EmailConfirmPage = () => {
 
       if (validateForm(formField)) {
         setSubmit(true);
-        sendVerificationEmailMutation(emailRef.current.value);
+        sendVerificationEmailMutation(emailRef.current.value); // 이메일 인증 메일 보내기
+        handleResendTimer(); // 재인증 버튼 비활성화 관리
       }
     }
-  };
+  }, [sendVerificationEmailMutation]);
+
+  // 재인증 버튼 활성화 타이머
+  const handleResendTimer = useCallback(() => {
+    if (timerId.current) return;
+
+    setIsResendDisabled(true);
+    timerId.current = setTimeout(() => {
+      setIsResendDisabled(false);
+      timerId.current = null; // 타이머 초기화
+    }, 1000 * 60);
+  }, []);
 
   // 인증 번호 검사
-  const handleVerifyEmail = () => {
-    if (emailRef.current && otpNums.current)
+  const handleVerifyEmail = useCallback(() => {
+    if (emailRef.current && otpNums.current) {
       verifyOtpMutation({ email: emailRef.current?.value, token: otpNums.current?.value });
-  };
+    }
+  }, [verifyOtpMutation]);
 
   return (
     <>
@@ -47,7 +71,7 @@ const EmailConfirmPage = () => {
 
           <div className="flex items-center">
             <label htmlFor="email" className="w-1/4">
-              이메일
+              <span className="text-blue-500">*</span>이메일
             </label>
             <input
               type="email"
@@ -60,7 +84,7 @@ const EmailConfirmPage = () => {
           </div>
           <div className="flex items-center  ">
             <label htmlFor="email" className="w-1/4">
-              이메일 확인
+              <span className="text-blue-500">*</span>이메일 확인
             </label>
             <input
               type="email"
@@ -84,7 +108,11 @@ const EmailConfirmPage = () => {
                 placeholder="인증 번호를 입력해주세요"
                 ref={otpNums}
               />
-              <Button className="bg-blue-600 text-white" onClick={handleSendVerificationEmail}>
+              <Button
+                className="bg-blue-600 text-white"
+                onClick={handleSendVerificationEmail}
+                disabled={isResendDisabled}
+              >
                 재인증
               </Button>
             </div>
