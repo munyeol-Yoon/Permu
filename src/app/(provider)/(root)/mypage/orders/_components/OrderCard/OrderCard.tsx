@@ -16,7 +16,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
     <AccordionItem value={crypto.randomUUID()}>
       <AccordionTrigger>
         <div className="flex items-center gap-x-2">
-          <h3 className="text-xl">{formattedDate}</h3>
+          <h3 className="text-xl w-[110px]">{formattedDate}</h3>
           <span className="text-sm text-slate-400">주문번호 {orderId.split('-')[0]}</span>
         </div>
       </AccordionTrigger>
@@ -24,7 +24,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
         {OrdersDetail.map((orderItem) => {
           const { title, thumbNailURL } = orderItem.Products;
           return (
-            <div className="flex gap-x-5 mb-3">
+            <div className="flex gap-x-5 mb-3" key={orderItem.productId}>
               <Image src={thumbNailURL || ''} width={84} height={84} alt={title || ''} />
               <div className="flex flex-col justify-between">
                 <p>구매일 : {formattedDate}</p>
