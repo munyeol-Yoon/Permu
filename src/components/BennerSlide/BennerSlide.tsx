@@ -1,9 +1,9 @@
 'use client';
 
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
+import mockData from '@/mockup/banner.json';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import mockData from './../../mockup/eventBenner.json';
 type SliderProps = { Images?: { ImageURL: string; title: string }[] };
 const BennerSlide = ({ Images }: SliderProps) => {
   const [api, setApi] = useState<CarouselApi>();
@@ -58,7 +58,7 @@ const BennerSlide = ({ Images }: SliderProps) => {
 
       <div className="w-14 h-6 rounded-xl bg-[rgba(0,0,0,0.3)] flex justify-center items-center absolute bottom-5 right-5">
         <span className="text-[13px] text-white font-medium">
-          {current} / {count}+
+          {current} / {count + 1}+
         </span>
       </div>
     </div>
