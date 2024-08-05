@@ -13,7 +13,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="w-screen h-screen container grid mx-auto">
-      <div className="bg-white max-w-[600px] h-full border mx-auto flex flex-col">
+      <div className="bg-white min-w-[600px] h-full border mx-auto flex flex-col">
         {isCategoryPage ? <SearchHeader /> : (isProductPage || isHomePage) && <Header />}
         {children}
       </div>
