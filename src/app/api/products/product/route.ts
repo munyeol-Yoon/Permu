@@ -14,7 +14,6 @@ export async function GET(request: NextRequest) {
       .eq('productId', productId)
       .single();
 
-    console.log('data!!! : ', data);
     if (error) throw error;
     // const brand = await getBrandById(data.brandId);
     // const category = await getCategoryById(data.categoryId);

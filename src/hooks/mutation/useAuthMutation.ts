@@ -57,7 +57,6 @@ const useAuthMutation = () => {
     mutationFn: (userInfo) => patchUserInfo(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
-      console.log('유저 정보 업뎃완료');
       router.replace(AUTH_SIGN_UP_COMPLETE_PATHNAME);
     },
     onError: (error) => {
