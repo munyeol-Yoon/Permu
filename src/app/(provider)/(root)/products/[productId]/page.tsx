@@ -1,14 +1,13 @@
-import { getDetailProduct } from '@/api/product';
-
 import Bread from '@/components/Bread';
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
-import { Params } from '@/types/products';
+import { Params, Product } from '@/types/products';
 
 import BennerSlide from '@/components/BennerSlide';
 import BrandBenner from '@/components/BrandBenner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
+import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
 import Information from '../_components/Information';
@@ -18,7 +17,26 @@ import Wish from '../_components/Wish';
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
-  const product = await getDetailProduct(productId);
+  // const product = await getDetailProduct(productId);
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('Products')
+    .select('*, Brand:Brands(*), Category:Categories(*)')
+    .eq('productId', productId)
+    .single();
+
+  if (error) throw error;
+  // const brand = await getBrandById(data.brandId);
+  // const category = await getCategoryById(data.categoryId);
+
+  const product: Product = {
+    ...data,
+    // Brand: brand,
+    // Category: category,
+    discountedPrice: data.price - (data.price * data.discount) / 100
+  };
+
   console.log('DetailPage product : ', product);
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
