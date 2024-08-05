@@ -1,6 +1,7 @@
 import { Product } from '@/types/products';
 import { Tables } from '@/types/supabase';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
+
 import CategoryCard from './CategoryCard';
 import ProductCard from './ProductCard';
 type SlidersProps = {
