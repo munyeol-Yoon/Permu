@@ -26,7 +26,7 @@ const ProductDetailPage = async ({ params }: Params) => {
   return (
     <div>
       <BrandBenner>
-        <span className="text-white">{product.Brand?.krName ?? ''}</span>
+        <span className="text-white">{product.Brand.krName ?? ''}</span>
         <span className="text-white">{product.brandId}</span>
       </BrandBenner>
       <div className="relative aspect-square">
