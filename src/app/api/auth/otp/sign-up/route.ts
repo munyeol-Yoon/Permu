@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await supabase.auth.signInWithOtp({
       email
     });
-
+    console.log(error);
     if (error) throw new Error(error.message);
     if (data) return NextResponse.json({ success: true, details: '회원가입 성공' });
   } catch (error) {

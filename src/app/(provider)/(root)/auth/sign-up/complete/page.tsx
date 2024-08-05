@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AUTH_LOG_IN_PATHNAME, HOME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
+import Profile from '@@/public/profile/profile-lg.svg';
 import Link from 'next/link';
 function SignUpCompletePage() {
   const { loggedUser } = useAuth();
@@ -29,11 +30,10 @@ function SignUpCompletePage() {
           </TabsList>
         </Tabs>
 
-        <div className="flex flex-col items-center justify-center">
-          <div className="bg-blue-200 w-[180px] h-[180px]" />
-
-          <p>{name} 회원님</p>
-          <p>{phone}</p>
+        <div className="flex flex-col items-center justify-center mt-20">
+          <Profile />
+          <p className="text-xl font-semibold py-5">{name} 회원님</p>
+          <p className="text-slate-400">{phone}</p>
           <Button asChild className="bg-blue-600 text-white mt-12 ">
             <Link href={HOME}>홈으로 돌아가기</Link>
           </Button>

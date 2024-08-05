@@ -46,61 +46,73 @@ const AgreementPage = () => {
           <AccordionItem value="item-1">
             <AccordionTrigger>(필수)이용약관</AccordionTrigger>
             <AccordionContent>
-              <label htmlFor="termCheck">
-                <input
-                  type="checkbox"
-                  id="termCheck"
-                  checked={isTermsAccepted}
-                  onChange={() => setIsTermsAccepted((prev) => !prev)}
-                />
-                동의
-              </label>
               <p>Yes. It adheres to the WAI-ARIA design pattern.</p>
+              <div className="flex justify-end items-center text-base">
+                <label htmlFor="termCheck">
+                  <input
+                    type="checkbox"
+                    id="termCheck"
+                    checked={isTermsAccepted}
+                    onChange={() => setIsTermsAccepted((prev) => !prev)}
+                    className="mr-2"
+                  />
+                  동의
+                </label>
+              </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
             <AccordionTrigger>(필수)개인정보 수집 및 이용</AccordionTrigger>
             <AccordionContent>
-              <label htmlFor="privacyCheck">
-                <input
-                  type="checkbox"
-                  id="privacyCheck"
-                  checked={isPrivacyAccepted}
-                  onChange={() => setIsPrivacyAccepted((prev) => !prev)}
-                />
-                동의
-              </label>
               <p>Yes. It adheres to the WAI-ARIA design pattern.</p>
+              <div className="flex justify-end items-center text-base">
+                <label htmlFor="privacyCheck">
+                  <input
+                    type="checkbox"
+                    id="privacyCheck"
+                    checked={isPrivacyAccepted}
+                    onChange={() => setIsPrivacyAccepted((prev) => !prev)}
+                    className="mr-2"
+                  />
+                  동의
+                </label>
+              </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
             <AccordionTrigger>(필수)만 14세 이상입니다.</AccordionTrigger>
             <AccordionContent>
-              <label htmlFor="ageCheck">
-                <input
-                  type="checkbox"
-                  id="ageCheck"
-                  checked={isAgeConfirmed}
-                  onChange={() => setIsAgeConfirmed((prev) => !prev)}
-                />
-                동의
-              </label>
               <p>Yes. It adheres to the WAI-ARIA design pattern.</p>
+              <div className="flex justify-end items-center text-base">
+                <label htmlFor="ageCheck">
+                  <input
+                    type="checkbox"
+                    id="ageCheck"
+                    checked={isAgeConfirmed}
+                    onChange={() => setIsAgeConfirmed((prev) => !prev)}
+                    className="mr-2"
+                  />
+                  동의
+                </label>
+              </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
             <AccordionTrigger>(선택)개인정보 처리 위탁</AccordionTrigger>
             <AccordionContent>
-              <label htmlFor="optionCheck">
-                <input
-                  type="checkbox"
-                  id="optionCheck"
-                  checked={isOptionAccepted}
-                  onChange={() => setIsOptionAccepted((prev) => !prev)}
-                />
-                동의
-              </label>
               <p>Yes. It adheres to the WAI-ARIA design pattern.</p>
+              <div className="flex justify-end items-center text-base">
+                <label htmlFor="optionCheck">
+                  <input
+                    type="checkbox"
+                    id="optionCheck"
+                    checked={isOptionAccepted}
+                    onChange={() => setIsOptionAccepted((prev) => !prev)}
+                    className="mr-2"
+                  />
+                  동의
+                </label>
+              </div>
             </AccordionContent>
           </AccordionItem>
 

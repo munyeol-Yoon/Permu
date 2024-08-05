@@ -12,6 +12,8 @@ import {
 } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
+import { useCouponQuery } from '@/hooks/query';
+import Banner from '@@/public/banner/tempBanner.svg';
 import InfoCard from './_components/InfoCard';
 import LinkCard from './_components/LinkCard';
 import Profile from './_components/Profile';
@@ -34,6 +36,7 @@ const LINKS = [
 
 const MyMainPage = () => {
   const { loggedUser } = useAuth();
+  const { data: userCoupons } = useCouponQuery();
   const { logOutMutation } = useAuthMutation();
   const name = loggedUser?.userData.name || '';
   const mileage = loggedUser?.userData.mileage || 0;
@@ -45,17 +48,17 @@ const MyMainPage = () => {
 
       <div className="flex bg-slate-200 p-5 gap-x-2.5">
         <InfoCard title="보유 마일리지">{mileage}p</InfoCard>
-        <InfoCard title="쿠폰">12</InfoCard>
+        <InfoCard title="쿠폰">{userCoupons?.length}</InfoCard>
         <InfoCard title="후기">125개</InfoCard>
       </div>
-      <div className="bg-blue-500">이미지 배너</div>
 
-      {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
+      <Banner className="mx-auto my-4" />
 
       <div className="flex flex-col bg-slate-100">
         {LINKS.map((link) => (
           <LinkCard key={link.title} title={link.title} href={loggedUser ? link.href : AUTH_LOG_IN_PATHNAME} />
         ))}
+        {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import { AUTH_LOG_IN_PATHNAME } from '@/constant/pathname';
+import ProfileImg from '@@/public/profile/profile-sm.svg';
 import Link from 'next/link';
-
 interface ProfileProps {
   name: string;
 }
@@ -10,7 +10,7 @@ const Profile = ({ name }: ProfileProps) => {
     <div className="flex p-5">
       {name ? (
         <>
-          <div className="w-[60px] h-[60px] bg-blue-50 mr-5">이미지</div>
+          <ProfileImg className="w-[60px] h-[60px] mr-5" />
           <div className="flex flex-col justify-center font-bold">
             <p>{name}님 환영합니다!</p>
             <p>
