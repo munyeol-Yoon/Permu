@@ -19,6 +19,7 @@ import Wish from '../_components/Wish';
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
   const product = await getDetailProduct(productId);
+  console.log('DetailPage product : ', product);
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
