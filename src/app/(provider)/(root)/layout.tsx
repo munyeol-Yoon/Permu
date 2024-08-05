@@ -12,14 +12,9 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   const isHomePage = pathname === '/';
 
   return (
-    <div className="w-screen h-screen container grid grid-cols-1 md:grid-cols-[1fr_600px]">
-      <div className="relative hidden md:block">
-        {/* <Image src={EventBenner} width={400} height={800} alt="이벤트" className="absolute object-cover right-0" /> */}
-      </div>
-
-      <div className="bg-white max-w-[600px] h-full border flex flex-col md:w-full">
+    <div className="w-screen h-screen container grid mx-auto">
+      <div className="bg-white max-w-[600px] h-full border mx-auto flex flex-col">
         {isCategoryPage ? <SearchHeader /> : (isProductPage || isHomePage) && <Header />}
-
         {children}
       </div>
     </div>
