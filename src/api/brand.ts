@@ -6,3 +6,10 @@ export const getBrandById = async (brandId: string): Promise<Tables<'Brands'>> =
   const data = await response.json();
   return data;
 };
+
+export const getBrands = async (): Promise<Tables<'Brands'>[]> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/brands`);
+  if (!response.ok) throw new Error('response 에러');
+  const data = await response.json();
+  return data;
+};

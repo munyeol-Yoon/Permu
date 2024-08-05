@@ -1,5 +1,4 @@
-import { getBrandById } from '@/api/brand';
-import { getCategoryById, getDetailProduct } from '@/api/product';
+import { getDetailProduct } from '@/api/product';
 
 import Bread from '@/components/Bread';
 import Toggle from '@/components/Toggle';
@@ -10,6 +9,7 @@ import BennerSlide from '@/components/BennerSlide';
 import BrandBenner from '@/components/BrandBenner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
+import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
 import Information from '../_components/Information';
 import Paying from '../_components/Paying';
@@ -22,19 +22,18 @@ const ProductDetailPage = async ({ params }: Params) => {
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
-  const brand = await getBrandById(`${product.brandId}`);
-  const category = await getCategoryById(product.categoryId ?? '');
+
   return (
     <div>
       <BrandBenner>
-        <span className="text-white">{brand?.krName}</span>
+        <span className="text-white">{product.Brand.krName}</span>
         <span className="text-white">{product.brandId}</span>
       </BrandBenner>
       <div className="relative aspect-square">
         <BennerSlide Images={Images} />
       </div>
 
-      <Bread categoryName={category.categoryMainTitle ?? ''} />
+      <Bread categoryName={product.Category.categoryMainTitle ?? ''} />
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
       <div className="flex-row-10 justify-between p-5-2 w-full border-b-2">
         <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
@@ -85,12 +84,12 @@ const ProductDetailPage = async ({ params }: Params) => {
         </Toggle>
       </Accordion>
 
-      <div className="p-5-2">
-        <CurrentProducts title={'현재 판매중인 상품'} option="" />
-      </div>
-      <div className="p-5-2 mb-[138px] overflow-hidden">
-        <CustomerReviews />
-      </div>
+      <CurrentProducts title={'현재 판매중인 상품'} option="" />
+
+      <CustomerReviews />
+
+      <Footer />
+      <div className="mb-[138px]" />
     </div>
   );
 };
