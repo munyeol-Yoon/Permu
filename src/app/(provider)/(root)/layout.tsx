@@ -32,7 +32,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
             <>
               <div
                 className={`
-                duration-300 overflow-hidden
+                transition-all duration-300 overflow-hidden
                 ${isScrolled ? 'max-h-0 opacity-0' : 'max-h-[50px] opacity-100'}
               `}
               >
