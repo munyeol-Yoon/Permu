@@ -1,47 +1,34 @@
-import Link from 'next/link'
+import { useState } from 'react';
+
+const LINKS = [
+  { title: '추천' },
+  { title: '특가' },
+  { title: '전상품' },
+  { title: '기획전' },
+  { title: '이벤트' },
+  { title: '브랜드관' },
+  { title: '고객센터' }
+];
 
 const NavCategories = () => {
-  return (
-    <div className="border-b">
-        <ul className="flex space-x-8 p-4 justify-between">
-          <li className="border-b-2 border-black">
-            <Link href="#" className="text-black">
-              추천
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-gray-500">
-              특가
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-gray-500">
-              전상품
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-gray-500">
-              기획전
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-gray-500">
-              이벤트
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-gray-500">
-              브랜드관
-            </Link>
-          </li>
-          <li>
-            <Link href="#" className="text-gray-500">
-              고객센터
-            </Link>
-          </li>
-        </ul>
-      </div>
-  )
-}
+  const [activeLink, setActiveLink] = useState<string>('');
 
-export default NavCategories
+  const handleClick = (title: string) => {
+    setActiveLink(title);
+    alert('준비중입니다!');
+  };
+
+  return (
+    <ul className="mx-[30px] flex justify-between">
+      {LINKS.map((nav) => (
+        <li key={nav.title} className="cursor-pointer px-4 py-3" onClick={() => handleClick(nav.title)}>
+          <span className={`pb-3 ${activeLink === nav.title ? 'border-b-2 border-black font-semibold' : 'text-muted'}`}>
+            {nav.title}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+export default NavCategories;
