@@ -1,8 +1,10 @@
 import CategorySectionItem from '@/app/(provider)/(root)/_components/CategorySection/CategorySectionItem';
+import { Product } from '@/types/products';
 import { Tables } from '@/types/supabase';
+import ProductCard from '../ProductCard';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 type SlidersProps = {
-  data: Tables<'Brands'>[];
+  data: Tables<'Brands'>[] | Product[];
   count: number;
 };
 const chunkArray = (data: SlidersProps['data'], count: SlidersProps['count']) => {
@@ -19,9 +21,13 @@ const Sliders = ({ data, count }: SlidersProps) => {
       <CarouselContent>
         {chunkArray(data, count).map((brandChunk, index) => (
           <CarouselItem className="flex-row-10" key={index}>
-            {brandChunk.map((brand) => (
-              <CategorySectionItem key={brand.brandId} brand={brand} />
-            ))}
+            {brandChunk.map((data) =>
+              'productId' in data ? (
+                <ProductCard key={data.productId} product={data as Product} />
+              ) : (
+                <CategorySectionItem key={data.brandId} brand={data as Tables<'Brands'>} />
+              )
+            )}
           </CarouselItem>
         ))}
       </CarouselContent>
