@@ -1,7 +1,7 @@
 import { Tables } from '@/types/supabase';
 import Image from 'next/image';
 
-const CategorySectionItem = ({ brand }: { brand: Tables<'Brands'> }) => {
+const CategoryCard = ({ brand }: { brand: Tables<'Brands'> }) => {
   return (
     <div className="w-[160px] h-[100px] rounded-[8px] relative basis-[1/4]">
       <Image src={brand.logoURL || ''} fill alt={brand.enName || ''} className="object-contain" unoptimized />
@@ -12,4 +12,4 @@ const CategorySectionItem = ({ brand }: { brand: Tables<'Brands'> }) => {
   );
 };
 
-export default CategorySectionItem;
+export default CategoryCard;
