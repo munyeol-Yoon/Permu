@@ -58,7 +58,7 @@ const BennerSlide = ({ Images }: SliderProps) => {
 
       <div className="w-14 h-6 rounded-xl bg-[rgba(0,0,0,0.3)] flex justify-center items-center absolute bottom-5 right-5">
         <span className="text-[13px] text-white font-medium">
-          {current} / {count + 1}+
+          {current} / {count}+
         </span>
       </div>
     </div>
