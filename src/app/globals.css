@@ -4,6 +4,7 @@
 
 * {
   box-sizing: border-box;
+  color: var(--primary);
 }
 
 img {
@@ -41,7 +42,7 @@ img {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --kakao: 53 100% 50%;
+    --kakao: 46 100% 58%;
   }
 
   .dark {
