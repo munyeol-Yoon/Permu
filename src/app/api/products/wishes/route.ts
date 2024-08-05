@@ -8,7 +8,9 @@ export async function GET(request: NextRequest) {
 
     const productId = searchParams.get('productId') as string;
 
-    const { data } = await supabase.from('Wishes').select('userId,productId').eq('productId', productId);
+    const { data } = productId
+      ? await supabase.from('Wishes').select('userId,productId').eq('productId', productId)
+      : await supabase.from('Wishes').select('productId');
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error });

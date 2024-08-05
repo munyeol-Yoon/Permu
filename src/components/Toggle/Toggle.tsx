@@ -5,7 +5,7 @@ type ToggleProps = {
   trigger: string;
   className?: string;
   children: React.ReactNode;
-  value: boolean;
+  value?: boolean;
 };
 const Toggle = ({ trigger, className, children, value = true }: ToggleProps) => {
   const id = useId();

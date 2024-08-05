@@ -1,10 +1,5 @@
 import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signInWithOtp, verifyOtp } from '@/api/auth';
-import {
-  AUTH_LOG_IN_PATHNAME,
-  AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME,
-  AUTH_SIGN_UP_COMPLETE_PATHNAME,
-  HOME
-} from '@/constant/pathname';
+import { AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME, AUTH_SIGN_UP_COMPLETE_PATHNAME, HOME } from '@/constant/pathname';
 import { LoginForm } from '@/types/types';
 import { Provider, User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -32,9 +27,6 @@ const useAuthMutation = () => {
 
   const { mutate: sendVerificationEmailMutation } = useMutation<void, Error, string>({
     mutationFn: (email) => signInWithOtp(email),
-    onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
-    },
     onMutate: () => {
       alert('이메일을 확인해주세요! 재전송은 1분 이후 가능합니다');
     }
@@ -56,7 +48,7 @@ const useAuthMutation = () => {
     mutationFn: () => logOut(),
     onSuccess: () => {
       queryClient.invalidateQueries();
-      router.replace(AUTH_LOG_IN_PATHNAME);
+      router.replace(HOME);
     }
   });
 

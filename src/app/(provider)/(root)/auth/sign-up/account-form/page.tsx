@@ -7,9 +7,8 @@ import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
 import { validateForm, validatePhoneNumber, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 const AccountForm = () => {
-  const [submit, setSubmit] = useState<boolean>(false);
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordCheckRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -19,23 +18,25 @@ const AccountForm = () => {
 
   const { loggedUser } = useAuth();
   const { userInfoMutation } = useAuthMutation();
+
   if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
   const {
     userData: { email }
   } = loggedUser;
 
   const validateInputs = (): boolean => {
-    return !!(passwordRef.current?.value &&
-    passwordCheckRef.current?.value &&
-    nameRef.current?.value &&
-    genderRef.current?.checked
-      ? 'M'
-      : 'F' && phoneRef.current?.value && birthRef.current?.value);
+    return !!(
+      passwordRef.current?.value &&
+      passwordCheckRef.current?.value &&
+      nameRef.current?.value &&
+      phoneRef.current?.value &&
+      birthRef.current?.value
+    );
   };
 
   const handleSubmit = () => {
     if (!validateInputs()) {
-      alert('모든 입력란을 입력해주세요');
+      alert('모든 필수 입력란을 입력해주세요');
       return;
     }
 
@@ -57,12 +58,11 @@ const AccountForm = () => {
       email,
       password: passwordRef.current?.value || '',
       name: nameRef.current?.value || '',
-      birth: birthRef.current?.value || '',
+      birth: birthRef.current?.value || new Date().toString(),
       gender: genderRef.current?.checked ? 'M' : 'F',
       phone: phoneRef.current?.value || ''
     };
 
-    setSubmit(true);
     userInfoMutation(userData);
   };
 
@@ -87,6 +87,7 @@ const AccountForm = () => {
           <h3 className="py-5 border-b">기본정보</h3>
           <div className="flex items-center">
             <label htmlFor="email" className="w-1/4">
+              <span className="text-blue-500">*</span>
               아이디
             </label>
             <input
@@ -100,6 +101,7 @@ const AccountForm = () => {
           </div>
           <div className="flex items-center">
             <label htmlFor="password" className="w-1/4">
+              <span className="text-blue-500">*</span>
               비밀번호
             </label>
             <input
@@ -112,6 +114,7 @@ const AccountForm = () => {
           </div>
           <div className="flex items-center">
             <label htmlFor="password-check" className="w-1/4">
+              <span className="text-blue-500">*</span>
               비밀번호 확인
             </label>
             <input
@@ -124,6 +127,7 @@ const AccountForm = () => {
           </div>
           <div className="flex items-center">
             <label htmlFor="name" className="w-1/4">
+              <span className="text-blue-500">*</span>
               이름
             </label>
             <input
@@ -149,6 +153,7 @@ const AccountForm = () => {
           <h3 className="py-5 border-b">부가정보</h3>
           <div className="flex items-center">
             <label htmlFor="tel" className="w-1/4">
+              <span className="text-blue-500">*</span>
               휴대폰번호
             </label>
             <input
@@ -163,6 +168,7 @@ const AccountForm = () => {
 
         <div className="flex items-center">
           <label htmlFor="birth" className="w-1/4">
+            <span className="text-blue-500">*</span>
             생년월일
           </label>
           <input

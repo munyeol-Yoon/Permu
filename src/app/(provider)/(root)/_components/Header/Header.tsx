@@ -1,6 +1,6 @@
-import TopBanner from '../TopBanner';
-import Navbar from '../Navbar';
-import NavCategories from '../NavCategories';
+import NavCategories from './NavCategories';
+import Navbar from './Navbar';
+import TopBanner from './TopBanner';
 
 const Header = () => {
   return (
