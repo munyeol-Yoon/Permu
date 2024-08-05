@@ -29,10 +29,10 @@ const Share = ({ product }: ProductProps) => {
         objectType: 'commerce',
         content: {
           title: product.title,
-          imageUrl: product.thumbNailURL,
+          imageUrl: product.thumbNailURL ?? '',
           link: {
-            mobileWebUrl: process.env.NEXT_PUBLIC_BASE_URL,
-            webUrl: process.env.NEXT_PUBLIC_BASE_URL
+            mobileWebUrl: process.env.NEXT_PUBLIC_BASE_URL!,
+            webUrl: process.env.NEXT_PUBLIC_BASE_URL!
           },
           description: '달콤한 호박 | 말랑말랑 | 불가리안 로즈'
         },
@@ -47,15 +47,15 @@ const Share = ({ product }: ProductProps) => {
           {
             title: '구매하기',
             link: {
-              mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/order/delivery`,
-              webUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/order/delivery`
+              mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order/delivery`,
+              webUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order/delivery`
             }
           },
           {
             title: '웹으로 보기',
             link: {
-              mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.productId}`,
-              webUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/products/${product.productId}`
+              mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/products/${product.productId}`,
+              webUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/products/${product.productId}`
             }
           }
         ]
