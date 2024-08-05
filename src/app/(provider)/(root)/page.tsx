@@ -22,16 +22,17 @@ const RootPage = () => {
           <ArrowRightIcon />
         </div>
       </BrandBenner>
-      <CurrentProducts title={'방금 출시된 제품'} option="recent" />
       {/* 현재 판매중인 상품 */}
-      <CurrentProducts title={'현재 판매중인 상품'} option="" />
+      <CurrentProducts title={'지금 가장 인기 있는 제품'} option="order" />
+      <CurrentProducts title={'방금 출시된 제품'} option="recent" />
+
+      <CurrentProducts title={'지금 가장 많이 좋아요 받은 제품'} option="wish" />
       {/* 카테고리1 */}
-      <CategorySection title="인기 급상승 브랜드" />
+      <CategorySection title="인기 급상승 브랜드 - 캔들" />
 
       {/* 고객리뷰: */}
       <CustomerReviews />
 
-      <CurrentProducts title={'지금 가장 많이 좋아요 받은 제품'} option="wish" />
       <Footer />
     </main>
   );
