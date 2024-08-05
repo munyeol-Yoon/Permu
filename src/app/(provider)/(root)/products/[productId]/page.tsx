@@ -22,7 +22,7 @@ const ProductDetailPage = async ({ params }: Params) => {
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
-
+  console.log(product);
   return (
     <div>
       <BrandBenner>
