@@ -49,7 +49,7 @@ export const getProducts = async (productIds?: number[] | null): Promise<Product
 };
 
 export const getProductsByBrandForThisWeek = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/brands?brandId=${12}`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/brands`);
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();

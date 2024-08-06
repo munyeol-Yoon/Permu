@@ -3,6 +3,7 @@ import CategoryMore from '@/components/CategoryMore';
 import Sliders from '@/components/Sliders';
 import useBrandsQuery from '@/hooks/query/useBrandsQuery';
 import useProductsQuery from '@/hooks/query/useProductsQuery';
+import { Product } from '@/types/products';
 import Image from 'next/image';
 
 interface CategorySectionProps {
@@ -14,8 +15,8 @@ const CategorySection = ({ title, count }: CategorySectionProps) => {
   const { data: products } = useProductsQuery('order');
   const brandIds =
     products
-      ?.filter((product) => product.categoryId === '84598475-403c-45db-b6da-22b8c742fea3')
-      .map((product) => product.brandId) || [];
+      ?.filter((product: Product) => product.categoryId === '84598475-403c-45db-b6da-22b8c742fea3')
+      .map((product: Product) => product.brandId) || [];
 
   const { data: brands } = useBrandsQuery(brandIds);
 

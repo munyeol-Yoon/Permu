@@ -5,13 +5,15 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     const supabase = createClient();
-    const { searchParams } = new URL(request.url);
-    const brandId = searchParams.get('brandId') as string;
+
+    const { data: brands, error: brandError } = await supabase.from('Brands').select('count').single();
+    if (brandError) throw brandError;
+    //const randomIndex = Math.floor(Math.random() * brands.count) + 1;
 
     const { data, error } = await supabase
       .from('Products')
       .select('*, Brand:Brands(*), Category:Categories(*)')
-      .eq('brandId', brandId);
+      .eq('brandId', 12);
 
     if (error) throw error;
 
