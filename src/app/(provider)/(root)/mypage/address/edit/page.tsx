@@ -3,13 +3,20 @@
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/auth.context/auth.context';
+import useAddressMutation from '@/hooks/mutation/useAddressMutation';
 import useAlert from '@/hooks/useAlert';
+import { validatePhoneNumber } from '@/utils/validateCheck';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 const AddressEditPage = () => {
   const open = useDaumPostcodePopup();
+  const { addAddressMutation } = useAddressMutation();
   const { showWarningAlert } = useAlert();
+  const { loggedUser } = useAuth();
+  const router = useRouter();
 
   const [receiverName, setReceiverName] = useState('');
   const [receiverPhoneNumber, setReceiverPhoneNumber] = useState('');
@@ -36,6 +43,23 @@ const AddressEditPage = () => {
   const handleOpenAddressModal = () => {
     open({ onComplete: handleComplete });
   };
+
+  const handleAddReceiverAddressInfo = async () => {
+    if (receiverName.length > 10) return showWarningAlert('배송지 이름은 10글자 이내로 입력해주세요');
+    if (!validatePhoneNumber(receiverPhoneNumber)) return showWarningAlert('올바른 전화번호를 입력해주세요');
+
+    const { mutateAsync } = addAddressMutation;
+
+    await mutateAsync({
+      address: `${receiverAddress} ${receiverDetailAddress}`,
+      name: receiverName,
+      phone: receiverPhoneNumber,
+      userId: loggedUser?.id!
+    });
+
+    router.back();
+  };
+
   return (
     <>
       <Navbar title="배송지 수정" isHome />
@@ -91,6 +115,7 @@ const AddressEditPage = () => {
           />
         </div>
         <Button
+          onClick={handleAddReceiverAddressInfo}
           disabled={!receiverAddress || !receiverDetailAddress || !receiverName || !receiverPhoneNumber}
           className="max-w-[400px] w-full h-[64px] m-0"
         >
