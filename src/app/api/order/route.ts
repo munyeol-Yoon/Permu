@@ -1,6 +1,6 @@
 import { updateCouponStatus } from '@/api/coupon';
 import { insertDeliveryInfo } from '@/api/deliveries';
-import { insertOrder, insertOrderDetail } from '@/api/order';
+import { insertOrder, insertOrderDetail, updateOrderDeliverId, updateOrderStatus } from '@/api/order';
 import { updateUserMileage } from '@/api/user';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -11,17 +11,39 @@ export const POST = async (request: NextRequest) => {
   const couponId = orderInfo.couponId;
 
   await insertOrder(orderInfo);
-  await insertDeliveryInfo(deliveryInfo);
 
-  await Promise.all(productIdList.map((productId: number) => insertOrderDetail({ orderId, productId })));
+  try {
+    const paymentResponse = await fetch(`https://api.portone.io/payments/${orderId}`, {
+      headers: { Authorization: `PortOne ${process.env.NEXT_PORTONE_API_SECRET}` }
+    });
+    if (!paymentResponse.ok) throw new Error(`paymentResponse: ${await paymentResponse.json()}`);
+    const payment = await paymentResponse.json();
 
-  if (couponId) {
-    await updateCouponStatus(couponId, 'used');
+    if (orderInfo.total === payment.amount.total) {
+      switch (payment.status) {
+        case 'PAID': {
+          await updateOrderStatus(orderId, 'COMPLETED');
+          await updateOrderDeliverId(orderId, deliveryInfo.deliverId);
+          await insertDeliveryInfo(deliveryInfo);
+          await Promise.all(productIdList.map((productId: number) => insertOrderDetail({ orderId, productId })));
+
+          if (couponId) {
+            await updateCouponStatus(couponId, 'used');
+          }
+
+          if (updatedMileageAmount) {
+            await updateUserMileage(orderInfo.userId, updatedMileageAmount);
+          }
+
+          return NextResponse.json('주문 성공!');
+        }
+      }
+    } else {
+      await updateOrderStatus(orderId, 'FAILED');
+      return NextResponse.json({ error: '가격이 일치하지 않습니다.' }, { status: 405 });
+    }
+  } catch (e) {
+    await updateOrderStatus(orderId, 'FAILED');
+    return NextResponse.json({ error: e }, { status: 405 });
   }
-
-  if (updatedMileageAmount) {
-    await updateUserMileage(orderInfo.userId, updatedMileageAmount);
-  }
-
-  return NextResponse.json('주문이 완료되었습니다!');
 };

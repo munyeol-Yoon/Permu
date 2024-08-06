@@ -81,7 +81,7 @@ const Paying = ({ size }: { size: string[] }) => {
       alert('사이즈를 선택해주세요!');
       return;
     }
-    router.push('/order/delivery');
+    router.push('/order');
   };
   return (
     <>
