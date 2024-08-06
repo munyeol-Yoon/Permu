@@ -9,7 +9,8 @@ import { Suspense } from 'react';
 const ResultPageContent = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get('query');
-  const { data, isPending, error } = useSearchQuery(query || '');
+  const categoryId = searchParams.get('categoryId');
+  const { data, isPending, error } = useSearchQuery(query || '', categoryId || '');
 
   if (isPending) return;
 

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { MYPAGE_ORDERS_PATHNAME } from '@/constant/pathname';
 import Link from 'next/link';
 
-const CompletePage = () => {
+const OrderCompleted = () => {
   return (
     <>
       <Navbar title="주문완료" isHome />
@@ -31,4 +31,4 @@ const CompletePage = () => {
   );
 };
 
-export default CompletePage;
+export default OrderCompleted;

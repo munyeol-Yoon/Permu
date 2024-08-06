@@ -1,13 +1,22 @@
 'use client';
 
-import RecentSearch from '@/components/SearchPage/RecentSearch';
-import SearchInput from '@/components/SearchPage/SearchInput';
+import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import useRelatedSearchQuery from '@/hooks/query/useRelatedSearchQuery';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
+import RecentSearchSVG from '@@/public/recentSearchButton.svg';
 import { debounce } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { RecentSearch } from './_components';
+import SearchInput from './_components/SearchInput';
+
+const findSimilarKeywords = (searchTerm: string, allKeywords: string[]) => {
+  const similarKeywords = allKeywords.filter((keyword) => {
+    return keyword.includes(searchTerm) || searchTerm.includes(keyword);
+  });
+  return similarKeywords;
+};
 
 const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
@@ -16,7 +25,7 @@ const SearchPage = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   // TODO : 인기 검색어 MVP 이후로 연기
-  // TODO : 연관 키워드 MVP 이후로 연기
+  // TODO : 연관 키워드 지금 하드코딩이지만 네이버 광고 api 사용하면 될듯?
   // TODO : UI 작업
   // TODO : 컴포넌트 분리 작업 필요
   // TODO : 검색 결과 페이지.
@@ -59,11 +68,26 @@ const SearchPage = () => {
     clearAllSearchTerms();
   };
 
+  const allKeywords = [
+    '샤넬',
+    '사냉',
+    '사눌',
+    '사람',
+    '사랑',
+    '샤라랑',
+    '샤랄라',
+    '디올',
+    '디오',
+    '디우',
+    '에르메스',
+    '루이비통'
+  ];
+
+  const similarKeywords = search ? findSimilarKeywords(search, allKeywords) : [];
+
   return (
     <div>
       <section className="flex justify-center items-center self-stretch">
-        {/* <Input onChange={handleInputChange} value={search} className="flex justify-between items-center" />
-        <Button onClick={handleSearchClick}>검색</Button> */}
         <SearchInput
           search={search}
           handleInputChange={handleInputChange}
@@ -122,7 +146,7 @@ const SearchPage = () => {
               key={index}
               className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
             >
-              <Link href={`/category/search/result?categoryId=${item.Categories?.categoryId}`}>
+              <Link href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?categoryId=${item.Categories?.categoryId}`}>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 relative overflow-hidden rounded-full">
                     <Image src={item.thumbNailURL} alt={item.title} layout="fill" className="object-cover" />
@@ -142,8 +166,30 @@ const SearchPage = () => {
             </section>
           ))}
 
-      {/* 비슷한 검색 -> 키워드 임시방편 */}
       {search &&
+        similarKeywords.map((keyword, index) => (
+          <section
+            key={index}
+            className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
+          >
+            <Link href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?query=${keyword}`}>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 relative overflow-hidden rounded-full flex items-center justify-center bg-zinc-400">
+                  <RecentSearchSVG className="w-6 h-6 object-cover" />
+                </div>
+                <div>
+                  <span>{keyword}</span>
+                  <div className="text-gray-500 text-sm">
+                    <span>키워드</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </section>
+        ))}
+
+      {/* 비슷한 검색 -> 키워드 임시방편 */}
+      {/* {search &&
         relatedSearches
           .filter((item) => item.Categories)
           .slice(1)
@@ -161,7 +207,7 @@ const SearchPage = () => {
                 </div>
               </div>
             </section>
-          ))}
+          ))} */}
     </div>
   );
 };
