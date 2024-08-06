@@ -1,7 +1,5 @@
 'use client';
 
-import RecentSearch from '@/components/SearchPage/RecentSearch';
-import SearchInput from '@/components/SearchPage/SearchInput';
 import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import useRelatedSearchQuery from '@/hooks/query/useRelatedSearchQuery';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
@@ -9,6 +7,8 @@ import { debounce } from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { RecentSearch } from './_components';
+import SearchInput from './_components/SearchInput';
 
 const SearchPage = () => {
   const [search, setSearch] = useState<string>('');
@@ -63,8 +63,6 @@ const SearchPage = () => {
   return (
     <div>
       <section className="flex justify-center items-center self-stretch">
-        {/* <Input onChange={handleInputChange} value={search} className="flex justify-between items-center" />
-        <Button onClick={handleSearchClick}>검색</Button> */}
         <SearchInput
           search={search}
           handleInputChange={handleInputChange}
