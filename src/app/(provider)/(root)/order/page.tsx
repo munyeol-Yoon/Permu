@@ -146,7 +146,7 @@ const DeliveryPage = () => {
   if (orderStatus === 'IDLE') {
     return (
       <>
-        <Navbar title="배송지" href="/" isHome />
+        <Navbar title="배송지" isHome />
         <div className="relative max-w-[600px] pt-[60px] pb-[120px] w-full flex flex-col gap-5">
           <div>
             <div className="p-5 border-b-[0.5px]">
