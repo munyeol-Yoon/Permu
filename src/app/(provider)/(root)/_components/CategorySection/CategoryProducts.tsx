@@ -26,7 +26,7 @@ const CategorySection = ({ title, option, count }: CategorySectionProps) => {
           }
           fill
           alt={brands[0]?.Brand?.krName ?? '이미지'}
-          className="w-full h-[300px] object-contain absolute"
+          className={'w-full h-[300px] absolute' + option === 'product' ? 'object-contain' : 'object-cover'}
         />
       </div>
 
