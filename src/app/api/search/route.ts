@@ -20,14 +20,27 @@ function getChosung(str: string): string {
     .join('');
 }
 
-// TODO : 브랜드 검색 및 초성 검색 추가해야하고 샤넬과 블랑쉐 같은 검색도 추가해야함
 export const GET = async (req: NextRequest) => {
   try {
     const supabase = createClient();
 
     const { searchParams } = new URL(req.url);
+
+    if (Array.from(searchParams.keys()).length === 0) {
+      const { data, error } = await supabase.from('Products').select('*');
+
+      if (error) {
+        throw error;
+      }
+
+      return NextResponse.json({ success: true, detail: '조회 성공', data });
+    }
+
     const searchQuery = searchParams.get('query');
     const categoryIdQuery = searchParams.get('categoryId');
+
+    console.log(!searchParams);
+    console.log(searchParams);
 
     if (!searchQuery && !categoryIdQuery) {
       return NextResponse.json({ success: false, detail: '쿼리 파라미터가 필요합니다.' }, { status: 400 });
