@@ -4,7 +4,7 @@ import LoadingSpinner from '@@/public/loading-spinner.svg';
 const OrderLoading = () => {
   return (
     <>
-      <Navbar title="주문대기" href="/" isHome />
+      <Navbar title="주문대기" isHome />
 
       <div className="max-w-[600px] h-full flex flex-col items-center justify-center">
         <div className="h-full flex flex-col justify-center items-center gap-9">
