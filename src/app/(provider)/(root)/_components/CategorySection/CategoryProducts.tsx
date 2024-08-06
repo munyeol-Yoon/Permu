@@ -2,6 +2,7 @@
 import CategoryMore from '@/components/CategoryMore';
 import Sliders from '@/components/Sliders';
 import useProductsQuery from '@/hooks/query/useProductsQuery';
+import { cx } from 'class-variance-authority';
 import Image from 'next/image';
 
 interface CategorySectionProps {
@@ -26,7 +27,10 @@ const CategorySection = ({ title, option, count }: CategorySectionProps) => {
           }
           fill
           alt={brands[0]?.Brand?.krName ?? '이미지'}
-          className={'w-full h-[300px] absolute' + option === 'product' ? 'object-contain' : 'object-cover'}
+          className={cx('w-full h-[300px] absolute', {
+            'object-contain': option === 'brand',
+            'object-cover': option === 'product'
+          })}
         />
       </div>
 
