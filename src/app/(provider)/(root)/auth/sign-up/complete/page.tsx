@@ -2,7 +2,7 @@
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AUTH_LOG_IN_PATHNAME, HOME } from '@/constant/pathname';
+import { HOME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import Profile from '@@/public/profile/profile-lg.svg';
 import Link from 'next/link';
@@ -15,7 +15,7 @@ function SignUpCompletePage() {
   } = loggedUser;
   return (
     <div>
-      <Navbar title="로그인" href={AUTH_LOG_IN_PATHNAME} />
+      <Navbar title="로그인" />
 
       <div className="px-12">
         <Tabs defaultValue="c">

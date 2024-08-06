@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME, AUTH_SIGN_UP_PATHNAME } from '@/constant/pathname';
+import { AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME, AUTH_SIGN_UP_PATHNAME } from '@/constant/pathname';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -28,7 +28,7 @@ const AgreementPage = () => {
 
   return (
     <>
-      <Navbar title="회원가입" href={AUTH_LOG_IN_PATHNAME} />
+      <Navbar title="회원가입" />
       <div className="px-[50px]">
         <Tabs defaultValue="a">
           <TabsList className="flex">
