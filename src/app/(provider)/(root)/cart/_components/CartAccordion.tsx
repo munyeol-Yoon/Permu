@@ -73,10 +73,7 @@ const CartAccordion = () => {
           </AccordionItem>
         </Accordion>
 
-        <Link
-          href="/order/delivery"
-          className="w-full text-center bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm my-2"
-        >
+        <Link href="/order" className="w-full text-center bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm my-2">
           총 {selectedProductCount}개 | {totalPrice}원 구매하기
         </Link>
       </div>

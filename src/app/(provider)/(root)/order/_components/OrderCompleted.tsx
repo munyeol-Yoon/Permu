@@ -6,7 +6,7 @@ import Link from 'next/link';
 const OrderCompleted = () => {
   return (
     <>
-      <Navbar title="주문 완료" href="/" isHome />
+      <Navbar title="주문완료" href="/" isHome />
 
       <div className="max-w-[600px] h-full flex flex-col items-center justify-center">
         <div className="h-full flex flex-col justify-center items-center gap-9">

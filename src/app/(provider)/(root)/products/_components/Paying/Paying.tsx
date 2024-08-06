@@ -70,7 +70,7 @@ const Paying = ({ size }: { size: string[] }) => {
   };
 
   const handleBuyNow = () => {
-    router.push('/order/delivery');
+    router.push('/order');
   };
   return (
     <>
