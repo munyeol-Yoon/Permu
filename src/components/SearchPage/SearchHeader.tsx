@@ -1,5 +1,6 @@
 'use client';
 
+import { CATEGORY } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import LogoSVG from '@@/public/logo.svg';
 import XSVG from '@@/public/x.svg';
@@ -15,7 +16,7 @@ const SearchHeader = () => {
         <Link href={'/'}>
           <LogoSVG className="cursor-pointer" />
         </Link>
-        <Link href={'/category'}>
+        <Link href={CATEGORY}>
           <XSVG className="cursor-pointer" />
         </Link>
       </header>

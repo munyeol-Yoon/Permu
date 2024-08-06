@@ -1,3 +1,4 @@
+import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import SearchButtonSVG from '@@/public/searchButton.svg';
 import Link from 'next/link';
 import React, { ForwardedRef, forwardRef } from 'react';
@@ -29,7 +30,7 @@ const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
             X
           </button>
         )}
-        <Link href={`/category/search/result?query=${search}`}>
+        <Link href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?query=${search}`}>
           <button onClick={handleSearchClick} className="absolute right-0 top-0 bottom-0 px-3 py-1">
             <SearchButtonSVG />
           </button>
