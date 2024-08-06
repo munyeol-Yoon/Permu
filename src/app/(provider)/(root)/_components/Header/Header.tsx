@@ -1,15 +1,10 @@
-import NavCategories from './NavCategories';
-import Navbar from './Navbar';
-import TopBanner from './TopBanner';
+import HeaderNav from './_components/HeaderNav';
+import NavCategories from './_components/NavCategories';
 
 const Header = () => {
   return (
-    <header>
-      {/* 위 */}
-      <TopBanner />
-      {/* 중간 */}
-      <Navbar />
-      {/* 밑 임시.*/}
+    <header className="bg-white">
+      <HeaderNav />
       <NavCategories />
     </header>
   );

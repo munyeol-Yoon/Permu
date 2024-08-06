@@ -1,30 +1,21 @@
-import mockData from '@/mockup/eventBenner.json';
+import { HOME } from '@/constant/pathname';
 import Image from 'next/image';
 import Link from 'next/link';
-interface itemProps {
+
+interface EventLinkCardProps {
   item: {
     ThumbnailImg: string;
     title: string;
   };
 }
 
-const EventLinkCard = () => {
+const EventLinkCard = ({ item }: EventLinkCardProps) => {
   return (
-    <div className="flex justify-between p-8">
-      {mockData.map((item, idx) => (
-        <div key={idx} className="flex flex-col items-center">
-          <Link href="/" className="w-[72px] h-[72px]">
-            <Image
-              className="rounded-[14px] h-[72px]"
-              src={item.ThumbnailImg}
-              width={72}
-              height={72}
-              alt={`이벤트 이미지`}
-            />
-          </Link>
-          <span className="text-xs mt-1">{item.title}</span>
-        </div>
-      ))}
+    <div key={item.title} className="flex flex-col items-center">
+      <Link href={HOME} className="w-[72px] h-[72px]">
+        <Image className="rounded-[14px] h-[72px]" src={item.ThumbnailImg} width={72} height={72} alt={item.title} />
+      </Link>
+      <span className="text-xs mt-1 font-bold">{item.title}</span>
     </div>
   );
 };

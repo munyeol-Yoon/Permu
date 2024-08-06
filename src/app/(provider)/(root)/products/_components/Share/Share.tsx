@@ -47,8 +47,8 @@ const Share = ({ product }: ProductProps) => {
           {
             title: '구매하기',
             link: {
-              mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order/delivery`,
-              webUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order/delivery`
+              mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order`,
+              webUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order`
             }
           },
           {

@@ -3,10 +3,10 @@ import { Button } from '@/components/ui/button';
 import { MYPAGE_ORDERS_PATHNAME } from '@/constant/pathname';
 import Link from 'next/link';
 
-const CompletePage = () => {
+const OrderCompleted = () => {
   return (
     <>
-      <Navbar title="주문완료" href="/" isHome />
+      <Navbar title="주문완료" isHome />
 
       <div className="max-w-[600px] h-full flex flex-col items-center justify-center">
         <div className="h-full flex flex-col justify-center items-center gap-9">
@@ -31,4 +31,4 @@ const CompletePage = () => {
   );
 };
 
-export default CompletePage;
+export default OrderCompleted;

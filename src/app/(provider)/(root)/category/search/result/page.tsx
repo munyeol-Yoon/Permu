@@ -1,6 +1,6 @@
 'use client';
 
-import ProductCard from '@/components/ProductCard';
+import ProductCard from '@/components/Sliders/ProductCard';
 import { useSearchQuery } from '@/hooks/query';
 import { Product } from '@/types/products';
 import { useSearchParams } from 'next/navigation';
@@ -9,7 +9,8 @@ import { Suspense } from 'react';
 const ResultPageContent = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get('query');
-  const { data, isPending, error } = useSearchQuery(query || '');
+  const categoryId = searchParams.get('categoryId');
+  const { data, isPending, error } = useSearchQuery(query || '', categoryId || '');
 
   if (isPending) return;
 

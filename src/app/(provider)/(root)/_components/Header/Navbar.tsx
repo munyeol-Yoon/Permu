@@ -1,3 +1,4 @@
+import { CATEGORY } from '@/constant/pathname';
 import BasketSVG from '@@/public/header/basket.svg';
 import MenubarSVG from '@@/public/header/header_menubar.svg';
 import Logo from '@@/public/header/Logo.svg';
@@ -7,7 +8,7 @@ import Link from 'next/link';
 const Navbar = () => {
   return (
     <div className="px-[15px] h-[64px] justify-between flex items-center">
-      <Link href="/category">
+      <Link href={CATEGORY}>
         <MenubarSVG className="w-6 h-6" />
       </Link>
 

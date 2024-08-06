@@ -1,5 +1,4 @@
 import { Product } from '@/types/products';
-import { Tables } from '@/types/supabase';
 
 export const getSearchProducts = async (search?: string, categoryId?: string) => {
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search`);
@@ -41,41 +40,28 @@ export const getDetailProduct = async (productId: string): Promise<Product> => {
   return data;
 };
 
-export const getCategoryById = async (categoryId: string): Promise<Tables<'Categories'>> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/category?categoryId=${categoryId}`);
-  if (!response.ok) throw new Error('response 에러');
-  const data = await response.json();
-  return data;
-};
-
-export const getProducts = async (option: string): Promise<Product[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?option=${option}`);
+export const getProducts = async (productIds?: number[] | null): Promise<Product[]> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?productIds=${productIds}`);
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
   return data;
 };
 
-export const getProductsByWish = async (): Promise<Product[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes`, {
-    method: 'GET'
-  });
+export const getProductsByBrandForThisWeek = async () => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/brands`);
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
-  const countMap = data.reduce((acc: number[], cur: { productId: number }) => {
-    acc[cur.productId] = (acc[cur.productId] || 0) + 1;
-    return acc;
-  }, {});
+  return data;
+};
 
-  const result = Object.entries(countMap)
-    .map(([productId, count]) => ({
-      productId: +productId,
-      count: count as number
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-  const data2 = await Promise.all(result.map((product) => getDetailProduct(`${product.productId}`)));
+export const getProductsByCategoryForThisWeek = async () => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category?categoryIds=${'667097f5-907d-4670-ae4b-c1d813f8963b,03a31c14-74b9-4f43-9d26-eb73e2f09ef1,9ef47110-2c71-4db3-a335-7b63cf2f321c,cc9c8b21-070c-4af9-8895-25269a15bad0'}`
+  );
 
-  return data2;
+  if (!response.ok) throw new Error('response 에러');
+  const data = await response.json();
+  return data;
 };

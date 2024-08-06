@@ -8,17 +8,20 @@ const useOrderMutation = () => {
 
   return useMutation({
     mutationFn: async ({
+      orderId,
       deliveryInfo,
       totalPrice,
       couponId,
-      updatedMileageAmount
+      updatedMileageAmount,
+      payment
     }: {
+      orderId: string;
       deliveryInfo: DeliveryInfo;
       totalPrice: number;
       couponId: string;
       updatedMileageAmount: number;
+      payment: 'TOSS' | 'KAKAOPAY';
     }) => {
-      const orderId = crypto.randomUUID();
       const deliverId = crypto.randomUUID();
 
       const userId = orderInfo.user.id;
@@ -26,17 +29,23 @@ const useOrderMutation = () => {
 
       const order: Order = {
         orderId,
-        deliverId,
         userId,
         total: totalPrice,
-        couponId
+        couponId,
+        payment
       };
       const deliveries: DeliveryInfo = { ...deliveryInfo, deliverId };
 
-      await fetch('/api/order', {
+      const response = await fetch('/api/order', {
         method: 'POST',
         body: JSON.stringify({ order, deliveries, productIdList, updatedMileageAmount })
       });
+
+      if (!response.ok) {
+        throw new Error('주문에 실패하였습니다.');
+      }
+
+      return response;
     }
   });
 };
