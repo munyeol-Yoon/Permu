@@ -16,7 +16,8 @@ import { Params } from '@/types/products';
 import { useState } from 'react';
 import Wish from '../Wish';
 
-const Paying = ({ size }: { size: string[] }) => {
+type PayingProps = { size: string[]; category: string };
+const Paying = ({ size, category }: PayingProps) => {
   const router = useRouter();
   const { productId } = useParams<Params['params']>();
   const { loggedUser } = useAuth();
@@ -95,7 +96,8 @@ const Paying = ({ size }: { size: string[] }) => {
               key={index}
               onClick={() => handleSelectSize(size)}
             >
-              {size}mL
+              {size}
+              {category === '인센스' ? 'g' : 'mL'}
             </Button>
           ))}
         </div>
