@@ -137,10 +137,10 @@ const DeliveryPage = () => {
       return setOrderStatus('FAILED');
     }
 
+    await Promise.all(
+      orderInfo?.productList.map((productItem: any) => deleteCartItem(productItem.productId, loggedUser!.id))
+    );
     setOrderStatus('COMPLETED');
-    // await Promise.all(
-    //   orderInfo?.productList.map((productItem: any) => deleteCartItem(productItem.productId, loggedUser!.id))
-    // );
   };
 
   if (orderStatus === 'IDLE') {
