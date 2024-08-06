@@ -3,8 +3,8 @@ import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { Params, Product } from '@/types/products';
 
-import BennerSlide from '@/components/BennerSlide';
-import BrandBenner from '@/components/BrandBenner';
+import BennerSlide from '@/components/BannerSlide';
+import BrandBenner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
 import { createClient } from '@/supabase/server';
@@ -62,7 +62,7 @@ const ProductDetailPage = async ({ params }: Params) => {
         <p>{product?.content}</p>
       </div>
 
-      <Paying size={product.size} />
+      <Paying size={product.size} category={product.Category.categoryMainTitle ?? ''} />
       <DeliveryOptions />
       <div className="flex-row-20 justify-between p-5-2 w-full">
         <Share product={product} />

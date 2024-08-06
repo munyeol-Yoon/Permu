@@ -1,5 +1,5 @@
-import BennerSlide from '@/components/BennerSlide';
-import BrandBenner from '@/components/BrandBenner';
+import BennerSlide from '@/components/BannerSlide';
+import BrandBenner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
 import MockData from '@/mockup/banner.json';
