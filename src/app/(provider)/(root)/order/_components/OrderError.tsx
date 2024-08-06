@@ -4,7 +4,7 @@ import Link from 'next/link';
 const OrderError = () => {
   return (
     <>
-      <Navbar title="주문실패" href="/" isHome />
+      <Navbar title="주문실패" isHome />
 
       <div className="max-w-[600px] h-full flex flex-col items-center justify-center">
         <div className="h-full flex flex-col justify-center items-center gap-9">
