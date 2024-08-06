@@ -96,7 +96,7 @@ const ProductDetailPage = async ({ params }: Params) => {
         </Toggle>
       </Accordion>
 
-      <CurrentProducts title={'현재 판매중인 상품'} option="" />
+      <CurrentProducts title={'지금 가장 인기 있는 제품'} option="order" />
 
       <CustomerReviews />
 
