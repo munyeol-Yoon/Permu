@@ -14,6 +14,7 @@ const buttonVariants = cva(
         link: 'bg-white border ',
         disabled: 'bg-muted opacity-50 font-semibold pointer-events-none',
         defaultline: 'border border-gray-300 bg-background hover:bg-accent hover:text-accent-foreground',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
         kakao: 'bg-kakao'
       },
       size: {
