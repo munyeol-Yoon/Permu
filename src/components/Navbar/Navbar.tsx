@@ -1,3 +1,4 @@
+'use client';
 import { HOME } from '@/constant/pathname';
 import BackButton from '@@/public/arrow/arrow-left.svg';
 import Home from '@@/public/home.svg';
