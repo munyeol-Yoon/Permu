@@ -43,7 +43,6 @@ const SearchPage = () => {
   };
 
   const handleSearchClick = () => {
-    console.log(`검색 버튼 클릭 ${search}`);
     saveSearchTerm(search);
   };
 

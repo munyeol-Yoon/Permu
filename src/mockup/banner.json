@@ -1,0 +1,38 @@
+[
+  {
+    "ImageURL": "https://d2gfz7wkiigkmv.cloudfront.net/pickin/2/1/2/lWRbWznFQ9ORteqoMeRtoQ",
+    "ThumbnailImg": "/banner/event/first.svg",
+    "eventLink": "https://www.google.com",
+    "title": "첫구매 혜택"
+  },
+  {
+    "ImageURL": "https://cafe24.poxo.com/ec01/eldnaccandle/HOvhRhvOk+Cp2KY4JuusAmi3kGCfHyOvjE0UTQYpuP+JdtVk8OKSlhALJGjM8XObkRc6z+0Q8HRYK7SyCTi8UA==/_/web/product/big/shop1_dbc75b022b17b3802b61ab7c16c9fc93.jpg",
+    "ThumbnailImg": "/banner/event/coupon.svg",
+    "eventLink": "https://www.google.com",
+    "title": "쿠폰증정"
+  },
+  {
+    "ImageURL": "https://www.cosinkorea.com/data/photos/20210417/art_16197603766486_3958e6.png",
+    "ThumbnailImg": "/banner/event/event.svg",
+    "eventLink": "https://www.google.com",
+    "title": "이벤트"
+  },
+  {
+    "ImageURL": "https://m.takeappeal.com/web/product/big/202106/628b0ffe62f4259994ecebe2ee440f0b.jpg",
+    "ThumbnailImg": "/banner/event/discount.svg",
+    "eventLink": "https://www.google.com",
+    "title": "Up to 50%"
+  },
+  {
+    "ImageURL": "https://www.cosmorning.com/data/photos/20230207/art_16763320026994_5abd2f.jpg",
+    "ThumbnailImg": "/banner/event/sale.svg",
+    "eventLink": "https://www.google.com",
+    "title": "세일"
+  },
+  {
+    "ImageURL": "https://digitalchosun.dizzo.com/site/data/img_dir/2020/10/12/2020101280072_0.jpg",
+    "ThumbnailImg": "/banner/event/brand_page.svg",
+    "eventLink": "https://www.google.com",
+    "title": "브랜드페이지"
+  }
+]
