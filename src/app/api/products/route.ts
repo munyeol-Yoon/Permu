@@ -6,11 +6,11 @@ export async function GET(request: NextRequest) {
   try {
     const supabase = createClient();
     const { searchParams } = new URL(request.url);
-    const option = searchParams.get('option') as string;
+    const productIds = searchParams.get('productIds') as string;
     const { data } =
-      option === 'recent'
-        ? await supabase.from('Products').select('*').order('createdAt', { ascending: true }).limit(12)
-        : await supabase.from('Products').select('*').limit(12);
+      productIds !== 'undefined'
+        ? await supabase.from('Products').select('*').in('productId', productIds.split(','))
+        : await supabase.from('Products').select('*').order('createdAt', { ascending: true }).limit(12);
     const brandIds = data?.map((product) => product.brandId) || [];
     const { data: brands } = await supabase.from('Brands').select('*').in('brandId', brandIds);
 
