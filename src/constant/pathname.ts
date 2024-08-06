@@ -16,5 +16,7 @@ export const MYPAGE_REVIEW_PATHNAME = '/mypage/review';
 export const MYPAGE_WISH_PATHNAME = '/mypage/wish';
 
 export const CATEGORY = '/category';
+export const CATEGORY_SEARCH_PATHNAME = '/category/search';
+export const CATEGORY_SEARCH_RESULT_PATHNAME = '/category/search/result';
 
 export const CART = '/cart';

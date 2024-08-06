@@ -35,16 +35,46 @@ export const GET = async (req: NextRequest) => {
 
     if (searchQuery) {
       const extractQuery = extractHangul(searchQuery);
+      const englishQuery = searchQuery.toLowerCase();
 
-      // const chosungQuery = getChosung(extractQuery);
+      console.log(`Extracted Hangul Query: ${extractQuery}`); // 예가 빈값이 되어서
+      console.log(`English Query: ${englishQuery}`);
 
-      const { data, error } = await supabase.from('Products').select('*').ilike('title', `%${extractQuery}%`);
+      if (extractQuery) {
+        const { data, error } = await supabase
+          .from('Products')
+          .select(
+            `
+          *,
+          Brands (*)
+        `
+          )
+          .ilike('title', `%${extractQuery}%`);
 
-      if (error) {
-        throw error;
+        if (error) {
+          throw error;
+        }
+
+        return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
       }
 
-      return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
+      if (englishQuery) {
+        const { data, error } = await supabase
+          .from('Products')
+          .select(
+            `
+          *,
+          Brands!inner (*)
+          `
+          )
+          .ilike('Brands.enName', `%${englishQuery}%`);
+
+        if (error) {
+          throw error;
+        }
+
+        return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
+      }
     }
 
     if (categoryIdQuery) {

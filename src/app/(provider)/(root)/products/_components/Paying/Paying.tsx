@@ -2,6 +2,13 @@
 import { useParams, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
@@ -19,7 +26,7 @@ const Paying = ({ size }: { size: string[] }) => {
   // const displayedCarts = userId ? carts?.details : localCarts;
   const { addMutation, patchMutation } = useCartsMutation();
 
-  const [selectedSize, setSelectedSize] = useState<string>('');
+  const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
   const handlePostCart = async () => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
       const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
@@ -65,11 +72,15 @@ const Paying = ({ size }: { size: string[] }) => {
     }
   };
   const handleSelectSize = (size: string) => {
-    if (selectedSize === size) setSelectedSize('');
+    if (selectedSize === size) setSelectedSize('옵션 선택');
     else setSelectedSize(size);
   };
 
   const handleBuyNow = () => {
+    if (selectedSize === '옵션 선택') {
+      alert('사이즈를 선택해주세요!');
+      return;
+    }
     router.push('/order');
   };
   return (
@@ -98,11 +109,48 @@ const Paying = ({ size }: { size: string[] }) => {
         </Button>
       </div>
 
-      <div className="flex-row-20 justify-between p-5-2 w-[598px] fixed bottom-0 z-10 bg-white border-t-[1.5px] border-gray-500">
+      <div className="flex-row-20 justify-between p-5-2 w-[600px] fixed bottom-0 z-10 bg-white border-t-[1.5px] border-gray-500">
         <Wish inner={false} />
-        <Button className="w-full" onClick={handleBuyNow}>
-          바로 구매하기
-        </Button>
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button className="w-full">바로 구매하기</Button>
+          </DrawerTrigger>
+
+          <DrawerContent className="w-[600px] mx-auto justify-between">
+            <DrawerHeader>
+              <DrawerTitle></DrawerTitle>
+            </DrawerHeader>
+            <div className="p-5-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex justify-between items-center p-5-2 border border-[#B3B3B3] w-full text-start text-xs text-[#B3B3B3]">
+                  <span className="text-xl">{selectedSize}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
+                    <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
+                  </svg>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {size?.map((size, index: number) => (
+                    <DropdownMenuCheckboxItem
+                      className="w-full rounded-2xl h-[32px] px-4 py-0"
+                      key={index}
+                      onClick={() => handleSelectSize(size)}
+                    >
+                      {size}mL
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="flex-row-20 justify-between p-5-2 w-full">
+              <Button className="w-full" variant="outline" onClick={handlePostCart}>
+                쇼핑백에 추가
+              </Button>
+              <Button className="w-full" onClick={handleBuyNow}>
+                바로 구매하기
+              </Button>
+            </div>
+          </DrawerContent>
+        </Drawer>
       </div>
     </>
   );
