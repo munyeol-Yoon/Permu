@@ -6,7 +6,7 @@ import { Params, Product } from '@/types/products';
 import BennerSlide from '@/components/BannerSlide';
 import BrandBenner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
-import CustomerReviews from '@/components/CustomerReviews';
+import MdReviews from '@/components/MdReviews/MdReviews';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
@@ -98,7 +98,7 @@ const ProductDetailPage = async ({ params }: Params) => {
 
       <CurrentProducts title={'지금 가장 인기 있는 제품'} option="order" />
 
-      <CustomerReviews />
+      <MdReviews />
 
       <Footer />
       <div className="mb-[138px]" />
