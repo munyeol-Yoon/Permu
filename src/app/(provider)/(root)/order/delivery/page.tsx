@@ -1,5 +1,6 @@
 'use client';
 
+import { kakaoPayment, tossPayment } from '@/api/payment';
 import Navbar from '@/components/Navbar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -29,7 +30,7 @@ const DeliveryPage = () => {
   const { deleteCartItem } = useCart();
 
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
-  const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK'>('TOSS');
+  const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY'>('KAKAOPAY');
   const [mileageAmount, setMileageAmount] = useState(0);
 
   const receiverMemoRef = useRef('');
@@ -72,7 +73,7 @@ const DeliveryPage = () => {
     setMileageAmount(Number(validInputValue));
   };
 
-  const handleSelectPayment = (payment: 'TOSS' | 'KAKAOPAY' | 'CARD' | 'WITHOUTBANKBOOK') => {
+  const handleSelectPayment = (payment: 'TOSS' | 'KAKAOPAY') => {
     setSelectedPayment(payment);
   };
 
@@ -83,6 +84,20 @@ const DeliveryPage = () => {
   };
 
   const handleOrder = async () => {
+    let response;
+    switch (selectedPayment) {
+      case 'TOSS':
+        const tossResponse = await tossPayment('샤넬 외 2건', totalPaymentPrice);
+        response = tossResponse;
+        if (response?.code != null) return alert(response.message);
+        break;
+      case 'KAKAOPAY':
+        const kakaoResponse = await kakaoPayment('샤넬 외 2건', totalPaymentPrice);
+        response = kakaoResponse;
+        if (response?.code != null) return alert(response.message);
+        break;
+    }
+
     const deliveryInfo = {
       name: orderInfo.user.name,
       address: '서울시 목업구 더미동',
@@ -90,18 +105,27 @@ const DeliveryPage = () => {
       deliverMemo: receiverMemoRef.current,
       arrivalDate: new Date()
     };
+
     const updatedMileageAmount = orderInfo.user.mileage - mileageAmount;
+
     await mutateAsync({
+      orderId: response?.paymentId!,
       deliveryInfo,
       totalPrice: totalPaymentPrice,
       couponId: selectedCoupon?.couponId,
-      updatedMileageAmount
+      updatedMileageAmount,
+      payment: selectedPayment
     });
 
-    await Promise.all(
-      orderInfo?.productList.map((productItem: any) => deleteCartItem(productItem.productId, loggedUser!.id))
-    );
-    router.push('/order/complete');
+    // if (status === 'success') {
+    //   await Promise.all(
+    //     orderInfo?.productList.map((productItem: any) => deleteCartItem(productItem.productId, loggedUser!.id))
+    //   );
+    // }
+
+    // if (status === 'error') {
+    //   alert('주문 과정에서 오류가 발생하였습니다.');
+    // }
   };
 
   return (
@@ -279,8 +303,14 @@ const DeliveryPage = () => {
           <div className="p-5 border-b-[0.5px]">
             <p className="text-xl font-bold">결제 수단</p>
           </div>
-          <div className="flex items-center gap-4 p-5 text-[20px] cursor-pointer">
-            <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
+          <div
+            onClick={() => handleSelectPayment('KAKAOPAY')}
+            className="flex items-center gap-4 p-5 text-[20px] cursor-pointer"
+          >
+            <Checkbox
+              checked={selectedPayment === 'KAKAOPAY'}
+              className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none"
+            />
             <svg xmlns="http://www.w3.org/2000/svg" width="61" height="24" viewBox="0 0 61 24" fill="none">
               <g clipPath="url(#clip0_632_2533)">
                 <path
