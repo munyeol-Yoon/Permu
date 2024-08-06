@@ -2,6 +2,7 @@
 
 import RecentSearch from '@/components/SearchPage/RecentSearch';
 import SearchInput from '@/components/SearchPage/SearchInput';
+import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import useRelatedSearchQuery from '@/hooks/query/useRelatedSearchQuery';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
 import { debounce } from 'lodash';
@@ -123,7 +124,7 @@ const SearchPage = () => {
               key={index}
               className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-0 border-b border-gray-300"
             >
-              <Link href={`/category/search/result?categoryId=${item.Categories?.categoryId}`}>
+              <Link href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?categoryId=${item.Categories?.categoryId}`}>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 relative overflow-hidden rounded-full">
                     <Image src={item.thumbNailURL} alt={item.title} layout="fill" className="object-cover" />

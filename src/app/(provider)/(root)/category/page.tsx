@@ -2,6 +2,7 @@
 
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
+import { CATEGORY_SEARCH_PATHNAME, CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import { useCategoryQuery } from '@/hooks/query';
 import SearchButtonSVG from '@@/public/searchButton.svg';
 import Link from 'next/link';
@@ -12,7 +13,7 @@ const CategoryPage = () => {
   if (isPending) {
     return (
       <div>
-        <Link href={'/category/search'}>
+        <Link href={CATEGORY_SEARCH_PATHNAME}>
           <section className="flex justify-center items-center self-stretch">
             <div className="relative w-full ml-11 mr-11">
               <input
@@ -38,7 +39,7 @@ const CategoryPage = () => {
 
   return (
     <div>
-      <Link href={'/category/search'}>
+      <Link href={CATEGORY_SEARCH_PATHNAME}>
         <section className="flex justify-center items-center self-stretch">
           <div className="relative w-full ml-11 mr-11">
             <input
@@ -70,9 +71,8 @@ const CategoryPage = () => {
                   <div>
                     {group.items.map((item) => (
                       <div key={item.categoryId}>
-                        <Link href={`/category/search/result?categoryId=${item.categoryId}`}>
+                        <Link href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?categoryId=${item.categoryId}`}>
                           <div className="text-[#B3B3B3] hover:text-black">
-                            {' '}
                             - {item.categorySubTitle ? item.categorySubTitle : '카테고리 준비중입니다.'}
                           </div>
                         </Link>

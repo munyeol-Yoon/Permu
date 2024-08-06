@@ -1,3 +1,4 @@
+import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import Link from 'next/link';
 
 interface RecentSearchProps {
@@ -23,7 +24,7 @@ const RecentSearch = ({ recentSearchTerms, handleDeleteClick, handleClearAllTerm
                 key={index}
                 className="flex h-[32px] py-0 px-[16px] justify-center items-center gap-[10px] rounded-sm border border-gray-300 bg-white text-gray-400"
               >
-                <Link href={`/category/search/result?query=${term}`}>
+                <Link href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?query=${term}`}>
                   <span>{term}</span>
                 </Link>
                 <button onClick={() => handleDeleteClick(term)}>X</button>
