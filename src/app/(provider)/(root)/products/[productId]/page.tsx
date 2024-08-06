@@ -31,7 +31,7 @@ const ProductDetailPage = async ({ params }: Params) => {
     ...data,
     discountedPrice: data.price - (data.price * data.discount) / 100
   };
-  
+
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
