@@ -3,7 +3,6 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import {
   AUTH_LOG_IN_PATHNAME,
-  HOME,
   MYPAGE_COUPON_PATHNAME,
   MYPAGE_EDIT_PATHNAME,
   MYPAGE_MILEAGE_PATHNAME,
@@ -44,7 +43,7 @@ const MyMainPage = () => {
 
   return (
     <div className="flex flex-col">
-      <Navbar title="마이페이지" href={HOME} isHome />
+      <Navbar title="마이페이지" isHome />
       <Profile name={name || ''} />
 
       <div className="flex bg-slate-200 p-5 gap-x-2.5">

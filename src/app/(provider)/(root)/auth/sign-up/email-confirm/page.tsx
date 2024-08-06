@@ -65,7 +65,7 @@ const EmailConfirmPage = () => {
 
   return (
     <>
-      <Navbar title="이메일 인증" href={AUTH_SIGN_UP_AGREEMENT_PATHNAME} />
+      <Navbar title="이메일 인증" />
 
       <div className="px-12">
         <div>

@@ -2,7 +2,7 @@
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
+import { AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
 import useAlert from '@/hooks/useAlert';
@@ -71,7 +71,7 @@ const AccountForm = () => {
 
   return (
     <div>
-      <Navbar title="회원가입" href={AUTH_LOG_IN_PATHNAME} />
+      <Navbar title="회원가입" />
 
       <div className="px-12">
         <Tabs defaultValue="b">
