@@ -1,6 +1,3 @@
-import { AlertOptions } from '@/hooks/useAlert';
-import { SweetAlertIcon } from 'sweetalert2';
-
 type InputTypes = 'email' | 'password';
 
 export interface ValidationInputProps {
@@ -19,20 +16,17 @@ export const validateEmail = (email: string) => {
   return emailRegex.test(email);
 };
 
-export const validateForm = (
-  { input, inputCheck, inputType }: ValidationInputProps,
-  showAlert: (options: AlertOptions) => void
-): boolean => {
+export const validateForm = ({ input, inputCheck, inputType }: ValidationInputProps): boolean => {
   if (!input || !inputCheck) {
-    showAlert({ title: 'Warning', text: '모든 필드를 입력해주세요.', type: 'warning' as SweetAlertIcon });
+    alert('모든 필드를 입력해주세요.');
     return false;
   }
   if (input !== inputCheck) {
-    showAlert({ title: 'Error', text: '입력값과 확인란이 일치하지 않습니다.', type: 'error' as SweetAlertIcon });
+    alert('입력값과 확인란이 일치하지 않습니다.');
     return false;
   }
   if (inputType === 'email' && !validateEmail(input)) {
-    showAlert({ title: 'Error', text: '유효한 이메일 주소를 입력해주세요', type: 'error' as SweetAlertIcon });
+    alert('유효한 이메일 주소를 입력해주세요');
     return false;
   }
   return true;

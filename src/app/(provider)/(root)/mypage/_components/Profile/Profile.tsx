@@ -20,11 +20,11 @@ const Profile = ({ name }: ProfileProps) => {
           </div>
         </>
       ) : (
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center font-bold">
           <p>
             지금 회원가입하면 <span className="font-bold">2000P 적립금 증정에 무료배송</span> 기회까지
           </p>
-          <Link href={AUTH_LOG_IN_PATHNAME} className="text-accent text-xl mt-2.5 underline">
+          <Link href={AUTH_LOG_IN_PATHNAME} className="text-blue-500 underline">
             로그인/회원가입하기
           </Link>
         </div>

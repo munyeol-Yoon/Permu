@@ -13,7 +13,7 @@ const CartPage = () => {
 
   return (
     <div className="relative max-w-[600px] flex flex-col h-full">
-      <Navbar title="장바구니" isHome />
+      <Navbar title="장바구니" href="/" isHome />
       <CartSelector />
       <CartList />
       <CartAccordion />

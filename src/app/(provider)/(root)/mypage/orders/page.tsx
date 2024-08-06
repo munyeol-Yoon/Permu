@@ -1,6 +1,7 @@
 'use client';
 import Navbar from '@/components/Navbar';
 import { Accordion } from '@/components/ui/accordion';
+import { MYPAGE } from '@/constant/pathname';
 import useOrderListQuery from '@/hooks/query/useOrderListQuery';
 import { MyOrder } from '@/types/myPage/order';
 import Arrow from '@@/public/arrow/arrow-bottom.svg';
@@ -16,7 +17,7 @@ const OrderListPage = () => {
 
   return (
     <div>
-      <Navbar title="주문/배송내역" isHome />
+      <Navbar title="주문/배송내역" href={MYPAGE} isHome />
       <Banner className="mx-auto my-4" />
 
       <div className="px-[50px]">

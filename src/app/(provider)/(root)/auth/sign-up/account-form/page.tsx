@@ -2,15 +2,13 @@
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
+import { AUTH_LOG_IN_PATHNAME, AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
-import useAlert from '@/hooks/useAlert';
 import { validateForm, validatePhoneNumber, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
 import { useRef } from 'react';
 const AccountForm = () => {
-  const { showAlert } = useAlert();
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordCheckRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -20,7 +18,6 @@ const AccountForm = () => {
 
   const { loggedUser } = useAuth();
   const { userInfoMutation } = useAuthMutation();
-  const { showWarningAlert } = useAlert();
 
   if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
   const {
@@ -39,13 +36,13 @@ const AccountForm = () => {
 
   const handleSubmit = () => {
     if (!validateInputs()) {
-      showWarningAlert('모든 필수 입력란을 입력해주세요');
+      alert('모든 필수 입력란을 입력해주세요');
       return;
     }
 
     const phone = phoneRef.current?.value || '';
     if (!validatePhoneNumber(phone)) {
-      showWarningAlert('유효한 전화번호를 입력해주세요');
+      alert('유효한 전화번호를 입력해주세요');
       return;
     }
 
@@ -55,7 +52,7 @@ const AccountForm = () => {
       inputType: 'password'
     };
 
-    if (!validateForm(formField, showAlert)) return;
+    if (!validateForm(formField)) return;
 
     const userData = {
       email,
@@ -71,7 +68,7 @@ const AccountForm = () => {
 
   return (
     <div>
-      <Navbar title="회원가입" />
+      <Navbar title="회원가입" href={AUTH_LOG_IN_PATHNAME} />
 
       <div className="px-12">
         <Tabs defaultValue="b">
