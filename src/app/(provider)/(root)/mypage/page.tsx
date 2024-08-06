@@ -14,6 +14,7 @@ import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
 import { useCouponQuery } from '@/hooks/query';
 import Banner from '@@/public/banner/tempBanner.svg';
+import Footer from '../_components/Footer';
 import InfoCard from './_components/InfoCard';
 import LinkCard from './_components/LinkCard';
 import Profile from './_components/Profile';
@@ -47,9 +48,9 @@ const MyMainPage = () => {
       <Profile name={name || ''} />
 
       <div className="flex bg-slate-200 p-5 gap-x-2.5">
-        <InfoCard title="보유 마일리지">{mileage}p</InfoCard>
-        <InfoCard title="쿠폰">{userCoupons?.length}</InfoCard>
-        <InfoCard title="후기">125개</InfoCard>
+        <InfoCard title="보유 마일리지">{mileage || '-'}p</InfoCard>
+        <InfoCard title="쿠폰">{userCoupons?.length || '-'}</InfoCard>
+        <InfoCard title="후기">-개</InfoCard>
       </div>
 
       <Banner className="mx-auto my-4" />
@@ -60,6 +61,8 @@ const MyMainPage = () => {
         ))}
         {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
       </div>
+
+      <Footer />
     </div>
   );
 };
