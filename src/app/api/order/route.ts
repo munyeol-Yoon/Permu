@@ -19,9 +19,7 @@ export const POST = async (request: NextRequest) => {
     if (!paymentResponse.ok) throw new Error(`paymentResponse: ${await paymentResponse.json()}`);
     const payment = await paymentResponse.json();
 
-    // 2. 고객사 내부 주문 데이터의 가격과 실제 지불된 금액을 비교합니다.
-    // const order = await OrderService.findById(orderId);
-    if (198000 === payment.amount.total) {
+    if (orderInfo.total === payment.amount.total) {
       switch (payment.status) {
         case 'PAID': {
           await updateOrderStatus(orderId, 'COMPLETED');

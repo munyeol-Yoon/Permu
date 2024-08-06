@@ -85,14 +85,18 @@ const DeliveryPage = () => {
 
   const handleOrder = async () => {
     let response;
+    const orderName =
+      orderInfo.productList.length > 1
+        ? `${orderInfo.productList[0].title} 외 ${orderInfo.productList.length - 1}건`
+        : orderInfo.productList[0].title;
     switch (selectedPayment) {
       case 'TOSS':
-        const tossResponse = await tossPayment('샤넬 외 2건', totalPaymentPrice);
+        const tossResponse = await tossPayment(orderName, totalPaymentPrice);
         response = tossResponse;
         if (response?.code != null) return alert(response.message);
         break;
       case 'KAKAOPAY':
-        const kakaoResponse = await kakaoPayment('샤넬 외 2건', totalPaymentPrice);
+        const kakaoResponse = await kakaoPayment(orderName, totalPaymentPrice);
         response = kakaoResponse;
         if (response?.code != null) return alert(response.message);
         break;
