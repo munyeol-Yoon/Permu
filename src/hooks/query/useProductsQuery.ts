@@ -1,5 +1,5 @@
 import { getOrderInfos } from '@/api/orderInfo';
-import { getProducts } from '@/api/product';
+import { getProducts, getProductsByBrandForThisWeek, getProductsByCategoryForThisWeek } from '@/api/product';
 import { getWishes } from '@/api/wish';
 import { useQuery } from '@tanstack/react-query';
 
@@ -8,6 +8,8 @@ const useProductsQuery = (option: string) => {
     queryKey: ['Products', option],
     queryFn: async () => {
       if (option === 'recent') return await getProducts();
+      else if (option === 'product') return await getProductsByCategoryForThisWeek();
+      else if (option === 'brand') return await getProductsByBrandForThisWeek();
       else {
         const data = option === 'wish' ? await getWishes() : await getOrderInfos();
         const countMap = data.reduce((acc: number[], cur: { productId: number }) => {

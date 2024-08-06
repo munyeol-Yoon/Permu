@@ -3,6 +3,8 @@ import BrandBenner from '@/components/BrandBenner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
 import MockData from '@/mockup/banner.json';
+
+import CategoryProducts from './_components/CategorySection/CategoryProducts';
 import CategorySection from './_components/CategorySection/CategorySection';
 import EventLinkCard from './_components/EventLinkCard';
 import Footer from './_components/Footer';
@@ -28,8 +30,9 @@ const RootPage = () => {
 
       <CurrentProducts title={'지금 가장 많이 좋아요 받은 제품'} option="wish" />
       {/* 카테고리1 */}
-      <CategorySection title="인기 급상승 브랜드 - 캔들" />
-
+      <CategorySection title="인기 급상승 브랜드 - 캔들" count={4} />
+      <CategoryProducts title="이번주 소개할 브랜드 - " option="brand" count={3} />
+      <CategoryProducts title="이번주 소개할 제품 - " option="product" count={3} />
       {/* 고객리뷰: */}
       <CustomerReviews />
 
