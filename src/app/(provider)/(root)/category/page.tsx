@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { CATEGORY_SEARCH_PATHNAME, CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
@@ -10,28 +11,7 @@ import Link from 'next/link';
 const CategoryPage = () => {
   const { data, isPending } = useCategoryQuery();
 
-  if (isPending) {
-    return (
-      <div>
-        <Link href={CATEGORY_SEARCH_PATHNAME}>
-          <section className="flex justify-center items-center self-stretch">
-            <div className="relative w-full ml-11 mr-11">
-              <input
-                type="text"
-                placeholder="여름 시즌 추천템 20% 할인"
-                className="rounded-[4px] bg-[#b3b3b320] w-full px-2.5 py-0 pr-[60px] h-[42px] cursor-pointer"
-              />
-
-              <button className="absolute right-0 top-0 bottom-0 px-3 py-1">
-                <SearchButtonSVG />
-              </button>
-            </div>
-          </section>
-        </Link>
-        <section className="flex justify-center items-center self-stretch">Loading...</section>
-      </div>
-    );
-  }
+  if (isPending) return <Loading />;
 
   const categories: RouteCategoriesByTitle = data;
 

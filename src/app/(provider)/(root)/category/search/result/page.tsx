@@ -1,10 +1,12 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import ProductCard from '@/components/Sliders/ProductCard';
 import { useSearchQuery } from '@/hooks/query';
 import { Product } from '@/types/products';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import SearchNotFound from '../_components/SearchNotFound';
 
 const ResultPageContent = () => {
   const searchParams = useSearchParams();
@@ -12,7 +14,9 @@ const ResultPageContent = () => {
   const categoryId = searchParams.get('categoryId');
   const { data, isPending, error } = useSearchQuery(query || '', categoryId || '');
 
-  if (isPending) return;
+  if (isPending) return <Loading />;
+
+  if (data.data.length <= 0) return <SearchNotFound />;
 
   return (
     <div className="container mx-auto p-5">
