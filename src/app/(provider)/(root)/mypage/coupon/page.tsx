@@ -1,6 +1,5 @@
 'use client';
 import Navbar from '@/components/Navbar';
-import { MYPAGE } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCouponQuery } from '@/hooks/query';
 import { Tables } from '@/types/supabase';
@@ -14,7 +13,7 @@ const CouponListPage = () => {
   const name = loggedUser?.userData.name || '';
   return (
     <div>
-      <Navbar title="쿠폰" href={MYPAGE} isHome />
+      <Navbar title="쿠폰" isHome />
       <Profile name={name || ''} />
 
       <div className="flex flex-col bg-slate-200 p-5 gap-x-2.5 gap-y-1">

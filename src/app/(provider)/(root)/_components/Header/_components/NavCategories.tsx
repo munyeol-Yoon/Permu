@@ -1,3 +1,4 @@
+import useAlert from '@/hooks/useAlert';
 import { useState } from 'react';
 
 const LINKS = [
@@ -12,10 +13,10 @@ const LINKS = [
 
 const NavCategories = () => {
   const [activeLink, setActiveLink] = useState<string>('');
-
+  const { showInfoAlert } = useAlert();
   const handleClick = (title: string) => {
     setActiveLink(title);
-    alert('준비중입니다!');
+    showInfoAlert('준비중입니다');
   };
 
   return (

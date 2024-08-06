@@ -30,7 +30,7 @@ const LogInPage = () => {
   return (
     <>
       <div className="flex flex-col grow">
-        <Navbar title="로그인" href="/" />
+        <Navbar title="로그인" />
 
         <Tabs defaultValue="member" className="px-[50px]">
           <TabsList className="flex">
