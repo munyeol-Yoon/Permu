@@ -1,16 +1,6 @@
 import { useCallback } from 'react';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
-const AlertTypes = {
-  SUCCESS: 'success',
-  WARNING: 'warning',
-  ERROR: 'error',
-  INFO: 'info',
-  QUEST: 'question'
-};
-
-type AlertType = (typeof AlertTypes)[keyof typeof AlertTypes];
-
 interface AlertOptions {
   title: string;
   text: string;
@@ -27,22 +17,36 @@ const useAlert = () => {
   }, []);
 
   const showSuccessAlert = useCallback(
-    (title: AlertType, text: string) => {
-      showAlert({ title, text, type: 'success' });
+    (text: string) => {
+      showAlert({ title: 'Success', text, type: 'success' as SweetAlertIcon });
     },
     [showAlert]
   );
 
   const showWarningAlert = useCallback(
-    (title: AlertType, text: string) => {
-      showAlert({ title, text, type: 'warning' });
+    (text: string) => {
+      showAlert({ title: 'Warning', text, type: 'warning' as SweetAlertIcon });
     },
     [showAlert]
   );
 
   const showFailAlert = useCallback(
-    (title: AlertType, text: string) => {
-      showAlert({ title, text, type: 'error' });
+    (text: string) => {
+      showAlert({ title: 'Error', text, type: 'error' as SweetAlertIcon });
+    },
+    [showAlert]
+  );
+
+  const showInfoAlert = useCallback(
+    (text: string) => {
+      showAlert({ title: 'Info', text, type: 'info' as SweetAlertIcon });
+    },
+    [showAlert]
+  );
+
+  const showQuestAlert = useCallback(
+    (text: string) => {
+      showAlert({ title: 'Question', text, type: 'question' as SweetAlertIcon });
     },
     [showAlert]
   );
@@ -51,7 +55,9 @@ const useAlert = () => {
     showAlert,
     showSuccessAlert,
     showWarningAlert,
-    showFailAlert
+    showFailAlert,
+    showInfoAlert,
+    showQuestAlert
   };
 };
 
