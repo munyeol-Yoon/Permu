@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Accordion } from '@/components/ui/accordion';
 import useOrderListQuery from '@/hooks/query/useOrderListQuery';
@@ -12,9 +13,7 @@ const OrderListPage = () => {
   const [isLatest, setIsLatest] = useState<boolean>(true);
   const { data: OrderList, isPending } = useOrderListQuery();
   const handleClick = () => setIsLatest((prev) => !prev);
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
+  if (isPending) return <Loading />;
 
   return (
     <div>
