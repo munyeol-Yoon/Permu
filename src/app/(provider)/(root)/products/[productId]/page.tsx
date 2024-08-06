@@ -17,7 +17,6 @@ import Wish from '../_components/Wish';
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
-  // const product = await getDetailProduct(productId);
 
   const supabase = createClient();
   const { data, error } = await supabase
@@ -27,17 +26,12 @@ const ProductDetailPage = async ({ params }: Params) => {
     .single();
 
   if (error) throw error;
-  // const brand = await getBrandById(data.brandId);
-  // const category = await getCategoryById(data.categoryId);
 
   const product: Product = {
     ...data,
-    // Brand: brand,
-    // Category: category,
     discountedPrice: data.price - (data.price * data.discount) / 100
   };
 
-  console.log('DetailPage product : ', product);
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });

@@ -14,15 +14,10 @@ export async function GET(request: NextRequest) {
       .eq('productId', productId)
       .single();
 
-    console.log('data!!! : ', data);
     if (error) throw error;
-    // const brand = await getBrandById(data.brandId);
-    // const category = await getCategoryById(data.categoryId);
 
     const productWithDiscountedPrice: Product = {
       ...data,
-      // Brand: brand,
-      // Category: category,
       discountedPrice: data.price - (data.price * data.discount) / 100
     };
     return NextResponse.json(productWithDiscountedPrice);

@@ -35,8 +35,6 @@ const CategoryPage = () => {
 
   const categories: RouteCategoriesByTitle = data;
 
-  console.log(data);
-
   return (
     <div>
       <Link href={CATEGORY_SEARCH_PATHNAME}>

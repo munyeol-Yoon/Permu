@@ -1,6 +1,6 @@
 'use client';
 
-import ProductCard from '@/components/ProductCard';
+import ProductCard from '@/components/Sliders/ProductCard';
 import { useSearchQuery } from '@/hooks/query';
 import { Product } from '@/types/products';
 import { useSearchParams } from 'next/navigation';
