@@ -1,9 +1,9 @@
 'use client';
 
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
+import mockData from '@/mockup/banner.json';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import mockData from './../../mockup/eventBenner.json';
 type SliderProps = { Images?: { ImageURL: string; title: string }[] };
 const BennerSlide = ({ Images }: SliderProps) => {
   const [api, setApi] = useState<CarouselApi>();

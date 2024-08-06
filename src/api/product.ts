@@ -1,5 +1,4 @@
 import { Product } from '@/types/products';
-import { Tables } from '@/types/supabase';
 
 export const getSearchProducts = async (search?: string, categoryId?: string) => {
   const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/search`);
@@ -41,41 +40,10 @@ export const getDetailProduct = async (productId: string): Promise<Product> => {
   return data;
 };
 
-export const getCategoryById = async (categoryId: string): Promise<Tables<'Categories'>> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/category?categoryId=${categoryId}`);
-  if (!response.ok) throw new Error('response 에러');
-  const data = await response.json();
-  return data;
-};
-
-export const getProducts = async (option: string): Promise<Product[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?option=${option}`);
+export const getProducts = async (productIds?: number[] | null): Promise<Product[]> => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?productIds=${productIds}`);
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
   return data;
-};
-
-export const getProductsByWish = async (): Promise<Product[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/wishes`, {
-    method: 'GET'
-  });
-
-  if (!response.ok) throw new Error('response 에러');
-  const data = await response.json();
-  const countMap = data.reduce((acc: number[], cur: { productId: number }) => {
-    acc[cur.productId] = (acc[cur.productId] || 0) + 1;
-    return acc;
-  }, {});
-
-  const result = Object.entries(countMap)
-    .map(([productId, count]) => ({
-      productId: +productId,
-      count: count as number
-    }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 10);
-  const data2 = await Promise.all(result.map((product) => getDetailProduct(`${product.productId}`)));
-
-  return data2;
 };
