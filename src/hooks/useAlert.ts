@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import Swal, { SweetAlertIcon } from 'sweetalert2';
 
-interface AlertOptions {
+export interface AlertOptions {
   title: string;
   text: string;
   type: SweetAlertIcon;

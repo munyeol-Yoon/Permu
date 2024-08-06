@@ -4,11 +4,13 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { AUTH_SIGN_UP_AGREEMENT_PATHNAME } from '@/constant/pathname';
 import { useAuthMutation } from '@/hooks/mutation';
+import useAlert from '@/hooks/useAlert';
 import { validateForm, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 const EmailConfirmPage = () => {
+  const { showAlert } = useAlert();
   const { sendVerificationEmailMutation, verifyOtpMutation } = useAuthMutation();
   const [submit, setSubmit] = useState<boolean>(false);
   const [isResendDisabled, setIsResendDisabled] = useState<boolean>(false);
@@ -26,23 +28,6 @@ const EmailConfirmPage = () => {
     };
   }, []);
 
-  // 인증 메일 보내기
-  const handleSendVerificationEmail = useCallback(() => {
-    if (emailRef.current && emailCheckRef.current) {
-      const formField: ValidationInputProps = {
-        input: emailRef.current.value,
-        inputCheck: emailCheckRef.current.value,
-        inputType: 'email'
-      };
-
-      if (validateForm(formField)) {
-        setSubmit(true);
-        sendVerificationEmailMutation(emailRef.current.value); // 이메일 인증 메일 보내기
-        handleResendTimer(); // 재인증 버튼 비활성화 관리
-      }
-    }
-  }, [sendVerificationEmailMutation]);
-
   // 재인증 버튼 활성화 타이머
   const handleResendTimer = useCallback(() => {
     if (timerId.current) return;
@@ -53,6 +38,23 @@ const EmailConfirmPage = () => {
       timerId.current = null; // 타이머 초기화
     }, 1000 * 60);
   }, []);
+
+  // 인증 메일 보내기
+  const handleSendVerificationEmail = useCallback(() => {
+    if (emailRef.current && emailCheckRef.current) {
+      const formField: ValidationInputProps = {
+        input: emailRef.current.value,
+        inputCheck: emailCheckRef.current.value,
+        inputType: 'email'
+      };
+
+      if (validateForm(formField, showAlert)) {
+        setSubmit(true);
+        sendVerificationEmailMutation(emailRef.current.value); // 이메일 인증 메일 보내기
+        handleResendTimer(); // 재인증 버튼 비활성화 관리
+      }
+    }
+  }, [sendVerificationEmailMutation, handleResendTimer, showAlert]);
 
   // 인증 번호 검사
   const handleVerifyEmail = useCallback(() => {
