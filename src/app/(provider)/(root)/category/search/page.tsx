@@ -3,6 +3,7 @@
 import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import useRelatedSearchQuery from '@/hooks/query/useRelatedSearchQuery';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
+import { allKeywords } from '@/mockup/keyword';
 import RecentSearchSVG from '@@/public/recentSearchButton.svg';
 import { debounce } from 'lodash';
 import Image from 'next/image';
@@ -67,21 +68,6 @@ const SearchPage = () => {
   const handleClearAllTermsClick = () => {
     clearAllSearchTerms();
   };
-
-  const allKeywords = [
-    '샤넬',
-    '사냉',
-    '사눌',
-    '사람',
-    '사랑',
-    '샤라랑',
-    '샤랄라',
-    '디올',
-    '디오',
-    '디우',
-    '에르메스',
-    '루이비통'
-  ];
 
   const similarKeywords = search ? findSimilarKeywords(search, allKeywords) : [];
 
