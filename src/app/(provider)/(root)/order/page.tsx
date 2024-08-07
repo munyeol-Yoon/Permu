@@ -61,7 +61,7 @@ const DeliveryPage = () => {
 
   const totalPaymentPrice = useMemo(() => {
     const initialPrice = orderInfo?.productList.reduce(
-      (acc: number, cur: { discountedPrice: number }) => acc + cur.discountedPrice,
+      (acc: number, cur: { discountedPrice: number; count: number }) => acc + cur.discountedPrice * cur.count,
       0
     );
     const couponPrice = selectedCoupon ? selectedCoupon.discount : 0;
@@ -199,7 +199,9 @@ const DeliveryPage = () => {
                   <div className="flex flex-col px-2.5 w-full">
                     <p className="text-xs mb-1">{productItem.Brands.enName}</p>
                     <p className="font-semibold mb-2.5">{productItem.title}</p>
-                    <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
+                    <p className="text-xs text-[#B3B3B3] mb-1.5">
+                      옵션 : {productItem.volume}ml, {productItem.count}개
+                    </p>
                     <div className="relative flex justify-end items-center gap-[18px]">
                       {!!productItem.discount && (
                         <>
