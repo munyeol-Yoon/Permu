@@ -5,7 +5,6 @@ import { MYPAGE_ADDRESS_EDIT_PATHNAME } from '@/constant/pathname';
 import useAddressMutation from '@/hooks/mutation/useAddressMutation';
 import useAddressQuery from '@/hooks/query/useAddressQuery';
 import Link from 'next/link';
-import { useEffect } from 'react';
 
 const AddressListPage = () => {
   const { data: addressList } = useAddressQuery();
@@ -17,9 +16,6 @@ const AddressListPage = () => {
     await mutateAsync(addressId);
   };
 
-  useEffect(() => {
-    console.log(addressList);
-  }, [addressList]);
   return (
     <>
       <Navbar title="배송지 목록" isHome />
