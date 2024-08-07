@@ -17,7 +17,7 @@ const OrderCard = ({ order }: OrderCardProps) => {
       <AccordionTrigger>
         <div className="flex items-center gap-x-2">
           <h3 className="text-xl w-[110px]">{formattedDate}</h3>
-          <span className="text-sm text-slate-400">주문번호 {orderId.split('-')[0]}</span>
+          <span className="text-sm text-muted">주문번호 {orderId.split('-')[0]}</span>
         </div>
       </AccordionTrigger>
       <AccordionContent>
@@ -25,11 +25,13 @@ const OrderCard = ({ order }: OrderCardProps) => {
           const { title, thumbNailURL } = orderItem.Products;
           return (
             <div className="flex gap-x-5 mb-3" key={orderItem.productId}>
-              <Image src={thumbNailURL || ''} width={84} height={84} alt={title || ''} />
-              <div className="flex flex-col justify-between">
+              <div className="w-[100px] h-[100px] aspect-square relative">
+                <Image src={thumbNailURL || ''} alt={title || ''} className="object-cover" fill />
+              </div>
+              <div className="flex flex-col gap-y-2.5">
                 <p>구매일 : {formattedDate}</p>
-                <p className="text-md font-semibold">{title}</p>
-                <p className="text-slate-400">옵션 :</p>
+                <p className="text-base font-semibold line-clamp-1">{title}</p>
+                <p className="text-muted">옵션 :</p>
               </div>
             </div>
           );
