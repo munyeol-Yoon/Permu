@@ -73,8 +73,7 @@ const Paying = ({ size, category }: PayingProps) => {
     }
   };
   const handleSelectSize = (size: string) => {
-    if (selectedSize === size) setSelectedSize('옵션 선택');
-    else setSelectedSize(size);
+    setSelectedSize(selectedSize === size ? '옵션 선택' : size);
   };
 
   const handleBuyNow = () => {
@@ -92,7 +91,7 @@ const Paying = ({ size, category }: PayingProps) => {
           {size?.map((size, index: number) => (
             <Button
               className="rounded-2xl h-[32px] px-4 py-0"
-              variant={selectedSize === size ? 'outline' : 'defaultline'}
+              variant={selectedSize === size ? 'borderline' : 'defaultline'}
               key={index}
               onClick={() => handleSelectSize(size)}
             >
@@ -103,19 +102,19 @@ const Paying = ({ size, category }: PayingProps) => {
         </div>
       </div>
       <div className="flex-row-20 justify-between p-5-2 w-full">
-        <Button className="w-full" variant="outline" onClick={handlePostCart}>
+        <Button className="w-full h-[64px]" variant="defaultline" onClick={handlePostCart}>
           쇼핑백에 추가
         </Button>
-        <Button className="w-full" onClick={handleBuyNow}>
+        <Button className="w-full h-[64px]" onClick={handleBuyNow}>
           바로 구매하기
         </Button>
       </div>
 
-      <div className="flex-row-20 justify-between p-5-2 w-[600px] fixed bottom-0 z-10 bg-white border-t-[1.5px] border-gray-500">
+      <div className="flex-row-10 justify-between p-5-2 w-[600px] fixed bottom-0 z-20 bg-white border-t-[1.5px] border-[#B3B3B3]">
         <Wish inner={false} />
         <Drawer>
           <DrawerTrigger asChild>
-            <Button className="w-full">바로 구매하기</Button>
+            <Button className="w-full h-[64px]">바로 구매하기</Button>
           </DrawerTrigger>
 
           <DrawerContent className="w-[600px] mx-auto justify-between">
@@ -133,21 +132,22 @@ const Paying = ({ size, category }: PayingProps) => {
                 <DropdownMenuContent>
                   {size?.map((size, index: number) => (
                     <DropdownMenuCheckboxItem
-                      className="w-full rounded-2xl h-[32px] px-4 py-0"
+                      className="w-full h-[32px] px-4 py-0"
                       key={index}
                       onClick={() => handleSelectSize(size)}
                     >
-                      {size}mL
+                      {size}
+                      {category === '인센스' ? 'g' : 'mL'}
                     </DropdownMenuCheckboxItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
             <div className="flex-row-20 justify-between p-5-2 w-full">
-              <Button className="w-full" variant="outline" onClick={handlePostCart}>
+              <Button className="w-full h-[64px]" variant="defaultline" onClick={handlePostCart}>
                 쇼핑백에 추가
               </Button>
-              <Button className="w-full" onClick={handleBuyNow}>
+              <Button className="w-full h-[64px]" onClick={handleBuyNow}>
                 바로 구매하기
               </Button>
             </div>

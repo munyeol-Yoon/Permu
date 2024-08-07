@@ -1,26 +1,24 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator
-} from '../ui/breadcrumb';
+import { Tables } from '@/types/supabase';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../ui/breadcrumb';
 
 type BreadProps = {
-  categoryName: string;
+  category: Tables<'Categories'>;
 };
-const Bread = ({ categoryName }: BreadProps) => {
+const Bread = ({ category }: BreadProps) => {
   return (
     <div className="p-5-2 w-full">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/products/category">Space</BreadcrumbLink>
+            <BreadcrumbPage>{category.categoryTitle}</BreadcrumbPage>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{categoryName}</BreadcrumbPage>
+            <BreadcrumbPage>{category.categoryMainTitle}</BreadcrumbPage>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{category.categorySubTitle ?? ''}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

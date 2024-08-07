@@ -64,10 +64,10 @@ const Share = ({ product }: ProductProps) => {
   };
 
   return (
-    <Button className="w-full" variant="outline" onClick={handleShareProduct}>
+    <Button className="w-full h-[64px]" variant="defaultline" onClick={handleShareProduct}>
       <div className="flex-row-10 justify-center p-5-2 ">
         <ShareSVG />
-        <span>공유하기</span>
+        <span className="text-[#B3B3B3]">공유하기</span>
       </div>
     </Button>
   );
