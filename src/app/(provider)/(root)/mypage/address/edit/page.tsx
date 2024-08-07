@@ -9,10 +9,10 @@ import useAddressMutation from '@/hooks/mutation/useAddressMutation';
 import useAlert from '@/hooks/useAlert';
 import { validatePhoneNumber } from '@/utils/validateCheck';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
-const AddressEditPage = () => {
+const AddressEditPageContent = () => {
   const searchParams = useSearchParams();
   const addressId = searchParams.get('address');
 
@@ -159,6 +159,14 @@ const AddressEditPage = () => {
         </Button>
       </div>
     </>
+  );
+};
+
+const AddressEditPage = () => {
+  return (
+    <Suspense fallback={null}>
+      <AddressEditPageContent />
+    </Suspense>
   );
 };
 
