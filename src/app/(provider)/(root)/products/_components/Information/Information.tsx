@@ -1,8 +1,8 @@
 'use client';
 import Tab from '@/components/Tab';
-import Detail from './Detail';
-import QnA from './QnA';
-import Review from './Review';
+import Detail from './_components/Detail';
+import QnA from './_components/QnA';
+import Review from './_components/Review';
 
 const Information = ({ productDetail }: { productDetail: string }) => {
   const tabs = [
