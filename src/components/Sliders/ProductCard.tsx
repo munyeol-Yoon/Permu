@@ -1,10 +1,11 @@
 'use client';
+import { WishProduct } from '@/hooks/query/mypage/useUserWishesQuery';
 import { Product } from '@/types/products';
 import WishSVG from '@@/public/heart/wish-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 export interface ProductProps {
-  product: Product;
+  product: Product | WishProduct;
 }
 
 const ProductCard = ({ product }: ProductProps) => {
@@ -13,6 +14,9 @@ const ProductCard = ({ product }: ProductProps) => {
   const discountAmount = price * (discount / 100);
   const resultPrice = price - discountAmount;
   const title = product.title ?? '';
+
+  const brandName = 'Brand' in product ? product.Brand?.krName : product.Brands?.krName;
+  const discountedPrice = 'discountedPrice' in product ? product.discountedPrice : 0;
 
   return (
     <div className="w-[180px] flex flex-col">
@@ -42,6 +46,7 @@ const ProductCard = ({ product }: ProductProps) => {
             </>
           )}
         </div>
+
       </div>
     </div>
   );

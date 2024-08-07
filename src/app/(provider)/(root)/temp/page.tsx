@@ -1,3 +1,4 @@
+import MdReviews from '@/components/MdReviews';
 import { Button } from '@/components/ui/button';
 
 function TempPage() {
@@ -22,6 +23,8 @@ function TempPage() {
       <Button className="" variant="defaultline">
         defaultline
       </Button>
+
+      <MdReviews />
     </div>
   );
 }
