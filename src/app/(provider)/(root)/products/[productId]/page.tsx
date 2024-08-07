@@ -5,13 +5,13 @@ import BennerSlide from '@/components/BannerSlide';
 import BrandBenner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
-import Tab from '@/components/Tab';
+
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
-import { Detail, QnA, Review } from '../_components/DetailTabs';
+import DetailTabs from '../_components/DetailTabs';
 import Paying from '../_components/Paying';
 import Share from '../_components/Share/Share';
 import Wish from '../_components/Wish';
@@ -35,12 +35,6 @@ const ProductDetailPage = async ({ params }: Params) => {
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
-
-  const tabs = [
-    { value: 'detail', label: '제품 상세정보', content: <Detail productDetail={product.detailImageURL ?? ''} /> },
-    { value: 'review', label: '리뷰', content: <Review /> },
-    { value: 'Q&A', label: 'Q&A', content: <QnA /> }
-  ];
 
   return (
     <div>
@@ -76,7 +70,7 @@ const ProductDetailPage = async ({ params }: Params) => {
         <Wish />
       </div>
 
-      <Tab tabs={tabs} />
+      <DetailTabs productDetail={product.detailImageURL ?? ''} />
 
       <Accordion type="multiple">
         <Toggle trigger="배송 및 반품" value={false}>
