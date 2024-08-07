@@ -6,7 +6,7 @@ import { Params, Product } from '@/types/products';
 import BennerSlide from '@/components/BannerSlide';
 import BrandBenner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
-import MdReviews from '@/components/MdReviews/MdReviews';
+import MdReviews from '@/components/MdReviews';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';

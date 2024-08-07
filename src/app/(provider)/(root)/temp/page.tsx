@@ -1,4 +1,4 @@
-import MdReviews from '@/components/MdReviews/MdReviews';
+import MdReviews from '@/components/MdReviews';
 import { Button } from '@/components/ui/button';
 
 function TempPage() {

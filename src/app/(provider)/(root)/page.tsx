@@ -1,7 +1,7 @@
 import BennerSlide from '@/components/BannerSlide';
 import BrandBenner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
-import MdReviews from '@/components/MdReviews/MdReviews';
+import MdReviews from '@/components/MdReviews';
 import MockData from '@/mockup/banner.json';
 
 import CategoryProducts from './_components/CategorySection/CategoryProducts';
