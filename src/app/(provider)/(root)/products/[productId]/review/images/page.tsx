@@ -17,9 +17,8 @@ const ReviewImagesPage = () => {
           ?.flat()
           .slice(0, 7)
           .map((reviewImage, index) => (
-            <div className="aspect-square relative">
+            <div key={index} className="aspect-square relative">
               <Image
-                key={index}
                 src={reviewImage}
                 alt="리뷰 이미지"
                 fill
