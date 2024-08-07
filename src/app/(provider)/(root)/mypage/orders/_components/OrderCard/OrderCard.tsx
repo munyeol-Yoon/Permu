@@ -2,8 +2,7 @@ import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/
 import { Button } from '@/components/ui/button';
 import useAlert from '@/hooks/useAlert';
 import { MyOrder } from '@/types/myPage/order';
-
-import { formatDate } from '@/utils/format';
+import dayjs from 'dayjs';
 import OrderItem from '../OrderItem';
 
 interface OrderCardProps {
@@ -13,25 +12,24 @@ interface OrderCardProps {
 
 const OrderCard = ({ order, review }: OrderCardProps) => {
   const { showInfoAlert } = useAlert();
-  const { orderId, OrdersDetail } = order;
-  const formattedDate = formatDate(order.createAt);
+  const { orderId, createAt, OrdersDetail } = order;
+  const formattedDate = dayjs(createAt).format('YYYY.MM.DD');
   const handleClick = () => showInfoAlert('준비중입니다!');
 
   return (
     <AccordionItem value={crypto.randomUUID()}>
       <AccordionTrigger>
-        <div className="flex items-center gap-x-2">
+        <div className="flex items-center gap-x-2 ">
           <h3 className="text-xl w-[110px]">{formattedDate}</h3>
-          <span className="text-sm text-muted">주문번호 {orderId.split('-')[0]}</span>
+          <span className="text-sm text-muted line-clamp-1">주문번호 {orderId.split('-')}</span>
         </div>
       </AccordionTrigger>
 
       <AccordionContent>
         {OrdersDetail.map((orderItem) => {
-          const { title, thumbNailURL } = orderItem.Products;
           return (
             <div key={orderItem.productId} className="flex flex-col mb-3">
-              <OrderItem title={title} thumbNailURL={thumbNailURL} date={formattedDate} />
+              <OrderItem {...orderItem.Products} />
               {review ? (
                 <Button size="sm" onClick={handleClick} className="mt-6">
                   리뷰 작성하기
@@ -42,11 +40,11 @@ const OrderCard = ({ order, review }: OrderCardProps) => {
         })}
 
         {!review && (
-          <div className="flex flex-col bg-teal-50">
-            <Button variant="outline" className="my-0">
+          <div className="grid grid-cols-2 gap-2">
+            <Button variant="outline" onClick={handleClick}>
               교환/환불내역
             </Button>
-            <Button className="my-2">배송조회</Button>
+            <Button onClick={handleClick}>배송조회</Button>
           </div>
         )}
       </AccordionContent>

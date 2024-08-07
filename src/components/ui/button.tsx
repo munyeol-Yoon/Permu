@@ -25,6 +25,7 @@ const buttonVariants = cva(
         icon: 'h-10 w-10'
       }
     },
+    compoundVariants: [{ variant: 'outline', size: 'default', className: 'p-[18px]' }],
     defaultVariants: {
       variant: 'default',
       size: 'default'

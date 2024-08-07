@@ -1,16 +1,23 @@
 export type MyProduct = {
-  title: string;
+  Brands: {
+    krName: string;
+  };
   thumbNailURL: string;
+  title: string;
 };
 
 export type MyOrderDetail = {
-  productId: string;
   Products: MyProduct;
+  productId: string;
 };
 
 export type MyOrder = {
-  createAt: string;
-  orderId: string;
-  deliverId: string;
   OrdersDetail: MyOrderDetail[];
+  createAt: string;
+  deliverId: string;
+  orderId: string;
 };
+
+export interface OrderItemProps extends MyProduct {
+  option?: string;
+}
