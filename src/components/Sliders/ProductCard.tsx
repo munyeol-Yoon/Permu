@@ -34,10 +34,10 @@ const ProductCard = ({ product }: ProductProps) => {
         </div>
       </Link>
       <div className="flex flex-col gap-1">
-        <span className="text-[12px] line-clamp-1">{product.Brand?.krName}</span>
+        <span className="text-[12px] line-clamp-1">{brandName}</span>
         <p className="font-semibold line-clamp-1">{title.length > 7 ? title.slice(0, 7) + '...' : title}</p>
         <div className="flex justify-between items-center">
-          <span className="font-semibold">{(product.discountedPrice || resultPrice || 0).toLocaleString()}원</span>
+          <span className="font-semibold">{(discountedPrice || resultPrice || 0).toLocaleString()}원</span>
           &nbsp;
           {(product.discount || 0) > 0 && (
             <>
@@ -46,7 +46,6 @@ const ProductCard = ({ product }: ProductProps) => {
             </>
           )}
         </div>
-
       </div>
     </div>
   );
