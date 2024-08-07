@@ -1,4 +1,4 @@
-import { deleteAddressInfo, insertAddressInfo } from '@/api/addresses';
+import { deleteAddressInfo, insertAddressInfo, patchAddressInfo } from '@/api/addresses';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { Tables } from '@/types/supabase';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -14,6 +14,13 @@ const useAddressMutation = () => {
     }
   });
 
+  const patchAddressMutation = useMutation({
+    mutationFn: async (addressInfo: Tables<'Addresses'>) => await patchAddressInfo(addressInfo),
+    onSuccess: (data, variable) => {
+      queryClient.invalidateQueries({ queryKey: ['userAddresses', variable.userId] });
+    }
+  });
+
   const deleteAddressMutation = useMutation({
     mutationFn: async (addressId: string) => await deleteAddressInfo(addressId),
     onSuccess: () => {
@@ -21,7 +28,7 @@ const useAddressMutation = () => {
     }
   });
 
-  return { addAddressMutation, deleteAddressMutation };
+  return { addAddressMutation, patchAddressMutation, deleteAddressMutation };
 };
 
 export default useAddressMutation;

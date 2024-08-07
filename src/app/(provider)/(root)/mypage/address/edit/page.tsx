@@ -1,5 +1,6 @@
 'use client';
 
+import { getAddressInfoByAddressId } from '@/api/addresses';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,16 +8,19 @@ import { useAuth } from '@/contexts/auth.context/auth.context';
 import useAddressMutation from '@/hooks/mutation/useAddressMutation';
 import useAlert from '@/hooks/useAlert';
 import { validatePhoneNumber } from '@/utils/validateCheck';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 const AddressEditPage = () => {
-  const open = useDaumPostcodePopup();
-  const { addAddressMutation } = useAddressMutation();
-  const { showWarningAlert } = useAlert();
-  const { loggedUser } = useAuth();
+  const searchParams = useSearchParams();
+  const addressId = searchParams.get('address');
+
   const router = useRouter();
+  const { loggedUser } = useAuth();
+  const { addAddressMutation, patchAddressMutation } = useAddressMutation();
+  const { showWarningAlert } = useAlert();
+  const open = useDaumPostcodePopup();
 
   const [receiverName, setReceiverName] = useState('');
   const [receiverPhoneNumber, setReceiverPhoneNumber] = useState('');
@@ -51,14 +55,46 @@ const AddressEditPage = () => {
     const { mutateAsync } = addAddressMutation;
 
     await mutateAsync({
-      address: `${receiverAddress} ${receiverDetailAddress}`,
+      address: receiverAddress,
       name: receiverName,
       phone: receiverPhoneNumber,
-      userId: loggedUser?.id!
+      userId: loggedUser?.id!,
+      detailAddress: receiverDetailAddress
     });
 
     router.back();
   };
+
+  const handleUpdateReceiverAddressInfo = async () => {
+    if (receiverName.length > 10) return showWarningAlert('배송지 이름은 10글자 이내로 입력해주세요');
+    if (!validatePhoneNumber(receiverPhoneNumber)) return showWarningAlert('올바른 전화번호를 입력해주세요');
+
+    const { mutateAsync } = patchAddressMutation;
+
+    await mutateAsync({
+      addressId: addressId!,
+      address: receiverAddress,
+      name: receiverName,
+      phone: receiverPhoneNumber,
+      userId: loggedUser?.id!,
+      detailAddress: receiverDetailAddress
+    });
+
+    router.back();
+  };
+
+  useEffect(() => {
+    if (addressId) {
+      (async () => {
+        const res = await getAddressInfoByAddressId(addressId);
+        const { address, name, phone, detailAddress } = res[0];
+        setReceiverAddress(address);
+        setReceiverName(name);
+        setReceiverPhoneNumber(phone);
+        setReceiverDetailAddress(detailAddress);
+      })();
+    }
+  }, [addressId]);
 
   return (
     <>
@@ -115,7 +151,7 @@ const AddressEditPage = () => {
           />
         </div>
         <Button
-          onClick={handleAddReceiverAddressInfo}
+          onClick={addressId ? handleUpdateReceiverAddressInfo : handleAddReceiverAddressInfo}
           disabled={!receiverAddress || !receiverDetailAddress || !receiverName || !receiverPhoneNumber}
           className="max-w-[400px] w-full h-[64px] m-0"
         >

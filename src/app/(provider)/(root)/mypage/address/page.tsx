@@ -39,10 +39,12 @@ const AddressListPage = () => {
             <li key={addressItem.addressId} className="border-b pb-5">
               <p className="text-[20px] font-semibold py-2.5">{addressItem.name}</p>
               <p className="py-[10.5px]">{addressItem.phone}</p>
-              <p className="py-2.5 text-[#B3B3B3]">{addressItem.address}</p>
+              <p className="py-2.5 text-[#B3B3B3]">
+                {addressItem.address} {addressItem.detailAddress}
+              </p>
               <div className="flex items-center gap-2.5">
-                <Button variant="outline" className="border-[#B3B3B3] text-[#B3B3B3] m-0">
-                  수정
+                <Button variant="outline" className="border-[#B3B3B3] text-[#B3B3B3] m-0" asChild>
+                  <Link href={`${MYPAGE_ADDRESS_EDIT_PATHNAME}?address=${addressItem.addressId}`}>수정</Link>
                 </Button>
                 <Button
                   onClick={() => handleDeleteAddressInfo(addressItem.addressId)}

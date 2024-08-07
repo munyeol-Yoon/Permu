@@ -22,6 +22,18 @@ export async function POST(request: NextRequest) {
   return NextResponse.json(data);
 }
 
+export async function PATCH(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const addressId = searchParams.get('addressId');
+  const addressInfo = await request.json();
+
+  const supabase = createClient();
+  const { data, error } = await supabase.from('Addresses').update(addressInfo).eq('addressId', addressId).select();
+
+  if (error) throw new Error(error.message);
+  return NextResponse.json(data);
+}
+
 export async function DELETE(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const addressId = searchParams.get('addressId');
