@@ -455,7 +455,8 @@ const DeliveryPage = () => {
           <div className="fixed bottom-0 h-[96px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
             <div className="flex justify-center items-center h-full">
               <button onClick={handleOrder} className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
-                총 {orderInfo?.productList?.length}개 | {totalPaymentPrice.toLocaleString()}원 구매하기
+                총 {orderInfo?.productList?.length ?? 0}개 |{' '}
+                {totalPaymentPrice ? totalPaymentPrice.toLocaleString() : 0}원 구매하기
               </button>
             </div>
           </div>
