@@ -15,7 +15,7 @@ const CategorySection = ({ title, option, count }: CategorySectionProps) => {
   const { data: brands = [] } = useProductsQuery(option);
 
   return (
-    <div className="flex flex-col mt-[46px] p-5-2">
+    <div className="flex flex-col p-5-2">
       <CategoryMore title={option === 'product' ? title + '인센스' : title + (brands[0]?.Brand?.krName ?? '')} />
 
       <div className="w-full h-[300px] rounded mb-[16px] relative">

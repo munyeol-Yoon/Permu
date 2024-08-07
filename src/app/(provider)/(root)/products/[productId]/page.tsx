@@ -1,13 +1,13 @@
 import Bread from '@/components/Bread';
 import { Params, Product } from '@/types/products';
 
-import BennerSlide from '@/components/BannerSlide';
-import BrandBenner from '@/components/BrandBanner';
+import BannerSlide from '@/components/BannerSlide';
+import BrandBanner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import CustomerReviews from '@/components/CustomerReviews';
-
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
+import MdReviews from '@/components/MdReviews';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
@@ -38,12 +38,12 @@ const ProductDetailPage = async ({ params }: Params) => {
 
   return (
     <div>
-      <BrandBenner>
+      <BrandBanner>
         <span className="text-white">{product.Brand.krName ?? ''}</span>
         <span className="text-white">{product.brandId}</span>
-      </BrandBenner>
+      </BrandBanner>
       <div className="relative aspect-square">
-        <BennerSlide Images={Images} />
+        <BannerSlide Images={Images} />
       </div>
 
       <Bread category={product.Category} />
@@ -112,7 +112,7 @@ const ProductDetailPage = async ({ params }: Params) => {
 
       <CurrentProducts title={'지금 가장 인기 있는 제품'} option="order" />
 
-      <CustomerReviews />
+      <MdReviews />
 
       <Footer />
       <div className="mb-[138px]" />
