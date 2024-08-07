@@ -5,7 +5,7 @@ import mockData from '@/mockup/banner.json';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 type SliderProps = { Images?: { ImageURL: string; title: string }[] };
-const BennerSlide = ({ Images }: SliderProps) => {
+const BannerSlide = ({ Images }: SliderProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -65,4 +65,4 @@ const BennerSlide = ({ Images }: SliderProps) => {
   );
 };
 
-export default BennerSlide;
+export default BannerSlide;
