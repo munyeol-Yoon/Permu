@@ -10,6 +10,7 @@ import TopBanner from './_components/Header/_components/TopBanner';
 const RootLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
   const isCategoryPage = pathname.startsWith('/category');
+  const isCategorySearchResultPage = pathname === '/category/search/result';
   const isProductOrHomePage = pathname.startsWith('/products') || pathname === '/';
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -26,10 +27,10 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className="container mx-auto min-h-screen grid">
       <div className="bg-white w-full max-w-[600px] h-full mx-auto flex flex-col">
-        {isCategoryPage ? (
+        {isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
         ) : (
-          isProductOrHomePage && (
+          (isProductOrHomePage || isCategorySearchResultPage) && (
             <>
               <div
                 className={cx('transition-all duration-300 overflow-hidden', {

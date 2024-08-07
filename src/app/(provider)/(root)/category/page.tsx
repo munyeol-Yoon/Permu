@@ -23,7 +23,7 @@ const CategoryPage = () => {
             <input
               type="text"
               placeholder="여름 시즌 추천템 20% 할인"
-              className="rounded-[4px] bg-[#b3b3b320] w-full px-2.5 py-0 pr-[60px] h-[42px] cursor-pointer"
+              className="rounded-[4px] bg-[#b3b3b320] w-full px-2.5 py-0 pr-[60px] h-[64px] cursor-pointer"
             />
 
             <button className="absolute right-0 top-0 bottom-0 px-3 py-1">
@@ -35,9 +35,9 @@ const CategoryPage = () => {
       {/* 카테고리 부분 */}
       <section className="flex flex-col items-stretch self-stretch">
         {Object.keys(categories).map((categoryTitle) => (
-          <div key={categoryTitle}>
+          <div key={categoryTitle} className="mt-7 ml-11 mr-11">
             <div className="flex h-16 pt-[20px] pb-[20.21px] justify-center items-center self-stretch border-b border-b-[#B3B3B3]">
-              <div className="flex w-[600px] px-[50px] items-center gap-[5px]">
+              <div className="flex w-full items-center p-3">
                 <h2 className="transform rotate-[0.362deg] text-[#231815] font-abhaya text-[30px] not-italic font-normal leading-[22.5px] tracking-[9px]">
                   {categoryTitle} -
                 </h2>
@@ -45,7 +45,7 @@ const CategoryPage = () => {
             </div>
             {categories[categoryTitle].map((group) => (
               <Accordion type="multiple" key={group.mainTitle}>
-                <Toggle trigger={group.mainTitle} value={false} className="px-8">
+                <Toggle trigger={group.mainTitle} value={false}>
                   <div>
                     {group.items.map((item) => (
                       <div key={item.categoryId}>
