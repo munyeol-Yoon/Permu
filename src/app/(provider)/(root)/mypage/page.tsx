@@ -8,6 +8,7 @@ import {
   MYPAGE_EDIT_PATHNAME,
   MYPAGE_MILEAGE_PATHNAME,
   MYPAGE_ORDERS_PATHNAME,
+  MYPAGE_REVIEW_PATHNAME,
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
@@ -45,9 +46,15 @@ const MyMainPage = () => {
       <Profile name={name || ''} />
 
       <div className="flex bg-slate-200 p-5 gap-x-2.5">
-        <InfoCard title="보유 마일리지">{mileage || '-'}p</InfoCard>
-        <InfoCard title="쿠폰">{userCoupons?.length || '-'}</InfoCard>
-        <InfoCard title="후기">-개</InfoCard>
+        <InfoCard title="보유 마일리지" href={MYPAGE_MILEAGE_PATHNAME}>
+          {mileage || '-'}p
+        </InfoCard>
+        <InfoCard title="쿠폰" href={MYPAGE_COUPON_PATHNAME}>
+          {userCoupons?.length || '-'}
+        </InfoCard>
+        <InfoCard title="후기" href={MYPAGE_REVIEW_PATHNAME}>
+          2개
+        </InfoCard>
       </div>
 
       <Banner className="mx-auto my-4" />
