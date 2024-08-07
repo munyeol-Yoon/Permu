@@ -1,4 +1,6 @@
+'use client';
 import { AUTH_LOG_IN_PATHNAME } from '@/constant/pathname';
+import useAlert from '@/hooks/useAlert';
 import ProfileImg from '@@/public/profile/profile-sm.svg';
 import Link from 'next/link';
 interface ProfileProps {
@@ -6,16 +8,20 @@ interface ProfileProps {
 }
 
 const Profile = ({ name }: ProfileProps) => {
+  const { showInfoAlert } = useAlert();
+  const handleClick = () => showInfoAlert('준비중입니다!');
   return (
     <div className="flex p-5">
       {name ? (
         <>
           <ProfileImg className="w-[60px] h-[60px] mr-5" />
-          <div className="flex flex-col justify-center font-bold">
-            <p>{name}님 환영합니다!</p>
+          <div className="flex flex-col justify-center font-semibold">
+            <p>{name} 님 환영합니다!</p>
             <p>
-              <span className="text-blue-600">LV 3. 5%적립 무료 배송 </span>
-              <span className="text-slate-500">등급 해택 더보기</span>
+              <span className="text-accent">LV 3. 5%적립 무료 배송 </span>
+              <span className="text-muted cursor-pointer" onClick={handleClick}>
+                등급 해택 더보기
+              </span>
             </p>
           </div>
         </>
