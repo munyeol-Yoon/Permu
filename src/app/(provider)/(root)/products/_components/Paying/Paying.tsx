@@ -33,13 +33,18 @@ const Paying = ({ size, category }: PayingProps) => {
       const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
 
       if (matchCartProduct)
-        if (loggedUser)
+        if (loggedUser) {
+          if (selectedSize === '옵션 선택') {
+            alert('사이즈를 선택해주세요!');
+            return;
+          }
           patchMutation.mutate({
             productId: Number(productId),
             userId: loggedUser.id,
-            count: matchCartProduct.count
+            count: matchCartProduct.count + 1,
+            volume: selectedSize
           });
-        else {
+        } else {
           // const updatedCarts = displayedCarts.map((cart: Cart) => {
           //   if (cart.productId === Number(productId)) {
           //     return { ...cart, count: cart.count + 1 };
@@ -49,8 +54,13 @@ const Paying = ({ size, category }: PayingProps) => {
           // localStorage.setItem('carts', JSON.stringify(updatedCarts));
         }
       else {
-        if (loggedUser) addMutation.mutate({ productId: Number(productId), userId: loggedUser.id });
-        else {
+        if (loggedUser) {
+          if (selectedSize === '옵션 선택') {
+            alert('사이즈를 선택해주세요!');
+            return;
+          }
+          addMutation.mutate({ productId: Number(productId), volume: selectedSize, userId: loggedUser.id });
+        } else {
           // const product = await fetchDetailProduct({ params: { productId } });
           // localStorage.setItem(
           //   'carts',

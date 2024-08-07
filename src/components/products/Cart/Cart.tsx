@@ -31,21 +31,21 @@ const Cart = () => {
           // localStorage.setItem('carts', JSON.stringify(updatedCarts));
         }
       else {
-        if (userId) addMutation.mutate({ productId: Number(productId), userId });
-        else {
-          // const product = await fetchDetailProduct({ params: { productId } });
-          // localStorage.setItem(
-          //   'carts',
-          //   JSON.stringify(
-          //     displayedCarts.concat({
-          //       productId: Number(productId),
-          //       userId,
-          //       count: 1,
-          //       Products: product
-          //     })
-          //   )
-          // );
-        }
+        // if (userId) addMutation.mutate({ productId: Number(productId), userId, });
+        // else {
+        // const product = await fetchDetailProduct({ params: { productId } });
+        // localStorage.setItem(
+        //   'carts',
+        //   JSON.stringify(
+        //     displayedCarts.concat({
+        //       productId: Number(productId),
+        //       userId,
+        //       count: 1,
+        //       Products: product
+        //     })
+        //   )
+        // );
+        // }
       }
 
       //성공 메시지를 받아야 함!!!

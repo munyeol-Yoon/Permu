@@ -8,9 +8,9 @@ const useCart = () => {
   const { addMutation, patchMutation, deleteMutation } = useCartsMutation();
 
   const addCartItem = useCallback(
-    async (productId: number, userId: string) => {
+    async (productId: number, userId: string, volume: string) => {
       const { mutateAsync } = addMutation;
-      await mutateAsync({ productId, userId });
+      await mutateAsync({ productId, userId, volume });
     },
     [addMutation]
   );
@@ -31,6 +31,14 @@ const useCart = () => {
     [patchMutation]
   );
 
+  const updateCartItemVolume = useCallback(
+    async (productId: number, userId: string, volume: string) => {
+      const { mutateAsync } = patchMutation;
+      await mutateAsync({ productId, userId, volume });
+    },
+    [patchMutation]
+  );
+
   const deleteCartItem = useCallback(
     async (productId: number, userId: string) => {
       const { mutateAsync } = deleteMutation;
@@ -44,6 +52,7 @@ const useCart = () => {
     addCartItem,
     updateCartItemCount,
     updateCartItemSelected,
+    updateCartItemVolume,
     deleteCartItem
   };
 };

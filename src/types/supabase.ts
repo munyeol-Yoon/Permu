@@ -74,21 +74,21 @@ export type Database = {
           isSelected: boolean
           productId: number
           userId: string
-          volume: number | null
+          volume: string | null
         }
         Insert: {
           count?: number | null
           isSelected?: boolean
           productId: number
           userId: string
-          volume?: number | null
+          volume?: string | null
         }
         Update: {
           count?: number | null
           isSelected?: boolean
           productId?: number
           userId?: string
-          volume?: number | null
+          volume?: string | null
         }
         Relationships: [
           {
@@ -205,6 +205,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "Deliveries_addressId_fkey"
+            columns: ["addressId"]
+            isOneToOne: false
+            referencedRelation: "Addresses"
+            referencedColumns: ["addressId"]
+          },
+          {
             foreignKeyName: "Deliveries_deliverId_fkey"
             columns: ["deliverId"]
             isOneToOne: true
@@ -299,18 +306,21 @@ export type Database = {
           orderDetailId: string
           orderId: string
           productId: number
+          volume: string | null
         }
         Insert: {
           count?: number
           orderDetailId?: string
           orderId: string
           productId: number
+          volume?: string | null
         }
         Update: {
           count?: number
           orderDetailId?: string
           orderId?: string
           productId?: number
+          volume?: string | null
         }
         Relationships: [
           {

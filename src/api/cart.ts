@@ -1,7 +1,7 @@
-export const postCartByUser = async (productId: number, userId: string): Promise<void> => {
+export const postCartByUser = async (productId: number, volume: string, userId: string): Promise<void> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/${userId}`, {
     method: 'POST',
-    body: JSON.stringify({ productId })
+    body: JSON.stringify({ productId, volume })
   });
   const data = await response.json();
   return data;
@@ -11,11 +11,13 @@ export const patchCartByUser = async ({
   productId,
   userId,
   count,
+  volume,
   isSelected
 }: {
   productId: number;
   userId: string;
   count?: number;
+  volume?: string;
   isSelected?: boolean;
 }): Promise<void> => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/carts/${userId}`, {
@@ -23,7 +25,8 @@ export const patchCartByUser = async ({
     body: JSON.stringify({
       productId,
       count,
-      isSelected
+      isSelected,
+      volume
     })
   });
   const data = await response.json();
