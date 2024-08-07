@@ -5,8 +5,8 @@ const useCartsMutation = () => {
   const queryClient = useQueryClient();
 
   const addMutation = useMutation({
-    mutationFn: async ({ productId, userId }: { productId: number; userId: string }) =>
-      await postCartByUser(productId, userId),
+    mutationFn: async ({ productId, volume, userId }: { productId: number; volume: string; userId: string }) =>
+      await postCartByUser(productId, volume, userId),
     onSuccess: (data, variable) => {
       queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
     },
@@ -18,13 +18,15 @@ const useCartsMutation = () => {
       productId,
       userId,
       count,
+      volume,
       isSelected
     }: {
       productId: number;
       userId: string;
       count?: number;
+      volume?: string;
       isSelected?: boolean;
-    }) => await patchCartByUser({ userId, productId, count, isSelected }),
+    }) => await patchCartByUser({ userId, productId, count, isSelected, volume }),
     onSuccess: (data, variable) => {
       queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
     }

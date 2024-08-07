@@ -2,24 +2,6 @@ import { createClient } from '@/supabase/server';
 import { extractHangul } from 'es-hangul';
 import { NextRequest, NextResponse } from 'next/server';
 
-function getChosung(str: string): string {
-  const INITIALS = 'ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
-  const BASE_CODE = 0xac00;
-  const INITIAL_COUNT = 19;
-  const MEDIAL_COUNT = 21;
-  const FINAL_COUNT = 28;
-
-  return str
-    .split('')
-    .map((char) => {
-      const code = char.charCodeAt(0);
-      if (code < BASE_CODE || code > 0xd7a3) return '';
-      const initialIndex = Math.floor((code - BASE_CODE) / (MEDIAL_COUNT * FINAL_COUNT));
-      return INITIALS[initialIndex];
-    })
-    .join('');
-}
-
 export const GET = async (req: NextRequest) => {
   try {
     const supabase = createClient();
@@ -39,9 +21,6 @@ export const GET = async (req: NextRequest) => {
     const searchQuery = searchParams.get('query');
     const categoryIdQuery = searchParams.get('categoryId');
 
-    console.log(!searchParams);
-    console.log(searchParams);
-
     if (!searchQuery && !categoryIdQuery) {
       return NextResponse.json({ success: false, detail: '쿼리 파라미터가 필요합니다.' }, { status: 400 });
     }
@@ -50,25 +29,52 @@ export const GET = async (req: NextRequest) => {
       const extractQuery = extractHangul(searchQuery);
       const englishQuery = searchQuery.toLowerCase();
 
-      console.log(`Extracted Hangul Query: ${extractQuery}`); // 예가 빈값이 되어서
-      console.log(`English Query: ${englishQuery}`);
-
       if (extractQuery) {
-        const { data, error } = await supabase
+        const brandQuery = supabase.from('Brands').select('brandId').ilike('krName', `%${extractQuery}%`);
+
+        const productQuery = supabase
           .from('Products')
           .select(
             `
-          *,
-          Brands (*)
-        `
+            *,
+            Brand: Brands (*)
+          `
           )
           .ilike('title', `%${extractQuery}%`);
 
-        if (error) {
-          throw error;
+        const [brandResult, productResult] = await Promise.all([brandQuery, productQuery]);
+
+        if (brandResult.error) {
+          throw brandResult.error;
         }
 
-        return NextResponse.json({ success: true, detail: '조회 성공', data }, { status: 200 });
+        if (productResult.error) {
+          throw productResult.error;
+        }
+
+        const brandIds = brandResult.data.map((brand) => brand.brandId);
+
+        const additionalProducts = await supabase
+          .from('Products')
+          .select(
+            `
+            *,
+            Brands (*)
+          `
+          )
+          .in('brandId', brandIds);
+
+        if (additionalProducts.error) {
+          throw additionalProducts.error;
+        }
+
+        const combinedResults = [...productResult.data, ...additionalProducts.data];
+
+        const uniqueResults = Array.from(new Set(combinedResults.map((a) => a.productId))).map((id) =>
+          combinedResults.find((a) => a.productId === id)
+        );
+
+        return NextResponse.json({ success: true, detail: '조회 성공', data: uniqueResults }, { status: 200 });
       }
 
       if (englishQuery) {

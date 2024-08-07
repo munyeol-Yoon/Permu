@@ -3,10 +3,12 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import {
   AUTH_LOG_IN_PATHNAME,
+  MYPAGE_ADDRESS_PATHNAME,
   MYPAGE_COUPON_PATHNAME,
   MYPAGE_EDIT_PATHNAME,
   MYPAGE_MILEAGE_PATHNAME,
   MYPAGE_ORDERS_PATHNAME,
+  MYPAGE_REVIEW_PATHNAME,
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
@@ -28,10 +30,7 @@ const LINKS = [
   { title: '쿠폰 내역', href: MYPAGE_COUPON_PATHNAME },
   { title: '마일리지 내역', href: MYPAGE_MILEAGE_PATHNAME },
   { title: '회원 정보 변경', href: MYPAGE_EDIT_PATHNAME },
-  { title: '배송지 관리 (미지원)' },
-  { title: '사업자 정보' },
-  { title: '법적고지사항' },
-  { title: '고객지원' }
+  { title: '배송지 관리 (미지원)' }
 ];
 
 const MyMainPage = () => {
@@ -47,9 +46,15 @@ const MyMainPage = () => {
       <Profile name={name || ''} />
 
       <div className="flex bg-slate-200 p-5 gap-x-2.5">
-        <InfoCard title="보유 마일리지">{mileage || '-'}p</InfoCard>
-        <InfoCard title="쿠폰">{userCoupons?.length || '-'}</InfoCard>
-        <InfoCard title="후기">-개</InfoCard>
+        <InfoCard title="보유 마일리지" href={MYPAGE_MILEAGE_PATHNAME}>
+          {mileage || '-'}p
+        </InfoCard>
+        <InfoCard title="쿠폰" href={MYPAGE_COUPON_PATHNAME}>
+          {userCoupons?.length || '-'}
+        </InfoCard>
+        <InfoCard title="후기" href={MYPAGE_REVIEW_PATHNAME}>
+          2개
+        </InfoCard>
       </div>
 
       <Banner className="mx-auto my-4" />

@@ -28,11 +28,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   const { id: userId } = params;
-  const { productId } = await request.json();
+  const { productId, volume } = await request.json();
   try {
     const supabase = createClient();
 
-    await supabase.from('Carts').insert({ productId, userId, count: 1 });
+    await supabase.from('Carts').insert({ productId, userId, count: 1, volume });
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -42,11 +42,11 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   const { id: userId } = params;
-  const { productId, count, isSelected } = await request.json();
+  const { productId, count, isSelected, volume } = await request.json();
   try {
     const supabase = createClient();
 
-    await supabase.from('Carts').update({ count, isSelected }).eq('productId', productId).eq('userId', userId);
+    await supabase.from('Carts').update({ count, isSelected, volume }).eq('productId', productId).eq('userId', userId);
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ success: false, error });

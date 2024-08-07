@@ -20,7 +20,7 @@ interface CartItemProps {
 
 const CartItem = ({ cartItem }: CartItemProps) => {
   const { loggedUser } = useAuth();
-  const { deleteCartItem, updateCartItemSelected, updateCartItemCount } = useCart();
+  const { deleteCartItem, updateCartItemSelected, updateCartItemCount, updateCartItemVolume } = useCart();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [container, setContainer] = useState<null | Element>(null);
@@ -40,6 +40,12 @@ const CartItem = ({ cartItem }: CartItemProps) => {
   const handleUpdateItemCountDecrease = () => {
     if (cartItem.count < 2) return;
     updateCartItemCount(cartItem.productId, loggedUser!.id, cartItem.count - 1);
+  };
+
+  const handleUpdateItemVolume = (volume: string) => {
+    if (volume === cartItem.volume) return;
+
+    updateCartItemVolume(cartItem.productId, loggedUser!.id, volume);
   };
 
   const handleUpdateItemSelected = () => {
@@ -70,7 +76,9 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           </button>
         </div>
         <p className="font-semibold mb-2.5">{cartItem.Products.title}</p>
-        <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
+        <p className="text-xs text-[#B3B3B3] mb-1.5">
+          옵션 : {cartItem.volume}ml, {cartItem.count}개
+        </p>
         <div className="flex justify-between items-center w-full">
           <Button
             onClick={handleDialogOpen}
@@ -106,14 +114,21 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           <p className="text-[20px]">변경할 옵션을 선택해주세요</p>
           <DropdownMenu>
             <DropdownMenuTrigger className="flex justify-between items-center px-5 py-[18.5px] border border-[#B3B3B3] w-full max-h-[60px] text-start text-[20px] text-[#B3B3B3] rounded-sm">
-              <p>옵션 선택</p>
+              <p>{cartItem.volume}</p>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
                 <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuCheckboxItem>50ml</DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem>100ml</DropdownMenuCheckboxItem>
+              {cartItem?.Products.size.map((size: any) => (
+                <DropdownMenuCheckboxItem
+                  onClick={() => handleUpdateItemVolume(size)}
+                  checked={cartItem.volume === size}
+                  key={size}
+                >
+                  {size}
+                </DropdownMenuCheckboxItem>
+              ))}
             </DropdownMenuContent>
           </DropdownMenu>
           <div className="flex items-center justify-start gap-2 w-full">
@@ -133,7 +148,9 @@ const CartItem = ({ cartItem }: CartItemProps) => {
             <Button onClick={handleDialogClose} variant="outline" className="w-full rounded-sm m-0 h-[46px]">
               취소
             </Button>
-            <Button className="w-full rounded-sm m-0 h-[46px]">확인</Button>
+            <Button onClick={handleDialogClose} className="w-full rounded-sm m-0 h-[46px]">
+              확인
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
