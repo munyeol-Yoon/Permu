@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCouponQuery } from '@/hooks/query';
@@ -8,9 +9,11 @@ import CouponCard from '../_components/CouponCard';
 import Profile from '../_components/Profile';
 
 const CouponListPage = () => {
-  const { data: userCoupons } = useCouponQuery();
   const { loggedUser } = useAuth();
+  const { data: userCoupons, isPending } = useCouponQuery();
   const name = loggedUser?.userData.name || '';
+
+  if (isPending) return <Loading />;
   return (
     <div>
       <Navbar title="쿠폰" isHome />

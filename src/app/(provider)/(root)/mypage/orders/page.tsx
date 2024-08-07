@@ -1,18 +1,19 @@
 'use client';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Accordion } from '@/components/ui/accordion';
 import useOrderListQuery from '@/hooks/query/useOrderListQuery';
 import { MyOrder } from '@/types/myPage/order';
-import Arrow from '@@/public/arrow/arrow-bottom.svg';
+import { cn } from '@/utils/cn';
 import Banner from '@@/public/banner/tempBanner.svg';
+import { useState } from 'react';
 import OrderCard from './_components/OrderCard';
 
 const OrderListPage = () => {
+  const [isLatest, setIsLatest] = useState<boolean>(true);
   const { data: OrderList, isPending } = useOrderListQuery();
-
-  if (isPending) {
-    return <div>Loading...</div>;
-  }
+  const handleClick = () => setIsLatest((prev) => !prev);
+  if (isPending) return <Loading />;
 
   return (
     <div>
@@ -21,9 +22,20 @@ const OrderListPage = () => {
 
       <div className="px-[50px]">
         <div className="flex justify-between py-5">
-          <div className="flex items-center">
-            <span>최근 내역 순</span>
-            <Arrow />
+          <div className="flex items-center gap-x-2.5">
+            <span
+              className={cn('cursor-pointer, text-muted', { 'font-semibold, text-primary': isLatest })}
+              onClick={handleClick}
+            >
+              최근 내역 순
+            </span>
+            |
+            <span
+              className={cn('cursor-pointer text-muted', { 'font-semibold, text-primary': !isLatest })}
+              onClick={handleClick}
+            >
+              오래된 순
+            </span>
           </div>
 
           <div className="flex items-center">

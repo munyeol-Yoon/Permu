@@ -1,5 +1,5 @@
-import BennerSlide from '@/components/BannerSlide';
-import BrandBenner from '@/components/BrandBanner';
+import BannerSlide from '@/components/BannerSlide';
+import BrandBanner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import MdReviews from '@/components/MdReviews';
 import MockData from '@/mockup/banner.json';
@@ -11,7 +11,7 @@ import Footer from './_components/Footer';
 const RootPage = () => {
   return (
     <main className="max-w-[600px] mx-auto my-0 h-full w-full overflow-hidden">
-      <BennerSlide />
+      <BannerSlide />
 
       <div className="flex py-6 px-5 justify-between">
         {MockData.map((item) => (
@@ -19,11 +19,11 @@ const RootPage = () => {
         ))}
       </div>
       <div className="flex flex-col gap-y-16">
-        <BrandBenner>
+        <BrandBanner>
           <div className="w-full flex justify-center items-center text-xl font-bold">
             <span className="text-white">행사중인 브랜드 한번에 몰아보기 &gt;</span>
           </div>
-        </BrandBenner>
+        </BrandBanner>
 
         {/* 현재 판매중인 상품 */}
         <CurrentProducts title={'지금 가장 인기 있는 제품'} option="order" />
