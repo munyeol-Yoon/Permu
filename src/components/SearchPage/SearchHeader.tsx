@@ -1,14 +1,19 @@
 'use client';
 
-import { CATEGORY } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import LogoSVG from '@@/public/logo.svg';
 import XSVG from '@@/public/x.svg';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import MenuItem from './MenuItem';
 
 const SearchHeader = () => {
   const { isLoggedIn } = useAuth();
+  const router = useRouter();
+
+  const handleGoBack = () => {
+    router.back();
+  };
 
   return (
     <>
@@ -16,9 +21,9 @@ const SearchHeader = () => {
         <Link href={'/'}>
           <LogoSVG className="cursor-pointer" />
         </Link>
-        <Link href={CATEGORY}>
+        <button onClick={handleGoBack}>
           <XSVG className="cursor-pointer" />
-        </Link>
+        </button>
       </header>
       <section className="flex justify-start items-center self-stretch py-[0px] pr-[9px] pl-[50px] h-[64px]">
         <MenuItem>
