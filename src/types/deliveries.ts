@@ -1,7 +1,7 @@
 export interface DeliveryInfo {
   deliverId?: string;
+  addressId: string;
   arrivalDate: Date;
-  address: string;
   phone: string;
   name: string;
   deliverMemo: string;

@@ -2,6 +2,7 @@
 
 import ArrowBIcon from '@@/public/arrow/arrow-bottom.svg';
 import ArrowRIcon from '@@/public/arrow/arrow-right.svg';
+import { cx } from 'class-variance-authority';
 import { useState } from 'react';
 const DeliveryOptions = () => {
   const deliveryOptions = [
@@ -28,7 +29,10 @@ const DeliveryOptions = () => {
       </div>
 
       <div
-        className={`grid grid-cols-3 gap-[10px] justify-between p-5-2 w-full overflow-hidden flex-wrap transition-all duration-500 ${!isExpanded && 'h-[100px]'}`}
+        className={cx(
+          'grid grid-cols-3 gap-[10px] justify-between p-5-2 w-full overflow-hidden flex-wrap transition-all duration-500',
+          { 'h-[120px]': !isExpanded, 'h-auto': isExpanded }
+        )}
       >
         {deliveryOptions.map((deliveryOption, index) => (
           <div key={index} className="bg-gray-100 rounded-sm pt-[18px] pr-[14px] pb-[17px] pl-[15px]">

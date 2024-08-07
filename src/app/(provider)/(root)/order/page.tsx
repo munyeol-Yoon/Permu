@@ -17,10 +17,14 @@ import { useOrderInfoQuery } from '@/hooks/query';
 import useCart from '@/hooks/useCart';
 import { cn } from '@/utils/cn';
 
+import { MYPAGE_ADDRESS_EDIT_PATHNAME } from '@/constant/pathname';
+import useAddressQuery from '@/hooks/query/useAddressQuery';
+import { Tables } from '@/types/supabase';
 import dayjs from 'dayjs';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { OrderCompleted, OrderError, OrderLoading } from './_components';
 
 const DeliveryPage = () => {
@@ -30,9 +34,11 @@ const DeliveryPage = () => {
   const { data: orderInfo } = useOrderInfoQuery();
   const { mutateAsync } = useOrderMutation();
   const { deleteCartItem } = useCart();
+  const { data: addressList, isFetched } = useAddressQuery();
 
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
   const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY'>('KAKAOPAY');
+  const [selectedAddress, setSelectedAddress] = useState<Tables<'Addresses'> | null>(null);
   const [mileageAmount, setMileageAmount] = useState(0);
   const [orderStatus, setOrderStatus] = useState<'IDLE' | 'PENDING' | 'COMPLETED' | 'FAILED'>('IDLE');
 
@@ -61,7 +67,7 @@ const DeliveryPage = () => {
 
   const totalPaymentPrice = useMemo(() => {
     const initialPrice = orderInfo?.productList.reduce(
-      (acc: number, cur: { discountedPrice: number }) => acc + cur.discountedPrice,
+      (acc: number, cur: { discountedPrice: number; count: number }) => acc + cur.discountedPrice * cur.count,
       0
     );
     const couponPrice = selectedCoupon ? selectedCoupon.discount : 0;
@@ -116,7 +122,7 @@ const DeliveryPage = () => {
 
     const deliveryInfo = {
       name: orderInfo.user.name,
-      address: '서울시 목업구 더미동',
+      addressId: selectedAddress?.addressId!,
       phone: orderInfo.user.phone,
       deliverMemo: receiverMemoRef.current,
       arrivalDate: new Date()
@@ -143,6 +149,12 @@ const DeliveryPage = () => {
     setOrderStatus('COMPLETED');
   };
 
+  useEffect(() => {
+    if (isFetched && addressList?.length) {
+      setSelectedAddress(addressList[0]);
+    }
+  }, [addressList, isFetched]);
+
   if (orderStatus === 'IDLE') {
     return (
       <>
@@ -154,15 +166,31 @@ const DeliveryPage = () => {
             </div>
             <div className="flex justify-between items-center px-5 py-4">
               <div className="flex items-center gap-5">
-                <div className="px-4 bg-[#0348FF] text-white text-sm py-1.5 rounded-full">배송지 1</div>
-                <div className="px-4 text-sm py-1.5 rounded-full border border-[#B3B3B3]/50">배송지 2</div>
+                {addressList?.map((addressItem) => (
+                  <button
+                    onClick={() => setSelectedAddress(addressItem)}
+                    key={addressItem.addressId}
+                    className={cn(
+                      selectedAddress === addressItem
+                        ? 'bg-[#0348FF] text-white border-[#FFFFFF]/50'
+                        : 'bg-white text-[#302A28] border-[#B3B3B3]/50',
+                      'px-4 text-sm py-1.5 rounded-full border transition-all'
+                    )}
+                  >
+                    {addressItem.name}
+                  </button>
+                ))}
               </div>
-              <p className="text-[#0348FF] font-bold text-sm">배송지 변경</p>
+              <Link href={MYPAGE_ADDRESS_EDIT_PATHNAME} className="text-[#0348FF] font-bold text-sm">
+                배송지 변경
+              </Link>
             </div>
             <div className="px-5">
-              <p className="font-semibold mb-2.5">{loggedUser?.userData.name}</p>
-              <p className="text-xs mb-3">{loggedUser?.userData.phone}</p>
-              <p className="text-xs text-[#B3B3B3] mb-1.5">서울 강남 테헤란로 44길 역삼 빌딩 12 층 13 층</p>
+              <p className="font-semibold mb-2.5">{selectedAddress?.name}</p>
+              <p className="text-xs mb-3">{selectedAddress?.phone}</p>
+              <p className="text-xs text-[#B3B3B3] mb-1.5">
+                {selectedAddress?.address} {selectedAddress?.detailAddress}
+              </p>
               <Input
                 placeholder="직접 입력하기"
                 onChange={(e) => (receiverMemoRef.current = e.target.value)}
@@ -199,7 +227,9 @@ const DeliveryPage = () => {
                   <div className="flex flex-col px-2.5 w-full">
                     <p className="text-xs mb-1">{productItem.Brands.enName}</p>
                     <p className="font-semibold mb-2.5">{productItem.title}</p>
-                    <p className="text-xs text-[#B3B3B3] mb-1.5">옵션 : 옵션 A / 옵션 a / 옵션 1</p>
+                    <p className="text-xs text-[#B3B3B3] mb-1.5">
+                      옵션 : {productItem.volume}ml, {productItem.count}개
+                    </p>
                     <div className="relative flex justify-end items-center gap-[18px]">
                       {!!productItem.discount && (
                         <>
@@ -453,7 +483,8 @@ const DeliveryPage = () => {
           <div className="fixed bottom-0 h-[96px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
             <div className="flex justify-center items-center h-full">
               <button onClick={handleOrder} className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
-                총 {orderInfo?.productList?.length}개 | {totalPaymentPrice.toLocaleString()}원 구매하기
+                총 {orderInfo?.productList?.length ?? 0}개 |{' '}
+                {totalPaymentPrice ? totalPaymentPrice.toLocaleString() : 0}원 구매하기
               </button>
             </div>
           </div>

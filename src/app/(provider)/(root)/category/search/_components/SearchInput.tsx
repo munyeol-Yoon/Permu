@@ -1,6 +1,7 @@
 import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import SearchButtonSVG from '@@/public/searchButton.svg';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { ForwardedRef, forwardRef } from 'react';
 
 interface SearchInputProps {
@@ -12,13 +13,23 @@ interface SearchInputProps {
 
 const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(
   ({ search, handleInputChange, handleSearchClick, handleClearClick }, ref: ForwardedRef<HTMLInputElement>) => {
+    const router = useRouter();
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter' && search) {
+        handleSearchClick();
+        router.push(`${CATEGORY_SEARCH_RESULT_PATHNAME}?query=${search}`);
+      }
+    };
+
     return (
       <div className="relative w-full ml-11 mr-11">
         <input
           type="text"
           placeholder="여름 시즌 추천템 20% 할인"
-          className="rounded-[4px] bg-[#b3b3b320] w-full px-2.5 py-0 pr-[60px] h-[42px]"
+          className="rounded-[4px] bg-[#b3b3b320] w-full px-2.5 py-0 pr-[60px] h-[64px]"
           onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
           ref={ref}
           value={search}
         />

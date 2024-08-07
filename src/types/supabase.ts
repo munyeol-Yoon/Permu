@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           address: string | null
           addressId: string
+          detailAddress: string | null
           name: string | null
           phone: string | null
           userId: string | null
@@ -20,6 +21,7 @@ export type Database = {
         Insert: {
           address?: string | null
           addressId?: string
+          detailAddress?: string | null
           name?: string | null
           phone?: string | null
           userId?: string | null
@@ -27,6 +29,7 @@ export type Database = {
         Update: {
           address?: string | null
           addressId?: string
+          detailAddress?: string | null
           name?: string | null
           phone?: string | null
           userId?: string | null
@@ -71,21 +74,21 @@ export type Database = {
           isSelected: boolean
           productId: number
           userId: string
-          volume: number | null
+          volume: string | null
         }
         Insert: {
           count?: number | null
           isSelected?: boolean
           productId: number
           userId: string
-          volume?: number | null
+          volume?: string | null
         }
         Update: {
           count?: number | null
           isSelected?: boolean
           productId?: number
           userId?: string
-          volume?: number | null
+          volume?: string | null
         }
         Relationships: [
           {
@@ -202,6 +205,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "Deliveries_addressId_fkey"
+            columns: ["addressId"]
+            isOneToOne: false
+            referencedRelation: "Addresses"
+            referencedColumns: ["addressId"]
+          },
+          {
             foreignKeyName: "Deliveries_deliverId_fkey"
             columns: ["deliverId"]
             isOneToOne: true
@@ -245,6 +255,7 @@ export type Database = {
       Orders: {
         Row: {
           couponId: string | null
+          createAt: string | null
           deliverId: string | null
           orderId: string
           orderStatus: string
@@ -254,6 +265,7 @@ export type Database = {
         }
         Insert: {
           couponId?: string | null
+          createAt?: string | null
           deliverId?: string | null
           orderId?: string
           orderStatus?: string
@@ -263,6 +275,7 @@ export type Database = {
         }
         Update: {
           couponId?: string | null
+          createAt?: string | null
           deliverId?: string | null
           orderId?: string
           orderStatus?: string
@@ -293,18 +306,21 @@ export type Database = {
           orderDetailId: string
           orderId: string
           productId: number
+          volume: string | null
         }
         Insert: {
           count?: number
           orderDetailId?: string
           orderId: string
           productId: number
+          volume?: string | null
         }
         Update: {
           count?: number
           orderDetailId?: string
           orderId?: string
           productId?: number
+          volume?: string | null
         }
         Relationships: [
           {
@@ -385,13 +401,6 @@ export type Database = {
           },
           {
             foreignKeyName: "Products_categoryId_fkey"
-            columns: ["categoryId"]
-            isOneToOne: false
-            referencedRelation: "Categories"
-            referencedColumns: ["categoryId"]
-          },
-          {
-            foreignKeyName: "Products_categoryId_fkey1"
             columns: ["categoryId"]
             isOneToOne: false
             referencedRelation: "Categories"
