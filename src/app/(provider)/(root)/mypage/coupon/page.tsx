@@ -22,11 +22,11 @@ const CouponListPage = () => {
       <div className="flex flex-col bg-slate-200 p-5 gap-x-2.5 gap-y-1">
         <div className="flex bg-white rounded justify-between px-5 py-4">
           <p>현재 보유 쿠폰</p>
-          <p className="text-lg font-bold text-blue-500">{userCoupons?.length}장</p>
+          <p className="text-lg font-bold text-accent">{userCoupons?.length}장</p>
         </div>
         <div className="flex bg-white rounded justify-between px-5 py-4">
           <p>추가로 받을 수 있는 쿠폰</p>
-          <p className="text-lg font-bold text-blue-500">100장</p>
+          <p className="text-lg font-bold text-accent">100장</p>
         </div>
       </div>
 
