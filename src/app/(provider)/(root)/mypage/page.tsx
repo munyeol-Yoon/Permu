@@ -29,10 +29,7 @@ const LINKS = [
   { title: '쿠폰 내역', href: MYPAGE_COUPON_PATHNAME },
   { title: '마일리지 내역', href: MYPAGE_MILEAGE_PATHNAME },
   { title: '회원 정보 변경', href: MYPAGE_EDIT_PATHNAME },
-  { title: '배송지 관리', href: MYPAGE_ADDRESS_PATHNAME },
-  { title: '사업자 정보' },
-  { title: '법적고지사항' },
-  { title: '고객지원' }
+  { title: '배송지 관리 (미지원)' }
 ];
 
 const MyMainPage = () => {

@@ -1,7 +1,7 @@
 import BrandFilter from '@@/public/brandfillter.svg';
 import { PropsWithChildren } from 'react';
 
-const BrandBenner = ({ children }: PropsWithChildren) => {
+const BrandBanner = ({ children }: PropsWithChildren) => {
   return (
     <div className="relative">
       <BrandFilter className="w-full h-full" />
@@ -10,4 +10,4 @@ const BrandBenner = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default BrandBenner;
+export default BrandBanner;

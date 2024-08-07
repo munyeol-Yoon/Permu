@@ -21,7 +21,7 @@ const CategorySection = ({ title, count }: CategorySectionProps) => {
   const { data: brands } = useBrandsQuery(brandIds);
 
   return (
-    <div className="flex flex-col mt-[46px] p-5-2">
+    <div className="flex flex-col p-5-2">
       <CategoryMore title={title} />
 
       <div className="w-full h-[300px] rounded mb-[16px]">
