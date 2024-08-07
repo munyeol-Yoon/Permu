@@ -122,7 +122,7 @@ const DeliveryPage = () => {
 
     const deliveryInfo = {
       name: orderInfo.user.name,
-      address: '서울시 목업구 더미동',
+      addressId: selectedAddress?.addressId!,
       phone: orderInfo.user.phone,
       deliverMemo: receiverMemoRef.current,
       arrivalDate: new Date()
