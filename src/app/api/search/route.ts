@@ -29,9 +29,6 @@ export const GET = async (req: NextRequest) => {
       const extractQuery = extractHangul(searchQuery);
       const englishQuery = searchQuery.toLowerCase();
 
-      console.log(`Extracted Hangul Query: ${extractQuery}`);
-      console.log(`English Query: ${englishQuery}`);
-
       if (extractQuery) {
         const brandQuery = supabase.from('Brands').select('brandId').ilike('krName', `%${extractQuery}%`);
 
