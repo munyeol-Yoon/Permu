@@ -21,7 +21,7 @@ const SearchHeader = () => {
         <Link href={'/'}>
           <LogoSVG className="cursor-pointer" />
         </Link>
-        <button onClick={handleGoBack}>
+        <button onClick={handleGoBack} className="mr-7">
           <XSVG className="cursor-pointer" />
         </button>
       </header>
