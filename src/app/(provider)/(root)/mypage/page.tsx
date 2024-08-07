@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import {
   AUTH_LOG_IN_PATHNAME,
+  MYPAGE_ADDRESS_PATHNAME,
   MYPAGE_COUPON_PATHNAME,
   MYPAGE_EDIT_PATHNAME,
   MYPAGE_MILEAGE_PATHNAME,

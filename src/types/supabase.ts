@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           address: string | null
           addressId: string
+          detailAddress: string | null
           name: string | null
           phone: string | null
           userId: string | null
@@ -20,6 +21,7 @@ export type Database = {
         Insert: {
           address?: string | null
           addressId?: string
+          detailAddress?: string | null
           name?: string | null
           phone?: string | null
           userId?: string | null
@@ -27,6 +29,7 @@ export type Database = {
         Update: {
           address?: string | null
           addressId?: string
+          detailAddress?: string | null
           name?: string | null
           phone?: string | null
           userId?: string | null
@@ -245,6 +248,7 @@ export type Database = {
       Orders: {
         Row: {
           couponId: string | null
+          createAt: string | null
           deliverId: string | null
           orderId: string
           orderStatus: string
@@ -254,6 +258,7 @@ export type Database = {
         }
         Insert: {
           couponId?: string | null
+          createAt?: string | null
           deliverId?: string | null
           orderId?: string
           orderStatus?: string
@@ -263,6 +268,7 @@ export type Database = {
         }
         Update: {
           couponId?: string | null
+          createAt?: string | null
           deliverId?: string | null
           orderId?: string
           orderStatus?: string
@@ -385,13 +391,6 @@ export type Database = {
           },
           {
             foreignKeyName: "Products_categoryId_fkey"
-            columns: ["categoryId"]
-            isOneToOne: false
-            referencedRelation: "Categories"
-            referencedColumns: ["categoryId"]
-          },
-          {
-            foreignKeyName: "Products_categoryId_fkey1"
             columns: ["categoryId"]
             isOneToOne: false
             referencedRelation: "Categories"

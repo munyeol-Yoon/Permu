@@ -14,6 +14,8 @@ export const MYPAGE_MILEAGE_PATHNAME = '/mypage/mileage';
 export const MYPAGE_ORDERS_PATHNAME = '/mypage/orders';
 export const MYPAGE_REVIEW_PATHNAME = '/mypage/review';
 export const MYPAGE_WISH_PATHNAME = '/mypage/wish';
+export const MYPAGE_ADDRESS_PATHNAME = '/mypage/address';
+export const MYPAGE_ADDRESS_EDIT_PATHNAME = '/mypage/address/edit';
 
 export const CATEGORY = '/category';
 export const CATEGORY_SEARCH_PATHNAME = '/category/search';
