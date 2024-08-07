@@ -1,23 +1,22 @@
 import Bread from '@/components/Bread';
-import Toggle from '@/components/Toggle';
-import { Accordion } from '@/components/ui/accordion';
 import { Params, Product } from '@/types/products';
 
 import BannerSlide from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import MdReviews from '@/components/MdReviews';
+import Toggle from '@/components/Toggle';
+import { Accordion } from '@/components/ui/accordion';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
-import Information from '../_components/Information';
+import DetailTabs from '../_components/DetailTabs';
 import Paying from '../_components/Paying';
 import Share from '../_components/Share/Share';
 import Wish from '../_components/Wish';
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
-
   const supabase = createClient();
   const { data, error } = await supabase
     .from('Products')
@@ -35,6 +34,7 @@ const ProductDetailPage = async ({ params }: Params) => {
   const Images = product.ImagesURL.map((ImageURL) => {
     return { ImageURL, title: product.title || '' };
   });
+
   return (
     <div>
       <BrandBanner>
@@ -68,7 +68,9 @@ const ProductDetailPage = async ({ params }: Params) => {
         <Share product={product} />
         <Wish />
       </div>
-      <Information productDetail={product.detailImageURL ?? ''} />
+
+      <DetailTabs productDetail={product.detailImageURL ?? ''} />
+
       <Accordion type="multiple">
         <Toggle trigger="배송 및 반품" value={false}>
           <div className="bg-[#FFFBEE] flex flex-col items-start w-[560px] px-[20px]">
