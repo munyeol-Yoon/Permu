@@ -40,7 +40,7 @@ export const GET = async (req: NextRequest) => {
           .select(
             `
             *,
-            Brands (*)
+            Brand: Brands (*)
           `
           )
           .ilike('title', `%${extractQuery}%`);
