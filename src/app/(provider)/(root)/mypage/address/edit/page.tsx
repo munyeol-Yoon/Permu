@@ -110,7 +110,7 @@ const AddressEditPageContent = () => {
               value={receiverName}
               onChange={(e) => setReceiverName(e.target.value)}
               placeholder="성함을 입력해주세요"
-              className="border-b py-5 text-[20px] h-16 max-w-[360px]"
+              className="border-b py-5 text-[20px] h-16 max-w-[360px] focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
           <div className="flex items-center justify-between">
@@ -121,7 +121,7 @@ const AddressEditPageContent = () => {
               value={receiverPhoneNumber}
               onChange={(e) => setReceiverPhoneNumber(e.target.value)}
               placeholder="연락처를 입력해주세요"
-              className="border-b py-5 text-[20px] h-16 max-w-[360px]"
+              className="border-b py-5 text-[20px] h-16 max-w-[360px] focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
         </div>
@@ -140,14 +140,14 @@ const AddressEditPageContent = () => {
               value={receiverAddress}
               disabled
               placeholder="주소지를 입력해주세요"
-              className="border-b py-5 text-lg h-16 max-w-[360px]"
+              className="border-b py-5 text-lg h-16 max-w-[360px] focus-visible:ring-0 focus-visible:ring-offset-0"
             />
           </div>
           <Input
             value={receiverDetailAddress}
             onChange={(e) => setReceiverDetailAddress(e.target.value)}
             placeholder="상세 주소지를 입력해주세요"
-            className="border-b py-5 text-[20px] h-16"
+            className="border-b py-5 text-[20px] h-16 focus-visible:ring-0 focus-visible:ring-offset-0"
           />
         </div>
         <Button
