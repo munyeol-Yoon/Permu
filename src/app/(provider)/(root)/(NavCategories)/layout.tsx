@@ -2,7 +2,7 @@
 
 import { cn } from '@/utils/cn';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
-import Header from '../_components/Header';
+import HeaderNav from '../_components/Header/_components/HeaderNav';
 import TopBanner from '../_components/Header/_components/TopBanner';
 
 const RootLayout = ({ children }: PropsWithChildren) => {
@@ -27,7 +27,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
         <TopBanner />
       </div>
       <div className="sticky top-0 z-10">
-        <Header />
+        <HeaderNav isBackBtn />
       </div>
       {children}
     </>
