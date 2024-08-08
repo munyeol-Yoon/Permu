@@ -43,12 +43,13 @@ const DeliveryPage = () => {
   const [orderStatus, setOrderStatus] = useState<'IDLE' | 'PENDING' | 'COMPLETED' | 'FAILED'>('IDLE');
 
   const buyNowItem = useMemo(() => {
-    const item = localStorage.getItem('buy-now');
-    if (item) {
-      const parsedItem = JSON.parse(item);
-      return parsedItem;
+    if (typeof window !== 'undefined') {
+      const item = localStorage.getItem('buy-now');
+      if (item) {
+        const parsedItem = JSON.parse(item);
+        return parsedItem;
+      }
     }
-    return;
   }, []);
 
   const receiverMemoRef = useRef('');
