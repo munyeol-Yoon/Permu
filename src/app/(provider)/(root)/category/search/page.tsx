@@ -2,8 +2,10 @@
 
 import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import useRelatedSearchQuery from '@/hooks/query/useRelatedSearchQuery';
+import useAlert from '@/hooks/useAlert';
 import useRecentSearchTerms from '@/hooks/useRecentSearchTerms';
 import { allKeywords } from '@/mockup/keyword';
+import PopSearchSVG from '@@/public/pop-search.svg';
 import RecentSearchSVG from '@@/public/recentSearchButton.svg';
 import { debounce } from 'lodash';
 import Image from 'next/image';
@@ -24,6 +26,7 @@ const SearchPage = () => {
   const { data: relatedSearches = [], refetch } = useRelatedSearchQuery(search);
   const { recentSearchTerms, saveSearchTerm, deleteSearchTerm, clearAllSearchTerms } = useRecentSearchTerms();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const { showInfoAlert } = useAlert();
 
   // TODO : 인기 검색어 MVP 이후로 연기
   // TODO : 연관 키워드 지금 하드코딩이지만 네이버 광고 api 사용하면 될듯?
@@ -194,6 +197,18 @@ const SearchPage = () => {
               </div>
             </section>
           ))} */}
+
+      {/* 인기검색어 */}
+
+      <section className="flex justify-between items-center self-stretch h-[64px] px-[50px] py-[0px] mt-4">
+        <h2>인기 검색어</h2>
+        <h2 className="text-gray-300 cursor-pointer" onClick={() => showInfoAlert('준비중입니다')}>
+          더보기
+        </h2>
+      </section>
+      <section className="cursor-pointer" onClick={() => showInfoAlert('준비중입니다')}>
+        <PopSearchSVG />
+      </section>
     </div>
   );
 };
