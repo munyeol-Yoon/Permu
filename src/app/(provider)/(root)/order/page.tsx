@@ -189,12 +189,6 @@ const DeliveryPage = () => {
     };
   }, [addressList, isFetched]);
 
-  useEffect(() => {
-    if (!loggedUser) {
-      router.replace('/auth/log-in');
-    }
-  }, []);
-
   if (orderStatus === 'IDLE') {
     return (
       <>
