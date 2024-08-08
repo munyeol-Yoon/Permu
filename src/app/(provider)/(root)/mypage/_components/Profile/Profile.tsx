@@ -1,5 +1,7 @@
 'use client';
 import { AUTH_LOG_IN_PATHNAME } from '@/constant/pathname';
+import { useAuth } from '@/contexts/auth.context/auth.context';
+import { useAuthMutation } from '@/hooks/mutation';
 import useAlert from '@/hooks/useAlert';
 import ProfileImg from '@@/public/profile/profile-sm.svg';
 import Link from 'next/link';
@@ -9,20 +11,38 @@ interface ProfileProps {
 
 const Profile = ({ name }: ProfileProps) => {
   const { showInfoAlert } = useAlert();
+  const { logOutMutation } = useAuthMutation();
+  const { loggedUser } = useAuth();
   const handleClick = () => showInfoAlert('준비중입니다!');
+  const handleLogOut = () => logOutMutation();
   return (
     <div className="flex p-5">
       {name ? (
         <>
           <ProfileImg className="w-[60px] h-[60px] mr-5" />
-          <div className="flex flex-col justify-center font-semibold">
-            <p>{name} 님 환영합니다!</p>
-            <p>
-              <span className="text-accent">LV 3. 5%적립 무료 배송 </span>
-              <span className="text-muted cursor-pointer" onClick={handleClick}>
-                등급 해택 더보기
-              </span>
-            </p>
+          <div className="grow">
+            <div className="flex flex-col h-full justify-around font-semibold">
+              <div className="flex justify-between">
+                <p>{name} 님 환영합니다!</p>
+                {loggedUser && (
+                  <span
+                    onClick={handleLogOut}
+                    className="text-muted cursor-pointer  hover:brightness-90 active:brightness-110"
+                  >
+                    로그아웃 하기
+                  </span>
+                )}
+              </div>
+              <p>
+                <span className="text-accent text-xl">LV 3. 5%적립 무료 배송 </span>
+                <span
+                  className="text-muted cursor-pointer text-xl  hover:brightness-90 active:brightness-110"
+                  onClick={handleClick}
+                >
+                  등급 해택 더보기
+                </span>
+              </p>
+            </div>
           </div>
         </>
       ) : (

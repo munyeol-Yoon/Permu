@@ -14,7 +14,6 @@ const OrderListPage = () => {
   const { data: OrderList, isPending } = useOrderListQuery();
   const handleClick = () => setIsLatest((prev) => !prev);
   if (isPending) return <Loading />;
-
   return (
     <div>
       <Navbar title="주문/배송내역" isHome />

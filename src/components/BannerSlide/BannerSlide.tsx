@@ -1,7 +1,7 @@
 'use client';
-
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
 import mockData from '@/mockup/banner.json';
+import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 type SliderProps = { Images?: { ImageURL: string; title: string }[] };
@@ -25,7 +25,16 @@ const BannerSlide = ({ Images }: SliderProps) => {
 
   return (
     <div className="h-[600px] relative">
-      <Carousel className="w-full h-full" setApi={setApi}>
+      <Carousel
+        plugins={[
+          Autoplay({
+            delay: 3500,
+            stopOnInteraction: false
+          })
+        ]}
+        className="w-full h-full "
+        setApi={setApi}
+      >
         <CarouselContent className="h-full">
           {!Images
             ? mockData.map((item, idx) => (

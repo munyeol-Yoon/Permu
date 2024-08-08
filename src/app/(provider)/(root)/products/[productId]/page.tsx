@@ -62,7 +62,7 @@ const ProductDetailPage = async ({ params }: Params) => {
         <p>{product?.content}</p>
       </div>
 
-      <Paying size={product.size} category={product.Category.categoryMainTitle ?? ''} />
+      <Paying size={product.size} category={product.Category.categoryMainTitle ?? ''} product={product} />
       <DeliveryOptions />
       <div className="flex-row-20 justify-between p-5-2 w-full">
         <Share product={product} />

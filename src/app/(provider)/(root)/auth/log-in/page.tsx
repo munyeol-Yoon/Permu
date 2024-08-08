@@ -74,7 +74,7 @@ const LogInPage = () => {
                 </div>
 
                 <div className="flex flex-col">
-                  <Button className="bg-yellow-400 text-black" onClick={() => handleOAuthLogin('kakao')}>
+                  <Button variant="kakao" onClick={() => handleOAuthLogin('kakao')}>
                     카카오 로그인
                   </Button>
                   <Button variant="outline" onClick={() => handleOAuthLogin('google')}>

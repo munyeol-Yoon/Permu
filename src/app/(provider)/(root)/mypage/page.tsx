@@ -1,6 +1,5 @@
 'use client';
 import Navbar from '@/components/Navbar';
-import { Button } from '@/components/ui/button';
 import {
   AUTH_LOG_IN_PATHNAME,
   MYPAGE_ADDRESS_PATHNAME,
@@ -12,7 +11,6 @@ import {
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import { useAuthMutation } from '@/hooks/mutation';
 import { useCouponQuery } from '@/hooks/query';
 import Banner from '@@/public/banner/tempBanner.svg';
 import Footer from '../_components/Footer';
@@ -30,13 +28,12 @@ const LINKS = [
   { title: '쿠폰 내역', href: MYPAGE_COUPON_PATHNAME },
   { title: '마일리지 내역', href: MYPAGE_MILEAGE_PATHNAME },
   { title: '회원 정보 변경', href: MYPAGE_EDIT_PATHNAME },
-  { title: '배송지 관리 (미지원)' }
+  { title: '배송지 관리', href: MYPAGE_ADDRESS_PATHNAME }
 ];
 
 const MyMainPage = () => {
   const { loggedUser } = useAuth();
   const { data: userCoupons } = useCouponQuery();
-  const { logOutMutation } = useAuthMutation();
   const name = loggedUser?.userData.name || '';
   const mileage = loggedUser?.userData.mileage || 0;
 
@@ -63,7 +60,6 @@ const MyMainPage = () => {
         {LINKS.map((link) => (
           <LinkCard key={link.title} title={link.title} href={loggedUser ? link.href : AUTH_LOG_IN_PATHNAME} />
         ))}
-        {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
       </div>
 
       <Footer />

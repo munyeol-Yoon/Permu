@@ -5,7 +5,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest) {
   try {
     const supabase = createClient();
-
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId') as string;
     const { data: brands, error: brandError } = await supabase.from('Brands').select('count').single();
     if (brandError) throw brandError;
     //const randomIndex = Math.floor(Math.random() * brands.count) + 1;
@@ -16,7 +17,6 @@ export async function GET(request: NextRequest) {
       .eq('brandId', 12);
 
     if (error) throw error;
-
     const productWithDiscountedPrice: Product[] =
       data?.map((data) => ({
         ...data,

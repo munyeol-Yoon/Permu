@@ -7,12 +7,17 @@ import { CartAccordion, CartEmpty, CartList, CartSelector } from './_components'
 const CartPage = () => {
   const { data: cartList } = useCartsQuery();
 
-  if (!cartList) {
-    return <CartEmpty />;
+  if (!cartList?.length) {
+    return (
+      <>
+        <Navbar title="장바구니" isHome />
+        <CartEmpty />
+      </>
+    );
   }
 
   return (
-    <div className="relative max-w-[600px] flex flex-col h-full">
+    <div className="relative h-full">
       <Navbar title="장바구니" isHome />
       <CartSelector />
       <CartList />

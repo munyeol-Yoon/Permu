@@ -25,12 +25,14 @@ const buttonVariants = cva(
         icon: 'h-10 w-10'
       }
     },
+    compoundVariants: [{ variant: 'outline', size: 'default', className: 'p-[18px]' }],
     defaultVariants: {
       variant: 'default',
       size: 'default'
     }
   }
 );
+
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
@@ -42,12 +44,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : 'button';
 
     return (
-      <Comp className={cn(buttonVariants({ variant, size }), className)} ref={ref} {...props}>
-        <span className="z-10">{props.children}</span>
+      <Comp className={cn(buttonVariants({ variant, size }), 'relative z-10', className)} ref={ref} {...props}>
+        {props.children}
       </Comp>
     );
   }
 );
+
 Button.displayName = 'Button';
 
 export { Button, buttonVariants };

@@ -1,7 +1,7 @@
 'use client';
 
 import SearchHeader from '@/components/SearchPage/SearchHeader';
-import { cx } from 'class-variance-authority';
+import { cn } from '@/utils/cn';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import Header from './_components/Header';
@@ -9,12 +9,12 @@ import TopBanner from './_components/Header/_components/TopBanner';
 
 const RootLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
+  const isReviewPage = pathname.endsWith('/images');
   const isCategoryPage = pathname.startsWith('/category');
   const isCategorySearchResultPage = pathname === '/category/search/result';
   const isProductOrHomePage = pathname.startsWith('/products') || pathname === '/';
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 0);
   }, []);
@@ -27,20 +27,20 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className="container mx-auto min-h-screen grid">
       <div className="bg-white w-full max-w-[600px] h-full mx-auto flex flex-col">
-        {isCategoryPage && !isCategorySearchResultPage ? (
+        {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
         ) : (
           (isProductOrHomePage || isCategorySearchResultPage) && (
             <>
               <div
-                className={cx('transition-all duration-300 overflow-hidden', {
+                className={cn('transition-all duration-300 overflow-hidden', {
                   'max-h-0 opacity-0': isScrolled,
                   'max-h-[50px] opacity-100': !isScrolled
                 })}
               >
                 <TopBanner />
               </div>
-              <div className="sticky top-0 z-10">
+              <div className="sticky top-0 z-[100]">
                 <Header />
               </div>
             </>

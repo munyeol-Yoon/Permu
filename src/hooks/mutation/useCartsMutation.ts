@@ -8,9 +8,9 @@ const useCartsMutation = () => {
     mutationFn: async ({ productId, volume, userId }: { productId: number; volume: string; userId: string }) =>
       await postCartByUser(productId, volume, userId),
     onSuccess: (data, variable) => {
-      queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
-    },
-    onError: () => {}
+      queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
+      queryClient.invalidateQueries({ queryKey: ['orderInfo', variable.userId] });
+    }
   });
 
   const patchMutation = useMutation({
@@ -28,7 +28,8 @@ const useCartsMutation = () => {
       isSelected?: boolean;
     }) => await patchCartByUser({ userId, productId, count, isSelected, volume }),
     onSuccess: (data, variable) => {
-      queryClient.refetchQueries({ queryKey: ['Carts', variable.userId] });
+      queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
+      queryClient.invalidateQueries({ queryKey: ['orderInfo', variable.userId] });
     }
     // patchCartByUser({ productId, userId, count: cal ? count + 1 : count - 1 }),
     // onMutate: async (variable) => {
@@ -54,6 +55,7 @@ const useCartsMutation = () => {
     mutationFn: async ({ userId }: { userId: string }) => await deleteAllCartByUser(userId),
     onSuccess: (data, variable) => {
       queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
+      queryClient.invalidateQueries({ queryKey: ['orderInfo', variable.userId] });
     }
   });
 
@@ -62,6 +64,7 @@ const useCartsMutation = () => {
       await deleteCartByUser(productId, userId),
     onSuccess: (data, variable) => {
       queryClient.invalidateQueries({ queryKey: ['Carts', variable.userId] });
+      queryClient.invalidateQueries({ queryKey: ['orderInfo', variable.userId] });
     }
   });
   return { addMutation, patchMutation, deleteAllMutation, deleteMutation };

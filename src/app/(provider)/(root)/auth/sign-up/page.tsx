@@ -19,10 +19,12 @@ const SignUpPage = () => {
       <Image src={signUpImg} width={600} height={600} alt="회원가입 해택" />
 
       <div className="flex flex-col px-[100px]">
-        <Button className="bg-yellow-400 text-black" onClick={() => handleSignUp('kakao')}>
+        <Button variant="kakao" onClick={() => handleSignUp('kakao')}>
           카카오톡으로 가입하기
         </Button>
-        <Button onClick={() => handleSignUp('google')}>Google 아이디로 가입하기</Button>
+        <Button variant="outline" onClick={() => handleSignUp('google')}>
+          Google 아이디로 가입하기
+        </Button>
         <Button asChild variant="outline">
           <Link href={AUTH_SIGN_UP_AGREEMENT_PATHNAME}>이메일로 가입하기</Link>
         </Button>
