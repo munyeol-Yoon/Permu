@@ -31,7 +31,6 @@ const DeliveryPage = () => {
   const router = useRouter();
 
   const { loggedUser } = useAuth();
-  const { data: orderInfo } = useOrderInfoQuery();
   const { mutateAsync } = useOrderMutation();
   const { deleteCartItem } = useCart();
   const { data: addressList, isFetched } = useAddressQuery();
@@ -51,6 +50,8 @@ const DeliveryPage = () => {
       }
     }
   }, []);
+
+  const { data: orderInfo } = useOrderInfoQuery(!buyNowItem);
 
   const receiverMemoRef = useRef('');
 
