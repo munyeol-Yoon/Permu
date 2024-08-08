@@ -1,10 +1,10 @@
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { DeliveryInfo } from '@/types/deliveries';
 import { Order } from '@/types/order';
 import { useMutation } from '@tanstack/react-query';
-import useOrderInfoQuery from '../query/useOrderInfoQuery';
 
 const useOrderMutation = () => {
-  const { data: orderInfo } = useOrderInfoQuery();
+  const { loggedUser } = useAuth();
 
   return useMutation({
     mutationFn: async ({
@@ -13,6 +13,7 @@ const useOrderMutation = () => {
       totalPrice,
       couponId,
       updatedMileageAmount,
+      productIdList,
       payment
     }: {
       orderId: string;
@@ -20,12 +21,12 @@ const useOrderMutation = () => {
       totalPrice: number;
       couponId: string;
       updatedMileageAmount: number;
+      productIdList: number[];
       payment: 'TOSS' | 'KAKAOPAY';
     }) => {
       const deliverId = crypto.randomUUID();
 
-      const userId = orderInfo.user.id;
-      const productIdList = orderInfo.productList.map((v: { productId: number }) => v.productId);
+      const userId = loggedUser?.id!;
 
       const order: Order = {
         orderId,

@@ -7,8 +7,13 @@ import { CartAccordion, CartEmpty, CartList, CartSelector } from './_components'
 const CartPage = () => {
   const { data: cartList } = useCartsQuery();
 
-  if (!cartList) {
-    return <CartEmpty />;
+  if (!cartList?.length) {
+    return (
+      <>
+        <Navbar title="장바구니" isHome />
+        <CartEmpty />
+      </>
+    );
   }
 
   return (
