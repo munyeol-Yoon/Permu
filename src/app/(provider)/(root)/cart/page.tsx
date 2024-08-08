@@ -17,7 +17,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="relative max-w-[600px] flex flex-col h-full">
+    <div className="relative h-full">
       <Navbar title="장바구니" isHome />
       <CartSelector />
       <CartList />
