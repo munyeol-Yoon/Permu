@@ -199,7 +199,7 @@ const DeliveryPage = () => {
               <p className="text-xl font-bold">배송지</p>
             </div>
             <div className="flex justify-between items-center px-5 py-4">
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-5 text-nowrap w-5/6 overflow-x-scroll">
                 {addressList?.map((addressItem) => (
                   <button
                     onClick={() => setSelectedAddress(addressItem)}
