@@ -71,7 +71,10 @@ const DeliveryPage = () => {
   }, [mileageAmount, selectedCoupon, totalProductDiscountPrice]);
 
   const totalProductPrice = useMemo(() => {
-    const productPrice = orderInfo?.productList.reduce((acc: number, cur: { price: number }) => acc + cur.price, 0);
+    const productPrice = orderInfo?.productList.reduce(
+      (acc: number, cur: { price: number; count: number }) => acc + cur.price * cur.count,
+      0
+    );
     return productPrice ?? 0;
   }, [orderInfo]);
 
@@ -180,6 +183,10 @@ const DeliveryPage = () => {
     if (isFetched && addressList?.length) {
       setSelectedAddress(addressList[0]);
     }
+
+    return () => {
+      localStorage.removeItem('buy-now');
+    };
   }, [addressList, isFetched]);
 
   if (orderStatus === 'IDLE') {
@@ -497,8 +504,8 @@ const DeliveryPage = () => {
                 <p className="font-medium">
                   {buyNowItem
                     ? buyNowItem.discountedPrice
-                      ? buyNowItem.discountedPrice.toLocaleString()
-                      : buyNowItem.price.toLocaleString()
+                      ? (buyNowItem.discountedPrice * buyNowItem.count).toLocaleString()
+                      : (buyNowItem.price * buyNowItem.count).toLocaleString()
                     : totalProductPrice.toLocaleString()}
                   원
                 </p>
