@@ -12,6 +12,7 @@ import {
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
+import useAlert from '@/hooks/useAlert';
 import { Params, Product } from '@/types/products';
 import { useState } from 'react';
 import Wish from '../Wish';
@@ -19,6 +20,7 @@ import Wish from '../Wish';
 type PayingProps = { size: string[]; category: string; product: Product };
 const Paying = ({ size, category, product }: PayingProps) => {
   const router = useRouter();
+  const { showInfoAlert } = useAlert();
   const { productId } = useParams<Params['params']>();
   const { loggedUser } = useAuth();
   // const localCarts = JSON.parse(localStorage.getItem('carts') || '[]');
@@ -35,7 +37,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
       if (matchCartProduct)
         if (loggedUser) {
           if (selectedSize === '옵션 선택') {
-            alert('사이즈를 선택해주세요!');
+            showInfoAlert('사이즈를 선택해주세요!');
             return;
           }
           patchMutation.mutate({
@@ -56,7 +58,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
       else {
         if (loggedUser) {
           if (selectedSize === '옵션 선택') {
-            alert('사이즈를 선택해주세요!');
+            showInfoAlert('사이즈를 선택해주세요!');
             return;
           }
           addMutation.mutate({ productId: Number(productId), volume: selectedSize, userId: loggedUser.id });
@@ -88,7 +90,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
 
   const handleBuyNow = () => {
     if (selectedSize === '옵션 선택') {
-      alert('사이즈를 선택해주세요!');
+      showInfoAlert('사이즈를 선택해주세요!');
       return;
     }
 
