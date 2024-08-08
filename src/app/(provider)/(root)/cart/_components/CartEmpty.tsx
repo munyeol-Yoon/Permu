@@ -8,7 +8,7 @@ const CartEmpty = () => {
   const { isLoggedIn } = useAuth();
 
   return (
-    <div className="h-full relative flex flex-col gap-9 items-center justify-center">
+    <div className="h-[calc(100vh-70px)] relative flex flex-col gap-9 items-center justify-center">
       <svg xmlns="http://www.w3.org/2000/svg" width="79" height="91" viewBox="0 0 79 91" fill="none">
         <path
           d="M23.2894 26.6123V17.3265C23.2894 8.30965 30.5469 1 39.4998 1C48.4526 1 55.7104 8.30965 55.7104 17.3265V26.6123M6 20.6123H72L78 90H1L6 20.6123Z"

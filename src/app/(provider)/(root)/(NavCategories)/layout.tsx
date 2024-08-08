@@ -5,7 +5,7 @@ import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import HeaderNav from '../_components/Header/_components/HeaderNav';
 import TopBanner from '../_components/Header/_components/TopBanner';
 
-const RootLayout = ({ children }: PropsWithChildren) => {
+const NavCategoriesLayout = ({ children }: PropsWithChildren) => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 0);
@@ -34,4 +34,4 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default RootLayout;
+export default NavCategoriesLayout;

@@ -17,12 +17,12 @@ const CartPage = () => {
   }
 
   return (
-    <div className="relative h-full">
+    <>
       <Navbar title="장바구니" isHome />
       <CartSelector />
       <CartList />
       <CartAccordion />
-    </div>
+    </>
   );
 };
 
