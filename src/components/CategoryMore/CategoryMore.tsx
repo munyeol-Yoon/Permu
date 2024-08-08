@@ -1,4 +1,3 @@
-import ArrowSVG from '@@/public/main_category_arrow.svg';
 import HotSVG from '@@/public/sign/hot-icon.svg';
 export interface CategoryMoreProps {
   title: string;
@@ -11,10 +10,10 @@ const CategoryMore = ({ title }: CategoryMoreProps) => {
         {title} {title === '지금 가장 인기 있는 제품' && <HotSVG />}
       </h2>
 
-      <button className="flex items-center">
+      {/* <button className="flex items-center">
         <span className="text-xs">더보기</span>
         <ArrowSVG className="ml-3 w-[9px] h-1" />
-      </button>
+      </button> */}
     </div>
   );
 };
