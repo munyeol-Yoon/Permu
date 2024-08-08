@@ -12,12 +12,12 @@ import {
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
-import { Params } from '@/types/products';
+import { Params, Product } from '@/types/products';
 import { useState } from 'react';
 import Wish from '../Wish';
 
-type PayingProps = { size: string[]; category: string };
-const Paying = ({ size, category }: PayingProps) => {
+type PayingProps = { size: string[]; category: string; product: Product };
+const Paying = ({ size, category, product }: PayingProps) => {
   const router = useRouter();
   const { productId } = useParams<Params['params']>();
   const { loggedUser } = useAuth();
@@ -91,6 +91,8 @@ const Paying = ({ size, category }: PayingProps) => {
       alert('사이즈를 선택해주세요!');
       return;
     }
+
+    localStorage.setItem('buy-now', JSON.stringify({ count: 1, volume: selectedSize, ...product }));
     router.push('/order');
   };
   return (
