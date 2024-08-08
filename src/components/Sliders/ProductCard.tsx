@@ -1,6 +1,8 @@
 'use client';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { WishProduct } from '@/hooks/query/mypage/useUserWishesQuery';
 import { Product } from '@/types/products';
+import BlueWishSVG from '@@/public/heart/blue-wish-icon.svg';
 import WishSVG from '@@/public/heart/wish-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,6 +11,10 @@ export interface ProductProps {
 }
 
 const ProductCard = ({ product }: ProductProps) => {
+  const { loggedUser } = useAuth();
+
+  const userLike = 'Wish' in product && product.Wish?.userId === loggedUser?.id;
+
   const price = product.price ?? 0;
   const discount = product.discount ?? 0;
   const discountAmount = price * (discount / 100);
@@ -30,7 +36,11 @@ const ProductCard = ({ product }: ProductProps) => {
             className="w-full h-[200px] object-contain"
             unoptimized
           />
-          <WishSVG className="absolute bottom-2 right-2" />
+          {userLike ? (
+            <BlueWishSVG className="absolute bottom-2 right-2 z-20" />
+          ) : (
+            <WishSVG className="absolute bottom-2 right-2 z-20" />
+          )}
         </div>
       </Link>
       <div className="flex flex-col gap-1">

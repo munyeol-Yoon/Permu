@@ -40,24 +40,32 @@ export const getDetailProduct = async (productId: string): Promise<Product> => {
   return data;
 };
 
-export const getProducts = async (productIds?: number[] | null): Promise<Product[]> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?productIds=${productIds}`);
+export const getProducts = async ({
+  productIds,
+  userId
+}: {
+  productIds?: number[] | null;
+  userId: string;
+}): Promise<Product[]> => {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?productIds=${productIds}&userId=${userId}`
+  );
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
   return data;
 };
 
-export const getProductsByBrandForThisWeek = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/brands`);
+export const getProductsByBrandForThisWeek = async ({ userId }: { userId: string }) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/brands?userId${userId}`);
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
   return data;
 };
 
-export const getProductsByCategoryForThisWeek = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category`);
+export const getProductsByCategoryForThisWeek = async ({ userId }: { userId: string }) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/category?userId=${userId}`);
 
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();

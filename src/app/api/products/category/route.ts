@@ -8,7 +8,8 @@ interface GroupedCategories {
 export async function GET(request: NextRequest) {
   try {
     const supabase = createClient();
-
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get('userId') as string;
     const { data: categories, error: categoryError } = await supabase
       .from('Categories')
       .select('categoryId,categoryMainTitle');
@@ -30,9 +31,11 @@ export async function GET(request: NextRequest) {
 
     if (productError) throw productError;
 
+    const { data: wishes } = await supabase.from('Wishes').select('*').eq('userId', userId);
     const productWithDiscountedPrice: Product[] =
       data?.map((data) => ({
         ...data,
+        Wish: wishes?.find((wish) => wish.productId === data.productId && wish.userId === userId),
         discountedPrice: data.price - (data.price * data.discount) / 100
       })) || [];
     return NextResponse.json(productWithDiscountedPrice);

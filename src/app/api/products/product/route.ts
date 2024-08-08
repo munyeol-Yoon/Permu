@@ -1,5 +1,4 @@
 import { createClient } from '@/supabase/server';
-import { Product } from '@/types/products';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -16,8 +15,9 @@ export async function GET(request: NextRequest) {
 
     if (error) throw error;
 
-    const productWithDiscountedPrice: Product = {
+    const productWithDiscountedPrice = {
       ...data,
+
       discountedPrice: data.price - (data.price * data.discount) / 100
     };
     return NextResponse.json(productWithDiscountedPrice);
