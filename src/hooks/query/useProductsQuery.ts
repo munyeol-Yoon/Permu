@@ -1,15 +1,18 @@
 import { getOrderInfos } from '@/api/orderInfo';
 import { getProducts, getProductsByBrandForThisWeek, getProductsByCategoryForThisWeek } from '@/api/product';
 import { getWishes } from '@/api/wish';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useQuery } from '@tanstack/react-query';
 
 const useProductsQuery = (option: string) => {
+  const { loggedUser } = useAuth();
+
   return useQuery({
-    queryKey: ['Products', option],
+    queryKey: ['Products', option, loggedUser],
     queryFn: async () => {
-      if (option === 'recent') return await getProducts();
-      else if (option === 'product') return await getProductsByCategoryForThisWeek();
-      else if (option === 'brand') return await getProductsByBrandForThisWeek();
+      if (option === 'recent') return await getProducts({ userId: loggedUser?.id });
+      else if (option === 'product') return await getProductsByCategoryForThisWeek({ userId: loggedUser?.id });
+      else if (option === 'brand') return await getProductsByBrandForThisWeek({ userId: loggedUser?.id });
       else {
         const data = option === 'wish' ? await getWishes() : await getOrderInfos();
         const countMap = data.reduce((acc: number[], cur: { productId: number }) => {
@@ -26,7 +29,7 @@ const useProductsQuery = (option: string) => {
           .slice(0, 10);
         const result2 = result.map((result) => result.productId);
 
-        const data2 = await getProducts(result2);
+        const data2 = await getProducts({ productIds: result2, userId: loggedUser?.id });
         return data2;
       }
     }
