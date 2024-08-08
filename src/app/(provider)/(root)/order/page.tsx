@@ -51,7 +51,7 @@ const DeliveryPage = () => {
     }
   }, []);
 
-  const { data: orderInfo } = useOrderInfoQuery(!buyNowItem);
+  const { data: orderInfo } = useOrderInfoQuery(!buyNowItem && orderStatus === 'IDLE');
 
   const receiverMemoRef = useRef('');
 
