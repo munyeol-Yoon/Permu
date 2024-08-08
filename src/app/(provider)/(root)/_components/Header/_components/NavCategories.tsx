@@ -1,5 +1,6 @@
-import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
+import { CATEGORY_SEARCH_RESULT_PATHNAME, EVENT } from '@/constant/pathname';
 import useAlert from '@/hooks/useAlert';
+import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -8,7 +9,7 @@ const LINKS = [
   { title: '특가' },
   { title: '전상품', url: CATEGORY_SEARCH_RESULT_PATHNAME },
   { title: '기획전' },
-  { title: '이벤트' },
+  { title: '이벤트', url: EVENT },
   { title: '브랜드관' },
   { title: '고객센터' }
 ];
@@ -17,38 +18,36 @@ const NavCategories = () => {
   const [activeLink, setActiveLink] = useState<string>('');
   const { showInfoAlert } = useAlert();
 
-  const handleClick = (title: string) => {
+  const handleClick = (title: string, url?: string) => {
     setActiveLink(title);
-    if (!LINKS.find((link) => link.title === title)?.url) {
+    if (!url) {
       showInfoAlert('준비중입니다');
     }
   };
 
   return (
     <ul className="mx-[30px] flex justify-between">
-      {LINKS.map((nav) => (
-        <li
-          key={nav.title}
-          className="cursor-pointer px-4 py-3 hover:brightness-90 active:brightness-110 "
-          onClick={() => handleClick(nav.title)}
-        >
-          {nav.url ? (
-            <Link href={nav.url}>
-              <span
-                className={`pb-3 ${activeLink === nav.title ? 'border-b-2 border-black font-semibold' : 'text-muted'}`}
-              >
-                {nav.title}
-              </span>
-            </Link>
-          ) : (
-            <span
-              className={`pb-3 ${activeLink === nav.title ? 'border-b-2 border-black font-semibold' : 'text-muted'}`}
-            >
-              {nav.title}
-            </span>
-          )}
-        </li>
-      ))}
+      {LINKS.map((nav) => {
+        const isActive = activeLink === nav.title;
+        return (
+          <li
+            key={nav.title}
+            className={cn('cursor-pointer px-4 py-3 hover:brightness-90 active:brightness-110', {
+              'border-b-2 border-black font-semibold': isActive,
+              'text-muted': !isActive
+            })}
+            onClick={() => handleClick(nav.title, nav.url)}
+          >
+            {nav.url ? (
+              <Link href={nav.url}>
+                <span className="pb-3">{nav.title}</span>
+              </Link>
+            ) : (
+              <span className="pb-3">{nav.title}</span>
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 };
