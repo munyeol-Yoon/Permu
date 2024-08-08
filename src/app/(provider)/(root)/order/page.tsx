@@ -42,6 +42,15 @@ const DeliveryPage = () => {
   const [mileageAmount, setMileageAmount] = useState(0);
   const [orderStatus, setOrderStatus] = useState<'IDLE' | 'PENDING' | 'COMPLETED' | 'FAILED'>('IDLE');
 
+  const buyNowItem = useMemo(() => {
+    const item = localStorage.getItem('buy-now');
+    if (item) {
+      const parsedItem = JSON.parse(item);
+      return parsedItem;
+    }
+    return;
+  }, []);
+
   const receiverMemoRef = useRef('');
 
   const totalProductDiscountPrice = useMemo(
@@ -95,25 +104,34 @@ const DeliveryPage = () => {
   const handleOrder = async () => {
     setOrderStatus('PENDING');
     let response;
-    const orderName =
-      orderInfo.productList.length > 1
+    const orderName = buyNowItem
+      ? buyNowItem.title
+      : orderInfo.productList.length > 1
         ? `${orderInfo.productList[0].title} 외 ${orderInfo.productList.length - 1}건`
         : orderInfo.productList[0].title;
     switch (selectedPayment) {
       case 'TOSS':
-        const tossResponse = await tossPayment(orderName, totalPaymentPrice);
+        const tossResponse = await tossPayment(
+          orderName,
+          buyNowItem ? (buyNowItem.discountedPrice ?? buyNowItem.price) : totalPaymentPrice
+        );
         response = tossResponse;
         if (response?.code != null) {
           alert(response.message);
+          localStorage.removeItem('buy-now');
           setOrderStatus('FAILED');
           return;
         }
         break;
       case 'KAKAOPAY':
-        const kakaoResponse = await kakaoPayment(orderName, totalPaymentPrice);
+        const kakaoResponse = await kakaoPayment(
+          orderName,
+          buyNowItem ? (buyNowItem.discountedPrice ?? buyNowItem.price) : totalPaymentPrice
+        );
         response = kakaoResponse;
         if (response?.code != null) {
           alert(response.message);
+          localStorage.removeItem('buy-now');
           setOrderStatus('FAILED');
           return;
         }
@@ -121,31 +139,39 @@ const DeliveryPage = () => {
     }
 
     const deliveryInfo = {
-      name: orderInfo.user.name,
+      name: selectedAddress?.name!,
       addressId: selectedAddress?.addressId!,
-      phone: orderInfo.user.phone,
+      phone: selectedAddress?.phone!,
       deliverMemo: receiverMemoRef.current,
       arrivalDate: new Date()
     };
 
-    const updatedMileageAmount = orderInfo.user.mileage - mileageAmount;
+    const updatedMileageAmount = loggedUser?.userData.mileage! - mileageAmount;
 
     const mutateResponse = await mutateAsync({
       orderId: response?.paymentId!,
       deliveryInfo,
-      totalPrice: totalPaymentPrice,
+      totalPrice: buyNowItem ? (buyNowItem.discountedPrice ?? buyNowItem.price) : totalPaymentPrice,
       couponId: selectedCoupon?.couponId,
       updatedMileageAmount,
-      payment: selectedPayment
+      payment: selectedPayment,
+      productIdList: buyNowItem
+        ? [buyNowItem.productId]
+        : orderInfo.productList.map((v: { productId: number }) => v.productId)
     });
 
     if (!mutateResponse.ok) {
+      localStorage.removeItem('buy-now');
       return setOrderStatus('FAILED');
     }
 
-    await Promise.all(
-      orderInfo?.productList.map((productItem: any) => deleteCartItem(productItem.productId, loggedUser!.id))
-    );
+    if (!buyNowItem) {
+      await Promise.all(
+        orderInfo?.productList.map((productItem: any) => deleteCartItem(productItem.productId, loggedUser!.id))
+      );
+    }
+
+    localStorage.removeItem('buy-now');
     setOrderStatus('COMPLETED');
   };
 
@@ -218,37 +244,69 @@ const DeliveryPage = () => {
               <p className="text-xl font-bold">상품정보</p>
             </div>
             <div className="flex flex-col gap-5">
-              {orderInfo?.productList?.map((productItem: any) => (
-                <div key={productItem.productId} className="flex items-center px-5">
+              {buyNowItem ? (
+                <div className="flex items-center px-5">
                   <div className="relative aspect-square max-w-[100px] mx-[33px]">
-                    <Image src={productItem.thumbNailURL} width={100} height={100} alt="" />
+                    <Image src={buyNowItem.thumbNailURL} width={100} height={100} alt="" />
                   </div>
 
                   <div className="flex flex-col px-2.5 w-full">
-                    <p className="text-xs mb-1">{productItem.Brands.enName}</p>
-                    <p className="font-semibold mb-2.5">{productItem.title}</p>
+                    <p className="text-xs mb-1">{buyNowItem.Brand.enName}</p>
+                    <p className="font-semibold mb-2.5">{buyNowItem.title}</p>
                     <p className="text-xs text-[#B3B3B3] mb-1.5">
-                      옵션 : {productItem.volume}ml, {productItem.count}개
+                      옵션 : {buyNowItem.volume}ml, {buyNowItem.count}개
                     </p>
                     <div className="relative flex justify-end items-center gap-[18px]">
-                      {!!productItem.discount && (
+                      {!!buyNowItem.discount && (
                         <>
                           <p className="absolute -top-4 right-0 text-xs text-[#B3B3B3] line-through">
-                            {productItem.price.toLocaleString()}원
+                            {buyNowItem.price.toLocaleString()}원
                           </p>
-                          <p className="text-[10px] text-[#0348FF]">SALE {productItem.discount}%</p>
+                          <p className="text-[10px] text-[#0348FF]">SALE {buyNowItem.discount}%</p>
                         </>
                       )}
                       <p className="font-bold">
-                        {productItem.discountedPrice
-                          ? productItem.discountedPrice.toLocaleString()
-                          : productItem.price.toLocaleString()}
+                        {buyNowItem.discountedPrice
+                          ? buyNowItem.discountedPrice.toLocaleString()
+                          : buyNowItem.price.toLocaleString()}
                         원
                       </p>
                     </div>
                   </div>
                 </div>
-              ))}
+              ) : (
+                orderInfo?.productList?.map((productItem: any) => (
+                  <div key={productItem.productId} className="flex items-center px-5">
+                    <div className="relative aspect-square max-w-[100px] mx-[33px]">
+                      <Image src={productItem.thumbNailURL} width={100} height={100} alt="" />
+                    </div>
+
+                    <div className="flex flex-col px-2.5 w-full">
+                      <p className="text-xs mb-1">{productItem.Brands.enName}</p>
+                      <p className="font-semibold mb-2.5">{productItem.title}</p>
+                      <p className="text-xs text-[#B3B3B3] mb-1.5">
+                        옵션 : {productItem.volume}ml, {productItem.count}개
+                      </p>
+                      <div className="relative flex justify-end items-center gap-[18px]">
+                        {!!productItem.discount && (
+                          <>
+                            <p className="absolute -top-4 right-0 text-xs text-[#B3B3B3] line-through">
+                              {productItem.price.toLocaleString()}원
+                            </p>
+                            <p className="text-[10px] text-[#0348FF]">SALE {productItem.discount}%</p>
+                          </>
+                        )}
+                        <p className="font-bold">
+                          {productItem.discountedPrice
+                            ? productItem.discountedPrice.toLocaleString()
+                            : productItem.price.toLocaleString()}
+                          원
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
@@ -443,7 +501,14 @@ const DeliveryPage = () => {
             <div className="flex flex-col px-5 mb-5">
               <div className="flex justify-between items-center py-2.5 text-xl">
                 <p>상품금액</p>
-                <p className="font-medium">{totalProductPrice.toLocaleString()}원</p>
+                <p className="font-medium">
+                  {buyNowItem
+                    ? buyNowItem.discountedPrice
+                      ? buyNowItem.discountedPrice.toLocaleString()
+                      : buyNowItem.price.toLocaleString()
+                    : totalProductPrice.toLocaleString()}
+                  원
+                </p>
               </div>
               <div className="flex justify-between items-center py-2.5 text-xl">
                 <p>배송비</p>
@@ -453,23 +518,40 @@ const DeliveryPage = () => {
                 <div className="flex justify-between items-center py-5">
                   <p>할인금액</p>
                   <p className="font-medium text-[#0348FF]">
-                    <span className="text-base">SAVE</span> -{totalDiscountedPrice.toLocaleString()}원
+                    <span className="text-base">SAVE</span> -
+                    {buyNowItem
+                      ? buyNowItem.discountedPrice
+                        ? (buyNowItem.price - buyNowItem.discountedPrice).toLocaleString()
+                        : 0
+                      : totalDiscountedPrice.toLocaleString()}
+                    원
                   </p>
                 </div>
                 <div className="text-xs flex items-center justify-between px-[30px] py-4">
                   <p>쿠폰 할인금액</p>
                   <p>-{selectedCoupon ? selectedCoupon.discount.toLocaleString() : 0}원</p>
                 </div>
-                {totalProductDiscountPrice && (
+                {(buyNowItem?.discountedPrice || totalProductDiscountPrice) && (
                   <div className="text-xs flex items-center justify-between px-[30px] py-4">
                     <p>행사 할인금액</p>
-                    <p>-{totalProductDiscountPrice.toLocaleString()}원</p>
+                    <p>
+                      -
+                      {buyNowItem?.discountedPrice
+                        ? (buyNowItem.price - buyNowItem.discountedPrice).toLocaleString()
+                        : totalProductDiscountPrice.toLocaleString()}
+                      원
+                    </p>
                   </div>
                 )}
               </div>
               <div className="flex items-center justify-between py-2.5 text-xl">
                 <p className="font-bold">결제금액</p>
-                <p className="font-medium">{totalPaymentPrice.toLocaleString()}원</p>
+                <p className="font-medium">
+                  {buyNowItem?.discountedPrice
+                    ? buyNowItem.discountedPrice.toLocaleString()
+                    : (buyNowItem?.price.toLocaleString() ?? totalPaymentPrice.toLocaleString())}
+                  원
+                </p>
               </div>
             </div>
             <div className="flex justify-between items-center px-5">
@@ -483,8 +565,13 @@ const DeliveryPage = () => {
           <div className="fixed bottom-0 h-[96px] flex flex-col items-center z-50 max-w-[598px] w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
             <div className="flex justify-center items-center h-full">
               <button onClick={handleOrder} className="bg-[#0348FF] text-white px-5 py-[11.5px] rounded-sm">
-                총 {orderInfo?.productList?.length ?? 0}개 |{' '}
-                {totalPaymentPrice ? totalPaymentPrice.toLocaleString() : 0}원 구매하기
+                총 {buyNowItem ? 1 : (orderInfo?.productList?.length ?? 0)}개 |{' '}
+                {buyNowItem?.discountedPrice
+                  ? buyNowItem.discountedPrice.toLocaleString()
+                  : (buyNowItem?.price.toLocaleString() ?? totalPaymentPrice)
+                    ? totalPaymentPrice.toLocaleString()
+                    : 0}
+                원 구매하기
               </button>
             </div>
           </div>
