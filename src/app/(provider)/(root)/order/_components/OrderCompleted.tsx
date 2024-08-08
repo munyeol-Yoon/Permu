@@ -8,7 +8,7 @@ const OrderCompleted = () => {
     <>
       <Navbar title="주문완료" isHome />
 
-      <div className="max-w-[600px] h-full flex flex-col items-center justify-center">
+      <div className="max-w-[600px] h-[calc(100vh-70px)] flex flex-col items-center justify-center">
         <div className="h-full flex flex-col justify-center items-center gap-9">
           <svg xmlns="http://www.w3.org/2000/svg" width="79" height="91" viewBox="0 0 79 91" fill="none">
             <path
