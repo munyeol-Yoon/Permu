@@ -2,6 +2,7 @@
 import Navbar from '@/components/Navbar';
 import {
   AUTH_LOG_IN_PATHNAME,
+  MYPAGE_ADDRESS_PATHNAME,
   MYPAGE_COUPON_PATHNAME,
   MYPAGE_EDIT_PATHNAME,
   MYPAGE_MILEAGE_PATHNAME,
@@ -27,7 +28,7 @@ const LINKS = [
   { title: '쿠폰 내역', href: MYPAGE_COUPON_PATHNAME },
   { title: '마일리지 내역', href: MYPAGE_MILEAGE_PATHNAME },
   { title: '회원 정보 변경', href: MYPAGE_EDIT_PATHNAME },
-  { title: '배송지 관리 (미지원)' }
+  { title: '배송지 관리', href: MYPAGE_ADDRESS_PATHNAME }
 ];
 
 const MyMainPage = () => {
