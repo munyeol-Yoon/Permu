@@ -448,14 +448,6 @@ const DeliveryPage = () => {
               <Image src="/toss.png" width={59} height={25} alt="" unoptimized />
               <p>토스페이</p>
             </div>
-            <div className="flex items-center p-5 gap-4 text-[20px] cursor-pointer">
-              <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
-              <p>카드 일반 결제</p>
-            </div>
-            <div className="flex items-center gap-4 p-5 text-[20px] cursor-pointer">
-              <Checkbox className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none" />
-              <p>무통장 입금</p>
-            </div>
           </div>
 
           <Accordion type="single" collapsible>
@@ -515,36 +507,42 @@ const DeliveryPage = () => {
                 <p>배송비</p>
                 <p className="font-medium text-[#0348FF]">배송비 무료</p>
               </div>
-              <div className="flex flex-col py-2.5 text-xl">
-                <div className="flex justify-between items-center py-5">
-                  <p>할인금액</p>
-                  <p className="font-medium text-[#0348FF]">
-                    <span className="text-base">SAVE</span> -
-                    {buyNowItem
-                      ? buyNowItem.discountedPrice
-                        ? (buyNowItem.price - buyNowItem.discountedPrice).toLocaleString()
-                        : 0
-                      : totalDiscountedPrice.toLocaleString()}
-                    원
-                  </p>
-                </div>
-                <div className="text-xs flex items-center justify-between px-[30px] py-4">
-                  <p>쿠폰 할인금액</p>
-                  <p>-{selectedCoupon ? selectedCoupon.discount.toLocaleString() : 0}원</p>
-                </div>
-                {(buyNowItem?.discountedPrice || totalProductDiscountPrice) && (
-                  <div className="text-xs flex items-center justify-between px-[30px] py-4">
-                    <p>행사 할인금액</p>
-                    <p>
-                      -
-                      {buyNowItem?.discountedPrice
-                        ? (buyNowItem.price - buyNowItem.discountedPrice).toLocaleString()
-                        : totalProductDiscountPrice.toLocaleString()}
+              {buyNowItem?.discountedPrice || totalDiscountedPrice ? (
+                <div className="flex flex-col py-2.5 text-xl">
+                  <div className="flex justify-between items-center py-5">
+                    <p>할인금액</p>
+                    <p className="font-medium text-[#0348FF]">
+                      <span className="text-base">SAVE</span> -
+                      {buyNowItem
+                        ? buyNowItem.discountedPrice
+                          ? (buyNowItem.price - buyNowItem.discountedPrice).toLocaleString()
+                          : 0
+                        : totalDiscountedPrice.toLocaleString()}
                       원
                     </p>
                   </div>
-                )}
-              </div>
+                  <div className="text-xs flex items-center justify-between px-[30px] py-4">
+                    <p>쿠폰 할인금액</p>
+                    <p>-{selectedCoupon ? selectedCoupon.discount.toLocaleString() : 0}원</p>
+                  </div>
+                  {buyNowItem?.discountedPrice || totalProductDiscountPrice ? (
+                    <div className="text-xs flex items-center justify-between px-[30px] py-4">
+                      <p>행사 할인금액</p>
+                      <p>
+                        -
+                        {buyNowItem?.discountedPrice
+                          ? (buyNowItem.price - buyNowItem.discountedPrice).toLocaleString()
+                          : totalProductDiscountPrice.toLocaleString()}
+                        원
+                      </p>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              ) : (
+                ''
+              )}
               <div className="flex items-center justify-between py-2.5 text-xl">
                 <p className="font-bold">결제금액</p>
                 <p className="font-medium">
