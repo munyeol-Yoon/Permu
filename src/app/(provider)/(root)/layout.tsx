@@ -1,7 +1,7 @@
 'use client';
 
 import SearchHeader from '@/components/SearchPage/SearchHeader';
-import { cx } from 'class-variance-authority';
+import { cn } from '@/utils/cn';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import Header from './_components/Header';
@@ -15,7 +15,6 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   const isProductOrHomePage = pathname.startsWith('/products') || pathname === '/';
 
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 0);
   }, []);
@@ -34,7 +33,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
           (isProductOrHomePage || isCategorySearchResultPage) && (
             <>
               <div
-                className={cx('transition-all duration-300 overflow-hidden', {
+                className={cn('transition-all duration-300 overflow-hidden', {
                   'max-h-0 opacity-0': isScrolled,
                   'max-h-[50px] opacity-100': !isScrolled
                 })}

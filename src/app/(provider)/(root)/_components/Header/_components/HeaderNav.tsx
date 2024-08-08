@@ -1,17 +1,32 @@
+'use client';
+
 import { CART, CATEGORY, HOME, MYPAGE } from '@/constant/pathname';
+import Arrow from '@@/public/arrow/arrow-left.svg';
 import BasketSVG from '@@/public/header/basket.svg';
 import MenubarSVG from '@@/public/header/header_menubar.svg';
 import Logo from '@@/public/header/Logo.svg';
 import PersonSVG from '@@/public/header/person.svg';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-const HeaderNav = () => {
+interface HeaderNavProps {
+  isBackBtn?: boolean;
+}
+
+const HeaderNav = ({ isBackBtn = false }: HeaderNavProps) => {
+  const router = useRouter();
+  const handleBackBtn = () => router.back();
+
   return (
-    <div className="px-4 py-7 flex items-center">
+    <div className="px-4 py-7 flex items-center bg-white">
       <div className="flex-1">
-        <Link href={CATEGORY}>
-          <MenubarSVG />
-        </Link>
+        {isBackBtn ? (
+          <Arrow onClick={handleBackBtn} className="cursor-pointer" />
+        ) : (
+          <Link href={CATEGORY}>
+            <MenubarSVG />
+          </Link>
+        )}
       </div>
 
       <div className="grow text-center">
@@ -24,7 +39,6 @@ const HeaderNav = () => {
         <Link href={CART}>
           <BasketSVG />
         </Link>
-
         <Link href={MYPAGE}>
           <PersonSVG />
         </Link>
