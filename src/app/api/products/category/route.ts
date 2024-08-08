@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     if (productError) throw productError;
 
-    const { data: wishes } = await supabase.from('Wishes').select('*').eq('userId', userId);
+    const { data: wishes } = await supabase.from('Wishes').select('productId,userId').eq('userId', userId);
     const productWithDiscountedPrice: Product[] =
       data?.map((data) => ({
         ...data,

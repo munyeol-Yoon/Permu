@@ -17,7 +17,6 @@ export async function GET(request: NextRequest) {
       .eq('brandId', 12);
 
     if (error) throw error;
-    const { data: wishes } = await supabase.from('Wishes').select('*').eq('userId', userId);
     const productWithDiscountedPrice: Product[] =
       data?.map((data) => ({
         ...data,

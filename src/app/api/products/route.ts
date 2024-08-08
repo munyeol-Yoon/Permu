@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
         : await supabase.from('Products').select('*').order('createdAt', { ascending: false }).limit(12);
     const brandIds = data?.map((product) => product.brandId) || [];
     const { data: brands } = await supabase.from('Brands').select('*').in('brandId', brandIds);
-    const { data: wishes } = await supabase.from('Wishes').select('*').eq('userId', userId);
+    const { data: wishes } = await supabase.from('Wishes').select('productId,userId').eq('userId', userId);
     const brandMap = new Map(brands?.map((brand) => [brand.brandId, brand]));
     const productWithDiscountedPrice: Product[] =
       data?.map((data) => ({
