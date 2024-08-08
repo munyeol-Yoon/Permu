@@ -1,7 +1,8 @@
 import { createClient } from '@/supabase/client';
+import { createClient as createServerClient } from '@/supabase/server';
 
 export const getOrderInfoByUserId = async (userId: string) => {
-  const supabase = createClient();
+  const supabase = createServerClient();
   const { data: orderInfo, error } = await supabase
     .from('Carts')
     .select('*, Products (*, Brands (*)), Users (*, Coupon(*))')
