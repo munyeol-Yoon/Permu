@@ -1,6 +1,7 @@
 'use client';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { WishProduct } from '@/hooks/query/mypage/useUserWishesQuery';
+import useAlert from '@/hooks/useAlert';
 import { Product } from '@/types/products';
 import BlueWishSVG from '@@/public/heart/blue-wish-icon.svg';
 import WishSVG from '@@/public/heart/wish-icon.svg';
@@ -12,7 +13,7 @@ export interface ProductProps {
 
 const ProductCard = ({ product }: ProductProps) => {
   const { loggedUser } = useAuth();
-
+  const { showInfoAlert } = useAlert();
   const userLike = 'Wish' in product && product.Wish?.userId === loggedUser?.id;
 
   const price = product.price ?? 0;
@@ -24,10 +25,14 @@ const ProductCard = ({ product }: ProductProps) => {
   const brandName = 'Brand' in product ? product.Brand?.krName : product.Brands?.krName;
   const discountedPrice = 'discountedPrice' in product ? product.discountedPrice : 0;
 
+  const handleWish = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    showInfoAlert('준비중 입니다');
+  };
   return (
     <div className="w-[180px] flex flex-col">
-      <Link href={`/products/${product.productId}`}>
-        <div className="relative">
+      <div className="relative">
+        <Link href={`/products/${product.productId}`}>
           <Image
             src={product.thumbNailURL || ''}
             width={200}
@@ -36,13 +41,14 @@ const ProductCard = ({ product }: ProductProps) => {
             className="w-full h-[200px] object-contain"
             unoptimized
           />
-          {userLike ? (
-            <BlueWishSVG className="absolute bottom-2 right-2 z-20" />
-          ) : (
-            <WishSVG className="absolute bottom-2 right-2 z-20" />
-          )}
+        </Link>
+        <div
+          className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
+          onClick={(e) => handleWish(e)}
+        >
+          {userLike ? <BlueWishSVG /> : <WishSVG />}
         </div>
-      </Link>
+      </div>
       <div className="flex flex-col gap-1">
         <span className="text-[12px] line-clamp-1">{brandName}</span>
         <p className="font-semibold line-clamp-1">{title.length > 7 ? title.slice(0, 7) + '...' : title}</p>
