@@ -1,12 +1,13 @@
 'use client';
+import Banner1 from '@/assets/events/event1.png';
+import Banner2 from '@/assets/events/event2.png';
+import Banner3 from '@/assets/events/event3.png';
+import Banner4 from '@/assets/events/event4.png';
 import BrandBanner from '@/components/BrandBanner';
 import useAlert from '@/hooks/useAlert';
-import Banner1 from '@@/public/banner/banner1.svg';
-import Banner2 from '@@/public/banner/banner2.svg';
-import Banner3 from '@@/public/banner/banner3.svg';
-import Banner4 from '@@/public/banner/banner4.svg';
+import Image from 'next/image';
 
-const banners = [Banner1, Banner2, Banner3, Banner4];
+const events = [Banner1, Banner2, Banner3, Banner4];
 
 const EventPage = () => {
   const { showInfoAlert } = useAlert();
@@ -20,8 +21,8 @@ const EventPage = () => {
       </BrandBanner>
 
       <div className="flex flex-col items-center justify-center gap-y-10 my-10">
-        {banners.map((Banner, index) => (
-          <Banner key={index} onClick={handleClick} className="cursor-pointer" />
+        {events.map((Banner, index) => (
+          <Image key={index} src={Banner} alt="이벤트배너" onClick={handleClick} className="cursor-pointer" />
         ))}
       </div>
     </div>

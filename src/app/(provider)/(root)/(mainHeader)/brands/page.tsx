@@ -1,9 +1,10 @@
 'use client';
+import Brand1 from '@/assets/brands/brand1.png';
+import Brand2 from '@/assets/brands/brand2.png';
+import Brand3 from '@/assets/brands/brand3.png';
 import BrandBanner from '@/components/BrandBanner';
 import useAlert from '@/hooks/useAlert';
-import Brand1 from '@@/public/brands/brand1.svg';
-import Brand2 from '@@/public/brands/brand2.svg';
-import Brand3 from '@@/public/brands/brand3.svg';
+import Image from 'next/image';
 
 const brands = [Brand1, Brand2, Brand3];
 
@@ -20,7 +21,7 @@ const EventPage = () => {
 
       <div className="flex flex-col items-center justify-center gap-y-10 my-10">
         {brands.map((Brand, index) => (
-          <Brand key={index} onClick={handleClick} className="cursor-pointer" />
+          <Image key={index} src={Brand} alt="브랜드배너" onClick={handleClick} className="cursor-pointer" />
         ))}
       </div>
     </div>
