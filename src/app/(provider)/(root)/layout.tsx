@@ -9,6 +9,7 @@ import TopBanner from './_components/Header/_components/TopBanner';
 
 const RootLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
+  const isReviewPage = pathname.endsWith('/images');
   const isCategoryPage = pathname.startsWith('/category');
   const isCategorySearchResultPage = pathname === '/category/search/result';
   const isProductOrHomePage = pathname.startsWith('/products') || pathname === '/';
@@ -27,7 +28,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className="container mx-auto min-h-screen grid">
       <div className="bg-white w-full max-w-[600px] h-full mx-auto flex flex-col">
-        {isCategoryPage && !isCategorySearchResultPage ? (
+        {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
         ) : (
           (isProductOrHomePage || isCategorySearchResultPage) && (
