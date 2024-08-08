@@ -27,3 +27,4 @@ export const CART = '/cart';
 
 export const EVENT = '/events';
 export const BRANDS = '/brands';
+export const SUPPORT = '/support';

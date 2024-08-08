@@ -1,4 +1,4 @@
-import { BRANDS, CATEGORY_SEARCH_RESULT_PATHNAME, EVENT } from '@/constant/pathname';
+import { BRANDS, CATEGORY_SEARCH_RESULT_PATHNAME, EVENT, SUPPORT } from '@/constant/pathname';
 import useAlert from '@/hooks/useAlert';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ const LINKS = [
   { title: '기획전' },
   { title: '이벤트', url: EVENT },
   { title: '브랜드관', url: BRANDS },
-  { title: '고객센터' }
+  { title: '고객센터', url: SUPPORT }
 ];
 
 const NavCategories = () => {
