@@ -26,3 +26,4 @@ export const CATEGORY_SEARCH_RESULT_PATHNAME = '/category/search/result';
 export const CART = '/cart';
 
 export const EVENT = '/events';
+export const BRANDS = '/brands';
