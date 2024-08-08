@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useWishesMutation } from '@/hooks/mutation';
 import { useWishesQuery } from '@/hooks/query';
+import useAlert from '@/hooks/useAlert';
 import { Params, TWish } from '@/types/products';
 import BlackWishSVG from '@@/public/heart/black-wish-icon.svg';
 import WishSVG from '@@/public/heart/default-wish-icon.svg';
@@ -12,6 +13,7 @@ import { useParams, useRouter } from 'next/navigation';
 
 const Wish = ({ inner = true }: { inner?: boolean }) => {
   const router = useRouter();
+  const { showInfoAlert } = useAlert();
   const { productId } = useParams<Params['params']>();
   const { loggedUser } = useAuth();
   const { data: getLikes } = useWishesQuery({ productId: Number(productId) });
@@ -24,7 +26,7 @@ const Wish = ({ inner = true }: { inner?: boolean }) => {
 
   const handleWish = () => {
     if (!loggedUser) {
-      alert('로그인하셈');
+      showInfoAlert('로그인이 필요한 서비스 입니다');
       router.push('/auth/log-in');
     } else addMutation.mutate();
   };

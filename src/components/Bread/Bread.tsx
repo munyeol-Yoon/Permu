@@ -1,5 +1,13 @@
+import { CATEGORY_SEARCH_RESULT_PATHNAME } from '@/constant/pathname';
 import { Tables } from '@/types/supabase';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../ui/breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
+} from '../ui/breadcrumb';
 
 type BreadProps = {
   category: Tables<'Categories'>;
@@ -14,11 +22,13 @@ const Bread = ({ category }: BreadProps) => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{category.categoryMainTitle}</BreadcrumbPage>
+            <BreadcrumbLink href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?categoryId=${category.categoryId}`}>
+              {category.categoryMainTitle}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{category.categorySubTitle ?? ''}</BreadcrumbPage>
+            <BreadcrumbPage> {category.categorySubTitle ?? ''}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
