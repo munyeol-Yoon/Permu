@@ -40,7 +40,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
               >
                 <TopBanner />
               </div>
-              <div className="sticky top-0 z-10">
+              <div className="sticky top-0 z-[9999]">
                 <Header />
               </div>
             </>
