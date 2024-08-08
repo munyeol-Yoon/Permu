@@ -9,7 +9,22 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase
       .from('Orders')
-      .select('createAt, orderId, deliverId, OrdersDetail(Products(title, thumbNailURL))')
+      .select(
+        `
+        createAt, 
+        orderId, 
+        deliverId, 
+        OrdersDetail (
+          productId,
+          Products (
+            title, 
+            thumbNailURL,
+            Brands(krName)
+          )
+        )
+      `
+      )
+
       .eq('userId', userId);
     if (error) throw error;
 

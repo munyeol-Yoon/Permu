@@ -98,7 +98,6 @@ const AccountForm = () => {
               id="email"
               className="border-b px-[40px] py-4 text-center grow"
               placeholder="아이디를 입력해 주세요."
-              value={email}
               disabled
             />
           </div>

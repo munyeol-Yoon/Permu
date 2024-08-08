@@ -27,7 +27,11 @@ const NavCategories = () => {
   return (
     <ul className="mx-[30px] flex justify-between">
       {LINKS.map((nav) => (
-        <li key={nav.title} className="cursor-pointer px-4 py-3" onClick={() => handleClick(nav.title)}>
+        <li
+          key={nav.title}
+          className="cursor-pointer px-4 py-3 hover:brightness-90 active:brightness-110 "
+          onClick={() => handleClick(nav.title)}
+        >
           {nav.url ? (
             <Link href={nav.url}>
               <span

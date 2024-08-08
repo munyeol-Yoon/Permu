@@ -1,9 +1,7 @@
 'use client';
 import Navbar from '@/components/Navbar';
-import { Button } from '@/components/ui/button';
 import {
   AUTH_LOG_IN_PATHNAME,
-  MYPAGE_ADDRESS_PATHNAME,
   MYPAGE_COUPON_PATHNAME,
   MYPAGE_EDIT_PATHNAME,
   MYPAGE_MILEAGE_PATHNAME,
@@ -12,7 +10,6 @@ import {
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import { useAuthMutation } from '@/hooks/mutation';
 import { useCouponQuery } from '@/hooks/query';
 import Banner from '@@/public/banner/tempBanner.svg';
 import Footer from '../_components/Footer';
@@ -36,7 +33,6 @@ const LINKS = [
 const MyMainPage = () => {
   const { loggedUser } = useAuth();
   const { data: userCoupons } = useCouponQuery();
-  const { logOutMutation } = useAuthMutation();
   const name = loggedUser?.userData.name || '';
   const mileage = loggedUser?.userData.mileage || 0;
 
@@ -63,7 +59,6 @@ const MyMainPage = () => {
         {LINKS.map((link) => (
           <LinkCard key={link.title} title={link.title} href={loggedUser ? link.href : AUTH_LOG_IN_PATHNAME} />
         ))}
-        {loggedUser && <Button onClick={() => logOutMutation()}>로그아웃</Button>}
       </div>
 
       <Footer />

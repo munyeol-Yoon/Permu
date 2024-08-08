@@ -1,6 +1,6 @@
-import { HOME } from '@/constant/pathname';
+'use client';
+import useAlert from '@/hooks/useAlert';
 import Image from 'next/image';
-import Link from 'next/link';
 
 interface EventLinkCardProps {
   item: {
@@ -10,11 +10,13 @@ interface EventLinkCardProps {
 }
 
 const EventLinkCard = ({ item }: EventLinkCardProps) => {
+  const { showInfoAlert } = useAlert();
+  const handleClick = () => showInfoAlert('준비중입니다!');
   return (
-    <div key={item.title} className="flex flex-col items-center">
-      <Link href={HOME} className="w-[72px] h-[72px]">
+    <div key={item.title} className="flex flex-col items-center cursor-pointer">
+      <div className="w-[72px] h-[72px]" onClick={handleClick}>
         <Image className="rounded-[14px] h-[72px]" src={item.ThumbnailImg} width={72} height={72} alt={item.title} />
-      </Link>
+      </div>
       <span className="text-xs mt-1 font-bold">{item.title}</span>
     </div>
   );

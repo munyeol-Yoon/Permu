@@ -1,0 +1,28 @@
+[
+  {
+    "reviewId": 0,
+    "thumbNailURL": "https://duciel.co.kr/web/product/big/202206/99f3cb74b822b04496a75f6669c5b158.jpg",
+    "date": "2024.07.31",
+    "Brands": {
+      "krName": "샤넬"
+    },
+    "countStar": 3,
+    "option": "50ml",
+    "title": "샹스 오 후레쉬",
+    "contentImgURL": "https://media.bunjang.co.kr/product/273292329_1_1719714703_w%7Bres%7D.jpg",
+    "content": "이 향수는 정말 상큼하고 시원한 향이 매력적이에요. 여름에 사용하기 딱 좋습니다. 하지만 지속력은 조금 아쉬웠어요."
+  },
+  {
+    "reviewId": 1,
+    "thumbNailURL": "https://gewbjtpztsdnvbqpunpd.supabase.co/storage/v1/object/public/product-images/product-images/dior-ome1.webp",
+    "date": "2024.08.02",
+    "Brands": {
+      "krName": "디올"
+    },
+    "countStar": 4,
+    "option": "50ml",
+    "title": "옴므 인텐스",
+    "contentImgURL": "https://blog.kakaocdn.net/dn/cUtaLD/btqBVMTfVzn/b7LwCUKTFk63HOgKgfYTU1/img.jpg",
+    "content": "디올 옴므 인텐스는 정말 고급스럽고 세련된 향을 가지고 있어요. 오래 지속되며 남성적인 향이 아주 마음에 듭니다."
+  }
+]
