@@ -30,22 +30,17 @@ const NavCategories = () => {
       {LINKS.map((nav) => {
         const isActive = activeLink === nav.title;
         return (
-          <li
-            key={nav.title}
-            className={cn('cursor-pointer px-4 py-3 hover:brightness-90 active:brightness-110', {
-              'border-b-2 border-black font-semibold': isActive,
-              'text-muted': !isActive
-            })}
-            onClick={() => handleClick(nav.title, nav.url)}
-          >
-            {nav.url ? (
-              <Link href={nav.url}>
-                <span className="pb-3">{nav.title}</span>
-              </Link>
-            ) : (
-              <span className="pb-3">{nav.title}</span>
-            )}
-          </li>
+          <Link href={nav.url ?? ''} key={nav.title}>
+            <li
+              className={cn('cursor-pointer px-4 py-3 hover:brightness-90 active:brightness-110', {
+                'border-b-2 border-black font-semibold': isActive,
+                'text-muted': !isActive
+              })}
+              onClick={() => handleClick(nav.title, nav.url)}
+            >
+              <span>{nav.title}</span>
+            </li>
+          </Link>
         );
       })}
     </ul>
