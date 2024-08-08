@@ -2,6 +2,7 @@ import FacebookIcon from '@@/public/sns/facebook.svg';
 import InstagramIcon from '@@/public/sns/instagram.svg';
 import WhatsAppIcon from '@@/public/sns/whatsapp.svg';
 import YouTubeIcon from '@@/public/sns/youtube.svg';
+import Link from 'next/link';
 
 const SNSInfo = () => {
   return (
@@ -9,7 +10,9 @@ const SNSInfo = () => {
       <h3 className="text-xl font-semibold text-muted">Countact us</h3>
 
       <div className="flex gap-x-2.5">
-        <InstagramIcon />
+        <Link href="https://www.instagram.com/permeate.store.official?igsh=MWluajBzYjYzdHVrNQ==">
+          <InstagramIcon />
+        </Link>
         <FacebookIcon />
         <YouTubeIcon />
         <WhatsAppIcon />
