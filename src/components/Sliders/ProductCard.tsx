@@ -1,7 +1,6 @@
 'use client';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useWishesMutation } from '@/hooks/mutation';
-import { useWishesQuery } from '@/hooks/query';
 import { WishProduct } from '@/hooks/query/mypage/useUserWishesQuery';
 import useAlert from '@/hooks/useAlert';
 import { Product } from '@/types/products';
@@ -28,10 +27,8 @@ const ProductCard = ({ product }: ProductProps) => {
 
   const brandName = 'Brand' in product ? product.Brand?.krName : product.Brands?.krName;
   const discountedPrice = 'discountedPrice' in product ? product.discountedPrice : 0;
-  const { data: getLikes } = useWishesQuery({ productId: Number(product.productId) });
-
   const addMutation = useWishesMutation({
-    getLikes: { data: getLikes?.data || [], userLike },
+    data: 'Wish' in product ? product.Wish : null,
     productId: Number(product.productId)
   });
 

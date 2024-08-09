@@ -11,7 +11,7 @@ export type Product = Omit<Tables<'Products'>, 'ImagesURL' | 'size' | 'notes'> &
   brandId?: number;
   Brand: Tables<'Brands'>;
   Category: Tables<'Categories'>;
-  Wish?: Tables<'Wishes'>;
+  Wish?: TWish;
 };
 export interface Params {
   params: { productId: string };
