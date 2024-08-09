@@ -22,8 +22,8 @@ export async function GET(request: NextRequest) {
           .eq('productId', productId)
           .eq('userId', userId)
           .single()
-      : await supabase.from('Wishes').select('userId,productId').eq('userId', userId).single();
-    return NextResponse.json({ success: true, data: data ?? null, count });
+      : await supabase.from('Wishes').select('userId,productId');
+    return NextResponse.json(productId ? { success: true, data: data ?? null, count } : data);
   } catch (error) {
     return NextResponse.json({ error });
   }

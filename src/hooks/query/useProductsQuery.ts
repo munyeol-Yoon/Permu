@@ -15,6 +15,7 @@ const useProductsQuery = (option: string) => {
       else if (option === 'brand') return await getProductsByBrandForThisWeek({ userId: loggedUser?.id });
       else {
         const data = option === 'wish' ? await getWishes() : await getOrderInfos();
+
         const countMap = data.reduce((acc: number[], cur: { productId: number }) => {
           acc[cur.productId] = (acc[cur.productId] || 0) + 1;
           return acc;
