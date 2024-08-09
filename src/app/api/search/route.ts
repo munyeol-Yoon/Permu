@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
 
     if (Array.from(searchParams.keys()).length === 0) {
-      const { data, error } = await supabase.from('Products').select('*');
+      const { data, error } = await supabase.from('Products').select(`*, Brand: Brands (*)`);
 
       if (error) {
         throw error;

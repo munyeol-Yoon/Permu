@@ -11,6 +11,17 @@ img {
   object-fit: cover;
 }
 
+body {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+::-webkit-scrollbar {
+  display: none;
+  background: transparent; /* Chrome/Safari/Webkit */
+  width: 0px;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
