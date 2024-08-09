@@ -9,6 +9,7 @@ import WishSVG from '@@/public/heart/wish-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+
 export interface ProductProps {
   product: Product | WishProduct;
 }
@@ -39,18 +40,12 @@ const ProductCard = ({ product }: ProductProps) => {
       router.push('/auth/log-in');
     } else addMutation.mutate();
   };
+
   return (
-    <div className="w-[180px] flex flex-col mt-[40px] mb-[40px]">
-      <div className="relative">
+    <div className="w-1/3 md:w-[180px] h-[281px] flex flex-col mt-10 mb-10">
+      <div className="w-full h-full relative">
         <Link href={`/products/${product.productId}`}>
-          <Image
-            src={product.thumbNailURL || ''}
-            width={200}
-            height={200}
-            alt={title}
-            className="w-full h-[200px] object-contain"
-            unoptimized
-          />
+          <Image src={product.thumbNailURL || ''} fill alt={title} className="object-contain" unoptimized />
         </Link>
         <div
           className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
@@ -59,16 +54,18 @@ const ProductCard = ({ product }: ProductProps) => {
           {userLike ? <BlueWishSVG /> : <WishSVG />}
         </div>
       </div>
-      <div className="flex flex-col gap-1">
-        <span className="text-[12px] line-clamp-1">{brandName}</span>
+      <div className="flex flex-col gap-1 mt-2">
+        <span className="text-xs sm:text-[12px] line-clamp-1">{brandName}</span>
         <p className="font-semibold line-clamp-1">{title.length > 7 ? title.slice(0, 7) + '...' : title}</p>
         <div className="flex justify-between items-center">
-          <span className="font-semibold">{(discountedPrice || resultPrice || 0).toLocaleString()}원</span>
+          <span className="font-semibold text-sm sm:text-base whitespace-pre">
+            {(discountedPrice || resultPrice || 0).toLocaleString()}원
+          </span>
           &nbsp;
           {(product.discount || 0) > 0 && (
             <>
-              <span className="flex-1 text-gray-500 text-xs line-through">{product.price?.toLocaleString()}원</span>
-              <p className="font-bold text-[#FF0000]">{product.discount}%</p>
+              <span className="flex-1 text-gray-500 text-xs line-through">{product.price?.toLocaleString()}</span>
+              <p className="font-bold text-[#FF0000] text-sm sm:text-base">{product.discount}%</p>
             </>
           )}
         </div>
