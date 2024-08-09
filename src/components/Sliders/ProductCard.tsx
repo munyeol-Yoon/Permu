@@ -42,10 +42,16 @@ const ProductCard = ({ product }: ProductProps) => {
   };
 
   return (
-    <div className="w-1/3 md:w-[180px] h-[281px] flex flex-col mt-10 mb-10">
+    <div className="w-1/3 h-[240px] md:w-[180px] md:h-[281px] flex flex-col mt-[16px]">
       <div className="w-full h-full relative">
         <Link href={`/products/${product.productId}`}>
-          <Image src={product.thumbNailURL || ''} fill alt={title} className="object-contain" unoptimized />
+          <Image
+            src={product.thumbNailURL || ''}
+            fill
+            alt={title}
+            className="object-contain bg-[#FFFBEE]"
+            unoptimized
+          />
         </Link>
         <div
           className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
@@ -64,7 +70,9 @@ const ProductCard = ({ product }: ProductProps) => {
           &nbsp;
           {(product.discount || 0) > 0 && (
             <>
-              <span className="flex-1 text-gray-500 text-xs line-through">{product.price?.toLocaleString()}</span>
+              <span className="hidden sm:block flex-1 text-gray-500 text-xs line-through">
+                {product.price?.toLocaleString()}
+              </span>
               <p className="font-bold text-[#FF0000] text-sm sm:text-base">{product.discount}%</p>
             </>
           )}
