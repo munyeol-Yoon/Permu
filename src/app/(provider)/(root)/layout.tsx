@@ -25,7 +25,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className="container mx-auto min-h-screen grid">
+    <div className="container mx-auto min-h-screen grid overflow-hidden">
       <div className="bg-white w-full max-w-[600px] h-full mx-auto flex flex-col">
         {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />

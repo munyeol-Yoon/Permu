@@ -30,7 +30,7 @@ const ProductCard = ({ product }: ProductProps) => {
     showInfoAlert('준비중 입니다');
   };
   return (
-    <div className="w-[180px] flex flex-col">
+    <div className="w-[180px] flex flex-col mt-[40px] mb-[40px]">
       <div className="relative">
         <Link href={`/products/${product.productId}`}>
           <Image
