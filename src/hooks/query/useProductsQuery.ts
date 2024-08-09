@@ -8,13 +8,14 @@ const useProductsQuery = (option: string) => {
   const { loggedUser } = useAuth();
 
   return useQuery({
-    queryKey: ['Products', option, loggedUser],
+    queryKey: ['Products', option, loggedUser?.id],
     queryFn: async () => {
       if (option === 'recent') return await getProducts({ userId: loggedUser?.id });
       else if (option === 'product') return await getProductsByCategoryForThisWeek({ userId: loggedUser?.id });
       else if (option === 'brand') return await getProductsByBrandForThisWeek({ userId: loggedUser?.id });
       else {
         const data = option === 'wish' ? await getWishes() : await getOrderInfos();
+
         const countMap = data.reduce((acc: number[], cur: { productId: number }) => {
           acc[cur.productId] = (acc[cur.productId] || 0) + 1;
           return acc;

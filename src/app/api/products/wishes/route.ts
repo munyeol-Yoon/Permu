@@ -7,11 +7,23 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
 
     const productId = searchParams.get('productId') as string;
+    const userId = searchParams.get('userId') as string;
+
+    const { count: count } = await supabase
+      .from('Wishes')
+      .select('count', { count: 'exact' })
+      .eq('productId', productId)
+      .single();
 
     const { data } = productId
-      ? await supabase.from('Wishes').select('userId,productId').eq('productId', productId)
-      : await supabase.from('Wishes').select('productId');
-    return NextResponse.json(data);
+      ? await supabase
+          .from('Wishes')
+          .select('userId,productId')
+          .eq('productId', productId)
+          .eq('userId', userId)
+          .single()
+      : await supabase.from('Wishes').select('userId,productId');
+    return NextResponse.json(productId ? { success: true, data: data ?? null, count } : data);
   } catch (error) {
     return NextResponse.json({ error });
   }
