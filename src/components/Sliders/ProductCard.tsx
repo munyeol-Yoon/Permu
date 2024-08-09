@@ -1,5 +1,7 @@
 'use client';
 import { useAuth } from '@/contexts/auth.context/auth.context';
+import { useWishesMutation } from '@/hooks/mutation';
+import { useWishesQuery } from '@/hooks/query';
 import { WishProduct } from '@/hooks/query/mypage/useUserWishesQuery';
 import useAlert from '@/hooks/useAlert';
 import { Product } from '@/types/products';
@@ -7,11 +9,13 @@ import BlueWishSVG from '@@/public/heart/blue-wish-icon.svg';
 import WishSVG from '@@/public/heart/wish-icon.svg';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 export interface ProductProps {
   product: Product | WishProduct;
 }
 
 const ProductCard = ({ product }: ProductProps) => {
+  const router = useRouter();
   const { loggedUser } = useAuth();
   const { showInfoAlert } = useAlert();
   const userLike = 'Wish' in product && product.Wish?.userId === loggedUser?.id;
@@ -24,10 +28,19 @@ const ProductCard = ({ product }: ProductProps) => {
 
   const brandName = 'Brand' in product ? product.Brand?.krName : product.Brands?.krName;
   const discountedPrice = 'discountedPrice' in product ? product.discountedPrice : 0;
+  const { data: getLikes } = useWishesQuery({ productId: Number(product.productId) });
+
+  const addMutation = useWishesMutation({
+    getLikes: { data: getLikes?.data || [], userLike },
+    productId: Number(product.productId)
+  });
 
   const handleWish = (e: React.MouseEvent) => {
     e.stopPropagation();
-    showInfoAlert('준비중 입니다');
+    if (!loggedUser) {
+      showInfoAlert('로그인이 필요한 서비스 입니다');
+      router.push('/auth/log-in');
+    } else addMutation.mutate();
   };
   return (
     <div className="w-[180px] flex flex-col mt-[40px] mb-[40px]">

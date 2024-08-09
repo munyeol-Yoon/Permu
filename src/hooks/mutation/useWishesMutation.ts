@@ -34,6 +34,12 @@ const useWishesMutation = ({ getLikes, productId }: TWishMutation) => {
 
       return { previousWishes };
     },
+    onSuccess: () => {
+      const queryKeys = ['wish', 'product', 'recent', 'brand', 'order'];
+      queryKeys.forEach((key) => {
+        queryClient.refetchQueries({ queryKey: ['Products', key, loggedUser?.id] });
+      });
+    },
     onError: (err, addLike, context) => {
       queryClient.setQueryData(['Wishes', productId], context?.previousWishes);
     }
