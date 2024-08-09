@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 const brands = [Brand1, Brand2, Brand3];
 
-const EventPage = () => {
+const BrandsPage = () => {
   const { showInfoAlert } = useAlert();
   const handleClick = () => showInfoAlert('준비중입니다!');
   return (
@@ -28,4 +28,4 @@ const EventPage = () => {
   );
 };
 
-export default EventPage;
+export default BrandsPage;

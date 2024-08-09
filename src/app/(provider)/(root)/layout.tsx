@@ -2,6 +2,7 @@
 
 import SearchHeader from '@/components/SearchPage/SearchHeader';
 import { cn } from '@/utils/cn';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import Header from './_components/Header';
@@ -25,15 +26,16 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className="container mx-auto min-h-screen grid overflow-hidden">
-      <div className="bg-white w-full max-w-[600px] h-full mx-auto flex flex-col">
+    <div className="container min-h-screen grid">
+      <Image src="/main_image.webp" fill priority unoptimized alt="" />
+      <div className="relative bg-white w-full max-w-[600px] h-full max-h-screen overflow-scroll mx-auto flex flex-col">
         {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
         ) : (
           (isProductOrHomePage || isCategorySearchResultPage) && (
             <>
               <div
-                className={cn('transition-all duration-300 overflow-hidden', {
+                className={cn('transition-all duration-300', {
                   'max-h-0 opacity-0': isScrolled,
                   'max-h-[50px] opacity-100': !isScrolled
                 })}
@@ -46,7 +48,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
             </>
           )
         )}
-        {children}
+        <div>{children}</div>
       </div>
     </div>
   );
