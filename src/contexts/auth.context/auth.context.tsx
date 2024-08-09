@@ -1,5 +1,5 @@
 'use client';
-import { fetchUser } from '@/api/auth';
+import { getLoggedUser } from '@/api/auth';
 import { LoggedUser } from '@/types/types';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     data: user,
     isSuccess,
     isError
-  } = useQuery({ queryKey: ['loggedUser'], queryFn: () => fetchUser(), retry: false });
+  } = useQuery({ queryKey: ['loggedUser', 'context'], queryFn: () => getLoggedUser(), retry: false });
 
   useEffect(() => {
     if (isSuccess) setLoggedUser(user);

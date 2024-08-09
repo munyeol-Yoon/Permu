@@ -7,20 +7,26 @@ export async function GET(request: NextRequest) {
     const supabase = createClient();
     const { data: authData, error } = await supabase.auth.getUser();
 
+    // 가져오다 에러
     if (error) return NextResponse.json({ success: false, details: error.message });
+    // 로그인한 유저 없음
     if (!authData) return NextResponse.json({ success: false, details: 'user notFound' });
 
     const user = authData.user;
 
-    const { data: userData, error: userDataError } = await supabase
-      .from('Users')
-      .select('*')
-      .eq('id', user.id)
-      .single();
-    if (userDataError) return NextResponse.json({ success: false, details: userDataError.message });
-    const userResponse: LoggedUser = { ...user, userData };
+    try {
+      const { data: userData, error: userDataError } = await supabase
+        .from('Users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
+      if (userDataError) return NextResponse.json({ success: false, details: userDataError.message });
 
-    return NextResponse.json({ user: userResponse });
+      const userResponse: LoggedUser = { ...user, userData };
+      return NextResponse.json({ user: userResponse });
+    } catch (queryError) {
+      return NextResponse.json({ success: false, details: queryError });
+    }
   } catch (error) {
     return NextResponse.json({ success: false, details: error });
   }

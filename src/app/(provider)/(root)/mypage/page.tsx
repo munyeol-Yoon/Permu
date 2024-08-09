@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import {
   AUTH_LOG_IN_PATHNAME,
@@ -10,8 +11,8 @@ import {
   MYPAGE_REVIEW_PATHNAME,
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCouponQuery } from '@/hooks/query';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import Banner from '@@/public/banner/tempBanner.svg';
 import Footer from '../_components/Footer';
 import InfoCard from './_components/InfoCard';
@@ -32,10 +33,13 @@ const LINKS = [
 ];
 
 const MyMainPage = () => {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser, isPending } = useAuthQuery();
   const { data: userCoupons } = useCouponQuery();
-  const name = loggedUser?.userData.name || '';
-  const mileage = loggedUser?.userData.mileage || 0;
+
+  const name = loggedUser?.userData.name;
+  const mileage = loggedUser?.userData.mileage;
+
+  if (isPending) return <Loading />;
 
   return (
     <div className="flex flex-col">

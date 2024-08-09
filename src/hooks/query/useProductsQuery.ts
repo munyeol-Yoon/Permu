@@ -1,14 +1,13 @@
 import { getOrderInfos } from '@/api/orderInfo';
 import { getProducts, getProductsByBrandForThisWeek, getProductsByCategoryForThisWeek } from '@/api/product';
 import { getWishes } from '@/api/wish';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useQuery } from '@tanstack/react-query';
+import useAuthQuery from './useAuthQuery';
 
 const useProductsQuery = (option: string) => {
-  const { loggedUser } = useAuth();
-
+  const { data: loggedUser } = useAuthQuery();
   return useQuery({
-    queryKey: ['Products', option, loggedUser],
+    queryKey: ['Products', option, loggedUser?.id],
     queryFn: async () => {
       if (option === 'recent') return await getProducts({ userId: loggedUser?.id });
       else if (option === 'product') return await getProductsByCategoryForThisWeek({ userId: loggedUser?.id });
