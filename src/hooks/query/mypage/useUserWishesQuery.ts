@@ -1,7 +1,7 @@
 import { getUserWishes } from '@/api/myPage';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
+import useAuthQuery from '../useAuthQuery';
 
 export interface WishProduct {
   Brands: {
@@ -20,10 +20,11 @@ export interface UserWish {
 }
 
 const useUserWishesQuery = () => {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   return useQuery<UserWish[], Error>({
     queryKey: ['user', 'wishes'],
-    queryFn: () => getUserWishes(loggedUser?.id ?? '')
+    queryFn: () => getUserWishes(loggedUser?.id),
+    enabled: !!loggedUser
   });
 };
 

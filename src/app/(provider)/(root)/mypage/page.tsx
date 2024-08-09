@@ -11,8 +11,8 @@ import {
   MYPAGE_REVIEW_PATHNAME,
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
-import { useCouponQuery } from '@/hooks/query';
 import useAuthQuery from '@/hooks/query/useAuthQuery';
+import useUserResourceQuery from '@/hooks/query/useUserResourceQuery';
 import Banner from '@@/public/banner/tempBanner.svg';
 import Footer from '../_components/Footer';
 import InfoCard from './_components/InfoCard';
@@ -33,14 +33,13 @@ const LINKS = [
 ];
 
 const MyMainPage = () => {
-  const { data: loggedUser, isPending } = useAuthQuery();
-  const { data: userCoupons } = useCouponQuery();
+  const { data: loggedUser, isPending: isAuthPending } = useAuthQuery();
+  const { coupons, isPending: isUserResourcePending } = useUserResourceQuery();
+
+  if (isAuthPending || isUserResourcePending) return <Loading />;
 
   const name = loggedUser?.userData.name;
   const mileage = loggedUser?.userData.mileage;
-
-  if (isPending) return <Loading />;
-
   return (
     <div className="flex flex-col">
       <Navbar title="마이페이지" isHome />
@@ -51,7 +50,7 @@ const MyMainPage = () => {
           {mileage || '-'}p
         </InfoCard>
         <InfoCard title="쿠폰" href={MYPAGE_COUPON_PATHNAME}>
-          {userCoupons?.length || '-'}
+          {coupons?.length || '-'}
         </InfoCard>
         <InfoCard title="후기" href={MYPAGE_REVIEW_PATHNAME}>
           2개
