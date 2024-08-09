@@ -13,7 +13,7 @@ const RootPage = () => {
     <main className="max-w-[600px] mx-auto my-0 h-full w-full overflow-hidden">
       <BannerSlide />
 
-      <div className="flex py-6 px-5 justify-between">
+      <div className="flex-row-10 p-5-2 justify-between">
         {MockData.map((item) => (
           <EventLinkCard item={item} key={item.title} />
         ))}

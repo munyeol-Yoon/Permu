@@ -32,13 +32,13 @@ const NavCategories = () => {
         return (
           <Link href={nav.url ?? ''} key={nav.title}>
             <li
-              className={cn('cursor-pointer px-4 py-3 hover:brightness-90 active:brightness-110', {
+              className={cn('cursor-pointer py-3 hover:brightness-90 active:brightness-110', {
                 'border-b-2 border-black font-semibold': isActive,
                 'text-muted': !isActive
               })}
               onClick={() => handleClick(nav.title, nav.url)}
             >
-              <span>{nav.title}</span>
+              <span className="whitespace-pre text-sm md:text-base">{nav.title}</span>
             </li>
           </Link>
         );

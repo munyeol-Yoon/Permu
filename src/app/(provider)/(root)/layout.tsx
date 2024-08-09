@@ -26,7 +26,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className="container min-h-screen grid">
+    <div className="md:container min-h-screen grid">
       <Image src="/main_image.webp" fill priority unoptimized alt="" />
       <div className="relative bg-white w-full max-w-[600px] h-full max-h-screen overflow-scroll mx-auto flex flex-col">
         {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
