@@ -10,10 +10,10 @@ import { Accordion } from '@/components/ui/accordion';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
+import { Wish } from '../_components/DetailButtons';
+import Share from '../_components/DetailButtons/Share';
 import DetailTabs from '../_components/DetailTabs';
 import Paying from '../_components/Paying';
-import Share from '../_components/Share/Share';
-import Wish from '../_components/Wish';
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
@@ -73,7 +73,7 @@ const ProductDetailPage = async ({ params }: Params) => {
 
       <Accordion type="multiple">
         <Toggle trigger="배송 및 반품" value={false}>
-          <div className="bg-[#FFFBEE] flex flex-col items-start w-[560px] px-[20px]">
+          <div className="bg-[#FFFBEE] flex flex-col items-start w-full px-[20px]">
             <div className="flex flex-col justify-end h-[80px]">
               <h5 className="font-bold leading-[50px]">배송 안내</h5>
             </div>
@@ -96,7 +96,7 @@ const ProductDetailPage = async ({ params }: Params) => {
           </div>
         </Toggle>
         <Toggle trigger="사업자 정보" value={false}>
-          <div className="bg-[#FFFBEE] flex flex-col items-start w-[560px] px-[20px]">
+          <div className="bg-[#FFFBEE] flex flex-col items-start  w-full px-[20px]">
             <div className="flex flex-col justify-end h-[80px]">
               <h5 className="font-bold leading-[50px]">정보 안내</h5>
             </div>
