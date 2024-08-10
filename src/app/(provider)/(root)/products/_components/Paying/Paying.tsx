@@ -124,14 +124,14 @@ const Paying = ({ size, category, product }: PayingProps) => {
         </Button>
       </div>
 
-      <div className="flex-row-10 justify-between p-5-2 w-full sm:w-[600px] fixed bottom-0 z-20 bg-white border-t-[1.5px] border-[#B3B3B3]">
+      <div className="flex-row-10 justify-between p-5-2 w-full max-w-[600px] fixed bottom-0 z-20 bg-white border-t-[1.5px] border-[#B3B3B3]">
         <Wish inner={false} />
         <Drawer>
           <DrawerTrigger asChild>
             <Button className="w-full h-[64px]">바로 구매하기</Button>
           </DrawerTrigger>
 
-          <DrawerContent className="w-full sm:w-[600px] mx-auto justify-between">
+          <DrawerContent className="w-full max-w-[600px] mx-auto lg-m justify-between">
             <DrawerHeader>
               <DrawerTitle></DrawerTitle>
             </DrawerHeader>
@@ -148,7 +148,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
                     <DropdownMenuCheckboxItem
                       key={index}
                       onClick={() => handleSelectSize(size)}
-                      className="w-full sm:w-[550px] p-5-2 h-[40px] text-lg"
+                      className="w-full p-5-2 h-[40px] text-lg"
                     >
                       {size}
                       {category === '인센스' ? 'g' : 'mL'}
