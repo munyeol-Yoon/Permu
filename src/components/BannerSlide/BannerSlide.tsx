@@ -42,7 +42,7 @@ const BannerSlide = ({ Images }: SliderProps) => {
                   <div className="h-full flex items-center justify-center relative">
                     <div className="bg-[rgba(0,0,0,0.3)] absolute top-0 left-0 bottom-0 right-0"></div>
                     <Image
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-cover"
                       src={item.ImageURL}
                       width={600}
                       height={600}
