@@ -46,6 +46,8 @@ const BannerSlide = () => {
                   width={600}
                   height={600}
                   alt={`메인 배너${idx + 1}`}
+                  loading="eager"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 600px"
                 />
                 <div className="absolute left-[14px] bottom-[51px]">
                   <h2 className="font-bold text-[30px] text-white">Permeate 신규 런칭 이벤트</h2>

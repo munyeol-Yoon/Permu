@@ -49,10 +49,10 @@ const ProductCard = ({ product }: ProductProps) => {
             src={product.thumbNailURL || ''}
             fill
             alt={title}
-            className="object-contain bg-[#FFFBEE]"
-            unoptimized
+            className="object-contain bg-[#FFFBEE] absolute"
             quality={20}
             loading="lazy"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
           />
         </Link>
         <div

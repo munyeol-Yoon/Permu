@@ -17,7 +17,6 @@ const DetailPage = ({ productDetail }: { productDetail: string }) => {
           <Image
             src={productDetail}
             alt={'상세 정보'}
-            layout="responsive"
             width={1000}
             height={1000}
             className="w-full h-auto"

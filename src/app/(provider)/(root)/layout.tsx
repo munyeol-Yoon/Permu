@@ -27,12 +27,11 @@ const RootLayout = ({ children }: PropsWithChildren) => {
 
   return (
     <div className="lg:container min-h-screen grid lg:grid-cols-[1fr_600px]">
-      <Image src="/main_image.webp" fill priority unoptimized alt="background" loading="eager" />
+      <Image src="/main_image.webp" fill priority alt="background" loading="eager" />
       <div className="hidden lg:block relative">
         <Image
           src={EventIMG}
           fill
-          unoptimized
           alt=""
           className="object-contain lg:max-w-[500px] lg:max-h-[500px]"
           loading="eager"
