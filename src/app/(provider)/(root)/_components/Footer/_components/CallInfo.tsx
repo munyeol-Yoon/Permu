@@ -3,11 +3,11 @@ import { Button } from '@/components/ui/button';
 const CallInfo = () => {
   return (
     <div className="flex flex-col items-center justify-between py-5">
-      <div className="flex flex-col items-center">
+      <div className="text-center">
         <p>CS CENTER</p>
         <p className="underline">010-4188-1824</p>
       </div>
-      <div className="flex flex-col items-center font-medium">
+      <div className="text-center font-medium">
         <p>상담시간 AM10:00 ~ PM:06:00</p>
         <p>점심시간 PM12:00 ~ PM01:00</p>
       </div>

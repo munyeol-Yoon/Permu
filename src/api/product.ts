@@ -33,13 +33,6 @@ export const getRelatedSearchProducts = async (search: string) => {
   return data;
 };
 
-export const getDetailProduct = async (productId: string): Promise<Product> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/product?productId=${productId}`);
-  if (!response.ok) throw new Error('response 에러');
-  const data = await response.json();
-  return data;
-};
-
 export const getProducts = async ({
   productIds,
   userId

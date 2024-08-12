@@ -1,23 +1,19 @@
-import BannerSlide from '@/components/BannerSlide';
+import { BannerSlide } from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import MdReviews from '@/components/MdReviews';
-import MockData from '@/mockup/banner.json';
 
 import CategoryProducts from './_components/CategorySection/CategoryProducts';
 import CategorySection from './_components/CategorySection/CategorySection';
+
 import EventLinkCard from './_components/EventLinkCard';
 import Footer from './_components/Footer';
 const RootPage = () => {
   return (
     <main className="max-w-[600px] mx-auto my-0 h-full w-full overflow-hidden">
       <BannerSlide />
+      <EventLinkCard />
 
-      <div className="flex py-6 px-5 justify-between">
-        {MockData.map((item) => (
-          <EventLinkCard item={item} key={item.title} />
-        ))}
-      </div>
       <div className="flex flex-col gap-y-16">
         <BrandBanner>
           <div className="w-full flex justify-center items-center text-xl font-bold">

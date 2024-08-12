@@ -1,34 +1,46 @@
+import { Brand } from '@/types/brands';
 import { Product } from '@/types/products';
-import { Tables } from '@/types/supabase';
+import { useCallback, useMemo } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
-
 import CategoryCard from './CategoryCard';
 import ProductCard from './ProductCard';
+
+type SliderData = Brand | Product;
+
 type SlidersProps = {
-  data: Tables<'Brands'>[] | Product[];
+  data: SliderData[];
   count: number;
 };
-const chunkArray = (data: SlidersProps['data'], count: SlidersProps['count']) => {
-  const result = [];
-  for (let i = 0; i < data.length; i += count) {
-    result.push(data.slice(i, i + count));
+
+const chunkArray = (data: SliderData[], chunkSize: number): SliderData[][] => {
+  const result: SliderData[][] = [];
+  for (let i = 0; i < data.length; i += chunkSize) {
+    result.push(data.slice(i, i + chunkSize));
   }
   return result;
 };
 
 const Sliders = ({ data, count }: SlidersProps) => {
+  const chunks = useMemo(() => chunkArray(data, count), [data, count]);
+
+  const renderCarouselItem = useCallback(
+    (item: SliderData) =>
+      'productId' in item ? (
+        <div className="w-1/3" key={item.productId}>
+          <ProductCard product={item as Product} />
+        </div>
+      ) : (
+        <CategoryCard key={item.brandId} brand={item as Brand & { logoURL: string }} />
+      ),
+    []
+  );
+
   return (
     <Carousel>
       <CarouselContent>
-        {chunkArray(data, count).map((brandChunk, index) => (
-          <CarouselItem className="flex-row-10" key={index}>
-            {brandChunk.map((data) =>
-              'productId' in data ? (
-                <ProductCard key={data.productId} product={data as Product} />
-              ) : (
-                <CategoryCard key={data.brandId} brand={data as Tables<'Brands'>} />
-              )
-            )}
+        {chunks.map((chunk, index) => (
+          <CarouselItem key={index} className="flex-row-10">
+            {chunk.map((item) => renderCarouselItem(item))}
           </CarouselItem>
         ))}
       </CarouselContent>
