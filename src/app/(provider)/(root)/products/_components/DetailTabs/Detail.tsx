@@ -21,6 +21,7 @@ const DetailPage = ({ productDetail }: { productDetail: string }) => {
             width={1000}
             height={1000}
             className="w-full h-auto"
+            loading="lazy"
           />
         </div>
       </div>

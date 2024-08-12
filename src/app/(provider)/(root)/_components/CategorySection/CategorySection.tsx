@@ -33,6 +33,7 @@ const CategorySection = ({ title, count }: CategorySectionProps) => {
           height={300}
           alt="인기 급상승 제품 이미지1"
           className="w-full h-[300px]"
+          loading="eager"
         />
       </div>
 

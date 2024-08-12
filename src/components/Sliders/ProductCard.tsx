@@ -51,6 +51,8 @@ const ProductCard = ({ product }: ProductProps) => {
             alt={title}
             className="object-contain bg-[#FFFBEE]"
             unoptimized
+            quality={20}
+            loading="lazy"
           />
         </Link>
         <div

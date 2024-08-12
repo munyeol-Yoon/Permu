@@ -38,15 +38,15 @@ const BannerSlide = ({ Images }: SliderProps) => {
         <CarouselContent className="h-full">
           {!Images
             ? mockData.map((item, idx) => (
-                <CarouselItem key={idx} className="h-full">
-                  <div className="h-full flex items-center justify-center relative">
+                <CarouselItem key={idx}>
+                  <div className="w-full h-full flex items-center justify-center relative">
                     <div className="bg-[rgba(0,0,0,0.3)] absolute top-0 left-0 bottom-0 right-0"></div>
                     <Image
                       className="w-full h-full object-cover"
                       src={item.ImageURL}
-                      width={600}
-                      height={600}
+                      fill
                       alt={`메인 배너${idx + 1}`}
+                      loading="eager"
                     />
                     <div className="absolute left-[14px] bottom-[51px]">
                       <h2 className="font-bold text-[30px] text-white">Permeate 신규 런칭 이벤트</h2>
@@ -56,9 +56,15 @@ const BannerSlide = ({ Images }: SliderProps) => {
                 </CarouselItem>
               ))
             : Images.map((image, idx) => (
-                <CarouselItem key={idx} className="h-full">
-                  <div className="h-full flex items-center justify-center relative">
-                    <Image src={image.ImageURL} fill className="object-cover" alt={image.title} />
+                <CarouselItem key={idx}>
+                  <div className="flex items-center justify-center relative w-full h-full">
+                    <Image
+                      src={image.ImageURL}
+                      fill
+                      className="object-cover w-full h-full"
+                      alt={image.title}
+                      loading="eager"
+                    />
                   </div>
                 </CarouselItem>
               ))}
