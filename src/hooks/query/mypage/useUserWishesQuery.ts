@@ -22,7 +22,7 @@ export interface UserWish {
 const useUserWishesQuery = () => {
   const { data: loggedUser } = useAuthQuery();
   return useQuery<UserWish[], Error>({
-    queryKey: ['user', 'wishes'],
+    queryKey: ['loggedUser', 'wishes'],
     queryFn: () => getUserWishes(loggedUser?.id),
     enabled: !!loggedUser
   });
