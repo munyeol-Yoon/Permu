@@ -72,7 +72,6 @@ const AccountForm = () => {
     if (isEmail) {
       const password = passwordRef.current?.value || '';
       const passwordCheck = passwordCheckRef.current?.value || '';
-      const name = nameRef.current?.value;
 
       const formField: ValidationInputProps = {
         input: password,
@@ -85,6 +84,7 @@ const AccountForm = () => {
       if (password) userData.password = password;
     }
 
+    const name = nameRef.current?.value;
     const birth = birthRef.current?.value;
     const gender = genderRef.current?.checked ? 'M' : 'F';
 
