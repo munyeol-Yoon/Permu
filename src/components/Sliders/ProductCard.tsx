@@ -42,17 +42,17 @@ const ProductCard = ({ product }: ProductProps) => {
   };
 
   return (
-    <div className="w-1/3 h-[281px] flex flex-col mt-[16px]">
+    <div className="w-full h-[281px] flex flex-col mt-[16px]">
       <div className="w-full h-full relative">
         <Link href={`/products/${product.productId}`}>
           <Image
             src={product.thumbNailURL || ''}
             fill
             alt={title}
-            className="object-contain bg-[#FFFBEE] absolute"
+            className="object-contain bg-[#FFFBEE]"
             quality={20}
             loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 33vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 200px"
           />
         </Link>
         <div

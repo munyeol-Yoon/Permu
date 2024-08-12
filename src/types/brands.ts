@@ -1,1 +1,3 @@
-export type Brand = { brandId: string; krName: string; enName: string };
+import { Tables } from './supabase';
+
+export type Brand = Omit<Tables<'Brands'>, 'initialCons'>;

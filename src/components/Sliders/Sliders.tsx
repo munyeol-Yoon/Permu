@@ -1,11 +1,11 @@
+import { Brand } from '@/types/brands';
 import { Product } from '@/types/products';
-import { Tables } from '@/types/supabase';
 import { useCallback, useMemo } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 import CategoryCard from './CategoryCard';
 import ProductCard from './ProductCard';
 
-type SliderData = Tables<'Brands'> | Product;
+type SliderData = Brand | Product;
 
 type SlidersProps = {
   data: SliderData[];
@@ -26,9 +26,11 @@ const Sliders = ({ data, count }: SlidersProps) => {
   const renderCarouselItem = useCallback(
     (item: SliderData) =>
       'productId' in item ? (
-        <ProductCard key={item.productId} product={item as Product} />
+        <div className="w-1/3" key={item.productId}>
+          <ProductCard product={item as Product} />
+        </div>
       ) : (
-        <CategoryCard key={item.brandId} brand={item as Tables<'Brands'>} />
+        <CategoryCard key={item.brandId} brand={item as Brand & { logoURL: string }} />
       ),
     []
   );

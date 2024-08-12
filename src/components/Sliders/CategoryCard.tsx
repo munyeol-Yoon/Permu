@@ -1,8 +1,8 @@
-import { Tables } from '@/types/supabase';
+import { Brand } from '@/types/brands';
 import Image from 'next/image';
 
 export interface CategoryProps {
-  brand: Tables<'Brands'>;
+  brand: Brand & { logoURL: string };
 }
 const CategoryCard = ({ brand }: CategoryProps) => {
   return (
