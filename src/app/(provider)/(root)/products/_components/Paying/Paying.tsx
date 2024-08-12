@@ -28,7 +28,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
   const { loggedUser, isLoggedIn } = useAuth();
   const { data: carts } = useCartsQuery();
   const { addMutation: addCartMutation, patchMutation } = useCartsMutation();
-  const { addCartItem } = useLocalCart();
+  const { addLocalCartItem } = useLocalCart();
 
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
 
@@ -47,7 +47,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
         productPrice: product.price as number,
         productThumbnailURL: product.thumbNailURL as string
       };
-      addCartItem(cartItem);
+      addLocalCartItem(cartItem);
 
       if (isLoggedIn) {
         const { mutateAsync } = addCartMutation;

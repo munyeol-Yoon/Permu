@@ -1,54 +1,43 @@
+import { CartItem } from '@/types/cart';
 import { useCallback, useEffect, useState } from 'react';
 
-export interface LocalCart {
-  productId: number;
-  productName: string;
-  productBrandName: string;
-  productVolume: string[];
-  productCount: number;
-  productPrice: number;
-  productDiscountedPrice: number;
-  productDiscountPercentage: number;
-  productThumbnailURL: string;
-  productSelected: boolean;
-  productSelectedVolume: string;
-}
-
 const useLocalCart = () => {
-  const [cartList, setCartList] = useState<LocalCart[]>([]);
+  const [localCartList, setLocalCartList] = useState<CartItem[]>([]);
 
-  const addCartItem = useCallback((cartItem: LocalCart) => {
+  const addLocalCartItem = useCallback((cartItem: CartItem) => {
     const prevCartList = localStorage.getItem('cart');
 
     if (prevCartList) {
       const parsedPrevCartList = JSON.parse(prevCartList);
       localStorage.setItem('cart', JSON.stringify([...parsedPrevCartList, cartItem]));
+      setLocalCartList([...parsedPrevCartList, cartItem]);
     } else {
       localStorage.setItem('cart', JSON.stringify([cartItem]));
+      setLocalCartList([cartItem]);
     }
   }, []);
 
-  const deleteCartItem = useCallback((productId: number) => {
+  const deleteLocalCartItem = useCallback((productId: number) => {
     const prevCartList = localStorage.getItem('cart');
 
     if (prevCartList) {
       const parsedPrevCartList = JSON.parse(prevCartList);
-      const filteredCartList = parsedPrevCartList.filter((cartItem: LocalCart) => cartItem.productId !== productId);
+      const filteredCartList = parsedPrevCartList.filter((cartItem: CartItem) => cartItem.productId !== productId);
       localStorage.setItem('cart', JSON.stringify(filteredCartList));
-      setCartList(filteredCartList);
+      setLocalCartList(filteredCartList);
     }
   }, []);
 
-  const updateCartItem = useCallback((newCartItem: LocalCart) => {
+  const updateLocalCartItem = useCallback((newCartItem: CartItem) => {
     const prevCartList = localStorage.getItem('cart');
 
     if (prevCartList) {
       const parsedPrevCartList = JSON.parse(prevCartList);
-      const updatedCartList = parsedPrevCartList.map((cartItem: LocalCart) =>
+      const updatedCartList = parsedPrevCartList.map((cartItem: CartItem) =>
         cartItem.productId === newCartItem.productId ? newCartItem : cartItem
       );
       localStorage.setItem('cart', JSON.stringify(updatedCartList));
-      setCartList(updatedCartList);
+      setLocalCartList(updatedCartList);
     }
   }, []);
 
@@ -56,11 +45,11 @@ const useLocalCart = () => {
     const prevCartList = localStorage.getItem('cart');
     if (prevCartList) {
       const parsedPrevCartList = JSON.parse(prevCartList);
-      setCartList(parsedPrevCartList);
+      setLocalCartList(parsedPrevCartList);
     }
   }, []);
 
-  return { cartList, addCartItem, deleteCartItem, updateCartItem };
+  return { localCartList, addLocalCartItem, deleteLocalCartItem, updateLocalCartItem };
 };
 
 export default useLocalCart;
