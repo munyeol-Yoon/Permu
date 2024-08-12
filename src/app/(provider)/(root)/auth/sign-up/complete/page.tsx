@@ -3,11 +3,11 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { HOME } from '@/constant/pathname';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import Profile from '@@/public/profile/profile-lg.svg';
 import Link from 'next/link';
 function SignUpCompletePage() {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   if (!loggedUser) return <div>유저 없음</div>;
 
   const {

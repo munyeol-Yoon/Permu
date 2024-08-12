@@ -1,16 +1,19 @@
 'use client';
+import Input from '@/components/Input';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME } from '@/constant/pathname';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useAlert from '@/hooks/useAlert';
 import { validateForm, validatePhoneNumber, ValidationInputProps } from '@/utils/validateCheck';
 import Link from 'next/link';
 import { useRef } from 'react';
 const AccountForm = () => {
   const { showAlert } = useAlert();
+
   const passwordRef = useRef<HTMLInputElement>(null);
   const passwordCheckRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -18,23 +21,36 @@ const AccountForm = () => {
   const genderRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
 
-  const { loggedUser } = useAuth();
+  const { data: loggedUser, isPending } = useAuthQuery();
+
   const { userInfoMutation } = useAuthMutation();
   const { showWarningAlert } = useAlert();
 
-  if (!loggedUser) return <div>로그인한 유저 없음 로그인 필요</div>;
+  if (!loggedUser) return <div>로그인 유저 없음</div>;
+  if (isPending) return <Loading />;
+
   const {
-    userData: { email }
+    userData: { email },
+    app_metadata: { provider },
+    user_metadata: { name }
   } = loggedUser;
 
+  const isEmail = provider === 'email';
+
   const validateInputs = (): boolean => {
-    return !!(
-      passwordRef.current?.value &&
-      passwordCheckRef.current?.value &&
-      nameRef.current?.value &&
-      phoneRef.current?.value &&
-      birthRef.current?.value
-    );
+    const phone = phoneRef.current?.value;
+    const birth = birthRef.current?.value;
+
+    if (isEmail) {
+      const password = passwordRef.current?.value;
+      const passwordCheck = passwordCheckRef.current?.value;
+      const name = nameRef.current?.value;
+
+      if (!password || !passwordCheck || !name || !phone || !birth) return false;
+    } else {
+      if (!phone || !birth) return false;
+    }
+    return true;
   };
 
   const handleSubmit = () => {
@@ -49,22 +65,33 @@ const AccountForm = () => {
       return;
     }
 
-    const formField: ValidationInputProps = {
-      input: passwordRef.current!.value,
-      inputCheck: passwordCheckRef.current!.value,
-      inputType: 'password'
-    };
+    const userData: { [key: string]: string } = { email }; // 넘길 값
 
-    if (!validateForm(formField, showAlert)) return;
+    // email = pw, name
+    // 공통 = email, birth, gender, phone
+    if (isEmail) {
+      const password = passwordRef.current?.value || '';
+      const passwordCheck = passwordCheckRef.current?.value || '';
+      const name = nameRef.current?.value;
 
-    const userData = {
-      email,
-      password: passwordRef.current?.value || '',
-      name: nameRef.current?.value || '',
-      birth: birthRef.current?.value || new Date().toString(),
-      gender: genderRef.current?.checked ? 'M' : 'F',
-      phone: phoneRef.current?.value || ''
-    };
+      const formField: ValidationInputProps = {
+        input: password,
+        inputCheck: passwordCheck,
+        inputType: 'password'
+      };
+
+      if (!validateForm(formField, showAlert)) return;
+
+      if (password) userData.password = password;
+    }
+
+    const birth = birthRef.current?.value;
+    const gender = genderRef.current?.checked ? 'M' : 'F';
+
+    if (name) userData.name = name;
+    if (birth) userData.birth = birth;
+    if (gender) userData.gender = gender;
+    if (phone) userData.phone = phone;
 
     userInfoMutation(userData);
   };
@@ -90,54 +117,61 @@ const AccountForm = () => {
           <h3 className="py-5 border-b">기본정보</h3>
           <div className="flex items-center">
             <label htmlFor="email" className="w-1/4">
-              <span className="text-blue-500">*</span>
+              <span className="text-accent">*</span>
               아이디
             </label>
-            <input
+            <Input
+              variant="underline"
               type="email"
               id="email"
-              className="border-b px-[40px] py-4 text-center grow"
-              placeholder="아이디를 입력해 주세요."
-              disabled
+              placeholder={loggedUser.email || '아이디를 입력해 주세요.'}
+              disabled={loggedUser}
+              className="grow"
             />
           </div>
+
           <div className="flex items-center">
             <label htmlFor="password" className="w-1/4">
-              <span className="text-blue-500">*</span>
+              <span className="text-accent">*</span>
               비밀번호
             </label>
-            <input
+            <Input
+              variant="underline"
               type="password"
               id="password"
-              className="border-b px-[40px] py-4 text-center grow"
-              placeholder="비밀번호를 입력해 주세요."
+              placeholder={isEmail ? '비밀번호를 입력해 주세요.' : '소셜 로그인은 제외입니다'}
               ref={passwordRef}
+              disabled={!isEmail}
+              className="grow"
             />
           </div>
           <div className="flex items-center">
             <label htmlFor="password-check" className="w-1/4">
-              <span className="text-blue-500">*</span>
+              <span className="text-accent">*</span>
               비밀번호 확인
             </label>
-            <input
+            <Input
+              variant="underline"
               type="password"
               id="password-check"
-              className="border-b px-[40px] py-4 text-center grow"
-              placeholder="비밀번호 확인을 입력해 주세요."
+              placeholder={isEmail ? '비밀번호 확인을 입력해 주세요.' : '소셜 로그인은 제외입니다'}
               ref={passwordCheckRef}
+              className="grow"
+              disabled={!isEmail}
             />
           </div>
           <div className="flex items-center">
             <label htmlFor="name" className="w-1/4">
-              <span className="text-blue-500">*</span>
+              <span className="text-accent">*</span>
               이름
             </label>
-            <input
-              type="text"
+            <Input
+              variant="underline"
               id="name"
-              className="border-b px-[40px] py-4 text-center grow"
-              placeholder="성함을 입력해 주세요."
+              placeholder={isEmail ? '성함을 입력해 주세요.' : name}
               ref={nameRef}
+              className="grow"
+              disabled={!isEmail}
             />
           </div>
           <div className="flex items-center">
@@ -155,13 +189,14 @@ const AccountForm = () => {
           <h3 className="py-5 border-b">부가정보</h3>
           <div className="flex items-center">
             <label htmlFor="tel" className="w-1/4">
-              <span className="text-blue-500">*</span>
+              <span className="text-accent">*</span>
               휴대폰번호
             </label>
-            <input
+            <Input
+              variant="underline"
               type="tel"
               id="tel"
-              className="border-b px-[40px] py-4 text-center grow"
+              className="grow"
               placeholder="전화번호를 입력해 주세요."
               ref={phoneRef}
             />
@@ -170,13 +205,14 @@ const AccountForm = () => {
 
         <div className="flex items-center">
           <label htmlFor="birth" className="w-1/4">
-            <span className="text-blue-500">*</span>
+            <span className="text-accent">*</span>
             생년월일
           </label>
-          <input
+          <Input
+            variant="underline"
             type="date"
-            id="birth"
-            className="border-b px-[40px] py-4 text-center grow"
+            id="tel"
+            className="grow justify-center"
             placeholder="생년월일을 입력해 주세요."
             ref={birthRef}
           />

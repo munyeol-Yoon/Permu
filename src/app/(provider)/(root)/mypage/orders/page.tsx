@@ -2,7 +2,7 @@
 import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Accordion } from '@/components/ui/accordion';
-import useOrderListQuery from '@/hooks/query/useOrderListQuery';
+import useOrderListQuery from '@/hooks/query/mypage/useOrderListQuery';
 import { MyOrder } from '@/types/myPage/order';
 import { cn } from '@/utils/cn';
 import Banner from '@@/public/banner/tempBanner.svg';
@@ -11,9 +11,11 @@ import OrderCard from './_components/OrderCard';
 
 const OrderListPage = () => {
   const [isLatest, setIsLatest] = useState<boolean>(true);
-  const { data: OrderList, isPending } = useOrderListQuery();
+  const { data: orders, isPending } = useOrderListQuery();
   const handleClick = () => setIsLatest((prev) => !prev);
+
   if (isPending) return <Loading />;
+
   return (
     <div>
       <Navbar title="주문/배송내역" isHome />
@@ -46,7 +48,7 @@ const OrderListPage = () => {
         </div>
 
         <Accordion type="single" collapsible>
-          {OrderList?.map((order: MyOrder) => <OrderCard key={order.orderId} order={order} />)}
+          {orders?.map((order: MyOrder) => <OrderCard key={order.orderId} order={order} />)}
         </Accordion>
       </div>
     </div>

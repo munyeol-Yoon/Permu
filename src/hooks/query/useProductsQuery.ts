@@ -4,6 +4,7 @@ import { getWishes } from '@/api/wish';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { Product, TWish } from '@/types/products';
 import { useQuery } from '@tanstack/react-query';
+import useAuthQuery from './useAuthQuery';
 
 const QUERY_OPTIONS = {
   RECENT: 'recent',
@@ -31,8 +32,7 @@ const dataFiltering = async (data: TWish[] | any[], userId: string): Promise<Pro
 };
 
 const useProductsQuery = (option: string) => {
-  const { loggedUser } = useAuth();
-
+  const { data: loggedUser } = useAuthQuery();
   return useQuery<Product[]>({
     queryKey: ['Products', option, loggedUser?.id],
     queryFn: async () => {
