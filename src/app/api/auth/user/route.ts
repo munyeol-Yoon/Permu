@@ -1,5 +1,6 @@
 import { createClient } from '@/supabase/server';
 import { LoggedUser } from '@/types/types';
+import { SupabaseClient, User } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
@@ -32,6 +33,21 @@ export async function GET(request: NextRequest) {
   }
 }
 
+async function updatePassword(supabase: SupabaseClient, password: string) {
+  const { error: passwordError } = await supabase.auth.updateUser({ password });
+  if (passwordError) throw new Error(passwordError.message);
+}
+
+// 타입 수정
+async function updateUserInfo(supabase: SupabaseClient, user: User, updatedUserInfo: any) {
+  const { error: infoUpdateError } = await supabase
+    .from('Users')
+    .update({ ...updatedUserInfo, isNew: false })
+    .eq('id', user.id)
+    .select('*');
+  if (infoUpdateError) throw new Error(infoUpdateError.message);
+}
+
 export async function PATCH(request: NextRequest) {
   try {
     const { password, ...res } = await request.json();
@@ -45,20 +61,16 @@ export async function PATCH(request: NextRequest) {
     if (userError) throw new Error(userError.message);
     if (!user) throw new Error('User notFound');
 
-    if (password) {
-      // 비밀번호 업데이트
-      const { error: passwordError } = await supabase.auth.updateUser({ password });
-      if (passwordError) throw new Error(passwordError.message);
+    if (password && res.length > 0) {
+      // 비밀번호, db 모두 업데이트
+      await Promise.allSettled([updatePassword(supabase, password), updateUserInfo(supabase, user, res)]);
+    } else if (password) {
+      // 비밀번호만 업데이트
+      await updatePassword(supabase, password);
+    } else {
+      // db만 업데이트
+      await updateUserInfo(supabase, user, res);
     }
-
-    // db 업데이트
-    const { error: infoUpdateError } = await supabase
-      .from('Users')
-      .update({ ...res, isNew: false })
-      .eq('id', user.id)
-      .select('*');
-
-    if (infoUpdateError) throw new Error(infoUpdateError.message);
 
     return NextResponse.json({ success: true, details: '회원 정보 갱신' });
   } catch (error: any) {
