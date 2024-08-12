@@ -220,7 +220,7 @@ const AccountForm = () => {
 
         <div className="flex flex-col mt-12">
           <Button onClick={handleSubmit}>다음</Button>
-          <Button asChild variant="outline" className=" bg-white text-black">
+          <Button asChild variant="outline">
             <Link href={AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME}>이전</Link>
           </Button>
         </div>
