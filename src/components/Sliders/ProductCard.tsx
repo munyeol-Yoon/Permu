@@ -42,7 +42,7 @@ const ProductCard = ({ product }: ProductProps) => {
   };
 
   return (
-    <div className="w-1/3 h-[240px] md:w-[180px] md:h-[281px] flex flex-col mt-[16px]">
+    <div className="w-1/3 h-[281px] flex flex-col mt-[16px]">
       <div className="w-full h-full relative">
         <Link href={`/products/${product.productId}`}>
           <Image

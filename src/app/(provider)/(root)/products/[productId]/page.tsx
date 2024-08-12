@@ -1,7 +1,7 @@
 import Bread from '@/components/Bread';
-import { Params, Product } from '@/types/products';
+import { Params } from '@/types/products';
 
-import BannerSlide from '@/components/BannerSlide';
+import { ProductSlide } from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import MdReviews from '@/components/MdReviews';
@@ -17,21 +17,17 @@ import Paying from '../_components/Paying';
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;
   const supabase = createClient();
-  const { data, error } = await supabase
+  const { data: product, error } = await supabase
     .from('Products')
-    .select('*, Brand:Brands(*), Category:Categories(*)')
+    .select('*, Brand:Brands(krName), Category:Categories(categoryTitle,categoryMainTitle,categorySubTitle)')
     .eq('productId', productId)
     .single();
-
   if (error) throw error;
 
-  const product: Product = {
-    ...data,
-    discountedPrice: data.price - (data.price * data.discount) / 100
-  };
+  const discountedPrice = product.price - (product.price * product.discount) / 100;
 
-  const Images = product.ImagesURL.map((ImageURL) => {
-    return { ImageURL, title: product.title || '' };
+  const Images = product.ImagesURL.map((ImageURL: string) => {
+    return { ImageURL, title: product.title ?? '' };
   });
 
   return (
@@ -41,13 +37,13 @@ const ProductDetailPage = async ({ params }: Params) => {
         <span className="text-white">{product.brandId}</span>
       </BrandBanner>
       <div className="relative aspect-square">
-        <BannerSlide Images={Images} />
+        <ProductSlide Images={Images} />
       </div>
 
       <Bread category={product.Category} />
       <h3 className="font-bold text-2xl p-5-2">{product?.title}</h3>
       <div className="flex-row-10 justify-between p-5-2 w-full border-b-2">
-        <span className="text-[30px] font-medium">{product.discountedPrice.toLocaleString()}원</span>
+        <span className="text-[30px] font-medium">{discountedPrice.toLocaleString()}원</span>
         {(product.discount || 0) > 0 && (
           <>
             <span className="text-xl text-gray-500 line-through flex-1">{(product.price || 0).toLocaleString()}원</span>

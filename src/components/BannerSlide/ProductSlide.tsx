@@ -1,11 +1,10 @@
 'use client';
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from '@/components/ui/carousel';
-import mockData from '@/mockup/banner.json';
 import Autoplay from 'embla-carousel-autoplay';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-
-const BannerSlide = () => {
+type SliderProps = { Images?: { ImageURL: string; title: string }[] };
+const ProductSlide = ({ Images }: SliderProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -15,13 +14,13 @@ const BannerSlide = () => {
       return;
     }
 
-    setCount(api.scrollSnapList().length);
+    setCount((Images ?? []).length);
     setCurrent(api.selectedScrollSnap() + 1);
 
     api.on('select', () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
-  }, [api]);
+  }, [Images, api]);
 
   return (
     <div className="h-[600px] relative">
@@ -36,21 +35,16 @@ const BannerSlide = () => {
         setApi={setApi}
       >
         <CarouselContent className="h-full">
-          {mockData.map((item, idx) => (
-            <CarouselItem key={idx} className="h-full">
-              <div className="h-full flex items-center justify-center relative">
-                <div className="bg-[rgba(0,0,0,0.3)] absolute top-0 left-0 bottom-0 right-0"></div>
+          {Images?.map((image, idx) => (
+            <CarouselItem key={idx}>
+              <div className="flex items-center justify-center relative w-full h-full">
                 <Image
-                  className="w-full h-full object-cover"
-                  src={item.ImageURL}
-                  width={600}
-                  height={600}
-                  alt={`메인 배너${idx + 1}`}
+                  src={image.ImageURL}
+                  fill
+                  className="object-cover w-full h-full"
+                  alt={image.title}
+                  loading="eager"
                 />
-                <div className="absolute left-[14px] bottom-[51px]">
-                  <h2 className="font-bold text-[30px] text-white">Permeate 신규 런칭 이벤트</h2>
-                  <p className="text-[26px] text-white mt-[21px]">추천 상품 최대 30% 쿠폰증정 </p>
-                </div>
               </div>
             </CarouselItem>
           ))}
@@ -66,4 +60,4 @@ const BannerSlide = () => {
   );
 };
 
-export default BannerSlide;
+export default ProductSlide;

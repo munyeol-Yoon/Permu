@@ -1,9 +1,9 @@
 import { getWishById } from '@/api/wish';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import { TWishId } from '@/types/products';
+import { TWish } from '@/types/products';
 import { useQuery } from '@tanstack/react-query';
 
-const useWishesQuery = ({ productId }: TWishId) => {
+const useWishesQuery = (productId: TWish['productId']) => {
   const { loggedUser } = useAuth();
   return useQuery({
     queryKey: ['Wishes', productId, loggedUser?.id],

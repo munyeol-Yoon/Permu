@@ -104,7 +104,6 @@ const Paying = ({ size, category, product }: PayingProps) => {
   };
   return (
     <>
-      {/* 배경 오버레이 추가 */}
       {isSelected && <div className="fixed inset-0 bg-black/50 z-40" onClick={handleSelectedMode}></div>}
       <div className="p-5-2">
         <span>사이즈</span>

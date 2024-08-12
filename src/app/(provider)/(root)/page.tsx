@@ -1,4 +1,4 @@
-import BannerSlide from '@/components/BannerSlide';
+import { BannerSlide } from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import MdReviews from '@/components/MdReviews';
