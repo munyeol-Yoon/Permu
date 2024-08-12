@@ -3,25 +3,27 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useCartsQuery } from '@/hooks/query';
+import { LocalCart } from '@/hooks/useLocalCart';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-const CartAccordion = () => {
-  const { data: cartList } = useCartsQuery();
+interface CartAccordionProps {
+  cartList: LocalCart[];
+}
 
+const CartAccordion = ({ cartList }: CartAccordionProps) => {
   const selectedProductCount = useMemo(() => {
     if (cartList?.length) {
-      return cartList?.reduce((acc, cur) => acc + Number(cur.isSelected), 0);
+      return cartList?.reduce((acc, cur) => acc + Number(cur.productSelected), 0);
     }
   }, [cartList]);
 
   const totalPrice = useMemo(() => {
     if (cartList?.length) {
       return cartList?.reduce((acc, cur) => {
-        if (cur.isSelected) {
-          return acc + cur.Products.discountedPrice * cur.count;
+        if (cur.productSelected) {
+          return acc + cur.productDiscountedPrice * cur.productCount;
         } else return acc;
       }, 0);
     }

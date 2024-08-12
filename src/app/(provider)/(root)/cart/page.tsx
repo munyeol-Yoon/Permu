@@ -21,7 +21,7 @@ const CartPage = () => {
       <Navbar title="장바구니" isHome />
       <CartSelector cartList={cartList} deleteCartItem={deleteCartItem} updateCartItem={updateCartItem} />
       <CartList cartList={cartList} deleteCartItem={deleteCartItem} updateCartItem={updateCartItem} />
-      <CartAccordion />
+      <CartAccordion cartList={cartList} />
     </>
   );
 };
