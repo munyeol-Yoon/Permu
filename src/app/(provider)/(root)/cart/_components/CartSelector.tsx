@@ -2,27 +2,36 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import useCart from '@/hooks/useCart';
+import { LocalCart } from '@/hooks/useLocalCart';
 import { useMemo } from 'react';
 
-const CartSelector = () => {
+interface CartSelectorProps {
+  cartList: LocalCart[];
+  updateCartItem: (newCartItem: LocalCart) => void;
+  deleteCartItem: (productId: number) => void;
+}
+
+const CartSelector = ({ cartList, deleteCartItem, updateCartItem }: CartSelectorProps) => {
   const { loggedUser } = useAuth();
-  const { cartList, updateCartItemSelected, deleteCartItem } = useCart();
 
   const isSelectedAll = useMemo(() => {
-    return cartList?.every((cartItem) => cartItem.isSelected === true);
+    return cartList.every((cartItem) => cartItem.productSelected === true);
   }, [cartList]);
 
   const handleUpdateItemSelectAll = async () => {
-    const notSelectedCartList = cartList?.filter((cartItem) => !cartItem.isSelected);
-    const productIdList = notSelectedCartList?.map((cartItem) => cartItem.productId);
-    await Promise.all(productIdList!.map((productId) => updateCartItemSelected(productId, loggedUser!.id, true)));
+    if (isSelectedAll) {
+      cartList.forEach((cartItem) => updateCartItem({ ...cartItem, productSelected: false }));
+    } else {
+      cartList.forEach((cartItem) => updateCartItem({ ...cartItem, productSelected: true }));
+    }
   };
 
   const handleDeleteSelectedItem = async () => {
-    const selectedCartList = cartList?.filter((cartItem) => cartItem.isSelected);
-    const productIdList = selectedCartList?.map((cartItem) => cartItem.productId);
-    await Promise.all(productIdList!.map((productId) => deleteCartItem(productId, loggedUser!.id)));
+    cartList.forEach((cartItem) => {
+      if (cartItem.productSelected) {
+        deleteCartItem(cartItem.productId);
+      }
+    });
   };
 
   return (

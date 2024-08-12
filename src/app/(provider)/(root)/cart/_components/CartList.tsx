@@ -1,14 +1,25 @@
 'use client';
 
-import { useCartsQuery } from '@/hooks/query';
+import { LocalCart } from '@/hooks/useLocalCart';
 import CartItem from './CartItem';
 
-const CartList = () => {
-  const { data: cartList } = useCartsQuery();
+interface CartListProps {
+  cartList: LocalCart[];
+  updateCartItem: (newCartItem: LocalCart) => void;
+  deleteCartItem: (productId: number) => void;
+}
 
+const CartList = ({ cartList, deleteCartItem, updateCartItem }: CartListProps) => {
   return (
     <ul className="flex flex-col gap-5">
-      {cartList?.map((cartItem) => <CartItem key={cartItem.productId} cartItem={cartItem} />)}
+      {cartList.map((cartItem) => (
+        <CartItem
+          key={cartItem.productId}
+          cartItem={cartItem}
+          updateCartItem={updateCartItem}
+          deleteCartItem={deleteCartItem}
+        />
+      ))}
     </ul>
   );
 };
