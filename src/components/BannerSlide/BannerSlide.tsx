@@ -58,7 +58,7 @@ const BannerSlide = ({ Images }: SliderProps) => {
             : Images.map((image, idx) => (
                 <CarouselItem key={idx} className="h-full">
                   <div className="h-full flex items-center justify-center relative">
-                    <Image src={image.ImageURL} fill className="object-contain" alt={image.title} />
+                    <Image src={image.ImageURL} fill className="object-cover" alt={image.title} />
                   </div>
                 </CarouselItem>
               ))}

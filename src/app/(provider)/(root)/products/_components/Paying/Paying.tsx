@@ -14,6 +14,7 @@ import { useCartsQuery } from '@/hooks/query';
 import useAlert from '@/hooks/useAlert';
 import { Params, Product } from '@/types/products';
 import ArrowBSVG from '@@/public/arrow/arrow-bold-bottom.svg';
+import { cx } from 'class-variance-authority';
 import { useState } from 'react';
 import { Wish } from '../DetailButtons';
 
@@ -103,6 +104,8 @@ const Paying = ({ size, category, product }: PayingProps) => {
   };
   return (
     <>
+      {/* 배경 오버레이 추가 */}
+      {isSelected && <div className="fixed inset-0 bg-black/50 z-40" onClick={handleSelectedMode}></div>}
       <div className="p-5-2">
         <span>사이즈</span>
         <div className="flex-row-10">
@@ -128,9 +131,14 @@ const Paying = ({ size, category, product }: PayingProps) => {
         </Button>
       </div>
 
-      <div className="p-5-2 w-full max-w-[600px] fixed bottom-0 z-20 bg-white border-t-[1.5px] border-[#B3B3B3]">
+      <div
+        className={cx('p-5-2 w-full max-w-[600px] fixed bottom-0 z-50 bg-white border-t-[1.5px] border-[#B3B3B3]', {
+          'rounded-t-lg': isSelected,
+          'rounded-none': !isSelected
+        })}
+      >
         {isSelected ? (
-          <>
+          <div className="z-50">
             <div className="flex-col-10 justify-center items-center">
               <ArrowBSVG className="hover:cursor-pointer" onClick={handleSelectedMode} />
               <DropdownMenu>
@@ -162,7 +170,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 바로 구매하기
               </Button>
             </div>
-          </>
+          </div>
         ) : (
           <div className="flex-row-10 justify-between ">
             <Wish inner={false} />

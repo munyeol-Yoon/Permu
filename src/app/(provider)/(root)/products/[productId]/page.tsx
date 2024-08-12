@@ -10,8 +10,7 @@ import { Accordion } from '@/components/ui/accordion';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
-import { Wish } from '../_components/DetailButtons';
-import Share from '../_components/DetailButtons/Share';
+import { Share, Wish } from '../_components/DetailButtons';
 import DetailTabs from '../_components/DetailTabs';
 import Paying from '../_components/Paying';
 
