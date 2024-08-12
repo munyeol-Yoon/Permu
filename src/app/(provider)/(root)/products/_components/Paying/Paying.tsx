@@ -25,14 +25,14 @@ const Paying = ({ size, category, product }: PayingProps) => {
 
   const router = useRouter();
   const { showInfoAlert } = useAlert();
-  const { loggedUser } = useAuth();
+  const { loggedUser, isLoggedIn } = useAuth();
   const { data: carts } = useCartsQuery();
-  const { addMutation, patchMutation } = useCartsMutation();
+  const { addMutation: addCartMutation, patchMutation } = useCartsMutation();
   const { addCartItem } = useLocalCart();
 
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
 
-  const handlePostCart = () => {
+  const handlePostCart = async () => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
       const cartItem = {
         productId: product.productId,
@@ -48,6 +48,11 @@ const Paying = ({ size, category, product }: PayingProps) => {
         productThumbnailURL: product.thumbNailURL as string
       };
       addCartItem(cartItem);
+
+      if (isLoggedIn) {
+        const { mutateAsync } = addCartMutation;
+        await mutateAsync({ productId: product.productId, userId: loggedUser!.id, volume: selectedSize });
+      }
     }
   };
 
