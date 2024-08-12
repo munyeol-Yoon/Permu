@@ -9,7 +9,7 @@ export type Product = Omit<Tables<'Products'>, 'ImagesURL' | 'size' | 'notes'> &
   notes: string[];
   brandId?: number;
   Brand: Pick<Tables<'Brands'>, 'krName'>;
-  Category: Omit<Tables<'Categories'>, 'categoryId'>;
+  Category: Tables<'Categories'>;
   Wish?: TWish;
 };
 export interface Params {
