@@ -24,13 +24,7 @@ const ReviewImagesPage = () => {
             .slice(0, 7)
             .map((reviewImage, index) => (
               <div key={index} className="aspect-square relative">
-                <Image
-                  src={reviewImage}
-                  alt="리뷰 이미지"
-                  fill
-                  className="w-[200px] h-[200px] object-cover absolute"
-                  unoptimized
-                />
+                <Image src={reviewImage} alt="리뷰 이미지" fill className="w-[200px] h-[200px] object-cover absolute" />
               </div>
             ))}
         </div>

@@ -2,12 +2,12 @@
 
 import SearchHeader from '@/components/SearchPage/SearchHeader';
 import { cn } from '@/utils/cn';
+import EventIMG from '@@/public/banner/event/eventIMG.png';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import Header from './_components/Header';
 import TopBanner from './_components/Header/_components/TopBanner';
-
 const RootLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
   const isReviewPage = pathname.endsWith('/images');
@@ -26,8 +26,17 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className="md:container min-h-screen grid">
-      <Image src="/main_image.webp" fill priority unoptimized alt="" />
+    <div className="lg:container min-h-screen grid lg:grid-cols-[1fr_600px]">
+      <Image src="/main_image.webp" fill priority alt="background" loading="eager" />
+      <div className="hidden lg:block relative">
+        <Image
+          src={EventIMG}
+          fill
+          alt=""
+          className="object-contain lg:max-w-[500px] lg:max-h-[500px]"
+          loading="eager"
+        />
+      </div>
       <div className="relative bg-white w-full max-w-[600px] h-full max-h-screen overflow-scroll mx-auto flex flex-col">
         {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
@@ -48,6 +57,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
             </>
           )
         )}
+
         <div>{children}</div>
       </div>
     </div>
