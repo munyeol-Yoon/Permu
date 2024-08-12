@@ -1,5 +1,6 @@
 'use client';
 import Input from '@/components/Input';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { MYPAGE_EDIT_PATHNAME } from '@/constant/pathname';
@@ -11,18 +12,18 @@ import Link from 'next/link';
 import { useRef } from 'react';
 
 const PasswordEditPage = () => {
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const passwordCheckRef = useRef<HTMLInputElement>(null);
   const { showAlert } = useAlert();
   const { userInfoMutation } = useAuthMutation();
   const { data: loggedUser, isPending } = useAuthQuery();
 
+  if (isPending) return <Loading />;
   const {
     app_metadata: { provider }
   } = loggedUser;
 
   const isEmail = provider === 'email';
-
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const passwordCheckRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
     const formField: ValidationInputProps = {
