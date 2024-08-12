@@ -2,6 +2,7 @@
 import { useParams, useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -14,10 +15,10 @@ import { useCartsQuery } from '@/hooks/query';
 import useAlert from '@/hooks/useAlert';
 import { Params, Product } from '@/types/products';
 import ArrowBSVG from '@@/public/arrow/arrow-bold-bottom.svg';
+import CartSVG from '@@/public/cart-icon.svg';
 import { cx } from 'class-variance-authority';
 import { useState } from 'react';
 import { Wish } from '../DetailButtons';
-
 type PayingProps = { size: string[]; category: string; product: Product };
 const Paying = ({ size, category, product }: PayingProps) => {
   const router = useRouter();
@@ -29,71 +30,71 @@ const Paying = ({ size, category, product }: PayingProps) => {
   const displayedCarts = carts;
   // const displayedCarts = userId ? carts?.details : localCarts;
   const { addMutation, patchMutation } = useCartsMutation();
-
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
   const handlePostCart = async () => {
-    if (confirm('장바구니에 넣으시겠습니까 ?')) {
-      const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
+    const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
 
-      if (matchCartProduct)
-        if (loggedUser) {
-          if (selectedSize === '옵션 선택') {
-            showInfoAlert('사이즈를 선택해주세요!');
-            return;
-          }
-          patchMutation.mutate({
-            productId: Number(productId),
-            userId: loggedUser.id,
-            count: matchCartProduct.count + 1,
-            volume: selectedSize
-          });
-        } else {
-          // const updatedCarts = displayedCarts.map((cart: Cart) => {
-          //   if (cart.productId === Number(productId)) {
-          //     return { ...cart, count: cart.count + 1 };
-          //   }
-          //   return cart;
-          // });
-          // localStorage.setItem('carts', JSON.stringify(updatedCarts));
+    if (matchCartProduct)
+      if (loggedUser) {
+        if (selectedSize === '옵션 선택') {
+          showInfoAlert('사이즈를 선택해주세요!');
+          return;
         }
-      else {
-        if (loggedUser) {
-          if (selectedSize === '옵션 선택') {
-            showInfoAlert('사이즈를 선택해주세요!');
-            return;
-          }
-          addMutation.mutate({ productId: Number(productId), volume: selectedSize, userId: loggedUser.id });
-        } else {
-          // const product = await fetchDetailProduct({ params: { productId } });
-          // localStorage.setItem(
-          //   'carts',
-          //   JSON.stringify(
-          //     displayedCarts.concat({
-          //       productId: Number(productId),
-          //       userId,
-          //       count: 1,
-          //       Products: product
-          //     })
-          //   )
-          // );
-        }
+        patchMutation.mutate({
+          productId: Number(productId),
+          userId: loggedUser.id,
+          count: matchCartProduct.count + 1,
+          volume: selectedSize
+        });
+      } else {
+        // const updatedCarts = displayedCarts.map((cart: Cart) => {
+        //   if (cart.productId === Number(productId)) {
+        //     return { ...cart, count: cart.count + 1 };
+        //   }
+        //   return cart;
+        // });
+        // localStorage.setItem('carts', JSON.stringify(updatedCarts));
       }
-
-      //성공 메시지를 받아야 함!!!
-      if (confirm('장바구니에 담기를 성공했습니다 장바구니로 가시겠습니까?')) {
-        router.push('/cart');
+    else {
+      if (loggedUser) {
+        if (selectedSize === '옵션 선택') {
+          showInfoAlert('사이즈를 선택해주세요!');
+          return;
+        }
+        addMutation.mutate({ productId: Number(productId), volume: selectedSize, userId: loggedUser.id });
+      } else {
+        // const product = await fetchDetailProduct({ params: { productId } });
+        // localStorage.setItem(
+        //   'carts',
+        //   JSON.stringify(
+        //     displayedCarts.concat({
+        //       productId: Number(productId),
+        //       userId,
+        //       count: 1,
+        //       Products: product
+        //     })
+        //   )
+        // );
       }
     }
+
+    //성공 메시지를 받아야 함!!!
+    setIsDialogOpen(true);
   };
-  const handleSelectSize = (size: string) => {
+  const handleSelectSize = (size: string): void => {
     setSelectedSize(selectedSize === size ? '옵션 선택' : size);
   };
 
-  const handleSelectedMode = () => {
+  const handleSelectedMode = (): void => {
     setIsSelected((prev) => !prev);
   };
-  const handleBuyNow = () => {
+  const handleBuyNow = (): void => {
     if (selectedSize === '옵션 선택') {
       showInfoAlert('사이즈를 선택해주세요!');
       return;
@@ -179,6 +180,27 @@ const Paying = ({ size, category, product }: PayingProps) => {
           </div>
         )}
       </div>
+
+      <Dialog open={isDialogOpen}>
+        <DialogContent className="flex flex-col items-center gap-[29px] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] pt-[54px] px-5 pb-2 rounded">
+          <DialogTitle className="hidden" />
+          <CartSVG />
+          <p className="text-[20px] text-center">
+            상품이 장바구니에 담겼습니다.
+            <br />
+            바로 확인하시겠습니까?
+          </p>
+
+          <div className="flex justify-between items-center gap-2.5 w-full">
+            <Button onClick={handleDialogClose} variant="defaultline" className="w-full h-[64px]">
+              취소
+            </Button>
+            <Button onClick={() => router.push('/cart')} variant="default" className="w-full h-[64px]">
+              확인
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
