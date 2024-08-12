@@ -22,23 +22,35 @@ const AccountForm = () => {
   const phoneRef = useRef<HTMLInputElement>(null);
 
   const { data: loggedUser, isPending } = useAuthQuery();
+
   const { userInfoMutation } = useAuthMutation();
   const { showWarningAlert } = useAlert();
 
   if (!loggedUser) return <div>로그인 유저 없음</div>;
   if (isPending) return <Loading />;
+
   const {
-    userData: { email }
+    userData: { email },
+    app_metadata: { provider },
+    user_metadata: { name }
   } = loggedUser;
 
+  const isEmail = provider === 'email';
+
   const validateInputs = (): boolean => {
-    return !!(
-      passwordRef.current?.value &&
-      passwordCheckRef.current?.value &&
-      nameRef.current?.value &&
-      phoneRef.current?.value &&
-      birthRef.current?.value
-    );
+    const phone = phoneRef.current?.value;
+    const birth = birthRef.current?.value;
+
+    if (isEmail) {
+      const password = passwordRef.current?.value;
+      const passwordCheck = passwordCheckRef.current?.value;
+      const name = nameRef.current?.value;
+
+      if (!password || !passwordCheck || !name || !phone || !birth) return false;
+    } else {
+      if (!phone || !birth) return false;
+    }
+    return true;
   };
 
   const handleSubmit = () => {
@@ -53,22 +65,33 @@ const AccountForm = () => {
       return;
     }
 
-    const formField: ValidationInputProps = {
-      input: passwordRef.current!.value,
-      inputCheck: passwordCheckRef.current!.value,
-      inputType: 'password'
-    };
+    const userData: { [key: string]: string } = { email }; // 넘길 값
 
-    if (!validateForm(formField, showAlert)) return;
+    // email = pw, name
+    // 공통 = email, birth, gender, phone
+    if (isEmail) {
+      const password = passwordRef.current?.value || '';
+      const passwordCheck = passwordCheckRef.current?.value || '';
+      const name = nameRef.current?.value;
 
-    const userData = {
-      email,
-      password: passwordRef.current?.value || '',
-      name: nameRef.current?.value || '',
-      birth: birthRef.current?.value || new Date().toString(),
-      gender: genderRef.current?.checked ? 'M' : 'F',
-      phone: phoneRef.current?.value || ''
-    };
+      const formField: ValidationInputProps = {
+        input: password,
+        inputCheck: passwordCheck,
+        inputType: 'password'
+      };
+
+      if (!validateForm(formField, showAlert)) return;
+
+      if (password) userData.password = password;
+    }
+
+    const birth = birthRef.current?.value;
+    const gender = genderRef.current?.checked ? 'M' : 'F';
+
+    if (name) userData.name = name;
+    if (birth) userData.birth = birth;
+    if (gender) userData.gender = gender;
+    if (phone) userData.phone = phone;
 
     userInfoMutation(userData);
   };
@@ -102,7 +125,7 @@ const AccountForm = () => {
               type="email"
               id="email"
               placeholder={loggedUser.email || '아이디를 입력해 주세요.'}
-              disabled
+              disabled={loggedUser}
               className="grow"
             />
           </div>
@@ -116,8 +139,9 @@ const AccountForm = () => {
               variant="underline"
               type="password"
               id="password"
-              placeholder="비밀번호를 입력해 주세요."
+              placeholder={isEmail ? '비밀번호를 입력해 주세요.' : '소셜 로그인은 제외입니다'}
               ref={passwordRef}
+              disabled={!isEmail}
               className="grow"
             />
           </div>
@@ -130,9 +154,10 @@ const AccountForm = () => {
               variant="underline"
               type="password"
               id="password-check"
-              placeholder="비밀번호 확인을 입력해 주세요."
+              placeholder={isEmail ? '비밀번호 확인을 입력해 주세요.' : '소셜 로그인은 제외입니다'}
               ref={passwordCheckRef}
               className="grow"
+              disabled={!isEmail}
             />
           </div>
           <div className="flex items-center">
@@ -140,7 +165,14 @@ const AccountForm = () => {
               <span className="text-accent">*</span>
               이름
             </label>
-            <Input variant="underline" id="name" placeholder="성함을 입력해 주세요." ref={nameRef} className="grow" />
+            <Input
+              variant="underline"
+              id="name"
+              placeholder={isEmail ? '성함을 입력해 주세요.' : name}
+              ref={nameRef}
+              className="grow"
+              disabled={!isEmail}
+            />
           </div>
           <div className="flex items-center">
             <p className="w-1/4">성별</p>
