@@ -7,7 +7,6 @@ import { Product } from '@/types/products';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import SearchNotFound from '../_components/SearchNotFound';
-import { ResultFilter } from './_components';
 
 const ResultPageContent = () => {
   const searchParams = useSearchParams();
@@ -21,7 +20,6 @@ const ResultPageContent = () => {
 
   return (
     <>
-      <ResultFilter />
       <div className="container mx-auto p-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
           {data.data.map((productItem: Product) => (
