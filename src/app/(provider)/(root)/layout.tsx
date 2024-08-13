@@ -7,7 +7,6 @@ import { usePathname } from 'next/navigation';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import Header from './_components/Header';
 import TopBanner from './_components/Header/_components/TopBanner';
-
 const RootLayout = ({ children }: PropsWithChildren) => {
   const pathname = usePathname();
   const isReviewPage = pathname.endsWith('/images');
@@ -26,8 +25,17 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className="md:container min-h-screen grid">
-      <Image src="/main_image.webp" fill priority unoptimized alt="" />
+    <div className=" min-h-screen grid ">
+      <Image src="/main_image.webp" fill priority alt="background" loading="eager" />
+      {/* <div className="hidden w-full relative">
+        <Image
+          src={EventIMG}
+          fill
+          alt="이벤트 이미지"
+          className="object-contain w-[400px] h-full absolute right-0"
+          loading="eager"
+        />
+      </div> */}
       <div className="relative bg-white w-full max-w-[600px] h-full max-h-screen overflow-scroll mx-auto flex flex-col">
         {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
@@ -48,6 +56,7 @@ const RootLayout = ({ children }: PropsWithChildren) => {
             </>
           )
         )}
+
         <div>{children}</div>
       </div>
     </div>

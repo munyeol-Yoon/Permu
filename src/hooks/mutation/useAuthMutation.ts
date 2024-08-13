@@ -16,6 +16,9 @@ const useAuthMutation = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       router.replace(data.url);
+    },
+    onError: () => {
+      showFailAlert('로그인이 실패하였습니다');
     }
   });
 
@@ -41,7 +44,7 @@ const useAuthMutation = () => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       router.replace(AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME);
     },
-    onError: (error) => {
+    onError: () => {
       showWarningAlert('인증번호가 일치하지 않습니다. 새로운 인증번호를 발급해주세요.');
     }
   });
@@ -49,7 +52,7 @@ const useAuthMutation = () => {
   const { mutate: logOutMutation } = useMutation({
     mutationFn: () => logOut(),
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      queryClient.removeQueries({ queryKey: ['loggedUser'] });
       router.replace(HOME);
     }
   });
@@ -59,6 +62,7 @@ const useAuthMutation = () => {
     mutationFn: (userInfo) => patchUserInfo(userInfo),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+      showSuccessAlert('회원정보가 업데이트 되었습니다!');
       router.replace(AUTH_SIGN_UP_COMPLETE_PATHNAME);
     },
     onError: (error) => {

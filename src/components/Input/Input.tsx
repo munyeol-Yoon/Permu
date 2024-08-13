@@ -6,16 +6,24 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string | null;
   className?: string | null;
   placeholder?: string;
+  variant?: 'default' | 'underline';
 };
 
-// 일반적으로 쓰는 Input 안에 border 다 있는거 className 안넣으면 기본 shadcn스타일인 input이 나옴니다
 const DefaultInput = forwardRef<HTMLInputElement, InputProps>(
-  ({ type = 'text', label, className = 'input-default', placeholder, ...props }, ref) => {
+  ({ type = 'text', label, variant = 'default', className, placeholder, ...props }, ref) => {
     const id = useId();
     return (
       <>
         {label && <label htmlFor={id}>{label}</label>}
-        <Input type={type} id={id} className={className} placeholder={placeholder} ref={ref} {...props} />
+        <Input
+          type={type}
+          id={id}
+          variant={variant}
+          className={className}
+          placeholder={placeholder}
+          ref={ref}
+          {...props}
+        />
       </>
     );
   }

@@ -1,15 +1,26 @@
 'use client';
 import CategoryMore from '@/components/CategoryMore';
 import useProductsQuery from '@/hooks/query/useProductsQuery';
+import SkeletonCard from '../SkeletonCard';
 import Sliders from '../Sliders';
 
 const CurrentProducts = ({ title, option }: { title: string; option: string }) => {
-  const { data: products } = useProductsQuery(option);
+  const { data: products, isPending } = useProductsQuery(option);
+
+  const content = isPending ? (
+    <div className="flex gap-x-6 mt-4">
+      {Array.from({ length: 3 }).map((_, idx) => (
+        <SkeletonCard key={idx} />
+      ))}
+    </div>
+  ) : (
+    <Sliders data={products ?? []} count={3} />
+  );
 
   return (
     <div className="flex flex-col p-5-2">
       <CategoryMore title={title} />
-      <Sliders data={products ?? []} count={3} />
+      {content}
     </div>
   );
 };

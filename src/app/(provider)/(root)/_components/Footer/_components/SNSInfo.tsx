@@ -10,18 +10,18 @@ const SNSInfo = () => {
     <div className="flex flex-col items-center justify-center gap-y-2">
       <h3 className="text-xl font-semibold text-muted">Countact us</h3>
 
-      <div className="flex gap-x-2.5">
-        <Link href={INSTAGRAM_PATH}>
+      <div className="grid grid-cols-2 gap-2.5 md:flex">
+        <Link href={INSTAGRAM_PATH} className="hover:opacity-75 active:opacity-90">
           <InstagramIcon />
         </Link>
-        <Link href={FACEBOOK_PATH}>
+        <Link href={FACEBOOK_PATH} className="hover:opacity-75 active:opacity-90">
           <FacebookIcon />
         </Link>
 
-        <Link href={YOUTUBE_PATH}>
+        <Link href={YOUTUBE_PATH} className="hover:opacity-75 active:opacity-90">
           <YouTubeIcon />
         </Link>
-        <Link href={WHATSAPP_PATH}>
+        <Link href={WHATSAPP_PATH} className="hover:opacity-75 active:opacity-90">
           <WhatsAppIcon />
         </Link>
       </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Input from '@/components/Input';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { AUTH_SIGN_UP_AGREEMENT_PATHNAME } from '@/constant/pathname';
@@ -12,8 +13,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const EmailConfirmPage = () => {
   const { showAlert } = useAlert();
   const { sendVerificationEmailMutation, verifyOtpMutation } = useAuthMutation();
+
   const [submit, setSubmit] = useState<boolean>(false);
   const [isResendDisabled, setIsResendDisabled] = useState<boolean>(false);
+
   const emailRef = useRef<HTMLInputElement>(null);
   const emailCheckRef = useRef<HTMLInputElement>(null);
   const otpNums = useRef<HTMLInputElement>(null);
@@ -66,33 +69,34 @@ const EmailConfirmPage = () => {
   return (
     <>
       <Navbar title="이메일 인증" />
-
       <div className="px-12">
-        <div>
+        <div className="mt-14">
           <h3 className="py-5 border-b">인증 받을 메일 주소</h3>
 
           <div className="flex items-center">
             <label htmlFor="email" className="w-1/4">
-              <span className="text-blue-500">*</span>이메일
+              <span className="text-accent">*</span>이메일
             </label>
-            <input
+            <Input
+              variant="underline"
               type="email"
               id="email"
-              className="border-b px-[40px] py-4 text-center grow"
               placeholder="이메일 주소를 입력해주세요"
+              className="grow"
               disabled={submit}
               ref={emailRef}
             />
           </div>
           <div className="flex items-center  ">
             <label htmlFor="email" className="w-1/4">
-              <span className="text-blue-500">*</span>이메일 확인
+              <span className="text-accent">*</span>이메일 확인
             </label>
-            <input
+            <Input
+              variant="underline"
               type="email"
               id="email"
-              className="border-b px-[40px] py-[20px] text-center grow"
               placeholder="이메일 주소를 한번 더 입력해주세요"
+              className="grow"
               disabled={submit}
               ref={emailCheckRef}
             />
@@ -103,18 +107,15 @@ const EmailConfirmPage = () => {
               <label htmlFor="otp" className="w-1/4">
                 인증번호
               </label>
-              <input
-                type="text"
+              <Input
+                variant="underline"
                 id="otp"
-                className="border-b px-[40px] py-[20px] text-center grow"
                 placeholder="인증 번호를 입력해주세요"
+                className="grow"
                 ref={otpNums}
               />
-              <Button
-                className="bg-blue-600 text-white"
-                onClick={handleSendVerificationEmail}
-                disabled={isResendDisabled}
-              >
+
+              <Button className="bg-accent" onClick={handleSendVerificationEmail} disabled={isResendDisabled}>
                 재인증
               </Button>
             </div>
@@ -123,16 +124,16 @@ const EmailConfirmPage = () => {
 
         <div className="flex flex-col mt-12 px-[50px]">
           {submit ? (
-            <Button className="bg-orange-600 text-white" onClick={handleVerifyEmail} disabled={!submit}>
+            <Button className="bg-accent" onClick={handleVerifyEmail} disabled={!submit}>
               다음
             </Button>
           ) : (
-            <Button className="bg-blue-600 text-white" onClick={handleSendVerificationEmail} disabled={submit}>
+            <Button className="bg-accent" onClick={handleSendVerificationEmail} disabled={submit}>
               인증 메일 보내기
             </Button>
           )}
 
-          <Button variant="outline" asChild className="bg-white text-black">
+          <Button variant="outline" asChild>
             <Link href={AUTH_SIGN_UP_AGREEMENT_PATHNAME}>이전</Link>
           </Button>
         </div>
