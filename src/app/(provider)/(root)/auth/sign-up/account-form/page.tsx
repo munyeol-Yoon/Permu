@@ -26,13 +26,12 @@ const AccountForm = () => {
   const { userInfoMutation } = useAuthMutation();
   const { showWarningAlert } = useAlert();
 
-  if (!loggedUser) return <div>로그인 유저 없음</div>;
   if (isPending) return <Loading />;
 
   const {
     userData: { email },
     app_metadata: { provider },
-    user_metadata: { name }
+    user_metadata: { name: socialName }
   } = loggedUser;
 
   const isEmail = provider === 'email';
@@ -72,7 +71,6 @@ const AccountForm = () => {
     if (isEmail) {
       const password = passwordRef.current?.value || '';
       const passwordCheck = passwordCheckRef.current?.value || '';
-      const name = nameRef.current?.value;
 
       const formField: ValidationInputProps = {
         input: password,
@@ -85,6 +83,7 @@ const AccountForm = () => {
       if (password) userData.password = password;
     }
 
+    const name = nameRef.current?.value || socialName;
     const birth = birthRef.current?.value;
     const gender = genderRef.current?.checked ? 'M' : 'F';
 
@@ -168,7 +167,7 @@ const AccountForm = () => {
             <Input
               variant="underline"
               id="name"
-              placeholder={isEmail ? '성함을 입력해 주세요.' : name}
+              placeholder={isEmail ? '성함을 입력해 주세요.' : socialName}
               ref={nameRef}
               className="grow"
               disabled={!isEmail}
@@ -220,7 +219,7 @@ const AccountForm = () => {
 
         <div className="flex flex-col mt-12">
           <Button onClick={handleSubmit}>다음</Button>
-          <Button asChild variant="outline" className=" bg-white text-black">
+          <Button asChild variant="outline">
             <Link href={AUTH_SIGN_UP_EMAIL_CONFIRM_PATHNAME}>이전</Link>
           </Button>
         </div>

@@ -4,8 +4,8 @@ import { getAddressInfoByAddressId } from '@/api/addresses';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import useAddressMutation from '@/hooks/mutation/useAddressMutation';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useAlert from '@/hooks/useAlert';
 import { validatePhoneNumber } from '@/utils/validateCheck';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -17,7 +17,7 @@ const AddressEditPageContent = () => {
   const addressId = searchParams.get('address');
 
   const router = useRouter();
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const { addAddressMutation, patchAddressMutation } = useAddressMutation();
   const { showWarningAlert } = useAlert();
   const open = useDaumPostcodePopup();
@@ -107,10 +107,11 @@ const AddressEditPageContent = () => {
               성함<span className="ml-2 text-red-500">*</span>
             </p>
             <Input
+              variant="underline"
               value={receiverName}
               onChange={(e) => setReceiverName(e.target.value)}
               placeholder="성함을 입력해주세요"
-              className="border-b py-5 text-[20px] h-16 max-w-[360px] focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="grow text-[20px] h-16 max-w-[360px] "
             />
           </div>
           <div className="flex items-center justify-between">
@@ -118,10 +119,11 @@ const AddressEditPageContent = () => {
               연락처<span className="ml-2 text-red-500">*</span>
             </p>
             <Input
+              variant="underline"
               value={receiverPhoneNumber}
               onChange={(e) => setReceiverPhoneNumber(e.target.value)}
               placeholder="연락처를 입력해주세요"
-              className="border-b py-5 text-[20px] h-16 max-w-[360px] focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="grow text-[20px] h-16 max-w-[360px] "
             />
           </div>
         </div>
@@ -137,17 +139,19 @@ const AddressEditPageContent = () => {
               주소<span className="ml-2 text-red-500">*</span>
             </p>
             <Input
+              variant="underline"
               value={receiverAddress}
               disabled
               placeholder="주소지를 입력해주세요"
-              className="border-b py-5 text-lg h-16 max-w-[360px] focus-visible:ring-0 focus-visible:ring-offset-0"
+              className="grow text-lg h-16 max-w-[360px] "
             />
           </div>
           <Input
+            variant="underline"
             value={receiverDetailAddress}
             onChange={(e) => setReceiverDetailAddress(e.target.value)}
             placeholder="상세 주소지를 입력해주세요"
-            className="border-b py-5 text-[20px] h-16 focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="w-full py-5 text-[20px] h-16 "
           />
         </div>
         <Button
