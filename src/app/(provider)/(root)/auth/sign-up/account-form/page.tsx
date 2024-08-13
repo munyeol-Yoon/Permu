@@ -26,13 +26,12 @@ const AccountForm = () => {
   const { userInfoMutation } = useAuthMutation();
   const { showWarningAlert } = useAlert();
 
-  if (!loggedUser) return <div>로그인 유저 없음</div>;
   if (isPending) return <Loading />;
 
   const {
     userData: { email },
     app_metadata: { provider },
-    user_metadata: { name }
+    user_metadata: { name: socialName }
   } = loggedUser;
 
   const isEmail = provider === 'email';
@@ -84,7 +83,7 @@ const AccountForm = () => {
       if (password) userData.password = password;
     }
 
-    const name = nameRef.current?.value;
+    const name = nameRef.current?.value || socialName;
     const birth = birthRef.current?.value;
     const gender = genderRef.current?.checked ? 'M' : 'F';
 
@@ -92,6 +91,8 @@ const AccountForm = () => {
     if (birth) userData.birth = birth;
     if (gender) userData.gender = gender;
     if (phone) userData.phone = phone;
+
+    console.log(userData);
 
     userInfoMutation(userData);
   };
@@ -168,7 +169,7 @@ const AccountForm = () => {
             <Input
               variant="underline"
               id="name"
-              placeholder={isEmail ? '성함을 입력해 주세요.' : name}
+              placeholder={isEmail ? '성함을 입력해 주세요.' : socialName}
               ref={nameRef}
               className="grow"
               disabled={!isEmail}
