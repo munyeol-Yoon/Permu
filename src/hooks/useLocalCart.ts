@@ -1,10 +1,7 @@
 import { CartItem } from '@/types/cart';
-import { useCallback, useEffect, useState } from 'react';
-import useCart from './useCart';
+import { useCallback, useState } from 'react';
 
 const useLocalCart = () => {
-  const { cartList } = useCart();
-
   const [localCartList, setLocalCartList] = useState<CartItem[]>([]);
 
   const addLocalCartItem = useCallback((cartItem: CartItem) => {
@@ -44,31 +41,7 @@ const useLocalCart = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (cartList?.length) {
-      const prevLocalCartList = localStorage.getItem('cart');
-
-      const parsedLocalCartList = prevLocalCartList ? JSON.parse(prevLocalCartList) : [];
-
-      const filteredCartList = cartList.filter(
-        (cartItem) =>
-          !parsedLocalCartList.find((localCartItem: CartItem) => localCartItem.productId === cartItem.productId)
-      );
-
-      const newCartList = [...parsedLocalCartList, ...filteredCartList];
-
-      localStorage.setItem('cart', JSON.stringify(newCartList));
-      setLocalCartList(newCartList);
-    } else {
-      const prevCartList = localStorage.getItem('cart');
-      if (prevCartList) {
-        const parsedPrevCartList = JSON.parse(prevCartList);
-        setLocalCartList(parsedPrevCartList);
-      }
-    }
-  }, [cartList]);
-
-  return { localCartList, addLocalCartItem, deleteLocalCartItem, updateLocalCartItem };
+  return { localCartList, setLocalCartList, addLocalCartItem, deleteLocalCartItem, updateLocalCartItem };
 };
 
 export default useLocalCart;

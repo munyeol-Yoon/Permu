@@ -2,12 +2,12 @@
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/contexts/auth.context/auth.context';
-import { LocalCart } from '@/hooks/useLocalCart';
+import { CartItem } from '@/types/cart';
 import { useMemo } from 'react';
 
 interface CartSelectorProps {
-  cartList: LocalCart[];
-  updateCartItem: (newCartItem: LocalCart) => void;
+  cartList: CartItem[];
+  updateCartItem: (newCartItem: CartItem) => void;
   deleteCartItem: (productId: number) => void;
 }
 
