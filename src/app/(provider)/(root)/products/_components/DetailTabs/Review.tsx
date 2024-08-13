@@ -1,5 +1,6 @@
 'use client';
 
+import Pagination from '@/components/Pagination';
 import { useReviewsQuery } from '@/hooks/query';
 import { Params } from '@/types/products';
 import ArrowRRoundSVG from '@@/public/arrow/arrow-round-right.svg';
@@ -9,11 +10,15 @@ import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
 //const filterNavbar = ['최신순', '오래된 순', '별점 높은순'];
+
+export const itemCountPerPage: number = 2;
+export const pageCountPerPage: number = 5;
 const ReviewPage = () => {
   const router = useRouter();
   const { productId } = useParams<Params['params']>();
   const [page, setPage] = useState<number>(0);
-  const { data: reviews } = useReviewsQuery({ page, productId });
+  console.log(page);
+  const { data: reviews } = useReviewsQuery({ page, productId, perCount: itemCountPerPage });
   const reviewsImages = reviews?.data?.filter((review) => review.imagesURL).map((review) => review.imagesURL);
 
   // const handleFilter = (value: string) => {
@@ -100,6 +105,17 @@ const ReviewPage = () => {
             </div>
           </div>
         ))}
+
+        <div className="text-center">
+          {(reviews?.data ?? []).length > 0 && (
+            <Pagination
+              maxPage={Math.ceil((reviews?.totalCount ?? 1) / itemCountPerPage)}
+              itemCountPerPage={itemCountPerPage}
+              pageCountPerPage={pageCountPerPage}
+              clickListener={(page) => setPage(page - 1)}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
