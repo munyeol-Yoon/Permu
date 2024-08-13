@@ -1,11 +1,11 @@
-import reviews from '@@/src/mockup/review.json';
-import { useQuery } from '@tanstack/react-query';
-const useReviewsQuery = (productId: string) => {
+import { getReviewsById } from '@/api/review';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+const useReviewsQuery = ({ page, productId }: { page: number; productId: string }) => {
   return useQuery({
-    queryKey: ['Reviews', productId],
-    queryFn: async () => {
-      return reviews.filter((review) => review.productId === Number(productId));
-    }
+    queryKey: ['Reviews', productId, page],
+    queryFn: async () => await getReviewsById({ page, productId }),
+    enabled: !!productId,
+    placeholderData: keepPreviousData
   });
 };
 

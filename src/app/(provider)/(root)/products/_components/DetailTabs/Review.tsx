@@ -7,12 +7,15 @@ import StarFillSVG from '@@/public/star/star-fill-icon.svg';
 import StarSVG from '@@/public/star/star-icon.svg';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
+import { useState } from 'react';
 //const filterNavbar = ['최신순', '오래된 순', '별점 높은순'];
 const ReviewPage = () => {
   const router = useRouter();
   const { productId } = useParams<Params['params']>();
-  const { data: reviews } = useReviewsQuery(productId);
-  const reviewsImages = reviews?.map((review) => review.ImagesURL);
+  const [page, setPage] = useState<number>(0);
+  const { data: reviews } = useReviewsQuery({ page, productId });
+  const reviewsImages = reviews?.data?.filter((review) => review.imagesURL).map((review) => review.imagesURL);
+
   // const handleFilter = (value: string) => {
   //   alert(value);
   // };
@@ -21,7 +24,7 @@ const ReviewPage = () => {
     <div className="p-5-2 ">
       <div className="flex-row-10 mb-3">
         <span className="text-xl">전체 후기 사진</span>
-        <span className="text-xl text-[#0348FF]">{reviewsImages?.flat().length}</span>
+        <span className="text-xl text-[#0348FF]">{reviewsImages?.length}</span>
       </div>
       <div className="grid grid-cols-4 gap-4">
         {reviewsImages
@@ -58,7 +61,7 @@ const ReviewPage = () => {
           ))}
         </div> */}
 
-        {reviews?.map((review) => (
+        {reviews?.data.map((review) => (
           <div key={review.reviewId}>
             <div className="grid grid-cols-[50px_1fr] grid-rows-2 gap-1">
               <Image
@@ -69,20 +72,20 @@ const ReviewPage = () => {
                 className="row-span-2 rounded-full"
               />
               <span>{review.User.name}</span>
-              <span className="text-sm">{review.Products.notes?.join(' | ')}</span>
+              <span className="text-sm">{review.Product.notes.join(' | ')}</span>
             </div>
             <div className="min-h-[213px] flex-col-10">
               <div className="flex flex-row items-center">
-                {Array.from({ length: review.score }, (_, index) => (
+                {Array.from({ length: review.score ?? 0 }, (_, index) => (
                   <StarFillSVG key={`filled-${index}`} />
                 ))}
-                {Array.from({ length: 5 - review.score }, (_, index) => (
+                {Array.from({ length: 5 - (review.score ?? 0) }, (_, index) => (
                   <StarSVG key={`empty-${index}`} />
                 ))}
-                <span className="text-xs">{review.createdBy}</span>
+                <span className="text-xs">{review.createdAt.slice(0, 10)}</span>
               </div>
               <div className="flex-row-10">
-                {review.ImagesURL.map((imageURL, index) => (
+                {review.imagesURL?.map((imageURL, index) => (
                   <Image
                     key={index}
                     src={imageURL}
