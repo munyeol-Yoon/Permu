@@ -28,12 +28,18 @@ const Paying = ({ size, category, product }: PayingProps) => {
   const { loggedUser, isLoggedIn } = useAuth();
   const { data: carts } = useCartsQuery();
   const { addMutation: addCartMutation, patchMutation } = useCartsMutation();
-  const { addLocalCartItem } = useLocalCart();
+  const { addLocalCartItem, updateLocalCartItem, localCartList } = useLocalCart();
 
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
 
   const handlePostCart = async () => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
+      const duplicatedCartItem = localCartList.find((cartItem) => cartItem.productId === product.productId);
+      if (duplicatedCartItem) {
+        updateLocalCartItem({ ...duplicatedCartItem, productCount: duplicatedCartItem.productCount + 1 });
+        return;
+      }
+
       const cartItem = {
         productId: product.productId,
         productCount: 1,
@@ -47,12 +53,8 @@ const Paying = ({ size, category, product }: PayingProps) => {
         productPrice: product.price as number,
         productThumbnailURL: product.thumbNailURL as string
       };
-      addLocalCartItem(cartItem);
 
-      if (isLoggedIn) {
-        const { mutateAsync } = addCartMutation;
-        await mutateAsync({ productId: product.productId, userId: loggedUser!.id, volume: selectedSize });
-      }
+      addLocalCartItem(cartItem);
     }
   };
 
