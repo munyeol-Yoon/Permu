@@ -12,7 +12,7 @@ import { FilterNavMenu, ResultFilter } from './_components';
 export type FilterCriteriaType = {
   priceRange: number[];
   priceType: 'all' | 'high' | 'low';
-  benefit: 'discount' | 'freeShipping' | 'freeExchange' | 'none';
+  benefit: 'discount' | 'none';
 };
 
 const ResultPageContent = () => {
@@ -40,7 +40,10 @@ const ResultPageContent = () => {
     const filtered = products.filter((product) => {
       const price = product.price ?? 0;
       const withinPriceRange = price >= filterCriteria.priceRange[0] && price <= filterCriteria.priceRange[1];
-      return withinPriceRange;
+      const isDiscounted =
+        filterCriteria.benefit === 'none' || (filterCriteria.benefit === 'discount' && product.discount);
+
+      return withinPriceRange && isDiscounted;
     });
 
     if (filterCriteria.priceType === 'high') {

@@ -15,30 +15,25 @@ interface ResultFilterProps {
 const ResultFilter = ({ data, setFilterCriteria, onClose }: ResultFilterProps) => {
   const [selectedPriceType, setSelectedPriceType] = useState<'high' | 'low' | 'all'>('all');
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 200000000]);
+  const [selectedBenefit, setSelectedBenefit] = useState<'discount' | 'none'>('none');
 
   const handlePriceRangeChange = (newPriceRange: [number, number]) => {
     setPriceRange(newPriceRange);
-    setFilterCriteria({
-      priceRange: newPriceRange,
-      priceType: selectedPriceType,
-      benefit: 'none'
-    });
   };
 
   const handlePriceTypeChange = (priceType: 'high' | 'low' | 'all') => {
     setSelectedPriceType(priceType);
-    setFilterCriteria({
-      priceRange,
-      priceType,
-      benefit: 'none'
-    });
+  };
+
+  const handleBenefitChange = (benefit: 'discount' | 'none') => {
+    setSelectedBenefit(benefit);
   };
 
   const handleApplyClick = () => {
     setFilterCriteria({
       priceRange,
       priceType: selectedPriceType,
-      benefit: 'none'
+      benefit: selectedBenefit
     });
     onClose();
   };
@@ -51,6 +46,7 @@ const ResultFilter = ({ data, setFilterCriteria, onClose }: ResultFilterProps) =
     });
     setSelectedPriceType('all');
     setPriceRange([1000, 200000000]);
+    setSelectedBenefit('none');
   };
 
   return (
@@ -58,7 +54,7 @@ const ResultFilter = ({ data, setFilterCriteria, onClose }: ResultFilterProps) =
       <div className="flex flex-col space-y-4">
         <FilterPricePoint priceRange={priceRange} handlePriceRangeChange={handlePriceRangeChange} />
         <FilterPriceType selectedPriceType={selectedPriceType} onPriceTypeChange={handlePriceTypeChange} />
-        <FilterBenefits />
+        <FilterBenefits selectedBenefit={selectedBenefit} onBenefitChange={handleBenefitChange} />
         <FilterLabel />
         <div className="w-full border-t border-gray-200" />
         <div className="flex justify-between mt-4 px-[10px]">
