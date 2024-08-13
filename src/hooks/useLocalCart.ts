@@ -1,8 +1,22 @@
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { CartItem } from '@/types/cart';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import useCart from './useCart';
 
 const useLocalCart = () => {
+  const { cartList, addCartItem } = useCart();
+  const { loggedUser } = useAuth();
+
   const [localCartList, setLocalCartList] = useState<CartItem[]>([]);
+
+  const newCartItemList = useMemo(() => {
+    return localCartList.filter(
+      (localCartItem: CartItem) =>
+        !cartList?.find((cartItem: CartItem) => cartItem.productId === localCartItem.productId)
+    );
+  }, [cartList, localCartList]);
+
+  const updatedCartItemList = useMemo(() => {}, []);
 
   const addLocalCartItem = useCallback((cartItem: CartItem) => {
     const prevCartList = localStorage.getItem('cart');
@@ -42,12 +56,28 @@ const useLocalCart = () => {
   }, []);
 
   useEffect(() => {
-    const prevCartList = localStorage.getItem('cart');
-    if (prevCartList) {
-      const parsedPrevCartList = JSON.parse(prevCartList);
-      setLocalCartList(parsedPrevCartList);
+    if (cartList?.length) {
+      const prevLocalCartList = localStorage.getItem('cart');
+
+      const parsedLocalCartList = prevLocalCartList ? JSON.parse(prevLocalCartList) : [];
+
+      const filteredCartList = cartList.filter(
+        (cartItem) =>
+          !parsedLocalCartList.find((localCartItem: CartItem) => localCartItem.productId === cartItem.productId)
+      );
+
+      const newCartList = [...parsedLocalCartList, ...filteredCartList];
+
+      localStorage.setItem('cart', JSON.stringify(newCartList));
+      setLocalCartList(newCartList);
+    } else {
+      const prevCartList = localStorage.getItem('cart');
+      if (prevCartList) {
+        const parsedPrevCartList = JSON.parse(prevCartList);
+        setLocalCartList(parsedPrevCartList);
+      }
     }
-  }, []);
+  }, [cartList]);
 
   return { localCartList, addLocalCartItem, deleteLocalCartItem, updateLocalCartItem };
 };
