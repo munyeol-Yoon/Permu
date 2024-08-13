@@ -1,5 +1,5 @@
 'use client';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -9,84 +9,56 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/contexts/auth.context/auth.context';
-import { useCartsMutation } from '@/hooks/mutation';
-import { useCartsQuery } from '@/hooks/query';
 import useAlert from '@/hooks/useAlert';
-import { Params, Product } from '@/types/products';
+import useLocalCart from '@/hooks/useLocalCart';
+import { Product } from '@/types/products';
 import ArrowBSVG from '@@/public/arrow/arrow-bold-bottom.svg';
 import CartSVG from '@@/public/cart-icon.svg';
 import { cx } from 'class-variance-authority';
 import { useState } from 'react';
 import { Wish } from '../DetailButtons';
 type PayingProps = { size: string[]; category: string; product: Product };
+
 const Paying = ({ size, category, product }: PayingProps) => {
   const router = useRouter();
   const { showInfoAlert } = useAlert();
-  const { productId } = useParams<Params['params']>();
-  const { loggedUser } = useAuth();
-  // const localCarts = JSON.parse(localStorage.getItem('carts') || '[]');
-  const { data: carts } = useCartsQuery();
-  const displayedCarts = carts;
-  // const displayedCarts = userId ? carts?.details : localCarts;
-  const { addMutation, patchMutation } = useCartsMutation();
+  const { addLocalCartItem, updateLocalCartItem, localCartList } = useLocalCart();
+
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
 
+  const handlePostCart = async () => {
+    if (confirm('장바구니에 넣으시겠습니까 ?')) {
+      const duplicatedCartItem = localCartList.find((cartItem) => cartItem.productId === product.productId);
+      if (duplicatedCartItem) {
+        updateLocalCartItem({ ...duplicatedCartItem, productCount: duplicatedCartItem.productCount + 1 });
+        return;
+      }
+
+      const cartItem = {
+        productId: product.productId,
+        productCount: 1,
+        productDiscountedPrice: product.discountedPrice,
+        productSelected: true,
+        productSelectedVolume: selectedSize,
+        productVolume: product.size,
+        productBrandName: product.Brand.krName as string,
+        productName: product.title as string,
+        productDiscountPercentage: product.discount as number,
+        productPrice: product.price as number,
+        productThumbnailURL: product.thumbNailURL as string
+      };
+
+      addLocalCartItem(cartItem);
+      setIsDialogOpen(true);
+    }
+  };
+
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
-  const handlePostCart = async () => {
-    const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
 
-    if (matchCartProduct)
-      if (loggedUser) {
-        if (selectedSize === '옵션 선택') {
-          showInfoAlert('사이즈를 선택해주세요!');
-          return;
-        }
-        patchMutation.mutate({
-          productId: Number(productId),
-          userId: loggedUser.id,
-          count: matchCartProduct.count + 1,
-          volume: selectedSize
-        });
-      } else {
-        // const updatedCarts = displayedCarts.map((cart: Cart) => {
-        //   if (cart.productId === Number(productId)) {
-        //     return { ...cart, count: cart.count + 1 };
-        //   }
-        //   return cart;
-        // });
-        // localStorage.setItem('carts', JSON.stringify(updatedCarts));
-      }
-    else {
-      if (loggedUser) {
-        if (selectedSize === '옵션 선택') {
-          showInfoAlert('사이즈를 선택해주세요!');
-          return;
-        }
-        addMutation.mutate({ productId: Number(productId), volume: selectedSize, userId: loggedUser.id });
-      } else {
-        // const product = await fetchDetailProduct({ params: { productId } });
-        // localStorage.setItem(
-        //   'carts',
-        //   JSON.stringify(
-        //     displayedCarts.concat({
-        //       productId: Number(productId),
-        //       userId,
-        //       count: 1,
-        //       Products: product
-        //     })
-        //   )
-        // );
-      }
-    }
-
-    //성공 메시지를 받아야 함!!!
-    setIsDialogOpen(true);
-  };
   const handleSelectSize = (size: string): void => {
     setSelectedSize(selectedSize === size ? '옵션 선택' : size);
   };
@@ -103,6 +75,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
     localStorage.setItem('buy-now', JSON.stringify({ count: 1, volume: selectedSize, ...product }));
     router.push('/order');
   };
+
   return (
     <>
       {isSelected && <div className="fixed inset-0 bg-black/50 z-40" onClick={handleSelectedMode}></div>}

@@ -36,7 +36,6 @@ const MyMainPage = () => {
 
   if (isAuthPending || (loggedUser && isCouponPending)) return <Loading />;
 
-  const name = loggedUser?.userData.name;
   const mileage = loggedUser?.userData.mileage;
 
   const getHref = (path: string) => (loggedUser ? path : AUTH_LOG_IN_PATHNAME);
@@ -44,7 +43,7 @@ const MyMainPage = () => {
   return (
     <div className="flex flex-col">
       <Navbar title="마이페이지" isHome />
-      <Profile name={name || ''} />
+      <Profile />
 
       <div className="flex bg-muted/30 p-5 gap-x-2.5">
         <InfoCard title="보유 마일리지" href={getHref(MYPAGE_MILEAGE_PATHNAME)}>

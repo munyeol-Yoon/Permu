@@ -1,14 +1,25 @@
 'use client';
 
-import { useCartsQuery } from '@/hooks/query';
+import { CartItem as CartItemType } from '@/types/cart';
 import CartItem from './CartItem';
 
-const CartList = () => {
-  const { data: cartList } = useCartsQuery();
+interface CartListProps {
+  cartList: CartItemType[];
+  updateCartItem: (newCartItem: CartItemType) => void;
+  deleteCartItem: (productId: number) => void;
+}
 
+const CartList = ({ cartList, deleteCartItem, updateCartItem }: CartListProps) => {
   return (
-    <ul className="flex flex-col gap-5">
-      {cartList?.map((cartItem) => <CartItem key={cartItem.productId} cartItem={cartItem} />)}
+    <ul className="flex flex-col gap-5 pb-[148px]">
+      {cartList.map((cartItem) => (
+        <CartItem
+          key={cartItem.productId}
+          cartItem={cartItem}
+          updateCartItem={updateCartItem}
+          deleteCartItem={deleteCartItem}
+        />
+      ))}
     </ul>
   );
 };

@@ -3,25 +3,29 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useCartsQuery } from '@/hooks/query';
+import { useAuth } from '@/contexts/auth.context/auth.context';
+import { CartItem } from '@/types/cart';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
-const CartAccordion = () => {
-  const { data: cartList } = useCartsQuery();
+interface CartAccordionProps {
+  cartList: CartItem[];
+}
 
+const CartAccordion = ({ cartList }: CartAccordionProps) => {
+  const { isLoggedIn } = useAuth();
   const selectedProductCount = useMemo(() => {
     if (cartList?.length) {
-      return cartList?.reduce((acc, cur) => acc + Number(cur.isSelected), 0);
+      return cartList?.reduce((acc, cur) => acc + Number(cur.productSelected), 0);
     }
   }, [cartList]);
 
   const totalPrice = useMemo(() => {
     if (cartList?.length) {
       return cartList?.reduce((acc, cur) => {
-        if (cur.isSelected) {
-          return acc + cur.Products.discountedPrice * cur.count;
+        if (cur.productSelected) {
+          return acc + cur.productDiscountedPrice * cur.productCount;
         } else return acc;
       }, 0);
     }
@@ -29,7 +33,7 @@ const CartAccordion = () => {
 
   return (
     <>
-      <div className="absolute bottom-0 px-5 flex flex-col items-center z-40 w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
+      <div className="fixed bottom-0 px-5 flex flex-col items-center z-40 w-full max-w-[600px] bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="accordion_1" className="border-none">
             <AccordionTrigger
@@ -75,7 +79,7 @@ const CartAccordion = () => {
         </Accordion>
 
         <Link
-          href="/order"
+          href={isLoggedIn ? '/order' : '/auth/log-in'}
           className={cn(
             'w-full text-center text-white px-5 py-[11.5px] rounded-sm my-2 bg-[#0348FF]',
             !selectedProductCount && 'opacity-50 pointer-events-none'

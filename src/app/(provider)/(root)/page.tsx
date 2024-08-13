@@ -2,12 +2,10 @@ import { BannerSlide } from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
 import CurrentProducts from '@/components/CurrentProducts';
 import MdReviews from '@/components/MdReviews';
-
-import CategoryProducts from './_components/CategorySection/CategoryProducts';
-import CategorySection from './_components/CategorySection/CategorySection';
-
+import { CategoryProducts, CategorySection } from './_components/CategorySection';
 import EventLinkCard from './_components/EventLinkCard';
 import Footer from './_components/Footer';
+
 const RootPage = () => {
   return (
     <main className="max-w-[600px] mx-auto my-0 h-full w-full overflow-hidden">
@@ -24,8 +22,8 @@ const RootPage = () => {
         {/* 현재 판매중인 상품 */}
         <CurrentProducts title={'지금 가장 인기 있는 제품'} option="order" />
         <CurrentProducts title={'방금 출시된 제품'} option="recent" />
-
         <CurrentProducts title={'지금 가장 많이 좋아요 받은 제품'} option="wish" />
+
         {/* 카테고리1 */}
         <CategorySection title="인기 급상승 브랜드 - 캔들" count={4} />
         <CategoryProducts title="이번주 소개할 브랜드 - " option="brand" count={3} />
