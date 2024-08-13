@@ -11,13 +11,13 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import useCart from '@/hooks/useCart';
-import { LocalCart } from '@/hooks/useLocalCart';
+import { CartItem as CartItemType } from '@/types/cart';
 import Image from 'next/image';
 import { useState } from 'react';
 
 interface CartItemProps {
-  cartItem: LocalCart;
-  updateCartItem: (newCartItem: LocalCart) => void;
+  cartItem: CartItemType;
+  updateCartItem: (newCartItem: CartItemType) => void;
   deleteCartItem: (productId: number) => void;
 }
 
