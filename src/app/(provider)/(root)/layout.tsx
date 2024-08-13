@@ -2,7 +2,6 @@
 
 import SearchHeader from '@/components/SearchPage/SearchHeader';
 import { cn } from '@/utils/cn';
-import EventIMG from '@@/public/banner/event/eventIMG.png';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren, useCallback, useEffect, useState } from 'react';
@@ -26,17 +25,17 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className="lg:container min-h-screen grid lg:grid-cols-[1fr_600px]">
+    <div className=" min-h-screen grid ">
       <Image src="/main_image.webp" fill priority alt="background" loading="eager" />
-      <div className="hidden lg:block relative">
+      {/* <div className="hidden w-full relative">
         <Image
           src={EventIMG}
           fill
-          alt=""
-          className="object-contain lg:max-w-[500px] lg:max-h-[500px]"
+          alt="이벤트 이미지"
+          className="object-contain w-[400px] h-full absolute right-0"
           loading="eager"
         />
-      </div>
+      </div> */}
       <div className="relative bg-white w-full max-w-[600px] h-full max-h-screen overflow-scroll mx-auto flex flex-col">
         {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
