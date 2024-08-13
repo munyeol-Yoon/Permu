@@ -22,6 +22,7 @@ const ResultPageContent = () => {
     priceType: 'all',
     benefit: 'none'
   });
+  const [filterOrder, setFilterOrder] = useState<'pricePoint' | 'priceType' | 'benefits'>('pricePoint');
 
   const toggleFilterVisibility = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -59,19 +60,48 @@ const ResultPageContent = () => {
 
   return (
     <>
-      <div className="relative flex items-center justify-between p-4 bg-gray-100">
-        <FilterNavMenu toggleFilterVisibility={toggleFilterVisibility}>가격</FilterNavMenu>
+      <div className="relative flex items-center p-4 bg-gray-100">
+        <FilterNavMenu
+          onClick={() => {
+            setFilterOrder('pricePoint');
+            toggleFilterVisibility();
+          }}
+        >
+          가격대
+        </FilterNavMenu>
+        <FilterNavMenu
+          onClick={() => {
+            setFilterOrder('priceType');
+            toggleFilterVisibility();
+          }}
+        >
+          가격 유형
+        </FilterNavMenu>
+        <FilterNavMenu
+          onClick={() => {
+            setFilterOrder('benefits');
+            toggleFilterVisibility();
+          }}
+        >
+          혜택 정보
+        </FilterNavMenu>
 
         {isFilterVisible && (
           <>
             <div className="absolute top-full left-0 w-full max-w-[600px] bg-white rounded-lg shadow-lg z-50">
-              <ResultFilter data={data.data} setFilterCriteria={setFilterCriteria} onClose={toggleFilterVisibility} />
+              <ResultFilter
+                data={data.data}
+                setFilterCriteria={setFilterCriteria}
+                onClose={toggleFilterVisibility}
+                filterOrder={filterOrder}
+              />
             </div>
 
             <div className="absolute top-[calc(100%+20px)] left-0 w-full max-w-[600px] h-[4px] bg-white z-50"></div>
           </>
         )}
       </div>
+
       <div className="container mx-auto p-5">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
           {filteredProducts.map((productItem: Product) => (

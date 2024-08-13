@@ -10,9 +10,10 @@ interface ResultFilterProps {
   data: Product[];
   setFilterCriteria: (criteria: FilterCriteriaType) => void;
   onClose: () => void;
+  filterOrder: 'pricePoint' | 'priceType' | 'benefits';
 }
 
-const ResultFilter = ({ data, setFilterCriteria, onClose }: ResultFilterProps) => {
+const ResultFilter = ({ data, setFilterCriteria, onClose, filterOrder }: ResultFilterProps) => {
   const [selectedPriceType, setSelectedPriceType] = useState<'high' | 'low' | 'all'>('all');
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 200000000]);
   const [selectedBenefit, setSelectedBenefit] = useState<'discount' | 'none'>('none');
@@ -52,9 +53,27 @@ const ResultFilter = ({ data, setFilterCriteria, onClose }: ResultFilterProps) =
   return (
     <div className="filter-container p-4 bg-white">
       <div className="flex flex-col space-y-4">
-        <FilterPricePoint priceRange={priceRange} handlePriceRangeChange={handlePriceRangeChange} />
-        <FilterPriceType selectedPriceType={selectedPriceType} onPriceTypeChange={handlePriceTypeChange} />
-        <FilterBenefits selectedBenefit={selectedBenefit} onBenefitChange={handleBenefitChange} />
+        {filterOrder === 'pricePoint' && (
+          <>
+            <FilterPricePoint priceRange={priceRange} handlePriceRangeChange={handlePriceRangeChange} />
+            <FilterPriceType selectedPriceType={selectedPriceType} onPriceTypeChange={handlePriceTypeChange} />
+            <FilterBenefits selectedBenefit={selectedBenefit} onBenefitChange={handleBenefitChange} />
+          </>
+        )}
+        {filterOrder === 'priceType' && (
+          <>
+            <FilterPriceType selectedPriceType={selectedPriceType} onPriceTypeChange={handlePriceTypeChange} />
+            <FilterBenefits selectedBenefit={selectedBenefit} onBenefitChange={handleBenefitChange} />
+            <FilterPricePoint priceRange={priceRange} handlePriceRangeChange={handlePriceRangeChange} />
+          </>
+        )}
+        {filterOrder === 'benefits' && (
+          <>
+            <FilterBenefits selectedBenefit={selectedBenefit} onBenefitChange={handleBenefitChange} />
+            <FilterPriceType selectedPriceType={selectedPriceType} onPriceTypeChange={handlePriceTypeChange} />
+            <FilterPricePoint priceRange={priceRange} handlePriceRangeChange={handlePriceRangeChange} />
+          </>
+        )}
         <FilterLabel />
         <div className="w-full border-t border-gray-200" />
         <div className="flex justify-between mt-4 px-[10px]">
