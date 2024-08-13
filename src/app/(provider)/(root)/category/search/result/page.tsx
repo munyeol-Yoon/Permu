@@ -11,7 +11,7 @@ import { FilterNavMenu, ResultFilter } from './_components';
 
 export type FilterCriteriaType = {
   priceRange: number[];
-  priceType: 'all' | 'high' | 'low'; // 높은 가격순, 낮은 가격순, 무료 교환 반품(비활성화)
+  priceType: 'all' | 'high' | 'low';
   benefit: 'discount' | 'freeShipping' | 'freeExchange' | 'none';
 };
 
@@ -37,14 +37,19 @@ const ResultPageContent = () => {
   if (data.data.length <= 0) return <SearchNotFound />;
 
   const filterProducts = (products: Product[]) => {
-    return products.filter((product) => {
+    const filtered = products.filter((product) => {
       const price = product.price ?? 0;
-      const discount = product.discount ?? 0;
-
       const withinPriceRange = price >= filterCriteria.priceRange[0] && price <= filterCriteria.priceRange[1];
-      // const matchesPriceType = filterCriteria.priceType === 'all' || (filterCriteria.priceType === 'discounted' && discount > 0);
       return withinPriceRange;
     });
+
+    if (filterCriteria.priceType === 'high') {
+      return filtered.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+    } else if (filterCriteria.priceType === 'low') {
+      return filtered.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+    }
+
+    return filtered;
   };
 
   const filteredProducts = filterProducts(data.data);
@@ -57,7 +62,7 @@ const ResultPageContent = () => {
         {isFilterVisible && (
           <>
             <div className="absolute top-full left-0 w-full max-w-[600px] bg-white rounded-lg shadow-lg z-50">
-              <ResultFilter data={data.data} setFilterCriteria={setFilterCriteria} />
+              <ResultFilter data={data.data} setFilterCriteria={setFilterCriteria} onClose={toggleFilterVisibility} />
             </div>
 
             <div className="absolute top-[calc(100%+20px)] left-0 w-full max-w-[600px] h-[4px] bg-white z-50"></div>
