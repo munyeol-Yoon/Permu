@@ -1,17 +1,17 @@
 'use client';
 
-import { LocalCart } from '@/hooks/useLocalCart';
+import { CartItem as CartItemType } from '@/types/cart';
 import CartItem from './CartItem';
 
 interface CartListProps {
-  cartList: LocalCart[];
-  updateCartItem: (newCartItem: LocalCart) => void;
+  cartList: CartItemType[];
+  updateCartItem: (newCartItem: CartItemType) => void;
   deleteCartItem: (productId: number) => void;
 }
 
 const CartList = ({ cartList, deleteCartItem, updateCartItem }: CartListProps) => {
   return (
-    <ul className="flex flex-col gap-5">
+    <ul className="flex flex-col gap-5 pb-[148px]">
       {cartList.map((cartItem) => (
         <CartItem
           key={cartItem.productId}

@@ -3,13 +3,13 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { LocalCart } from '@/hooks/useLocalCart';
+import { CartItem } from '@/types/cart';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { useMemo } from 'react';
 
 interface CartAccordionProps {
-  cartList: LocalCart[];
+  cartList: CartItem[];
 }
 
 const CartAccordion = ({ cartList }: CartAccordionProps) => {
@@ -31,7 +31,7 @@ const CartAccordion = ({ cartList }: CartAccordionProps) => {
 
   return (
     <>
-      <div className="absolute bottom-0 px-5 flex flex-col items-center z-40 w-full bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
+      <div className="fixed bottom-0 px-5 flex flex-col items-center z-40 w-full max-w-[600px] bg-white shadow-[0px_-19px_5px_0px_rgba(0,0,0,0.00),0px_-12px_5px_0px_rgba(0,0,0,0.01),0px_-7px_4px_0px_rgba(0,0,0,0.05),0px_-3px_3px_0px_rgba(0,0,0,0.09),0px_-1px_2px_0px_rgba(0,0,0,0.10)]">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="accordion_1" className="border-none">
             <AccordionTrigger
