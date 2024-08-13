@@ -1,6 +1,7 @@
 'use client';
 import CategoryMore from '@/components/CategoryMore';
 import Sliders from '@/components/Sliders';
+import { Skeleton } from '@/components/ui/skeleton';
 import useBrandsQuery from '@/hooks/query/useBrandsQuery';
 import useProductsQuery from '@/hooks/query/useProductsQuery';
 import { Product } from '@/types/products';
@@ -12,13 +13,23 @@ interface CategorySectionProps {
 }
 
 const CategorySection = ({ title, count }: CategorySectionProps) => {
-  const { data: products } = useProductsQuery('order');
+  const { data: products, isPending } = useProductsQuery('order');
   const brandIds =
     products
       ?.filter((product: Product) => product.categoryId === '84598475-403c-45db-b6da-22b8c742fea3')
       .map((product: Product) => product.brandId) || [];
 
   const { data: brands } = useBrandsQuery(brandIds);
+
+  const content = isPending ? (
+    <div className="flex gap-x-6 mt-4">
+      {Array.from({ length: 3 }).map((_, idx) => (
+        <Skeleton size="rect" key={idx} />
+      ))}
+    </div>
+  ) : (
+    <Sliders data={brands ?? []} count={count} />
+  );
 
   return (
     <div className="flex flex-col p-5-2">
@@ -35,7 +46,7 @@ const CategorySection = ({ title, count }: CategorySectionProps) => {
         />
       </div>
 
-      <Sliders data={brands ?? []} count={count} />
+      {content}
     </div>
   );
 };
