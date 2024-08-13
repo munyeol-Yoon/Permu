@@ -1,9 +1,16 @@
+import { Product } from '@/types/products';
 import FilterBenefits from './FilterBenefits';
 import FilterLabel from './FilterLabel';
 import FilterPricePoint from './FilterPricePoint';
 import FilterPriceType from './FilterPriceType';
 
-const ResultFilter = () => {
+interface ResultFilterProps {
+  data: Product[];
+}
+
+const ResultFilter = ({ data }: ResultFilterProps) => {
+  console.log(data);
+
   return (
     <div className="filter-container p-4 bg-white">
       <div className="flex flex-col space-y-4">
@@ -16,7 +23,9 @@ const ResultFilter = () => {
           <button className="border border-gray-400 text-gray-400 rounded px-4 py-2 w-[220px] h-[46px] mr-[10px]">
             초기화
           </button>
-          <button className="bg-[#2c2c2c] text-white rounded px-4 py-2 w-[330px] h-[46px]">40개의 상품 보기</button>
+          <button className="bg-[#2c2c2c] text-white rounded px-4 py-2 w-[330px] h-[46px]">
+            {data.length}개의 상품 보기
+          </button>
         </div>
       </div>
     </div>
