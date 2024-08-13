@@ -54,7 +54,7 @@ const MyMainPage = () => {
           {coupons?.length || '-'}
         </InfoCard>
         <InfoCard title="후기" href={getHref(MYPAGE_REVIEW_PATHNAME)}>
-          {loggedUser ? '2개(임시)' : '-'}
+          {'-'}
         </InfoCard>
       </div>
       <Banner className="mx-auto my-4" />
