@@ -1,22 +1,11 @@
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { CartItem } from '@/types/cart';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useCart from './useCart';
 
 const useLocalCart = () => {
-  const { cartList, addCartItem } = useCart();
-  const { loggedUser } = useAuth();
+  const { cartList } = useCart();
 
   const [localCartList, setLocalCartList] = useState<CartItem[]>([]);
-
-  const newCartItemList = useMemo(() => {
-    return localCartList.filter(
-      (localCartItem: CartItem) =>
-        !cartList?.find((cartItem: CartItem) => cartItem.productId === localCartItem.productId)
-    );
-  }, [cartList, localCartList]);
-
-  const updatedCartItemList = useMemo(() => {}, []);
 
   const addLocalCartItem = useCallback((cartItem: CartItem) => {
     const prevCartList = localStorage.getItem('cart');
