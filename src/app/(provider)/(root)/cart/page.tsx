@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from '@/components/Navbar';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import useCart from '@/hooks/useCart';
 import useLocalCart from '@/hooks/useLocalCart';
 import { CartItem } from '@/types/cart';
@@ -14,7 +15,8 @@ const CartPage = () => {
     deleteLocalCartItem: deleteCartItem,
     updateLocalCartItem: updateCartItem
   } = useLocalCart();
-  const { cartList } = useCart();
+  const { cartList, addCartItem } = useCart();
+  const { loggedUser } = useAuth();
 
   useEffect(() => {
     if (cartList?.length) {
@@ -31,7 +33,22 @@ const CartPage = () => {
 
       localStorage.setItem('cart', JSON.stringify(newCartList));
     }
-  }, [cartList, localCartList]);
+
+    return () => {
+      if (cartList?.length) {
+        const prevLocalCartList = localStorage.getItem('cart');
+
+        const parsedLocalCartList = prevLocalCartList ? JSON.parse(prevLocalCartList) : [];
+        const filteredCartList = parsedLocalCartList.filter(
+          (cartItem: CartItem) =>
+            !cartList.find((localCartItem: CartItem) => localCartItem.productId === cartItem.productId)
+        );
+        filteredCartList.forEach((cartItem: CartItem) =>
+          addCartItem(cartItem.productId, loggedUser!.id, cartItem.productSelectedVolume)
+        );
+      }
+    };
+  }, [addCartItem, cartList, localCartList, loggedUser]);
 
   if (!localCartList.length) {
     return (
