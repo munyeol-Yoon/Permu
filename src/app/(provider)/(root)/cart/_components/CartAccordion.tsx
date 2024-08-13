@@ -3,6 +3,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/contexts/auth.context/auth.context';
 import { CartItem } from '@/types/cart';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
@@ -13,6 +14,7 @@ interface CartAccordionProps {
 }
 
 const CartAccordion = ({ cartList }: CartAccordionProps) => {
+  const { isLoggedIn } = useAuth();
   const selectedProductCount = useMemo(() => {
     if (cartList?.length) {
       return cartList?.reduce((acc, cur) => acc + Number(cur.productSelected), 0);
@@ -77,7 +79,7 @@ const CartAccordion = ({ cartList }: CartAccordionProps) => {
         </Accordion>
 
         <Link
-          href="/order"
+          href={isLoggedIn ? '/order' : '/auth/log-in'}
           className={cn(
             'w-full text-center text-white px-5 py-[11.5px] rounded-sm my-2 bg-[#0348FF]',
             !selectedProductCount && 'opacity-50 pointer-events-none'
