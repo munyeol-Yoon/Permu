@@ -1,4 +1,5 @@
 import { Product } from '@/types/products';
+import { filterCriteriaType } from '../page';
 import FilterBenefits from './FilterBenefits';
 import FilterLabel from './FilterLabel';
 import FilterPricePoint from './FilterPricePoint';
@@ -6,15 +7,23 @@ import FilterPriceType from './FilterPriceType';
 
 interface ResultFilterProps {
   data: Product[];
+  setFilterCriteria: (criteria: any) => void;
 }
 
-const ResultFilter = ({ data }: ResultFilterProps) => {
+const ResultFilter = ({ data, setFilterCriteria }: ResultFilterProps) => {
   console.log(data);
+
+  const handlePriceRangeChange = (priceRange: [number, number]) => {
+    setFilterCriteria((prev: filterCriteriaType) => ({
+      ...prev,
+      priceRange
+    }));
+  };
 
   return (
     <div className="filter-container p-4 bg-white">
       <div className="flex flex-col space-y-4">
-        <FilterPricePoint />
+        <FilterPricePoint handlePriceRangeChange={handlePriceRangeChange} />
         <FilterPriceType />
         <FilterBenefits />
         <FilterLabel></FilterLabel>
