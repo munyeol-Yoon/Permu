@@ -49,7 +49,7 @@ const useAuthMutation = () => {
   const { mutate: logOutMutation } = useMutation({
     mutationFn: () => logOut(),
     onSuccess: () => {
-      queryClient.invalidateQueries();
+      queryClient.removeQueries({ queryKey: ['loggedUser'] });
       router.replace(HOME);
     }
   });

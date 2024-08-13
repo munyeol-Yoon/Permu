@@ -26,7 +26,7 @@ export const logOut = async () => {
   if (result) return result;
 };
 
-export const fetchUser = async () => {
+export const getLoggedUser = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/user`);
   const { user } = await response.json();
   return user || null;

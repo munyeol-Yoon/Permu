@@ -16,7 +16,7 @@ const Wish = ({ inner = true }: { inner?: boolean }) => {
   const { showInfoAlert } = useAlert();
   const { productId } = useParams<Params['params']>();
   const { loggedUser } = useAuth();
-  const { data: getLikes } = useWishesQuery({ productId: Number(productId) });
+  const { data: getLikes } = useWishesQuery(Number(productId));
   const addMutation = useWishesMutation({
     data: getLikes?.data || null,
     productId: Number(productId)

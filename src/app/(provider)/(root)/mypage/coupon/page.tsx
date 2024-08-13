@@ -1,28 +1,28 @@
 'use client';
 import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
-import { useAuth } from '@/contexts/auth.context/auth.context';
-import { useCouponQuery } from '@/hooks/query';
-import { Tables } from '@/types/supabase';
+import useCouponQuery from '@/hooks/query/mypage/useCouponQuery';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import Arrow from '@@/public/arrow/arrow-bottom.svg';
 import CouponCard from '../_components/CouponCard';
 import InfoCard from '../_components/InfoCard';
 import Profile from '../_components/Profile';
 
 const CouponListPage = () => {
-  const { loggedUser } = useAuth();
-  const { data: userCoupons, isPending } = useCouponQuery();
+  const { data: loggedUser } = useAuthQuery();
+  const { data: coupons, isPending } = useCouponQuery();
   const name = loggedUser?.userData.name || '';
 
   if (isPending) return <Loading />;
+
   return (
     <div>
       <Navbar title="쿠폰" isHome />
-      <Profile name={name || ''} />
+      <Profile name={name} />
 
       <div className="flex flex-col bg-muted/30 p-5 gap-x-2.5 gap-y-1">
         <InfoCard title="현재 보유 쿠폰" sm>
-          {userCoupons?.length}장
+          {coupons?.length}장
         </InfoCard>
 
         <InfoCard title="추가로 받을 수 있는 쿠폰" sm>
@@ -34,7 +34,7 @@ const CouponListPage = () => {
         <div className="flex justify-between py-5">
           <div className="flex items-baseline gap-x-2">
             <h3 className="text-xl font-bold">쿠폰 내역</h3>
-            <p className="text-base font-bold text-muted">전체 {userCoupons?.length}장</p>
+            <p className="text-base font-bold text-muted">전체 {coupons?.length}장</p>
           </div>
 
           <div className="flex items-center gap-x-2 cursor-pointer">
@@ -50,7 +50,7 @@ const CouponListPage = () => {
 
         {/* 쿠폰 카드 */}
         <div className="mt-8">
-          {userCoupons?.map((coupon: Tables<'Coupon'>) => <CouponCard key={coupon.couponId} coupon={coupon} />)}
+          {coupons?.map((coupon: any) => <CouponCard key={coupon.couponId} coupon={coupon} />)}
         </div>
       </div>
     </div>
