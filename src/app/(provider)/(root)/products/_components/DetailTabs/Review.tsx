@@ -22,7 +22,10 @@ const ReviewPage = () => {
   const { productId } = useParams<Params['params']>();
   const [page, setPage] = useState<number>(0);
   const { data: reviews } = useReviewsQuery({ page, productId, perCount: itemCountPerPage });
-  const reviewsImages = reviews?.data?.filter((review) => review.imagesURL).map((review) => review.imagesURL);
+  const reviewsImages = reviews?.data
+    ?.filter((review) => review.imagesURL)
+    .flatMap((review) => review.imagesURL)
+    .slice(0, 7);
 
   const handleFilter = (value: string) => {
     showInfoAlert('준비중입니다');
@@ -35,19 +38,16 @@ const ReviewPage = () => {
         <span className="text-xl text-[#0348FF]">{reviewsImages?.length}</span>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {reviewsImages
-          ?.flat()
-          .slice(0, 7)
-          .map((reviewImage, index) => (
-            <Image
-              key={index}
-              src={reviewImage}
-              alt="리뷰 이미지"
-              width={300}
-              height={300}
-              className="w-[132px] h-[132px] object-cover"
-            />
-          ))}
+        {reviewsImages?.map((reviewImage, index) => (
+          <Image
+            key={index}
+            src={reviewImage}
+            alt="리뷰 이미지"
+            width={300}
+            height={300}
+            className="w-[132px] h-[132px] object-cover"
+          />
+        ))}
 
         <div
           className="flex flex-col justify-center items-center hover:cursor-pointer w-[132px] h-[132px]"
