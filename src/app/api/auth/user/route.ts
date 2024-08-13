@@ -61,7 +61,7 @@ export async function PATCH(request: NextRequest) {
     if (userError) throw new Error(userError.message);
     if (!user) throw new Error('User notFound');
 
-    if (password && res.length > 0) {
+    if (password && Object.keys(res).length > 0) {
       // 비밀번호, db 모두 업데이트
       await Promise.allSettled([updatePassword(supabase, password), updateUserInfo(supabase, user, res)]);
     } else if (password) {
