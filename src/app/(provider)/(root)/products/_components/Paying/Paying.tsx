@@ -12,7 +12,6 @@ import {
 import useAlert from '@/hooks/useAlert';
 import useLocalCart from '@/hooks/useLocalCart';
 import { Product } from '@/types/products';
-import { Params, Product } from '@/types/products';
 import ArrowBSVG from '@@/public/arrow/arrow-bold-bottom.svg';
 import CartSVG from '@@/public/cart-icon.svg';
 import { cx } from 'class-variance-authority';
@@ -25,6 +24,8 @@ const Paying = ({ size, category, product }: PayingProps) => {
   const { showInfoAlert } = useAlert();
   const { addLocalCartItem, updateLocalCartItem, localCartList } = useLocalCart();
 
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
 
   const handlePostCart = async () => {
@@ -42,7 +43,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
         productSelected: true,
         productSelectedVolume: selectedSize,
         productVolume: product.size,
-        productBrandName: product.Brand.enName as string,
+        productBrandName: product.Brand.krName as string,
         productName: product.title as string,
         productDiscountPercentage: product.discount as number,
         productPrice: product.price as number,
@@ -50,18 +51,14 @@ const Paying = ({ size, category, product }: PayingProps) => {
       };
 
       addLocalCartItem(cartItem);
+      setIsDialogOpen(true);
     }
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [isSelected, setIsSelected] = useState<boolean>(false);
-  const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
+  };
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
   };
 
-    //성공 메시지를 받아야 함!!!
-    setIsDialogOpen(true);
-  };
   const handleSelectSize = (size: string): void => {
     setSelectedSize(selectedSize === size ? '옵션 선택' : size);
   };

@@ -6,7 +6,7 @@ import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
 import useLocalCart from '@/hooks/useLocalCart';
 import { CartItem } from '@/types/cart';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { CartAccordion, CartEmpty, CartList, CartSelector } from './_components';
 
 const CartPage = () => {
@@ -20,27 +20,34 @@ const CartPage = () => {
   const { data: cartList } = useCartsQuery();
   const { addMutation, patchMutation, deleteMutation } = useCartsMutation();
 
+  const newCartItem = useMemo(() => {
+    return localCartList.filter(
+      (localCartItem) => !cartList?.find((cartItem) => localCartItem.productId === cartItem.productId)
+    );
+  }, [cartList, localCartList]);
+
+  const updatedCartItem = useMemo(() => {
+    return localCartList.filter((localCartItem) =>
+      cartList?.find((cartItem) => {
+        return (
+          localCartItem.productId === cartItem.productId &&
+          (localCartItem.productCount !== cartItem.productCount ||
+            localCartItem.productSelectedVolume !== cartItem.productSelectedVolume ||
+            localCartItem.productSelected !== cartItem.productSelected)
+        );
+      })
+    );
+  }, [cartList, localCartList]);
+
+  const deletedCartItem = useMemo(() => {
+    return cartList?.filter(
+      (cartItem) => !localCartList.find((localCartItem) => localCartItem.productId === cartItem.productId)
+    );
+  }, [cartList, localCartList]);
+
   const syncCartData = useCallback(() => {
     if (loggedUser) {
       if (localCartList.length || cartList?.length) {
-        const newCartItem = localCartList.filter(
-          (localCartItem) => !cartList?.find((cartItem) => localCartItem.productId === cartItem.productId)
-        );
-
-        const updatedCartItem = localCartList.filter((localCartItem) =>
-          cartList?.find((cartItem) => {
-            return (
-              localCartItem.productId === cartItem.productId &&
-              (localCartItem.productCount !== cartItem.productCount ||
-                localCartItem.productSelectedVolume !== cartItem.productSelectedVolume ||
-                localCartItem.productSelected !== cartItem.productSelected)
-            );
-          })
-        );
-        const deletedCartItem = cartList?.filter(
-          (cartItem) => !localCartList.find((localCartItem) => localCartItem.productId === cartItem.productId)
-        );
-
         if (newCartItem.length) {
           newCartItem.forEach((cartItem) => {
             addMutation.mutate({
@@ -73,15 +80,17 @@ const CartPage = () => {
         }
       }
     }
-  }, [addMutation, cartList, deleteMutation, localCartList, loggedUser, patchMutation]);
-
-  useEffect(() => {
-    return () => {
-      if (cartList?.length || localCartList.length) {
-        syncCartData();
-      }
-    };
-  }, [cartList, localCartList]);
+  }, [
+    addMutation,
+    cartList,
+    deleteMutation,
+    deletedCartItem,
+    localCartList,
+    loggedUser,
+    newCartItem,
+    patchMutation,
+    updatedCartItem
+  ]);
 
   useEffect(() => {
     if (cartList?.length) {
@@ -106,6 +115,14 @@ const CartPage = () => {
       }
     }
   }, [cartList, setLocalCartList]);
+
+  useEffect(() => {
+    return () => {
+      if (cartList?.length || localCartList.length) {
+        syncCartData();
+      }
+    };
+  }, [cartList, localCartList]);
 
   if (!localCartList.length) {
     return (
