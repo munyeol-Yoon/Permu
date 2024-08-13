@@ -1,5 +1,5 @@
 'use client';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
@@ -9,25 +9,17 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/contexts/auth.context/auth.context';
-import { useCartsMutation } from '@/hooks/mutation';
-import { useCartsQuery } from '@/hooks/query';
 import useAlert from '@/hooks/useAlert';
 import useLocalCart from '@/hooks/useLocalCart';
-import { Params, Product } from '@/types/products';
+import { Product } from '@/types/products';
 import { useState } from 'react';
 import Wish from '../Wish';
 
 type PayingProps = { size: string[]; category: string; product: Product };
 
 const Paying = ({ size, category, product }: PayingProps) => {
-  const { productId } = useParams<Params['params']>();
-
   const router = useRouter();
   const { showInfoAlert } = useAlert();
-  const { loggedUser, isLoggedIn } = useAuth();
-  const { data: carts } = useCartsQuery();
-  const { addMutation: addCartMutation, patchMutation } = useCartsMutation();
   const { addLocalCartItem, updateLocalCartItem, localCartList } = useLocalCart();
 
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
