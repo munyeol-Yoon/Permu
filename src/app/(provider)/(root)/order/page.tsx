@@ -176,6 +176,7 @@ const DeliveryPage = () => {
       );
     }
 
+    localStorage.removeItem('cart');
     localStorage.removeItem('buy-now');
     setOrderStatus('COMPLETED');
   };
