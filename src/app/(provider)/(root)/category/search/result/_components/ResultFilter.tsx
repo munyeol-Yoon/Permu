@@ -1,5 +1,5 @@
 import { Product } from '@/types/products';
-import { filterCriteriaType } from '../page';
+import { FilterCriteriaType } from '../page';
 import FilterBenefits from './FilterBenefits';
 import FilterLabel from './FilterLabel';
 import FilterPricePoint from './FilterPricePoint';
@@ -14,7 +14,7 @@ const ResultFilter = ({ data, setFilterCriteria }: ResultFilterProps) => {
   console.log(data);
 
   const handlePriceRangeChange = (priceRange: [number, number]) => {
-    setFilterCriteria((prev: filterCriteriaType) => ({
+    setFilterCriteria((prev: FilterCriteriaType) => ({
       ...prev,
       priceRange
     }));

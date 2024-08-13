@@ -9,15 +9,15 @@ import { Suspense, useState } from 'react';
 import SearchNotFound from '../_components/SearchNotFound';
 import { FilterNavMenu, ResultFilter } from './_components';
 
-export type filterCriteriaType = {
+export type FilterCriteriaType = {
   priceRange: number[];
-  priceType: 'all' | 'high' | 'low';
+  priceType: 'all' | 'high' | 'low'; // 높은 가격순, 낮은 가격순, 무료 교환 반품(비활성화)
   benefit: 'discount' | 'freeShipping' | 'freeExchange' | 'none';
 };
 
 const ResultPageContent = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const [filterCriteria, setFilterCriteria] = useState<filterCriteriaType>({
+  const [filterCriteria, setFilterCriteria] = useState<FilterCriteriaType>({
     priceRange: [1000, 200000000],
     priceType: 'all',
     benefit: 'none'
