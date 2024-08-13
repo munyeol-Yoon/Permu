@@ -12,15 +12,24 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       .eq('userId', userId)
       .order('productId', { ascending: false });
 
-    const cartsWithDiscountedPrice = data?.map((cart: any) => ({
-      ...cart,
-      Products: {
-        ...cart.Products,
-        discountedPrice: cart.Products.price - (cart.Products.price * cart.Products.discount) / 100
-      }
-    }));
+    const formattedCartList = data?.map((cartItem) => {
+      const discountedPrice = cartItem.Products.price - (cartItem.Products.price * cartItem.Products.discount) / 100;
+      return {
+        productId: cartItem.productId,
+        productName: cartItem.Products.title,
+        productBrandName: cartItem.Products.Brands.enName,
+        productVolume: cartItem.Products.size,
+        productCount: cartItem.count,
+        productPrice: cartItem.Products.price,
+        productDiscountedPrice: discountedPrice,
+        productDiscountPercentage: cartItem.Products.discount,
+        productThumbnailURL: cartItem.Products.thumbNailURL,
+        productSelected: cartItem.isSelected,
+        productSelectedVolume: cartItem.volume
+      };
+    });
 
-    return NextResponse.json(cartsWithDiscountedPrice);
+    return NextResponse.json(formattedCartList);
   } catch (error) {
     return NextResponse.json({ success: false, error });
   }
