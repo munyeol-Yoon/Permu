@@ -2,16 +2,15 @@ import { Tables } from '@/types/supabase';
 
 type ProductWithoutSpecificFields = Omit<Tables<'Products'>, 'productId' | 'createdAt' | 'ImagesURL' | 'updatedAt'>;
 export type TWish = Omit<Tables<'Wishes'>, 'wishId'>;
-export type TWishId = Omit<TWish, 'userId'>;
 export type Product = Omit<Tables<'Products'>, 'ImagesURL' | 'size' | 'notes'> & {
   discountedPrice: number;
   ImagesURL: string[];
   size: string[];
   notes: string[];
   brandId?: number;
-  Brand: Tables<'Brands'>;
+  Brand: Pick<Tables<'Brands'>, 'krName'>;
   Category: Tables<'Categories'>;
-  Wish?: Tables<'Wishes'>;
+  Wish?: TWish;
 };
 export interface Params {
   params: { productId: string };

@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -12,9 +12,12 @@ import {
 import useAlert from '@/hooks/useAlert';
 import useLocalCart from '@/hooks/useLocalCart';
 import { Product } from '@/types/products';
+import { Params, Product } from '@/types/products';
+import ArrowBSVG from '@@/public/arrow/arrow-bold-bottom.svg';
+import CartSVG from '@@/public/cart-icon.svg';
+import { cx } from 'class-variance-authority';
 import { useState } from 'react';
-import Wish from '../Wish';
-
+import { Wish } from '../DetailButtons';
 type PayingProps = { size: string[]; category: string; product: Product };
 
 const Paying = ({ size, category, product }: PayingProps) => {
@@ -48,13 +51,25 @@ const Paying = ({ size, category, product }: PayingProps) => {
 
       addLocalCartItem(cartItem);
     }
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
+  const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
   };
 
-  const handleSelectSize = (size: string) => {
+    //성공 메시지를 받아야 함!!!
+    setIsDialogOpen(true);
+  };
+  const handleSelectSize = (size: string): void => {
     setSelectedSize(selectedSize === size ? '옵션 선택' : size);
   };
 
-  const handleBuyNow = () => {
+  const handleSelectedMode = (): void => {
+    setIsSelected((prev) => !prev);
+  };
+  const handleBuyNow = (): void => {
     if (selectedSize === '옵션 선택') {
       showInfoAlert('사이즈를 선택해주세요!');
       return;
@@ -66,6 +81,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
 
   return (
     <>
+      {isSelected && <div className="fixed inset-0 bg-black/50 z-40" onClick={handleSelectedMode}></div>}
       <div className="p-5-2">
         <span>사이즈</span>
         <div className="flex-row-10">
@@ -91,18 +107,16 @@ const Paying = ({ size, category, product }: PayingProps) => {
         </Button>
       </div>
 
-      <div className="flex-row-10 justify-between p-5-2 w-[600px] fixed bottom-0 z-20 bg-white border-t-[1.5px] border-[#B3B3B3]">
-        <Wish inner={false} />
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button className="w-full h-[64px]">바로 구매하기</Button>
-          </DrawerTrigger>
-
-          <DrawerContent className="w-[600px] mx-auto justify-between">
-            <DrawerHeader>
-              <DrawerTitle></DrawerTitle>
-            </DrawerHeader>
-            <div className="p-5-2">
+      <div
+        className={cx('p-5-2 w-full max-w-[600px] fixed bottom-0 z-50 bg-white border-t-[1.5px] border-[#B3B3B3]', {
+          'rounded-t-lg': isSelected,
+          'rounded-none': !isSelected
+        })}
+      >
+        {isSelected ? (
+          <div className="z-50">
+            <div className="flex-col-10 justify-center items-center">
+              <ArrowBSVG className="hover:cursor-pointer" onClick={handleSelectedMode} />
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex justify-between items-center p-5-2 border border-[#B3B3B3] w-full text-start text-xs text-[#B3B3B3]">
                   <span className="text-xl">{selectedSize}</span>
@@ -113,9 +127,9 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 <DropdownMenuContent>
                   {size?.map((size, index: number) => (
                     <DropdownMenuCheckboxItem
-                      className="w-full h-[32px] px-4 py-0"
                       key={index}
                       onClick={() => handleSelectSize(size)}
+                      className="w-full p-5-2 h-[40px] text-lg"
                     >
                       {size}
                       {category === '인센스' ? 'g' : 'mL'}
@@ -124,7 +138,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="flex-row-20 justify-between p-5-2 w-full">
+            <div className="flex-row-10 justify-between">
               <Button className="w-full h-[64px]" variant="defaultline" onClick={handlePostCart}>
                 쇼핑백에 추가
               </Button>
@@ -132,9 +146,37 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 바로 구매하기
               </Button>
             </div>
-          </DrawerContent>
-        </Drawer>
+          </div>
+        ) : (
+          <div className="flex-row-10 justify-between ">
+            <Wish inner={false} />
+            <Button className="w-full h-[64px] " onClick={handleSelectedMode}>
+              바로 구매하기
+            </Button>
+          </div>
+        )}
       </div>
+
+      <Dialog open={isDialogOpen}>
+        <DialogContent className="flex flex-col items-center gap-[29px] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] pt-[54px] px-5 pb-2 rounded">
+          <DialogTitle className="hidden" />
+          <CartSVG />
+          <p className="text-[20px] text-center">
+            상품이 장바구니에 담겼습니다.
+            <br />
+            바로 확인하시겠습니까?
+          </p>
+
+          <div className="flex justify-between items-center gap-2.5 w-full">
+            <Button onClick={handleDialogClose} variant="defaultline" className="w-full h-[64px]">
+              취소
+            </Button>
+            <Button onClick={() => router.push('/cart')} variant="default" className="w-full h-[64px]">
+              확인
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

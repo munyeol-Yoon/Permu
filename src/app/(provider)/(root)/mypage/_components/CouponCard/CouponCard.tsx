@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Tables } from '@/types/supabase';
-import { formatDate } from '@/utils/format';
+import dayjs from 'dayjs';
 
 interface CouponCardProps {
   coupon: Tables<'Coupon'>;
 }
 const CouponCard = ({ coupon }: CouponCardProps) => {
-  const { discount, name } = coupon;
-  const formattedIssueDate = formatDate(coupon.issueDate || '');
-  const formattedExpireDate = formatDate(coupon.expirationDate || '');
+  const { discount, name, issueDate, expirationDate } = coupon;
+  const formattedIssueDate = dayjs(issueDate).format('YYYY.MM.DD');
+  const formattedExpireDate = dayjs(expirationDate).format('YYYY.MM.DD');
   return (
     <div className="flex flex-col border rounded px-5 py-[26px] gap-y-2.5">
       <h3 className="text-base font-semibold">{name}</h3>

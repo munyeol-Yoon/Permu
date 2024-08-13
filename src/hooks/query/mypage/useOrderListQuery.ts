@@ -1,14 +1,13 @@
-'use client';
 import { getUserOrders } from '@/api/myPage';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { MyOrder } from '@/types/myPage/order';
 import { useQuery } from '@tanstack/react-query';
+import useAuthQuery from '../useAuthQuery';
 
 const useOrderListQuery = () => {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   return useQuery<MyOrder[], Error>({
-    queryKey: ['OrderList', loggedUser?.id],
-    queryFn: () => getUserOrders(loggedUser?.id ?? ''),
+    queryKey: ['loggedUser', 'OrderList'],
+    queryFn: () => getUserOrders(loggedUser?.id),
     enabled: !!loggedUser
   });
 };

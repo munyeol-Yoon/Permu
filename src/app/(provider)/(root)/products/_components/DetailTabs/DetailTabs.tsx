@@ -9,7 +9,6 @@ const DetailTabs = ({ productDetail }: { productDetail: string }) => {
     { value: 'review', label: '리뷰', content: <ReviewPage /> },
     { value: 'Q&A', label: 'Q&A', content: <QnAPage /> }
   ];
-
   return <Tab tabs={tabs} />;
 };
 

@@ -1,5 +1,6 @@
 import { createClient } from '@/supabase/client';
 import { createClient as createServerClient } from '@/supabase/server';
+import { OrderDetail } from '@/types/order';
 
 export const getOrderInfoByUserId = async (userId: string) => {
   const supabase = createServerClient();
@@ -22,9 +23,9 @@ export const getOrderInfoByUserId = async (userId: string) => {
   return { productList, user, coupon };
 };
 
-export const getOrderInfos = async () => {
+export const getOrderInfos = async (): Promise<OrderDetail[]> => {
   const supabase = createClient();
-  const { data, error } = await supabase.from('OrdersDetail').select('*');
+  const { data, error } = await supabase.from('OrdersDetail').select('orderDetailId,orderId,productId');
   if (error) throw new Error(error.message);
 
   return data;

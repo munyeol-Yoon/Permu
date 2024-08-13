@@ -16,7 +16,7 @@ const Profile = ({ name }: ProfileProps) => {
   const handleClick = () => showInfoAlert('준비중입니다!');
   const handleLogOut = () => logOutMutation();
   return (
-    <div className="flex p-5">
+    <div className="flex px-5 py-[30px]">
       {name ? (
         <>
           <ProfileImg className="w-[60px] h-[60px] mr-5" />
@@ -34,7 +34,7 @@ const Profile = ({ name }: ProfileProps) => {
                 )}
               </div>
               <p>
-                <span className="text-accent text-xl">LV 3. 5%적립 무료 배송 </span>
+                <span className="text-accent text-xl">LV 3.5%적립 무료 배송 </span>
                 <span
                   className="text-muted cursor-pointer text-xl  hover:brightness-90 active:brightness-110"
                   onClick={handleClick}
