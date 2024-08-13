@@ -63,9 +63,8 @@ const Footer = () => {
         </Toggle>
       </Accordion>
 
-      <div className="grid grid-cols-[1fr_1px_1fr] sm:grid-cols-[300px_1px_300px] grid-rows-[269px] gap-2">
+      <div className="grid grid-cols-2">
         <CallInfo />
-        <div className="bg-muted" />
         <SNSInfo />
       </div>
     </>
