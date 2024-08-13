@@ -7,15 +7,15 @@ import StarFillSVG from '@@/public/star/star-fill-icon.svg';
 import StarSVG from '@@/public/star/star-icon.svg';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
-//const filterNavbar = ['최신순', '오래된 순', '별점 높은순'];
+const filterNavbar = ['최신순', '오래된 순', '별점 높은순'];
 const ReviewPage = () => {
   const router = useRouter();
   const { productId } = useParams<Params['params']>();
   const { data: reviews } = useReviewsQuery(productId);
   const reviewsImages = reviews?.map((review) => review.ImagesURL);
-  // const handleFilter = (value: string) => {
-  //   alert(value);
-  // };
+  const handleFilter = (value: string) => {
+    alert(value);
+  };
 
   return (
     <div className="p-5-2 ">
@@ -49,14 +49,14 @@ const ReviewPage = () => {
 
       <div className="p-5-2">
         <span className="text-xl font-semibold">전체 리뷰</span>
-        {/* <div className="h-[64px] flex items-center">
+        <div className="h-[64px] flex items-center">
           {filterNavbar.map((item, index) => (
             <span key={index} className="hover:cursor-pointer" onClick={() => handleFilter(item)}>
               {item}
               {index < filterNavbar.length - 1 && ' | '}
             </span>
           ))}
-        </div> */}
+        </div>
 
         {reviews?.map((review) => (
           <div key={review.reviewId}>
