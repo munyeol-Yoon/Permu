@@ -92,8 +92,6 @@ const AccountForm = () => {
     if (gender) userData.gender = gender;
     if (phone) userData.phone = phone;
 
-    console.log(userData);
-
     userInfoMutation(userData);
   };
 
