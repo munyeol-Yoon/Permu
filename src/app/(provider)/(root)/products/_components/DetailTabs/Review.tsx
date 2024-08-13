@@ -2,27 +2,31 @@
 
 import Pagination from '@/components/Pagination';
 import { useReviewsQuery } from '@/hooks/query';
+import useAlert from '@/hooks/useAlert';
 import { Params } from '@/types/products';
 import ArrowRRoundSVG from '@@/public/arrow/arrow-round-right.svg';
+import ProfileImg from '@@/public/profile/profile-sm.svg';
 import StarFillSVG from '@@/public/star/star-fill-icon.svg';
 import StarSVG from '@@/public/star/star-icon.svg';
+import { cx } from 'class-variance-authority';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-//const filterNavbar = ['최신순', '오래된 순', '별점 높은순'];
+const filterNavbar = ['최신순', '오래된 순', '별점 높은순'];
 
 export const itemCountPerPage: number = 2;
 export const pageCountPerPage: number = 5;
 const ReviewPage = () => {
   const router = useRouter();
+  const { showInfoAlert } = useAlert();
   const { productId } = useParams<Params['params']>();
   const [page, setPage] = useState<number>(0);
   const { data: reviews } = useReviewsQuery({ page, productId, perCount: itemCountPerPage });
   const reviewsImages = reviews?.data?.filter((review) => review.imagesURL).map((review) => review.imagesURL);
 
-  // const handleFilter = (value: string) => {
-  //   alert(value);
-  // };
+  const handleFilter = (value: string) => {
+    showInfoAlert('준비중입니다');
+  };
 
   return (
     <div className="p-5-2 ">
@@ -56,36 +60,44 @@ const ReviewPage = () => {
 
       <div className="p-5-2">
         <span className="text-xl font-semibold">전체 리뷰</span>
-        {/* <div className="h-[64px] flex items-center">
-          {filterNavbar.map((item, index) => (
-            <span key={index} className="hover:cursor-pointer" onClick={() => handleFilter(item)}>
-              {item}
-              {index < filterNavbar.length - 1 && ' | '}
-            </span>
-          ))}
-        </div> */}
+        <table className="h-[64px] flex items-center">
+          <tr>
+            {filterNavbar.map((item, index) => (
+              <td
+                key={index}
+                className={cx({
+                  'border-r-2': index < filterNavbar.length - 1
+                })}
+              >
+                <span
+                  className="hover:cursor-pointer px-[17px] pr-[18px] py-0 text-center"
+                  onClick={() => handleFilter(item)}
+                >
+                  {item}
+                </span>
+              </td>
+            ))}
+          </tr>
+        </table>
 
         {reviews?.data.map((review) => (
-          <div key={review.reviewId}>
-            <div className="grid grid-cols-[50px_1fr] grid-rows-2 gap-1">
-              <Image
-                src={'https://d2gfz7wkiigkmv.cloudfront.net/pickin/2/1/2/lWRbWznFQ9ORteqoMeRtoQ'}
-                alt={'이미지'}
-                width={300}
-                height={300}
-                className="row-span-2 rounded-full"
-              />
-              <span>{review.User.name}</span>
+          <div className="flex flex-col gap-3" key={review.reviewId}>
+            <div className="grid grid-cols-[60px_1fr] grid-rows-2 gap-x-3">
+              <ProfileImg className="w-[60px] h-[60px] row-span-2 rounded-full" />
+
+              <span className="font-bold">{review.User.name}</span>
               <span className="text-sm">{review.Product.notes.join(' | ')}</span>
             </div>
             <div className="min-h-[213px] flex-col-10">
-              <div className="flex flex-row items-center">
-                {Array.from({ length: review.score ?? 0 }, (_, index) => (
-                  <StarFillSVG key={`filled-${index}`} />
-                ))}
-                {Array.from({ length: 5 - (review.score ?? 0) }, (_, index) => (
-                  <StarSVG key={`empty-${index}`} />
-                ))}
+              <div className="flex flex-row gap-2 items-center">
+                <div className="flex">
+                  {Array.from({ length: review.score ?? 0 }, (_, index) => (
+                    <StarFillSVG key={`filled-${index}`} />
+                  ))}
+                  {Array.from({ length: 5 - (review.score ?? 0) }, (_, index) => (
+                    <StarSVG key={`empty-${index}`} />
+                  ))}
+                </div>
                 <span className="text-xs">{review.createdAt.slice(0, 10)}</span>
               </div>
               <div className="flex-row-10">
