@@ -1,16 +1,18 @@
 'use client';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { HOME } from '@/constant/pathname';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import Profile from '@@/public/profile/profile-lg.svg';
 import Link from 'next/link';
 function SignUpCompletePage() {
-  const { loggedUser } = useAuth();
-  if (!loggedUser) return <div>유저 없음</div>;
+  const { data: loggedUser, isPending } = useAuthQuery();
+  if (isPending) return <Loading />;
 
   const {
+    user_metadata: { full_name },
     userData: { name, phone }
   } = loggedUser;
   return (
@@ -32,9 +34,9 @@ function SignUpCompletePage() {
 
         <div className="flex flex-col items-center justify-center mt-20">
           <Profile />
-          <p className="text-xl font-semibold py-5">{name} 회원님</p>
-          <p className="text-slate-400">{phone}</p>
-          <Button asChild className="bg-blue-600 text-white mt-12 ">
+          <p className="text-xl font-semibold py-5">{name || full_name} 회원님</p>
+          <p className="text-muted/">{phone}</p>
+          <Button asChild className="bg-accent mt-12 ">
             <Link href={HOME}>홈으로 돌아가기</Link>
           </Button>
         </div>

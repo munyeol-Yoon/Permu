@@ -1,22 +1,24 @@
 'use client';
+import Loading from '@/components/Loading';
 import { AUTH_LOG_IN_PATHNAME } from '@/constant/pathname';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useAuthMutation } from '@/hooks/mutation';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useAlert from '@/hooks/useAlert';
 import ProfileImg from '@@/public/profile/profile-sm.svg';
 import Link from 'next/link';
-interface ProfileProps {
-  name: string;
-}
 
-const Profile = ({ name }: ProfileProps) => {
+const Profile = () => {
   const { showInfoAlert } = useAlert();
   const { logOutMutation } = useAuthMutation();
-  const { loggedUser } = useAuth();
+  const { data: loggedUser, isPending } = useAuthQuery();
   const handleClick = () => showInfoAlert('준비중입니다!');
   const handleLogOut = () => logOutMutation();
+
+  if (isPending) return <Loading />;
+  const name = loggedUser?.userData.name;
+
   return (
-    <div className="flex p-5">
+    <div className="flex px-5 py-[30px]">
       {name ? (
         <>
           <ProfileImg className="w-[60px] h-[60px] mr-5" />
@@ -34,7 +36,7 @@ const Profile = ({ name }: ProfileProps) => {
                 )}
               </div>
               <p>
-                <span className="text-accent text-xl">LV 3. 5%적립 무료 배송 </span>
+                <span className="text-accent text-xl">LV 3.5%적립 무료 배송 </span>
                 <span
                   className="text-muted cursor-pointer text-xl  hover:brightness-90 active:brightness-110"
                   onClick={handleClick}

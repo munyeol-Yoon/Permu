@@ -176,6 +176,7 @@ const DeliveryPage = () => {
       );
     }
 
+    localStorage.removeItem('cart');
     localStorage.removeItem('buy-now');
     setOrderStatus('COMPLETED');
   };
@@ -453,7 +454,7 @@ const DeliveryPage = () => {
                 checked={selectedPayment === 'TOSS'}
                 className="w-6 h-6 rounded-full data-[state=checked]:bg-[#0348FF] data-[state=checked]:text-white data-[state=checked]:border-none transition-colors"
               />
-              <Image src="/toss.png" width={59} height={25} alt="" unoptimized />
+              <Image src="/toss.png" width={59} height={25} alt="" />
               <p>토스페이</p>
             </div>
           </div>

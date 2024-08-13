@@ -4,38 +4,49 @@ import { TWish } from '@/types/products';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 type TWishMutation = {
-  getLikes: { data: TWish[]; userLike: boolean };
+  data: TWish | undefined | null;
   productId: number;
 };
-const useWishesMutation = ({ getLikes, productId }: TWishMutation) => {
+const useWishesMutation = ({ data, productId }: TWishMutation) => {
   const queryClient = useQueryClient();
   const { loggedUser } = useAuth();
   const addMutation = useMutation({
     mutationFn: async () => {
       if (!loggedUser) return;
-      if (!getLikes?.userLike) {
+      if (!data) {
         await postWishByUser({ productId, userId: loggedUser.id });
       } else {
         await deleteWishByUser({ productId, userId: loggedUser.id });
       }
     },
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['Wishes', productId] });
-      const previousWishes = queryClient.getQueryData<{ data: TWish[] }>(['Wishes', productId]);
+      await queryClient.cancelQueries({ queryKey: ['Wishes', productId, loggedUser?.id] });
+      const previousWishes = queryClient.getQueryData<{ success: boolean; data: TWish; count: number }>([
+        'Wishes',
+        productId,
+        loggedUser?.id
+      ]);
 
-      queryClient.setQueryData(['Wishes', productId], () => {
-        return !getLikes?.userLike
-          ? { data: [...(previousWishes?.data || []), { productId, userId: loggedUser?.id }], userLike: true }
-          : {
-              data: previousWishes?.data?.filter((like: TWish) => !(like.userId === `${loggedUser?.id}`)) || [],
-              userLike: false
-            };
-      });
-
+      const isLiked = data !== null;
+      queryClient.setQueryData(
+        ['Wishes', productId, loggedUser?.id],
+        (old: { success: boolean; data: TWish | undefined | null; count: number }) => {
+          if (!old) return { success: true, data: null, count: 0 };
+          return isLiked
+            ? { success: true, data: null, count: old.count - 1 } // 좋아요를 취소
+            : { success: true, data: { productId, userId: loggedUser?.id }, count: old.count + 1 }; // 좋아요 추가
+        }
+      );
       return { previousWishes };
     },
+    onSettled: () => {
+      const queryKeys = ['wish', 'product', 'recent', 'brand', 'order'];
+      queryKeys.forEach((key) => {
+        queryClient.refetchQueries({ queryKey: ['Products', key, loggedUser?.id] });
+      });
+    },
     onError: (err, addLike, context) => {
-      queryClient.setQueryData(['Wishes', productId], context?.previousWishes);
+      queryClient.setQueryData(['Wishes', productId, loggedUser?.id], context?.previousWishes);
     }
   });
 

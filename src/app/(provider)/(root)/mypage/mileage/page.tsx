@@ -11,7 +11,7 @@ const MileageListPage = () => {
   return (
     <div>
       <Navbar title="마일리지" isHome />
-      <Profile name={name || ''} />
+      <Profile />
 
       <div className="flex flex-col bg-muted/30 p-5 gap-x-2.5 gap-y-1">
         <InfoCard title="현재 마일리지" sm>

@@ -1,94 +1,72 @@
 'use client';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/contexts/auth.context/auth.context';
-import { useCartsMutation } from '@/hooks/mutation';
-import { useCartsQuery } from '@/hooks/query';
 import useAlert from '@/hooks/useAlert';
-import { Params, Product } from '@/types/products';
+import useLocalCart from '@/hooks/useLocalCart';
+import { Product } from '@/types/products';
+import ArrowBSVG from '@@/public/arrow/arrow-bold-bottom.svg';
+import CartSVG from '@@/public/cart-icon.svg';
+import { cx } from 'class-variance-authority';
 import { useState } from 'react';
-import Wish from '../Wish';
-
+import { Wish } from '../DetailButtons';
 type PayingProps = { size: string[]; category: string; product: Product };
+
 const Paying = ({ size, category, product }: PayingProps) => {
   const router = useRouter();
   const { showInfoAlert } = useAlert();
-  const { productId } = useParams<Params['params']>();
-  const { loggedUser } = useAuth();
-  // const localCarts = JSON.parse(localStorage.getItem('carts') || '[]');
-  const { data: carts } = useCartsQuery();
-  const displayedCarts = carts;
-  // const displayedCarts = userId ? carts?.details : localCarts;
-  const { addMutation, patchMutation } = useCartsMutation();
+  const { addLocalCartItem, updateLocalCartItem, localCartList } = useLocalCart();
 
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
   const [selectedSize, setSelectedSize] = useState<string>('옵션 선택');
+
   const handlePostCart = async () => {
     if (confirm('장바구니에 넣으시겠습니까 ?')) {
-      const matchCartProduct = displayedCarts?.find((cart: any) => cart.productId === Number(productId));
-
-      if (matchCartProduct)
-        if (loggedUser) {
-          if (selectedSize === '옵션 선택') {
-            showInfoAlert('사이즈를 선택해주세요!');
-            return;
-          }
-          patchMutation.mutate({
-            productId: Number(productId),
-            userId: loggedUser.id,
-            count: matchCartProduct.count + 1,
-            volume: selectedSize
-          });
-        } else {
-          // const updatedCarts = displayedCarts.map((cart: Cart) => {
-          //   if (cart.productId === Number(productId)) {
-          //     return { ...cart, count: cart.count + 1 };
-          //   }
-          //   return cart;
-          // });
-          // localStorage.setItem('carts', JSON.stringify(updatedCarts));
-        }
-      else {
-        if (loggedUser) {
-          if (selectedSize === '옵션 선택') {
-            showInfoAlert('사이즈를 선택해주세요!');
-            return;
-          }
-          addMutation.mutate({ productId: Number(productId), volume: selectedSize, userId: loggedUser.id });
-        } else {
-          // const product = await fetchDetailProduct({ params: { productId } });
-          // localStorage.setItem(
-          //   'carts',
-          //   JSON.stringify(
-          //     displayedCarts.concat({
-          //       productId: Number(productId),
-          //       userId,
-          //       count: 1,
-          //       Products: product
-          //     })
-          //   )
-          // );
-        }
+      const duplicatedCartItem = localCartList.find((cartItem) => cartItem.productId === product.productId);
+      if (duplicatedCartItem) {
+        updateLocalCartItem({ ...duplicatedCartItem, productCount: duplicatedCartItem.productCount + 1 });
+        return;
       }
 
-      //성공 메시지를 받아야 함!!!
-      if (confirm('장바구니에 담기를 성공했습니다 장바구니로 가시겠습니까?')) {
-        router.push('/cart');
-      }
+      const cartItem = {
+        productId: product.productId,
+        productCount: 1,
+        productDiscountedPrice: product.discountedPrice,
+        productSelected: true,
+        productSelectedVolume: selectedSize,
+        productVolume: product.size,
+        productBrandName: product.Brand.krName as string,
+        productName: product.title as string,
+        productDiscountPercentage: product.discount as number,
+        productPrice: product.price as number,
+        productThumbnailURL: product.thumbNailURL as string
+      };
+
+      addLocalCartItem(cartItem);
+      setIsDialogOpen(true);
     }
   };
-  const handleSelectSize = (size: string) => {
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleSelectSize = (size: string): void => {
     setSelectedSize(selectedSize === size ? '옵션 선택' : size);
   };
 
-  const handleBuyNow = () => {
+  const handleSelectedMode = (): void => {
+    setIsSelected((prev) => !prev);
+  };
+  const handleBuyNow = (): void => {
     if (selectedSize === '옵션 선택') {
       showInfoAlert('사이즈를 선택해주세요!');
       return;
@@ -97,8 +75,10 @@ const Paying = ({ size, category, product }: PayingProps) => {
     localStorage.setItem('buy-now', JSON.stringify({ count: 1, volume: selectedSize, ...product }));
     router.push('/order');
   };
+
   return (
     <>
+      {isSelected && <div className="fixed inset-0 bg-black/50 z-40" onClick={handleSelectedMode}></div>}
       <div className="p-5-2">
         <span>사이즈</span>
         <div className="flex-row-10">
@@ -124,18 +104,16 @@ const Paying = ({ size, category, product }: PayingProps) => {
         </Button>
       </div>
 
-      <div className="flex-row-10 justify-between p-5-2 w-[600px] fixed bottom-0 z-20 bg-white border-t-[1.5px] border-[#B3B3B3]">
-        <Wish inner={false} />
-        <Drawer>
-          <DrawerTrigger asChild>
-            <Button className="w-full h-[64px]">바로 구매하기</Button>
-          </DrawerTrigger>
-
-          <DrawerContent className="w-[600px] mx-auto justify-between">
-            <DrawerHeader>
-              <DrawerTitle></DrawerTitle>
-            </DrawerHeader>
-            <div className="p-5-2">
+      <div
+        className={cx('p-5-2 w-full max-w-[600px] fixed bottom-0 z-50 bg-white border-t-[1.5px] border-[#B3B3B3]', {
+          'rounded-t-lg': isSelected,
+          'rounded-none': !isSelected
+        })}
+      >
+        {isSelected ? (
+          <div className="z-50">
+            <div className="flex-col-10 justify-center items-center">
+              <ArrowBSVG className="hover:cursor-pointer" onClick={handleSelectedMode} />
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex justify-between items-center p-5-2 border border-[#B3B3B3] w-full text-start text-xs text-[#B3B3B3]">
                   <span className="text-xl">{selectedSize}</span>
@@ -146,9 +124,9 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 <DropdownMenuContent>
                   {size?.map((size, index: number) => (
                     <DropdownMenuCheckboxItem
-                      className="w-full h-[32px] px-4 py-0"
                       key={index}
                       onClick={() => handleSelectSize(size)}
+                      className="w-full p-5-2 h-[40px] text-lg"
                     >
                       {size}
                       {category === '인센스' ? 'g' : 'mL'}
@@ -157,7 +135,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="flex-row-20 justify-between p-5-2 w-full">
+            <div className="flex-row-10 justify-between">
               <Button className="w-full h-[64px]" variant="defaultline" onClick={handlePostCart}>
                 쇼핑백에 추가
               </Button>
@@ -165,9 +143,37 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 바로 구매하기
               </Button>
             </div>
-          </DrawerContent>
-        </Drawer>
+          </div>
+        ) : (
+          <div className="flex-row-10 justify-between ">
+            <Wish inner={false} />
+            <Button className="w-full h-[64px] " onClick={handleSelectedMode}>
+              바로 구매하기
+            </Button>
+          </div>
+        )}
       </div>
+
+      <Dialog open={isDialogOpen}>
+        <DialogContent className="flex flex-col items-center gap-[29px] top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-[400px] pt-[54px] px-5 pb-2 rounded">
+          <DialogTitle className="hidden" />
+          <CartSVG />
+          <p className="text-[20px] text-center">
+            상품이 장바구니에 담겼습니다.
+            <br />
+            바로 확인하시겠습니까?
+          </p>
+
+          <div className="flex justify-between items-center gap-2.5 w-full">
+            <Button onClick={handleDialogClose} variant="defaultline" className="w-full h-[64px]">
+              취소
+            </Button>
+            <Button onClick={() => router.push('/cart')} variant="default" className="w-full h-[64px]">
+              확인
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

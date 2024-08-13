@@ -15,12 +15,13 @@ export async function GET(request: NextRequest) {
     const brandIds = data?.map((product) => product.brandId) || [];
     const { data: brands } = await supabase.from('Brands').select('*').in('brandId', brandIds);
     const { data: wishes } = await supabase.from('Wishes').select('productId,userId').eq('userId', userId);
+
     const brandMap = new Map(brands?.map((brand) => [brand.brandId, brand]));
     const productWithDiscountedPrice: Product[] =
       data?.map((data) => ({
         ...data,
         Brand: brandMap.get(data.brandId) || null,
-        Wish: wishes?.find((wish) => wish.productId === data.productId && wish.userId === userId),
+        Wish: wishes?.find((wish) => wish.productId === data.productId) || null,
         discountedPrice: data.price - (data.price * data.discount) / 100
       })) || [];
     return NextResponse.json(productWithDiscountedPrice);

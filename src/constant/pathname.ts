@@ -28,3 +28,8 @@ export const CART = '/cart';
 export const EVENT = '/events';
 export const BRANDS = '/brands';
 export const SUPPORT = '/support';
+
+export const INSTAGRAM_PATH = 'https://www.instagram.com/permeate.store.official?igsh=MWluajBzYjYzdHVrNQ==';
+export const YOUTUBE_PATH = 'https://youtube.com/@permeate-g7r?si=xhuoSGD5IvSjBG3d';
+export const FACEBOOK_PATH = '';
+export const WHATSAPP_PATH = '';

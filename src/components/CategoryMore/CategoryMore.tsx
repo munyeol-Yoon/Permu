@@ -5,7 +5,7 @@ export interface CategoryMoreProps {
 
 const CategoryMore = ({ title }: CategoryMoreProps) => {
   return (
-    <div className="flex justify-between items-center mb-[16px]">
+    <div className="flex justify-between items-center">
       <h2 className="text-xl font-bold flex items-center gap-1">
         {title} {title === '지금 가장 인기 있는 제품' && <HotSVG />}
       </h2>
