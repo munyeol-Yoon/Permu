@@ -17,7 +17,6 @@ const ReviewPage = () => {
   const router = useRouter();
   const { productId } = useParams<Params['params']>();
   const [page, setPage] = useState<number>(0);
-  console.log(page);
   const { data: reviews } = useReviewsQuery({ page, productId, perCount: itemCountPerPage });
   const reviewsImages = reviews?.data?.filter((review) => review.imagesURL).map((review) => review.imagesURL);
 

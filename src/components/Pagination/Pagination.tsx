@@ -1,7 +1,8 @@
+import ArrowLSVG from '@@/public/arrow/pagination/arrow-left.svg';
+import ArrowRSVG from '@@/public/arrow/pagination/arrow-right.svg';
 import { cx } from 'class-variance-authority';
 import { useEffect, useState } from 'react';
 import PageButton from './PageButton';
-
 interface PaginationProps {
   maxPage: number;
   itemCountPerPage: number;
@@ -46,16 +47,16 @@ const Pagination = ({ maxPage, pageCountPerPage, clickListener }: PaginationProp
   };
 
   return (
-    <div>
+    <div className="flex-row-10 justify-center">
       <button
         onClick={leftPageClicked}
         disabled={startPage === 1}
-        className={cx({
+        className={cx('mr-[40px]', {
           'opacity-50': startPage === 1,
           '': startPage !== 1
         })}
       >
-        &lt;
+        <ArrowLSVG />
       </button>
       {pages.slice(startPage, endPage + 1).map((page, i) => (
         <PageButton key={i} page={page} currentPage={currentPage} clickListener={pageNumberClicked} />
@@ -63,12 +64,12 @@ const Pagination = ({ maxPage, pageCountPerPage, clickListener }: PaginationProp
       <button
         onClick={rightPageClicked}
         disabled={endPage === maxPage}
-        className={cx({
+        className={cx('ml-[40px]', {
           'opacity-50': endPage === maxPage,
           '': endPage !== maxPage
         })}
       >
-        &gt;
+        <ArrowRSVG />
       </button>
     </div>
   );

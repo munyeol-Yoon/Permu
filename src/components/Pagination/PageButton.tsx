@@ -9,9 +9,9 @@ const PageButton = ({ page, currentPage, clickListener }: NumberingProps) => {
   return (
     <button
       onClick={() => clickListener(page)}
-      className={cx('text-gray-500', {
-        'font-bold': page === currentPage,
-        'font-normal': page !== currentPage
+      className={cx('font-normal', {
+        'text-black': page === currentPage,
+        'text-gray-500': page !== currentPage
       })}
     >
       {page}
