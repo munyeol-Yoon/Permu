@@ -18,7 +18,7 @@ const CouponListPage = () => {
   return (
     <div>
       <Navbar title="쿠폰" isHome />
-      <Profile name={name} />
+      <Profile />
 
       <div className="flex flex-col bg-muted/30 p-5 gap-x-2.5 gap-y-1">
         <InfoCard title="현재 보유 쿠폰" sm>
