@@ -94,16 +94,20 @@ const ReviewPage = () => {
       <div className="p-5-2">
         <span className="text-xl font-semibold">전체 리뷰</span>
         <ul className="h-[64px] flex items-center">
-          {filterOptions.map((item, index) => (
-            <li key={index} className={cx({ 'border-r-2': index < filterOptions.length - 1 })}>
-              <span
-                className="hover:cursor-pointer px-[17px] pr-[18px] py-0 text-center"
-                onClick={() => handleFilter(index)}
-              >
-                {item}
-              </span>
-            </li>
-          ))}
+          {(reviews?.data ?? []).length > 0 && (
+            <>
+              {filterOptions.map((item, index) => (
+                <li key={index} className={cx({ 'border-r-2': index < filterOptions.length - 1 })}>
+                  <span
+                    className="hover:cursor-pointer px-[17px] pr-[18px] py-0 text-center"
+                    onClick={() => handleFilter(index)}
+                  >
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </>
+          )}
         </ul>
         {reviews?.data.map(renderReviewItem)}
         <div className="text-center">
