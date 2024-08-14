@@ -46,7 +46,11 @@ const useLocalCart = () => {
   }, []);
 
   useEffect(() => {
-    if (userInfo && cartList?.length) {
+    const prevCartList = localStorage.getItem('cart');
+    if (prevCartList) {
+      const parsedPrevCartList = JSON.parse(prevCartList);
+      setLocalCartList(parsedPrevCartList);
+    } else if (userInfo && cartList?.length) {
       const prevLocalCartList = localStorage.getItem('cart');
 
       const parsedLocalCartList = prevLocalCartList ? JSON.parse(prevLocalCartList) : [];
@@ -60,12 +64,6 @@ const useLocalCart = () => {
 
       localStorage.setItem('cart', JSON.stringify(newCartList));
       setLocalCartList(newCartList);
-    } else {
-      const prevCartList = localStorage.getItem('cart');
-      if (prevCartList) {
-        const parsedPrevCartList = JSON.parse(prevCartList);
-        setLocalCartList(parsedPrevCartList);
-      }
     }
   }, [cartList, userInfo]);
 
