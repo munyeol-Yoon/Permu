@@ -32,7 +32,7 @@ const BannerSlide = () => {
             stopOnInteraction: false
           })
         ]}
-        className="w-full h-full "
+        className="w-h-full"
         setApi={setApi}
       >
         <CarouselContent className="h-full">
@@ -41,7 +41,7 @@ const BannerSlide = () => {
               <div className="h-full flex items-center justify-center relative">
                 <div className="bg-[rgba(0,0,0,0.3)] absolute top-0 left-0 bottom-0 right-0"></div>
                 <Image
-                  className="w-full h-full object-cover"
+                  className="w-h-full object-cover"
                   src={item.ImageURL}
                   width={600}
                   height={600}
@@ -59,7 +59,7 @@ const BannerSlide = () => {
         </CarouselContent>
       </Carousel>
 
-      <div className="w-14 h-6 rounded-xl bg-[rgba(0,0,0,0.3)] flex justify-center items-center absolute bottom-5 right-5">
+      <div className="w-14 h-6 rounded-xl bg-[rgba(0,0,0,0.3)] flex-center absolute bottom-5 right-5">
         <span className="text-[13px] text-white font-medium">
           {current} / {count}+
         </span>

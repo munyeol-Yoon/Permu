@@ -22,7 +22,8 @@ const buttonVariants = cva(
         default: 'h-10 p-5 my-2.5',
         sm: 'h-9 rounded-md px-3',
         lg: 'h-11 rounded-md px-8',
-        icon: 'h-10 w-10'
+        icon: 'h-10 w-10',
+        xl: 'w-full h-[64px]'
       }
     },
     compoundVariants: [{ variant: 'outline', size: 'default', className: 'p-[18px]' }],
