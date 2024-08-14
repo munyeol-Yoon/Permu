@@ -38,7 +38,7 @@ const DeliveryPage = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
   const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY'>('KAKAOPAY');
   const [selectedAddress, setSelectedAddress] = useState<Tables<'Addresses'> | null>(null);
-  const [receiverMemo, setReceiverMemo] = useState('');
+  const [receiverMemo, setReceiverMemo] = useState('문 앞에 놓아주세요.');
   const [mileageAmount, setMileageAmount] = useState(0);
   const [orderStatus, setOrderStatus] = useState<'IDLE' | 'PENDING' | 'COMPLETED' | 'FAILED'>('IDLE');
 
@@ -53,6 +53,14 @@ const DeliveryPage = () => {
   }, []);
 
   const { data: orderInfo } = useOrderInfoQuery(!buyNowItem && orderStatus === 'IDLE');
+
+  const availableCoupons = useMemo(() => {
+    return (
+      orderInfo?.coupon.filter((couponItem: any) => {
+        couponItem.status === 'active';
+      }) ?? []
+    );
+  }, [orderInfo?.coupon]);
 
   const totalProductDiscountPrice = useMemo(
     () =>
@@ -148,7 +156,7 @@ const DeliveryPage = () => {
       name: selectedAddress?.name!,
       addressId: selectedAddress?.addressId!,
       phone: selectedAddress?.phone!,
-      deliverMemo: receiverMemo ? receiverMemo : "문 앞에 놓아주세요.",
+      deliverMemo: receiverMemo,
       arrivalDate: new Date()
     };
 
@@ -377,54 +385,61 @@ const DeliveryPage = () => {
                   </AccordionTrigger>
                 </div>
                 <AccordionContent className="bg-[#D9D9D9] py-[30px] flex flex-col gap-3.5">
-                  {orderInfo?.coupon.map((couponItem: any) => {
-                    const formattedIssueDate = dayjs(couponItem.issueDate).format('YYYY-MM-DD');
-                    const formattedExpirationDate = dayjs(couponItem.expirationDate).format('YYYY-MM-DD');
-                    if (couponItem.orderStatus === 'active')
-                      return (
-                        <div
-                          key={couponItem.couponId}
-                          onClick={() => handleSelectCoupon(couponItem)}
-                          className={cn(
-                            'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
-                            couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
-                          )}
-                        >
-                          <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
-                          <p
+                  {availableCoupons.length ? (
+                    orderInfo?.coupon.map((couponItem: any) => {
+                      const formattedIssueDate = dayjs(couponItem.issueDate).format('YYYY-MM-DD');
+                      const formattedExpirationDate = dayjs(couponItem.expirationDate).format('YYYY-MM-DD');
+                      if (couponItem.orderStatus === 'active')
+                        return (
+                          <div
+                            key={couponItem.couponId}
+                            onClick={() => handleSelectCoupon(couponItem)}
                             className={cn(
-                              'pb-2 text-xs',
-                              couponItem === selectedCoupon ? 'text-white' : 'text-[#B3B3B3]'
+                              'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
+                              couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
                             )}
                           >
-                            {formattedIssueDate} - {formattedExpirationDate}
-                          </p>
-                          <p
-                            className={cn(
-                              'pb-2 text-[20px] font-bold',
-                              couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
-                            )}
-                          >
-                            {couponItem.discount.toLocaleString()}원
-                          </p>
-                          <div className="flex justify-between items-center">
+                            <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
                             <p
-                              className={cn('text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]')}
-                            >
-                              -{couponItem.discount.toLocaleString()}원 할인 혜택
-                            </p>
-                            <button
                               className={cn(
-                                'text-xs py-1.5 px-2.5 rounded-sm',
-                                couponItem === selectedCoupon ? 'bg-white text-[#0348FF]' : 'bg-[#0348FF] text-white'
+                                'pb-2 text-xs',
+                                couponItem === selectedCoupon ? 'text-white' : 'text-[#B3B3B3]'
                               )}
                             >
-                              적용하기
-                            </button>
+                              {formattedIssueDate} - {formattedExpirationDate}
+                            </p>
+                            <p
+                              className={cn(
+                                'pb-2 text-[20px] font-bold',
+                                couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
+                              )}
+                            >
+                              {couponItem.discount.toLocaleString()}원
+                            </p>
+                            <div className="flex justify-between items-center">
+                              <p
+                                className={cn(
+                                  'text-xs',
+                                  couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
+                                )}
+                              >
+                                -{couponItem.discount.toLocaleString()}원 할인 혜택
+                              </p>
+                              <button
+                                className={cn(
+                                  'text-xs py-1.5 px-2.5 rounded-sm',
+                                  couponItem === selectedCoupon ? 'bg-white text-[#0348FF]' : 'bg-[#0348FF] text-white'
+                                )}
+                              >
+                                적용하기
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      );
-                  })}
+                        );
+                    })
+                  ) : (
+                    <p className="text-[20px] text-white text-center py-5">지금 사용 가능한 쿠폰이 없습니다.</p>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
