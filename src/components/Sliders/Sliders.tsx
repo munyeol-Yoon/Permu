@@ -1,9 +1,9 @@
 import { Brand } from '@/types/brands';
 import { Product } from '@/types/products';
 import { useCallback, useMemo } from 'react';
+
+import { CategoryCard, ProductCard } from '../Card';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
-import CategoryCard from './CategoryCard';
-import ProductCard from './ProductCard';
 
 type SliderData = Brand | Product;
 

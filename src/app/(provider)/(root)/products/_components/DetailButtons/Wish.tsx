@@ -30,8 +30,8 @@ const Wish = ({ inner = true }: { inner?: boolean }) => {
   };
   if (inner) {
     return (
-      <Button className="w-full h-[64px]" variant={getLikes?.data ? 'default' : 'defaultline'} onClick={handleWish}>
-        <div className="flex-row-10 justify-center p-5-2 w-full">
+      <Button size="xl" variant={getLikes?.data ? 'default' : 'defaultline'} onClick={handleWish}>
+        <div className="box-container-center">
           <span>{getLikes?.data ? <SelectWishSVG /> : <WishSVG />}</span>
           <span>좋아요</span>
           <span className="font-bold">{getLikes?.count}</span>
@@ -40,7 +40,7 @@ const Wish = ({ inner = true }: { inner?: boolean }) => {
     );
   } else {
     return (
-      <div className="flex flex-col items-center w-8 hover:cursor-pointer" onClick={handleWish}>
+      <div className="flex-center flex-col w-8 hover:cursor-pointer" onClick={handleWish}>
         <span>{getLikes?.data ? <BlackWishSVG /> : <MainWishSVG />}</span>
         <span className="text-sm">{getLikes?.count.toLocaleString()}</span>
       </div>

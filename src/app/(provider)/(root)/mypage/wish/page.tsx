@@ -1,7 +1,7 @@
 'use client';
+import ProductCard from '@/components/Card/ProductCard';
 import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
-import ProductCard from '@/components/Sliders/ProductCard';
 import useUserWishesQuery, { UserWish } from '@/hooks/query/mypage/useUserWishesQuery';
 import { cn } from '@/utils/cn';
 import Banner from '@@/public/banner/tempBanner.svg';

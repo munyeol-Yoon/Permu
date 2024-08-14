@@ -1,6 +1,6 @@
 'use client';
 import CategoryMore from '@/components/CategoryMore';
-import Sliders from '@/components/Sliders';
+import { Sliders } from '@/components/Sliders';
 import { Skeleton } from '@/components/ui/skeleton';
 import useBrandsQuery from '@/hooks/query/useBrandsQuery';
 import useProductsQuery from '@/hooks/query/useProductsQuery';

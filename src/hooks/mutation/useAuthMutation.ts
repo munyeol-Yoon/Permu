@@ -27,6 +27,9 @@ const useAuthMutation = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
       router.replace(HOME);
+    },
+    onError: () => {
+      showFailAlert('로그인이 실패하였습니다');
     }
   });
 

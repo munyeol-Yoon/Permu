@@ -15,7 +15,8 @@ export const loginWithEmail = async (loginForm: LoginForm) => {
     body: JSON.stringify(loginForm)
   });
   const result = await response.json();
-  return result;
+  if (result.success) return result;
+  else throw new Error(result.details);
 };
 
 export const logOut = async () => {
