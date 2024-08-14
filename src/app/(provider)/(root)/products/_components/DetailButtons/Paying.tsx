@@ -16,7 +16,7 @@ import ArrowBSVG from '@@/public/arrow/arrow-bold-bottom.svg';
 import CartSVG from '@@/public/cart-icon.svg';
 import { cx } from 'class-variance-authority';
 import { useState } from 'react';
-import { Wish } from '../DetailButtons';
+import { Wish } from '.';
 type PayingProps = { size: string[]; category: string; product: Product };
 
 const Paying = ({ size, category, product }: PayingProps) => {

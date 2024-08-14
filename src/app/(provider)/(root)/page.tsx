@@ -1,9 +1,8 @@
-import { BannerSlide } from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
-import CurrentProducts from '@/components/CurrentProducts';
-import MdReviews from '@/components/MdReviews';
-import { CategoryProducts, CategorySection } from './_components/CategorySection';
-import EventLinkCard from './_components/EventLinkCard';
+
+import { BannerSlide, CategoryProducts, CategorySection, CurrentProducts, MdReviews } from '@/components/Sliders';
+
+import { EventLinkCard } from '@/components/Card';
 import Footer from './_components/Footer';
 
 const RootPage = () => {

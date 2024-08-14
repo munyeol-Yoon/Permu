@@ -2,8 +2,7 @@
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import MockReview from '@/mockup/mdPick.json';
 import Autoplay from 'embla-carousel-autoplay';
-import ReviewCard from '../ReviewCard';
-
+import { ReviewCard } from '../Card';
 const MdReviews = () => {
   return (
     <div className="flex flex-col px-5">
