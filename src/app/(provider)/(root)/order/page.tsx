@@ -24,7 +24,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { OrderCompleted, OrderError, OrderLoading } from './_components';
 
 const DeliveryPage = () => {
@@ -38,6 +38,7 @@ const DeliveryPage = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
   const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY'>('KAKAOPAY');
   const [selectedAddress, setSelectedAddress] = useState<Tables<'Addresses'> | null>(null);
+  const [receiverMemo, setReceiverMemo] = useState('문 앞에 놓아주세요.');
   const [mileageAmount, setMileageAmount] = useState(0);
   const [orderStatus, setOrderStatus] = useState<'IDLE' | 'PENDING' | 'COMPLETED' | 'FAILED'>('IDLE');
 
@@ -53,7 +54,13 @@ const DeliveryPage = () => {
 
   const { data: orderInfo } = useOrderInfoQuery(!buyNowItem && orderStatus === 'IDLE');
 
-  const receiverMemoRef = useRef('');
+  const availableCoupons = useMemo(() => {
+    return (
+      orderInfo?.coupon.filter((couponItem: any) => {
+        couponItem.status === 'active';
+      }) ?? []
+    );
+  }, [orderInfo?.coupon]);
 
   const totalProductDiscountPrice = useMemo(
     () =>
@@ -107,6 +114,8 @@ const DeliveryPage = () => {
   };
 
   const handleOrder = async () => {
+    if (!selectedAddress) return alert('배송지를 선택해주세요!');
+
     setOrderStatus('PENDING');
     let response;
     const orderName = buyNowItem
@@ -147,7 +156,7 @@ const DeliveryPage = () => {
       name: selectedAddress?.name!,
       addressId: selectedAddress?.addressId!,
       phone: selectedAddress?.phone!,
-      deliverMemo: receiverMemoRef.current,
+      deliverMemo: receiverMemo,
       arrivalDate: new Date()
     };
 
@@ -202,20 +211,29 @@ const DeliveryPage = () => {
             </div>
             <div className="flex justify-between items-center px-5 py-4">
               <div className="flex items-center gap-5 text-nowrap w-5/6 overflow-x-scroll">
-                {addressList?.map((addressItem) => (
-                  <button
-                    onClick={() => setSelectedAddress(addressItem)}
-                    key={addressItem.addressId}
-                    className={cn(
-                      selectedAddress === addressItem
-                        ? 'bg-[#0348FF] text-white border-[#FFFFFF]/50'
-                        : 'bg-white text-[#302A28] border-[#B3B3B3]/50',
-                      'px-4 text-sm py-1.5 rounded-full border transition-all'
-                    )}
-                  >
-                    {addressItem.name}
-                  </button>
-                ))}
+                {addressList?.length ? (
+                  addressList?.map((addressItem) => (
+                    <button
+                      onClick={() => setSelectedAddress(addressItem)}
+                      key={addressItem.addressId}
+                      className={cn(
+                        selectedAddress === addressItem
+                          ? 'bg-[#0348FF] text-white border-[#FFFFFF]/50'
+                          : 'bg-white text-[#302A28] border-[#B3B3B3]/50',
+                        'px-4 text-sm py-1.5 rounded-full border transition-all'
+                      )}
+                    >
+                      {addressItem.name}
+                    </button>
+                  ))
+                ) : (
+                  <>
+                    <p>등록된 배송지가 없습니다.</p>
+                    <Link href={MYPAGE_ADDRESS_EDIT_PATHNAME} className="text-[#0348FF] font-bold text-sm">
+                      배송지를 등록해주세요!
+                    </Link>
+                  </>
+                )}
               </div>
               <Link href={MYPAGE_ADDRESS_EDIT_PATHNAME} className="text-[#0348FF] font-bold text-sm">
                 배송지 변경
@@ -227,23 +245,28 @@ const DeliveryPage = () => {
               <p className="text-xs text-[#B3B3B3] mb-1.5">
                 {selectedAddress?.address} {selectedAddress?.detailAddress}
               </p>
-              <Input
+              {/* <Input
                 placeholder="직접 입력하기"
-                onChange={(e) => (receiverMemoRef.current = e.target.value)}
+                onChange={(e) => setReceiverMemo(e.target.value)}
                 className="border-b border-x-0 border-t-0 rounded-none placeholder:text-[B3B3B3] text-xs focus-visible:ring-0 mb-3"
-              />
+              /> */}
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex justify-between items-center px-2.5 py-1.5 border border-[#B3B3B3] w-full text-start text-xs text-[#B3B3B3]">
-                  <p>배송시 요청사항을 선택해주세요.</p>
+                  <p>{receiverMemo ? receiverMemo : '배송시 요청사항을 선택해주세요.'}</p>
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
                     <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
                   </svg>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuCheckboxItem>부재시 옥상으로 따라오세요.</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>문 앞에 놓아주세요.</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>부재시 당근을 흔들어주세요.</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>부재시 경비실에 맡겨주세요.</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem onClick={() => setReceiverMemo('문 앞에 놓아주세요.')}>
+                    문 앞에 놓아주세요.
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem onClick={() => setReceiverMemo('부재시 당근을 흔들어주세요.')}>
+                    부재시 당근을 흔들어주세요.
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem onClick={() => setReceiverMemo('부재시 경비실에 맡겨주세요.')}>
+                    부재시 경비실에 맡겨주세요.
+                  </DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -362,54 +385,61 @@ const DeliveryPage = () => {
                   </AccordionTrigger>
                 </div>
                 <AccordionContent className="bg-[#D9D9D9] py-[30px] flex flex-col gap-3.5">
-                  {orderInfo?.coupon.map((couponItem: any) => {
-                    const formattedIssueDate = dayjs(couponItem.issueDate).format('YYYY-MM-DD');
-                    const formattedExpirationDate = dayjs(couponItem.expirationDate).format('YYYY-MM-DD');
-                    if (couponItem.orderStatus === 'active')
-                      return (
-                        <div
-                          key={couponItem.couponId}
-                          onClick={() => handleSelectCoupon(couponItem)}
-                          className={cn(
-                            'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
-                            couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
-                          )}
-                        >
-                          <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
-                          <p
+                  {availableCoupons.length ? (
+                    orderInfo?.coupon.map((couponItem: any) => {
+                      const formattedIssueDate = dayjs(couponItem.issueDate).format('YYYY-MM-DD');
+                      const formattedExpirationDate = dayjs(couponItem.expirationDate).format('YYYY-MM-DD');
+                      if (couponItem.orderStatus === 'active')
+                        return (
+                          <div
+                            key={couponItem.couponId}
+                            onClick={() => handleSelectCoupon(couponItem)}
                             className={cn(
-                              'pb-2 text-xs',
-                              couponItem === selectedCoupon ? 'text-white' : 'text-[#B3B3B3]'
+                              'px-10 py-[26px] rounded-sm shadow-[140px_52px_42px_0px_rgba(0,0,0,0.00),90px_34px_38px_0px_rgba(0,0,0,0.01),50px_19px_32px_0px_rgba(0,0,0,0.03),22px_8px_24px_0px_rgba(0,0,0,0.04),6px_2px_13px_0px_rgba(0,0,0,0.05)] transition-all',
+                              couponItem === selectedCoupon ? 'bg-[#0348FF] text-white' : 'bg-white text-black'
                             )}
                           >
-                            {formattedIssueDate} - {formattedExpirationDate}
-                          </p>
-                          <p
-                            className={cn(
-                              'pb-2 text-[20px] font-bold',
-                              couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
-                            )}
-                          >
-                            {couponItem.discount.toLocaleString()}원
-                          </p>
-                          <div className="flex justify-between items-center">
+                            <p className="pb-2.5 text-base font-semibold">{couponItem.name}</p>
                             <p
-                              className={cn('text-xs', couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]')}
-                            >
-                              -{couponItem.discount.toLocaleString()}원 할인 혜택
-                            </p>
-                            <button
                               className={cn(
-                                'text-xs py-1.5 px-2.5 rounded-sm',
-                                couponItem === selectedCoupon ? 'bg-white text-[#0348FF]' : 'bg-[#0348FF] text-white'
+                                'pb-2 text-xs',
+                                couponItem === selectedCoupon ? 'text-white' : 'text-[#B3B3B3]'
                               )}
                             >
-                              적용하기
-                            </button>
+                              {formattedIssueDate} - {formattedExpirationDate}
+                            </p>
+                            <p
+                              className={cn(
+                                'pb-2 text-[20px] font-bold',
+                                couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
+                              )}
+                            >
+                              {couponItem.discount.toLocaleString()}원
+                            </p>
+                            <div className="flex justify-between items-center">
+                              <p
+                                className={cn(
+                                  'text-xs',
+                                  couponItem === selectedCoupon ? 'text-white' : 'text-[#0348FF]'
+                                )}
+                              >
+                                -{couponItem.discount.toLocaleString()}원 할인 혜택
+                              </p>
+                              <button
+                                className={cn(
+                                  'text-xs py-1.5 px-2.5 rounded-sm',
+                                  couponItem === selectedCoupon ? 'bg-white text-[#0348FF]' : 'bg-[#0348FF] text-white'
+                                )}
+                              >
+                                적용하기
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      );
-                  })}
+                        );
+                    })
+                  ) : (
+                    <p className="text-[20px] text-white text-center py-5">지금 사용 가능한 쿠폰이 없습니다.</p>
+                  )}
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
