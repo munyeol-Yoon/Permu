@@ -1,9 +1,17 @@
 import { getReviewsById } from '@/api/review';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-const useReviewsQuery = ({ page, productId, perCount }: { page: number; productId: string; perCount: number }) => {
+
+type ReviewFactorType = {
+  page: number;
+  productId: string;
+  perCount: number;
+  target: string;
+  condition: boolean;
+};
+const useReviewsQuery = ({ page, productId, perCount, target, condition }: ReviewFactorType) => {
   return useQuery({
-    queryKey: ['Reviews', productId, page],
-    queryFn: async () => await getReviewsById({ productId, page, perCount }),
+    queryKey: ['Reviews', productId, page, target, condition],
+    queryFn: async () => await getReviewsById({ productId, page, perCount, target, condition }),
     enabled: !!productId,
     placeholderData: keepPreviousData
   });

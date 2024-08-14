@@ -3,7 +3,6 @@
 import Pagination from '@/components/Pagination';
 import { useReviewsQuery } from '@/hooks/query';
 import useReviewsTotalImagesQuery from '@/hooks/query/useReviewsTotalImagesQuery';
-import useAlert from '@/hooks/useAlert';
 import { Params } from '@/types/products';
 import ArrowRRoundSVG from '@@/public/arrow/arrow-round-right.svg';
 import ProfileImg from '@@/public/profile/profile-sm.svg';
@@ -21,15 +20,35 @@ export const pageCountPerPage: number = 5;
 export const imagesCountLimit: number = 7;
 const ReviewPage = () => {
   const router = useRouter();
-  const { showInfoAlert } = useAlert();
   const { productId } = useParams<Params['params']>();
   const [page, setPage] = useState<number>(0);
-  const { data: reviews } = useReviewsQuery({ page, productId, perCount: itemCountPerPage });
+  const [target, setTarget] = useState<string>('createdAt');
+  const [condition, setCondition] = useState<boolean>(false);
+  const { data: reviews } = useReviewsQuery({
+    page,
+    productId,
+    perCount: itemCountPerPage,
+    target,
+    condition
+  });
 
   const { data: reviewstotalImages } = useReviewsTotalImagesQuery({ productId, limit: imagesCountLimit });
 
-  const handleFilter = (value: string) => {
-    showInfoAlert('준비중입니다');
+  const handleFilter = (value: number) => {
+    switch (value) {
+      case 1:
+        setTarget('createdAt');
+        setCondition(true);
+        return;
+      case 2:
+        setTarget('score');
+        setCondition(false);
+        return;
+      default:
+        setTarget('createdAt');
+        setCondition(false);
+        return;
+    }
   };
 
   return (
@@ -71,7 +90,7 @@ const ReviewPage = () => {
             >
               <span
                 className="hover:cursor-pointer px-[17px] pr-[18px] py-0 text-center"
-                onClick={() => handleFilter(item)}
+                onClick={() => handleFilter(index)}
               >
                 {item}
               </span>

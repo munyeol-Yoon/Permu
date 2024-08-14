@@ -11,14 +11,18 @@ type ReviewImagesPromiseType = {
 export const getReviewsById = async ({
   productId,
   page,
-  perCount
+  perCount,
+  target,
+  condition
 }: {
   productId: string;
   page: number;
   perCount: number;
+  target: string;
+  condition: boolean;
 }): Promise<ReviewPromiseType> => {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?productId=${productId}&page=${page}&perCount=${perCount}`
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews?productId=${productId}&page=${page}&perCount=${perCount}&target=${target}&condition=${condition}`
   );
   if (!response.ok) throw new Error('response 에러');
   const data = await response.json();
