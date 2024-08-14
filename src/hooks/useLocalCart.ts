@@ -67,7 +67,7 @@ const useLocalCart = () => {
     }
   }, [cartList]);
 
-  return { localCartList, setLocalCartList, addLocalCartItem, deleteLocalCartItem, updateLocalCartItem };
+  return { localCartList, addLocalCartItem, deleteLocalCartItem, updateLocalCartItem };
 };
 
 export default useLocalCart;

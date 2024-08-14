@@ -9,12 +9,7 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { CartAccordion, CartEmpty, CartList, CartSelector } from './_components';
 
 const CartPage = () => {
-  const {
-    localCartList,
-    setLocalCartList,
-    deleteLocalCartItem: deleteCartItem,
-    updateLocalCartItem: updateCartItem
-  } = useLocalCart();
+  const { localCartList, deleteLocalCartItem: deleteCartItem, updateLocalCartItem: updateCartItem } = useLocalCart();
   const { loggedUser } = useAuth();
   const { data: cartList } = useCartsQuery();
   const { addMutation, patchMutation, deleteMutation } = useCartsMutation();
