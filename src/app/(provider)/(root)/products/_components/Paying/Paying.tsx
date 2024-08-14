@@ -33,6 +33,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
       const duplicatedCartItem = localCartList.find((cartItem) => cartItem.productId === product.productId);
       if (duplicatedCartItem) {
         updateLocalCartItem({ ...duplicatedCartItem, productCount: duplicatedCartItem.productCount + 1 });
+        setIsDialogOpen(true);
         return;
       }
 
