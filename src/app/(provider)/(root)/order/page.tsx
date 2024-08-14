@@ -107,6 +107,8 @@ const DeliveryPage = () => {
   };
 
   const handleOrder = async () => {
+    if (!selectedAddress) return alert('배송지를 선택해주세요!');
+
     setOrderStatus('PENDING');
     let response;
     const orderName = buyNowItem
@@ -202,20 +204,29 @@ const DeliveryPage = () => {
             </div>
             <div className="flex justify-between items-center px-5 py-4">
               <div className="flex items-center gap-5 text-nowrap w-5/6 overflow-x-scroll">
-                {addressList?.map((addressItem) => (
-                  <button
-                    onClick={() => setSelectedAddress(addressItem)}
-                    key={addressItem.addressId}
-                    className={cn(
-                      selectedAddress === addressItem
-                        ? 'bg-[#0348FF] text-white border-[#FFFFFF]/50'
-                        : 'bg-white text-[#302A28] border-[#B3B3B3]/50',
-                      'px-4 text-sm py-1.5 rounded-full border transition-all'
-                    )}
-                  >
-                    {addressItem.name}
-                  </button>
-                ))}
+                {addressList?.length ? (
+                  addressList?.map((addressItem) => (
+                    <button
+                      onClick={() => setSelectedAddress(addressItem)}
+                      key={addressItem.addressId}
+                      className={cn(
+                        selectedAddress === addressItem
+                          ? 'bg-[#0348FF] text-white border-[#FFFFFF]/50'
+                          : 'bg-white text-[#302A28] border-[#B3B3B3]/50',
+                        'px-4 text-sm py-1.5 rounded-full border transition-all'
+                      )}
+                    >
+                      {addressItem.name}
+                    </button>
+                  ))
+                ) : (
+                  <>
+                    <p>등록된 배송지가 없습니다.</p>
+                    <Link href={MYPAGE_ADDRESS_EDIT_PATHNAME} className="text-[#0348FF] font-bold text-sm">
+                      배송지를 등록해주세요!
+                    </Link>
+                  </>
+                )}
               </div>
               <Link href={MYPAGE_ADDRESS_EDIT_PATHNAME} className="text-[#0348FF] font-bold text-sm">
                 배송지 변경
