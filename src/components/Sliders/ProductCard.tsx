@@ -1,4 +1,5 @@
 'use client';
+import { getReviewsById } from '@/api/review';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useWishesMutation } from '@/hooks/mutation';
 import { WishProduct } from '@/hooks/query/mypage/useUserWishesQuery';
@@ -6,6 +7,7 @@ import useAlert from '@/hooks/useAlert';
 import { Product } from '@/types/products';
 import BlueWishSVG from '@@/public/heart/blue-wish-icon.svg';
 import WishSVG from '@@/public/heart/wish-icon.svg';
+import { useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -16,6 +18,7 @@ export interface ProductProps {
 
 const ProductCard = ({ product }: ProductProps) => {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { loggedUser } = useAuth();
   const { showInfoAlert } = useAlert();
   const userLike = 'Wish' in product && product.Wish?.userId === loggedUser?.id;
@@ -41,10 +44,23 @@ const ProductCard = ({ product }: ProductProps) => {
     } else addMutation.mutate();
   };
 
+  const handleMouseOver = () => {
+    queryClient.prefetchQuery({
+      queryKey: ['Reviews', product.productId, 0, 'createdAt', false],
+      queryFn: async () =>
+        await getReviewsById({
+          productId: `${product.productId}`,
+          page: 0,
+          perCount: 2,
+          target: 'createdAt',
+          condition: false
+        })
+    });
+  };
   return (
     <div className="w-full h-[281px] flex flex-col mt-[16px]">
-      <div className="w-full h-full relative">
-        <Link href={`/products/${product.productId}`}>
+      <div className="w-h-full relative">
+        <Link href={`/products/${product.productId}`} onMouseOver={handleMouseOver}>
           <Image
             src={product.thumbNailURL || ''}
             fill

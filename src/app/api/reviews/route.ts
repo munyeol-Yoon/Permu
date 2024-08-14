@@ -28,8 +28,6 @@ export async function GET(request: NextRequest) {
       .order(target, { ascending: condition })
       .range(start, end);
 
-    console.log(data);
-    console.log(target, condition);
     if (error) throw error;
     return NextResponse.json({ data, totalCount: count });
   } catch (error) {

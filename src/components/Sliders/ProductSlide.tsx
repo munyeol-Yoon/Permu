@@ -26,7 +26,7 @@ const ProductSlide = ({ Images }: SliderProps) => {
         <CarouselContent className="h-full">
           {Images?.map((image, idx) => (
             <CarouselItem key={idx}>
-              <div className="flex-center relative w-h-full">
+              <div className="flex items-center justify-center relative w-h-full">
                 <Image
                   src={image.ImageURL}
                   fill

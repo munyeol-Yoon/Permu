@@ -64,7 +64,7 @@ const Share = ({ product }: ProductProps) => {
   };
 
   return (
-    <Button className="w-full h-[64px]" variant="defaultline" onClick={handleShareProduct}>
+    <Button size="xl" variant="defaultline" onClick={handleShareProduct}>
       <div className="flex-row-10 justify-center p-5-2 ">
         <ShareSVG />
         <span className="text-[#B3B3B3]">공유하기</span>
