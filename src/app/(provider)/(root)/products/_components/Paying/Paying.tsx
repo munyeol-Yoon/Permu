@@ -95,11 +95,11 @@ const Paying = ({ size, category, product }: PayingProps) => {
           ))}
         </div>
       </div>
-      <div className="flex-row-20 justify-between p-5-2 w-full">
-        <Button className="w-full h-[64px]" variant="defaultline" onClick={handlePostCart}>
+      <div className="box-container">
+        <Button size="xl" variant="defaultline" onClick={handlePostCart}>
           쇼핑백에 추가
         </Button>
-        <Button className="w-full h-[64px]" onClick={handleBuyNow}>
+        <Button size="xl" onClick={handleBuyNow}>
           바로 구매하기
         </Button>
       </div>
@@ -135,19 +135,19 @@ const Paying = ({ size, category, product }: PayingProps) => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="flex-row-10 justify-between">
-              <Button className="w-full h-[64px]" variant="defaultline" onClick={handlePostCart}>
+            <div className="box-container-p-none py-2">
+              <Button size="xl" variant="defaultline" onClick={handlePostCart}>
                 쇼핑백에 추가
               </Button>
-              <Button className="w-full h-[64px]" onClick={handleBuyNow}>
+              <Button size="xl" onClick={handleBuyNow}>
                 바로 구매하기
               </Button>
             </div>
           </div>
         ) : (
-          <div className="flex-row-10 justify-between ">
+          <div className="box-container-p-none">
             <Wish inner={false} />
-            <Button className="w-full h-[64px] " onClick={handleSelectedMode}>
+            <Button size="xl" onClick={handleSelectedMode}>
               바로 구매하기
             </Button>
           </div>

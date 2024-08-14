@@ -19,7 +19,7 @@ const DeliveryOptions = () => {
 
   return (
     <div>
-      <div className="flex-row-20 justify-between p-5-2 w-full">
+      <div className="box-container">
         <span className="text-gray-500">상품 배송 옵션</span>
         {deliveryOptions.length > 3 && (
           <span className="flex-row-10 items-center  text-gray-500 hover:cursor-pointer" onClick={handleOnOff}>
@@ -30,7 +30,7 @@ const DeliveryOptions = () => {
 
       <div
         className={cx(
-          'grid grid-cols-3 gap-[10px] justify-between p-5-2 w-full overflow-hidden flex-wrap transition-all duration-500',
+          'grid-col-3 gap-[10px] justify-between p-5-2 w-full overflow-hidden flex-wrap transition-all duration-500',
           { 'h-[120px]': !isExpanded, 'h-auto': isExpanded }
         )}
       >

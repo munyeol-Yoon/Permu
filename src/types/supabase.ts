@@ -205,13 +205,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "Deliveries_addressId_fkey"
-            columns: ["addressId"]
-            isOneToOne: false
-            referencedRelation: "Addresses"
-            referencedColumns: ["addressId"]
-          },
-          {
             foreignKeyName: "Deliveries_deliverId_fkey"
             columns: ["deliverId"]
             isOneToOne: true
@@ -405,6 +398,61 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "Categories"
             referencedColumns: ["categoryId"]
+          },
+        ]
+      }
+      Reviews: {
+        Row: {
+          content: string | null
+          createdAt: string
+          imagesURL: Json | null
+          orderDetailId: string
+          productId: number
+          reviewId: string
+          score: number | null
+          userId: string
+        }
+        Insert: {
+          content?: string | null
+          createdAt?: string
+          imagesURL?: Json | null
+          orderDetailId?: string
+          productId: number
+          reviewId?: string
+          score?: number | null
+          userId?: string
+        }
+        Update: {
+          content?: string | null
+          createdAt?: string
+          imagesURL?: Json | null
+          orderDetailId?: string
+          productId?: number
+          reviewId?: string
+          score?: number | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "Reviews_orderDetailId_fkey"
+            columns: ["orderDetailId"]
+            isOneToOne: false
+            referencedRelation: "OrdersDetail"
+            referencedColumns: ["orderDetailId"]
+          },
+          {
+            foreignKeyName: "Reviews_productId_fkey"
+            columns: ["productId"]
+            isOneToOne: false
+            referencedRelation: "Products"
+            referencedColumns: ["productId"]
+          },
+          {
+            foreignKeyName: "Reviews_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "Users"
+            referencedColumns: ["id"]
           },
         ]
       }

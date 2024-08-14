@@ -1,6 +1,8 @@
-export type ReviewType = {
-  reviewId: number;
-  ImageURL: string;
-  title: string;
-  content: string;
+import { Tables } from './supabase';
+
+export type ReviewType = Omit<Tables<'Reviews'>, 'imagesURL'> & {
+  imagesURL: string[];
+  User: Tables<'Users'>;
+  Product: { notes: string[] };
+  OrderDetail: Tables<'OrdersDetail'>;
 };

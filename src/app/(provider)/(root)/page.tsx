@@ -14,7 +14,7 @@ const RootPage = () => {
 
       <div className="flex flex-col gap-y-16">
         <BrandBanner>
-          <div className="w-full flex justify-center items-center text-xl font-bold">
+          <div className="w-full flex-center text-xl font-bold">
             <span className="text-white">행사중인 브랜드 한번에 몰아보기 &gt;</span>
           </div>
         </BrandBanner>
