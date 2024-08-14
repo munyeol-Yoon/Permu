@@ -2,6 +2,7 @@
 
 import Pagination from '@/components/Pagination';
 import { useReviewsQuery } from '@/hooks/query';
+import useReviewsTotalImagesQuery from '@/hooks/query/useReviewsTotalImagesQuery';
 import useAlert from '@/hooks/useAlert';
 import { Params } from '@/types/products';
 import ArrowRRoundSVG from '@@/public/arrow/arrow-round-right.svg';
@@ -16,16 +17,16 @@ const filterNavbar = ['최신순', '오래된 순', '별점 높은순'];
 
 export const itemCountPerPage: number = 2;
 export const pageCountPerPage: number = 5;
+
+export const imagesCountLimit: number = 7;
 const ReviewPage = () => {
   const router = useRouter();
   const { showInfoAlert } = useAlert();
   const { productId } = useParams<Params['params']>();
   const [page, setPage] = useState<number>(0);
   const { data: reviews } = useReviewsQuery({ page, productId, perCount: itemCountPerPage });
-  const reviewsImages = reviews?.data
-    ?.filter((review) => review.imagesURL)
-    .flatMap((review) => review.imagesURL)
-    .slice(0, 7);
+
+  const { data: reviewstotalImages } = useReviewsTotalImagesQuery({ productId, limit: imagesCountLimit });
 
   const handleFilter = (value: string) => {
     showInfoAlert('준비중입니다');
@@ -35,10 +36,10 @@ const ReviewPage = () => {
     <div className="p-5-2 ">
       <div className="flex-row-10 mb-3">
         <span className="text-xl">전체 후기 사진</span>
-        <span className="text-xl text-[#0348FF]">{reviewsImages?.length}</span>
+        <span className="text-xl text-[#0348FF]">{reviewstotalImages?.totalCount}</span>
       </div>
       <div className="grid grid-cols-4 gap-4">
-        {reviewsImages?.map((reviewImage, index) => (
+        {reviewstotalImages?.data?.map((reviewImage, index) => (
           <Image
             key={index}
             src={reviewImage}
