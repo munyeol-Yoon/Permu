@@ -1,18 +1,16 @@
 import Bread from '@/components/Bread';
 import { Params, Product } from '@/types/products';
 
-import { ProductSlide } from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
-import CurrentProducts from '@/components/CurrentProducts';
-import MdReviews from '@/components/MdReviews';
+
+import { CurrentProducts, MdReviews, ProductSlide } from '@/components/Sliders';
 import Toggle from '@/components/Toggle';
 import { Accordion } from '@/components/ui/accordion';
 import { createClient } from '@/supabase/server';
 import Footer from '../../_components/Footer';
 import DeliveryOptions from '../_components/DeliveryOptions';
-import { Share, Wish } from '../_components/DetailButtons';
+import { Paying, Share, Wish } from '../_components/DetailButtons';
 import DetailTabs from '../_components/DetailTabs';
-import Paying from '../_components/Paying';
 
 const ProductDetailPage = async ({ params }: Params) => {
   const { productId } = params;

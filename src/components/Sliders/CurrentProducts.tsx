@@ -1,8 +1,9 @@
 'use client';
 import CategoryMore from '@/components/CategoryMore';
 import useProductsQuery from '@/hooks/query/useProductsQuery';
-import SkeletonCard from '../SkeletonCard';
-import Sliders from '../Sliders';
+
+import { SkeletonCard } from '../Card';
+import { Sliders } from '../Sliders';
 
 const CurrentProducts = ({ title, option }: { title: string; option: string }) => {
   const { data: products, isPending } = useProductsQuery(option);
