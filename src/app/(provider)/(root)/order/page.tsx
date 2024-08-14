@@ -24,7 +24,7 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { OrderCompleted, OrderError, OrderLoading } from './_components';
 
 const DeliveryPage = () => {
@@ -38,6 +38,7 @@ const DeliveryPage = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<null | any>(null);
   const [selectedPayment, setSelectedPayment] = useState<'TOSS' | 'KAKAOPAY'>('KAKAOPAY');
   const [selectedAddress, setSelectedAddress] = useState<Tables<'Addresses'> | null>(null);
+  const [receiverMemo, setReceiverMemo] = useState('');
   const [mileageAmount, setMileageAmount] = useState(0);
   const [orderStatus, setOrderStatus] = useState<'IDLE' | 'PENDING' | 'COMPLETED' | 'FAILED'>('IDLE');
 
@@ -52,8 +53,6 @@ const DeliveryPage = () => {
   }, []);
 
   const { data: orderInfo } = useOrderInfoQuery(!buyNowItem && orderStatus === 'IDLE');
-
-  const receiverMemoRef = useRef('');
 
   const totalProductDiscountPrice = useMemo(
     () =>
@@ -149,7 +148,7 @@ const DeliveryPage = () => {
       name: selectedAddress?.name!,
       addressId: selectedAddress?.addressId!,
       phone: selectedAddress?.phone!,
-      deliverMemo: receiverMemoRef.current,
+      deliverMemo: receiverMemo ? receiverMemo : "문 앞에 놓아주세요.",
       arrivalDate: new Date()
     };
 
@@ -238,23 +237,28 @@ const DeliveryPage = () => {
               <p className="text-xs text-[#B3B3B3] mb-1.5">
                 {selectedAddress?.address} {selectedAddress?.detailAddress}
               </p>
-              <Input
+              {/* <Input
                 placeholder="직접 입력하기"
-                onChange={(e) => (receiverMemoRef.current = e.target.value)}
+                onChange={(e) => setReceiverMemo(e.target.value)}
                 className="border-b border-x-0 border-t-0 rounded-none placeholder:text-[B3B3B3] text-xs focus-visible:ring-0 mb-3"
-              />
+              /> */}
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex justify-between items-center px-2.5 py-1.5 border border-[#B3B3B3] w-full text-start text-xs text-[#B3B3B3]">
-                  <p>배송시 요청사항을 선택해주세요.</p>
+                  <p>{receiverMemo ? receiverMemo : '배송시 요청사항을 선택해주세요.'}</p>
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
                     <path d="M1 0.445312L8.99998 7.55642L17 0.445313" stroke="#B3B3B3" strokeMiterlimit="10" />
                   </svg>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuCheckboxItem>부재시 옥상으로 따라오세요.</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>문 앞에 놓아주세요.</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>부재시 당근을 흔들어주세요.</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>부재시 경비실에 맡겨주세요.</DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem onClick={() => setReceiverMemo('문 앞에 놓아주세요.')}>
+                    문 앞에 놓아주세요.
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem onClick={() => setReceiverMemo('부재시 당근을 흔들어주세요.')}>
+                    부재시 당근을 흔들어주세요.
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem onClick={() => setReceiverMemo('부재시 경비실에 맡겨주세요.')}>
+                    부재시 경비실에 맡겨주세요.
+                  </DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
