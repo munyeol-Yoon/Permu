@@ -53,6 +53,7 @@ const useAuthMutation = () => {
     mutationFn: () => logOut(),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ['loggedUser'] });
+      localStorage.removeItem('cart');
       router.replace(HOME);
     }
   });

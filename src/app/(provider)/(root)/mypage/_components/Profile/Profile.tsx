@@ -12,11 +12,7 @@ const Profile = () => {
   const { logOutMutation } = useAuthMutation();
   const { data: loggedUser, isPending } = useAuthQuery();
   const handleClick = () => showInfoAlert('준비중입니다!');
-  const handleLogOut = () => {
-    localStorage.removeItem('cart');
-    logOutMutation();
-  };
-
+  const handleLogOut = () => logOutMutation();
   if (isPending) return <Loading />;
   const name = loggedUser?.userData.name;
 
