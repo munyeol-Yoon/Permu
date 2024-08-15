@@ -80,8 +80,7 @@ const ProductCard = ({ product }: ProductProps) => {
       </div>
       <div className="flex flex-col gap-1 mt-2">
         <span className="text-xs line-clamp-1">{brandName}</span>
-        <p className="font-semibold line-clamp-1">{title}</p>
-        {/* <p className="font-semibold line-clamp-1">{title.length > 7 ? title.slice(0, 7) + '...' : title}</p> */}
+        <p className="font-semibold line-clamp-1">{title.length > 9 ? title.slice(0, 9) + '...' : title}</p>
         <div className="flex justify-between items-center">
           <span className="font-semibold text-sm sm:text-base whitespace-pre">
             {(discountedPrice || resultPrice || 0).toLocaleString()}원

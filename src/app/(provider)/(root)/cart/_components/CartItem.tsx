@@ -137,7 +137,7 @@ const CartItem = ({ cartItem, updateCartItem, deleteCartItem }: CartItemProps) =
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {productVolume.map((size: any) => (
+              {productVolume?.map((size: any) => (
                 <DropdownMenuCheckboxItem
                   onClick={() => handleUpdateItemVolume(size)}
                   checked={productSelectedVolume === size}
