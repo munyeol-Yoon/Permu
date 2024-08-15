@@ -3,7 +3,6 @@ import Navbar from '@/components/Navbar';
 import { useAuth } from '@/contexts/auth.context/auth.context';
 import InfoCard from '../_components/InfoCard';
 import Profile from '../_components/Profile';
-import MileageCard from './_components/MilieageCard';
 
 const MileageListPage = () => {
   const { loggedUser } = useAuth();
@@ -15,19 +14,19 @@ const MileageListPage = () => {
 
       <div className="flex flex-col bg-muted/30 p-5 gap-x-2.5 gap-y-1">
         <InfoCard title="현재 마일리지" sm>
-          1,000p
+          0p
         </InfoCard>
         <InfoCard title="예상 적립 마일리지" sm>
           0p
         </InfoCard>
         <InfoCard title="총 마일리지" sm>
-          3,580p
+          0p
         </InfoCard>
       </div>
 
       <div className="flex flex-col px-5 py-4 gap-x-2.5 gap-y-1 border-b-8 border-muted/30">
         <InfoCard title="소멸 예정 마일리지 (30일 이내 소멸예정)" sm className="bg-muted/30">
-          3,580p
+          0p
         </InfoCard>
 
         <ul className="list-disc pl-5 text-muted text-sm">
@@ -54,9 +53,9 @@ const MileageListPage = () => {
 
         <div className="mt-8">
           <div className="flex flex-col">
+            {/* <MileageCard />
             <MileageCard />
-            <MileageCard />
-            <MileageCard />
+            <MileageCard /> */}
           </div>
         </div>
       </div>
