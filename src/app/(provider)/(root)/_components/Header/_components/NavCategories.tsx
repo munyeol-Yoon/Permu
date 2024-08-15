@@ -1,11 +1,11 @@
-import { BRANDS, CATEGORY_SEARCH_RESULT_PATHNAME, EVENT, SUPPORT } from '@/constant/pathname';
+import { BRANDS, CATEGORY_SEARCH_RESULT_PATHNAME, EVENT, HOME, SUPPORT } from '@/constant/pathname';
 import useAlert from '@/hooks/useAlert';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 import { useState } from 'react';
 
 const LINKS = [
-  { title: '추천' },
+  { title: '추천', url: HOME },
   { title: '특가' },
   { title: '전상품', url: CATEGORY_SEARCH_RESULT_PATHNAME },
   { title: '기획전' },
@@ -32,14 +32,14 @@ const NavCategories = () => {
         return (
           <li
             key={nav.title}
-            className={cn('cursor-pointer py-3 hover:brightness-90 active:brightness-110', {
+            className={cn('cursor-pointer hover:brightness-90 active:brightness-110', {
               'border-b-2 border-black font-semibold': isActive,
               'text-muted': !isActive
             })}
             onClick={() => handleClick(nav.title, nav.url)}
           >
-            <Link href={nav.url ?? ''} className="whitespace-pre text-sm md:text-base">
-              {nav.title}
+            <Link href={nav.url ?? ''} className="whitespace-pre text-sm md:text-base h-full">
+              <p className="py-3">{nav.title}</p>
             </Link>
           </li>
         );
