@@ -1,10 +1,10 @@
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { DeliveryInfo } from '@/types/deliveries';
 import { Order } from '@/types/order';
 import { useMutation } from '@tanstack/react-query';
+import useAuthQuery from '../query/useAuthQuery';
 
 const useOrderMutation = () => {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
 
   return useMutation({
     mutationFn: async ({
