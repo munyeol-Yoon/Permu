@@ -1,8 +1,8 @@
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useQuery } from '@tanstack/react-query';
+import useAuthQuery from './useAuthQuery';
 
 const useOrderInfoQuery = (enabled: boolean) => {
-  const { loggedUser, isLoggedIn } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
 
   return useQuery({
     queryKey: ['orderInfo', loggedUser?.id],
@@ -11,7 +11,7 @@ const useOrderInfoQuery = (enabled: boolean) => {
       const data = await res.json();
       return data;
     },
-    enabled: enabled && isLoggedIn
+    enabled: enabled && !!loggedUser
   });
 };
 

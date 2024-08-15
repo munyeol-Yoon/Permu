@@ -3,7 +3,7 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import { CartItem } from '@/types/cart';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
@@ -14,7 +14,7 @@ interface CartAccordionProps {
 }
 
 const CartAccordion = ({ cartList }: CartAccordionProps) => {
-  const { isLoggedIn } = useAuth();
+  const { data: isLoggedIn } = useAuthQuery();
   const selectedProductCount = useMemo(() => {
     if (cartList?.length) {
       return cartList?.reduce((acc, cur) => acc + Number(cur.productSelected), 0);

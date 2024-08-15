@@ -1,11 +1,11 @@
 'use client';
 import Navbar from '@/components/Navbar';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import InfoCard from '../_components/InfoCard';
 import Profile from '../_components/Profile';
 
 const MileageListPage = () => {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const name = loggedUser?.userData.name || '';
   return (
     <div>

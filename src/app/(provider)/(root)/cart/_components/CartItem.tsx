@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useCart from '@/hooks/useCart';
 import { CartItem as CartItemType } from '@/types/cart';
 import Image from 'next/image';
@@ -36,7 +36,7 @@ const CartItem = ({ cartItem, updateCartItem, deleteCartItem }: CartItemProps) =
     productVolume
   } = cartItem;
 
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const { updateCartItemSelected, updateCartItemCount, updateCartItemVolume } = useCart();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);

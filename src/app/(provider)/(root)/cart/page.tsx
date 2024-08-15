@@ -1,9 +1,9 @@
 'use client';
 
 import Navbar from '@/components/Navbar';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useLocalCart from '@/hooks/useLocalCart';
 import { CartItem } from '@/types/cart';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -16,7 +16,7 @@ const CartPage = () => {
     deleteLocalCartItem: deleteCartItem,
     updateLocalCartItem: updateCartItem
   } = useLocalCart();
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const { data: cartList } = useCartsQuery();
   const { addMutation, patchMutation, deleteMutation } = useCartsMutation();
 

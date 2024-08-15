@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import Link from 'next/link';
 
 const CartEmpty = () => {
-  const { isLoggedIn } = useAuth();
+  const { data: isLoggedIn } = useAuthQuery();
 
   return (
     <div className="h-[calc(100vh-70px)] relative flex flex-col gap-9 items-center justify-center">

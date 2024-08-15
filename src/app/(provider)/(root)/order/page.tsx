@@ -11,15 +11,14 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
-import { useAuth } from '@/contexts/auth.context/auth.context';
+import { MYPAGE_ADDRESS_EDIT_PATHNAME } from '@/constant/pathname';
 import { useOrderMutation } from '@/hooks/mutation';
 import { useOrderInfoQuery } from '@/hooks/query';
-import useCart from '@/hooks/useCart';
-import { cn } from '@/utils/cn';
-
-import { MYPAGE_ADDRESS_EDIT_PATHNAME } from '@/constant/pathname';
 import useAddressQuery from '@/hooks/query/useAddressQuery';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
+import useCart from '@/hooks/useCart';
 import { Tables } from '@/types/supabase';
+import { cn } from '@/utils/cn';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -30,7 +29,7 @@ import { OrderCompleted, OrderError, OrderLoading } from './_components';
 const DeliveryPage = () => {
   const router = useRouter();
 
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const { mutateAsync } = useOrderMutation();
   const { deleteCartItem } = useCart();
   const { data: addressList, isFetched } = useAddressQuery();
