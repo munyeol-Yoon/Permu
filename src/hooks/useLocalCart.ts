@@ -51,19 +51,8 @@ const useLocalCart = () => {
       const parsedPrevCartList = JSON.parse(prevCartList);
       setLocalCartList(parsedPrevCartList);
     } else if (userInfo && cartList?.length) {
-      const prevLocalCartList = localStorage.getItem('cart');
-
-      const parsedLocalCartList = prevLocalCartList ? JSON.parse(prevLocalCartList) : [];
-
-      const filteredCartList = cartList.filter(
-        (cartItem) =>
-          !parsedLocalCartList.find((localCartItem: CartItem) => localCartItem.productId === cartItem.productId)
-      );
-
-      const newCartList = [...parsedLocalCartList, ...filteredCartList];
-
-      localStorage.setItem('cart', JSON.stringify(newCartList));
-      setLocalCartList(newCartList);
+      localStorage.setItem('cart', JSON.stringify(cartList));
+      setLocalCartList(cartList);
     }
   }, [cartList, userInfo]);
 
