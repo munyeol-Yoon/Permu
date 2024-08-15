@@ -1,9 +1,8 @@
-import { BannerSlide } from '@/components/BannerSlide';
 import BrandBanner from '@/components/BrandBanner';
-import CurrentProducts from '@/components/CurrentProducts';
-import MdReviews from '@/components/MdReviews';
-import { CategoryProducts, CategorySection } from './_components/CategorySection';
-import EventLinkCard from './_components/EventLinkCard';
+
+import { BannerSlide, CategoryProducts, CategorySection, CurrentProducts, MdReviews } from '@/components/Sliders';
+
+import { EventLinkCard } from '@/components/Card';
 import Footer from './_components/Footer';
 
 const RootPage = () => {
@@ -14,7 +13,7 @@ const RootPage = () => {
 
       <div className="flex flex-col gap-y-16">
         <BrandBanner>
-          <div className="w-full flex justify-center items-center text-xl font-bold">
+          <div className="w-full flex-center text-xl font-bold">
             <span className="text-white">행사중인 브랜드 한번에 몰아보기 &gt;</span>
           </div>
         </BrandBanner>
