@@ -25,18 +25,23 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className=" min-h-screen grid ">
+    <div className="max-h-screen flex xl:justify-end justify-center pr-[150px] gap-[45px]">
       <Image src="/main_image.webp" fill priority alt="background" loading="eager" />
-      {/* <div className="hidden w-full relative">
-        <Image
-          src={EventIMG}
-          fill
-          alt="이벤트 이미지"
-          className="object-contain w-[400px] h-full absolute right-0"
-          loading="eager"
-        />
-      </div> */}
-      <div className="relative bg-white w-full max-w-[600px] h-full max-h-screen overflow-scroll mx-auto flex flex-col">
+      <div className="flex-col gap-3 xl:flex hidden">
+        <div className="relative w-[500px] h-[500px]">
+          <Image src="/banner/main_banner.webp" fill alt="이벤트 이미지" className="object-contain absolute" />
+        </div>
+        <div className="relative w-[500px] h-[130px]">
+          <Image src="/banner/main_event_banner_1.webp" fill alt="이벤트 이미지" className="object-contain absolute" />
+        </div>
+        <div className="relative w-[500px] h-[130px]">
+          <Image src="/banner/main_event_banner_2.webp" fill alt="이벤트 이미지" className="object-contain absolute" />
+        </div>
+        <div className="relative w-[500px] h-[130px]">
+          <Image src="/banner/main_event_banner_3.webp" fill alt="이벤트 이미지" className="object-contain absolute" />
+        </div>
+      </div>
+      <div className="relative bg-white w-full max-w-[600px] h-full max-h-screen overflow-scroll flex flex-col">
         {isReviewPage ? null : isCategoryPage && !isCategorySearchResultPage ? (
           <SearchHeader />
         ) : (
