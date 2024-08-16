@@ -286,7 +286,7 @@ const DeliveryPage = () => {
                     <p className="text-xs mb-1">{buyNowItem.Brand.enName}</p>
                     <p className="font-semibold mb-2.5">{buyNowItem.title}</p>
                     <p className="text-xs text-[#B3B3B3] mb-1.5">
-                      옵션 : {buyNowItem.volume}ml, {buyNowItem.count}개
+                      옵션 : {buyNowItem.volume}, {buyNowItem.count}개
                     </p>
                     <div className="relative flex justify-end items-center gap-[18px]">
                       {!!buyNowItem.discount && (
@@ -317,7 +317,7 @@ const DeliveryPage = () => {
                       <p className="text-xs mb-1">{productItem.Brands.enName}</p>
                       <p className="font-semibold mb-2.5">{productItem.title}</p>
                       <p className="text-xs text-[#B3B3B3] mb-1.5">
-                        옵션 : {productItem.volume}ml, {productItem.count}개
+                        옵션 : {productItem.volume}, {productItem.count}개
                       </p>
                       <div className="relative flex justify-end items-center gap-[18px]">
                         {!!productItem.discount && (
