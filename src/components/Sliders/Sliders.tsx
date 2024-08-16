@@ -39,7 +39,7 @@ const Sliders = ({ data, count }: SlidersProps) => {
     <Carousel>
       <CarouselContent>
         {chunks.map((chunk, index) => (
-          <CarouselItem key={index} className="flex-row-10">
+          <CarouselItem key={index} className="flex-row-10 gap-5">
             {chunk.map((item) => renderCarouselItem(item))}
           </CarouselItem>
         ))}

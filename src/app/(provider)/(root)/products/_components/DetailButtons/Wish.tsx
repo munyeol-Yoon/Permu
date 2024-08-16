@@ -1,8 +1,8 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useWishesMutation } from '@/hooks/mutation';
 import { useWishesQuery } from '@/hooks/query';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useAlert from '@/hooks/useAlert';
 import { Params } from '@/types/products';
 import BlackWishSVG from '@@/public/heart/black-wish-icon.svg';
@@ -15,7 +15,7 @@ const Wish = ({ inner = true }: { inner?: boolean }) => {
   const router = useRouter();
   const { showInfoAlert } = useAlert();
   const { productId } = useParams<Params['params']>();
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const { data: getLikes } = useWishesQuery(Number(productId));
   const addMutation = useWishesMutation({
     data: getLikes?.data || null,

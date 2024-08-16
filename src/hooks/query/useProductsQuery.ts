@@ -1,7 +1,6 @@
 import { getOrderInfos } from '@/api/orderInfo';
 import { getProducts, getProductsByBrandForThisWeek, getProductsByCategoryForThisWeek } from '@/api/product';
 import { getWishes } from '@/api/wish';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { Product, TWish } from '@/types/products';
 import { useQuery } from '@tanstack/react-query';
 import useAuthQuery from './useAuthQuery';

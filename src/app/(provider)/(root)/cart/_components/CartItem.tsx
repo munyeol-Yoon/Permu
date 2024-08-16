@@ -9,6 +9,8 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
+import useCart from '@/hooks/useCart';
 import { CartItem as CartItemType } from '@/types/cart';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -33,6 +35,9 @@ const CartItem = ({ cartItem, updateCartItem, deleteCartItem }: CartItemProps) =
     productThumbnailURL,
     productVolume
   } = cartItem;
+
+  const { data: loggedUser } = useAuthQuery();
+  const { updateCartItemSelected, updateCartItemCount, updateCartItemVolume } = useCart();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [container, setContainer] = useState<null | Element>(null);
@@ -132,7 +137,7 @@ const CartItem = ({ cartItem, updateCartItem, deleteCartItem }: CartItemProps) =
               </svg>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {productVolume.map((size: any) => (
+              {productVolume?.map((size: any) => (
                 <DropdownMenuCheckboxItem
                   onClick={() => handleUpdateItemVolume(size)}
                   checked={productSelectedVolume === size}
