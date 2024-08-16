@@ -1,10 +1,10 @@
 import { getAddressInfoByUserId } from '@/api/addresses';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
+import useAuthQuery from './useAuthQuery';
 
 const useAddressQuery = () => {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
 
   return useQuery<Tables<'Addresses'>[]>({
     queryKey: ['userAddresses', loggedUser?.id],
