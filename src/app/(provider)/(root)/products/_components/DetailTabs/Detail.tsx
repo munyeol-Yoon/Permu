@@ -25,7 +25,7 @@ const DetailPage = ({ productDetail }: { productDetail: string }) => {
         </div>
       </div>
 
-      <div className="w-full absolute bottom-0 left-0 flex items-center justify-center bg-white bg-opacity-75">
+      <div className="w-full absolute bottom-0 left-0 flex items-center mb-5 justify-center bg-opacity-75">
         <button className="bg-white p-2-4 border" onClick={handleOnOff}>
           <span className="flex items-center">
             상품 정보 {!isExpanded ? <span>더보기 </span> : <span>접기 </span>}

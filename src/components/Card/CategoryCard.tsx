@@ -6,7 +6,7 @@ export interface CategoryProps {
 }
 const CategoryCard = ({ brand }: CategoryProps) => {
   return (
-    <div className="w-1/4 h-[100px] rounded-[8px] relative basis-[1/4]">
+    <div className="w-full h-[100px] rounded-[8px] relative ">
       <Image
         src={brand.logoURL || ''}
         fill

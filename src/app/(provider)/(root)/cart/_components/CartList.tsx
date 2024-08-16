@@ -11,7 +11,7 @@ interface CartListProps {
 
 const CartList = ({ cartList, deleteCartItem, updateCartItem }: CartListProps) => {
   return (
-    <ul className="flex flex-col gap-5 pb-[148px]">
+    <ul className="h-full bg-white flex flex-col gap-5 pb-[148px]">
       {cartList.map((cartItem) => (
         <CartItem
           key={cartItem.productId}

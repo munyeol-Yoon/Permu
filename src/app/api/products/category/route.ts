@@ -27,7 +27,8 @@ export async function GET(request: NextRequest) {
     const { data, error: productError } = await supabase
       .from('Products')
       .select('*')
-      .in('categoryId, Brand:Brands(*), Category:Categories(*)', groupedCategories['인센스']);
+      .in('categoryId, Brand:Brands(*), Category:Categories(*)', groupedCategories['인센스'])
+      .limit(9);
 
     if (productError) throw productError;
 

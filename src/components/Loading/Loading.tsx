@@ -1,8 +1,9 @@
-import LoadingSpinner from '@@/public/loading-spinner.svg';
+import LinearProgress from '@mui/material/LinearProgress';
+
 const Loading = () => {
   return (
-    <div className="w-full h-screen flex items-center justify-center">
-      <LoadingSpinner className="w-1/2" />
+    <div className="h-screen">
+      <LinearProgress />
     </div>
   );
 };

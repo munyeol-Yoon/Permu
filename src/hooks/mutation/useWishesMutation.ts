@@ -1,7 +1,7 @@
 import { deleteWishByUser, postWishByUser } from '@/api/wish';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { TWish } from '@/types/products';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAuthQuery from '../query/useAuthQuery';
 
 type TWishMutation = {
   data: TWish | undefined | null;
@@ -9,7 +9,7 @@ type TWishMutation = {
 };
 const useWishesMutation = ({ data, productId }: TWishMutation) => {
   const queryClient = useQueryClient();
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const addMutation = useMutation({
     mutationFn: async () => {
       if (!loggedUser) return;

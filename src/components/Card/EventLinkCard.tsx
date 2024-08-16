@@ -2,6 +2,7 @@
 import useAlert from '@/hooks/useAlert';
 import MockData from '@/mockup/banner.json';
 import Image from 'next/image';
+import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 
 interface EventLinkCardProps {
   item: {
@@ -14,19 +15,30 @@ const EventLinkCard = () => {
   const { showInfoAlert } = useAlert();
   const handleClick = (item: EventLinkCardProps['item']) => showInfoAlert('준비중입니다!');
   return (
-    <div className="w-full flex-row-10 p-5-2 justify-between">
-      {MockData.map((item) => (
-        <div key={item.title} className="flex flex-col items-center cursor-pointer">
-          <div
-            className="relative rounded-[14px] w-[50px] h-[50px] xl:w-[72px] xl:h-[72px]"
+    <Carousel>
+      <CarouselContent className="p-5-2">
+        {MockData.map((item) => (
+          <CarouselItem
+            className="basis-1/4 sm:basis-1/6 rounded-[14px] flex flex-col cursor-pointer"
+            key={item.title}
             onClick={() => handleClick(item)}
           >
-            <Image className="absolute object-contain" src={item.ThumbnailImg} fill alt={item.title} />
-          </div>
-          <span className="text-xs mt-1 font-bold">{item.title}</span>
-        </div>
-      ))}
-    </div>
+            <div className="relative w-[72px] h-[72px]">
+              <Image
+                className="absolute object-cover w-[72px] h-[72px]"
+                src={item.ThumbnailImg}
+                fill
+                alt={item.title}
+                loading="eager"
+              />
+            </div>
+            <div className="relative w-[72px] flex-col-10 justify-center">
+              <span className="text-center text-xs mt-1 font-bold">{item.title}</span>
+            </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+    </Carousel>
   );
 };
 

@@ -1,8 +1,8 @@
 'use client';
 import { getReviewsById } from '@/api/review';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useWishesMutation } from '@/hooks/mutation';
 import { WishProduct } from '@/hooks/query/mypage/useUserWishesQuery';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useAlert from '@/hooks/useAlert';
 import { Product } from '@/types/products';
 import BlueWishSVG from '@@/public/heart/blue-wish-icon.svg';
@@ -19,7 +19,7 @@ export interface ProductProps {
 const ProductCard = ({ product }: ProductProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const { showInfoAlert } = useAlert();
   const userLike = 'Wish' in product && product.Wish?.userId === loggedUser?.id;
 
@@ -37,6 +37,7 @@ const ProductCard = ({ product }: ProductProps) => {
   });
 
   const handleWish = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     if (!loggedUser) {
       showInfoAlert('로그인이 필요한 서비스 입니다');
@@ -44,7 +45,7 @@ const ProductCard = ({ product }: ProductProps) => {
     } else addMutation.mutate();
   };
 
-  const handleMouseOver = () => {
+  const handleMouseClick = () => {
     queryClient.prefetchQuery({
       queryKey: ['Reviews', product.productId, 0, 'createdAt', false],
       queryFn: async () =>
@@ -58,19 +59,22 @@ const ProductCard = ({ product }: ProductProps) => {
     });
   };
   return (
-    <div className="w-full h-[281px] flex flex-col mt-[16px]">
-      <div className="w-h-full relative">
-        <Link href={`/products/${product.productId}`} onMouseOver={handleMouseOver}>
-          <Image
-            src={product.thumbNailURL || ''}
-            fill
-            alt={title}
-            className="object-contain bg-[#FFFBEE]"
-            quality={20}
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 200px"
-          />
-        </Link>
+    <Link
+      className="w-full h-[281px] flex flex-col mt-[16px]"
+      href={`/products/${product.productId}`}
+      onClick={handleMouseClick}
+    >
+      <div className="w-h-full relative aspect-square max-w-[184px] max-h-[184px]">
+        <Image
+          src={product.thumbNailURL || ''}
+          fill
+          alt={title}
+          className="object-contain bg-[#FFFBEE]"
+          quality={20}
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 200px"
+        />
+
         <div
           className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
           onClick={(e) => handleWish(e)}
@@ -79,8 +83,8 @@ const ProductCard = ({ product }: ProductProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-1 mt-2">
-        <span className="text-xs sm:text-[12px] line-clamp-1">{brandName}</span>
-        <p className="font-semibold line-clamp-1">{title.length > 7 ? title.slice(0, 7) + '...' : title}</p>
+        <span className="text-xs line-clamp-1">{brandName}</span>
+        <p className="font-semibold line-clamp-1">{title.length > 9 ? title.slice(0, 9) + '...' : title}</p>
         <div className="flex justify-between items-center">
           <span className="font-semibold text-sm sm:text-base whitespace-pre">
             {(discountedPrice || resultPrice || 0).toLocaleString()}원
@@ -91,12 +95,12 @@ const ProductCard = ({ product }: ProductProps) => {
               <span className="hidden sm:block flex-1 text-gray-500 text-xs line-through">
                 {product.price?.toLocaleString()}
               </span>
-              <p className="font-bold text-[#FF0000] text-sm sm:text-base">{product.discount}%</p>
+              <p className="font-bold text-[#FF0000] text-sm">{product.discount}%</p>
             </>
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

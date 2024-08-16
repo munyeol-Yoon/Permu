@@ -17,6 +17,7 @@ export type FilterCriteriaType = {
 
 const ResultPageContent = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteriaType>({
     priceRange: [1000, 200000000],
     priceType: 'all',
@@ -24,8 +25,13 @@ const ResultPageContent = () => {
   });
   const [filterOrder, setFilterOrder] = useState<'pricePoint' | 'priceType' | 'benefits'>('pricePoint');
 
-  const toggleFilterVisibility = () => {
-    setIsFilterVisible(!isFilterVisible);
+  const toggleFilterVisibility = (newFilterOrder: 'pricePoint' | 'priceType' | 'benefits') => {
+    if (filterOrder === newFilterOrder) {
+      setIsFilterVisible(!isFilterVisible);
+    } else {
+      setFilterOrder(newFilterOrder);
+      setIsFilterVisible(true);
+    }
   };
 
   const searchParams = useSearchParams();
@@ -62,26 +68,20 @@ const ResultPageContent = () => {
     <>
       <div className="relative flex items-center p-4 bg-gray-100">
         <FilterNavMenu
-          onClick={() => {
-            setFilterOrder('pricePoint');
-            toggleFilterVisibility();
-          }}
+          onClick={() => toggleFilterVisibility('pricePoint')}
+          isActive={isFilterVisible && filterOrder === 'pricePoint'}
         >
           가격대
         </FilterNavMenu>
         <FilterNavMenu
-          onClick={() => {
-            setFilterOrder('priceType');
-            toggleFilterVisibility();
-          }}
+          onClick={() => toggleFilterVisibility('priceType')}
+          isActive={isFilterVisible && filterOrder === 'priceType'}
         >
           가격 유형
         </FilterNavMenu>
         <FilterNavMenu
-          onClick={() => {
-            setFilterOrder('benefits');
-            toggleFilterVisibility();
-          }}
+          onClick={() => toggleFilterVisibility('benefits')}
+          isActive={isFilterVisible && filterOrder === 'benefits'}
         >
           혜택 정보
         </FilterNavMenu>
@@ -92,7 +92,7 @@ const ResultPageContent = () => {
               <ResultFilter
                 data={data.data}
                 setFilterCriteria={setFilterCriteria}
-                onClose={toggleFilterVisibility}
+                onClose={() => setIsFilterVisible(false)}
                 filterOrder={filterOrder}
               />
             </div>

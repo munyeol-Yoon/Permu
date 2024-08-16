@@ -1,10 +1,10 @@
 import { deleteAddressInfo, insertAddressInfo, patchAddressInfo } from '@/api/addresses';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { Tables } from '@/types/supabase';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import useAuthQuery from '../query/useAuthQuery';
 
 const useAddressMutation = () => {
-  const { loggedUser } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
   const queryClient = useQueryClient();
 
   const addAddressMutation = useMutation({

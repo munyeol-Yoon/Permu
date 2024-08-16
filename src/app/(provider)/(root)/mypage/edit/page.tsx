@@ -8,8 +8,7 @@ import Profile from '../_components/Profile';
 const LINKS = [
   { title: '회원정보 변경', href: MYPAGE_INFO_EDIT_PATHNAME },
   { title: '비밀번호 변경', href: MYPAGE_PASSWORD_EDIT_PATHNAME },
-  { title: '환불계좌관리 (미지원)' },
-  { title: '회원 탈퇴' }
+  { title: '환불계좌관리 (미지원)' }
 ];
 const UserInfoEditPage = () => {
   const { data: loggedUser, isPending } = useAuthQuery();

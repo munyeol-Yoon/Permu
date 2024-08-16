@@ -24,6 +24,8 @@ const Share = ({ product }: ProductProps) => {
   }, []);
 
   const handleShareProduct = (): void => {
+    const isDiscounted = product.discountedPrice !== product.price;
+
     if (window.Kakao) {
       window.Kakao.Share.sendDefault({
         objectType: 'commerce',
@@ -38,21 +40,16 @@ const Share = ({ product }: ProductProps) => {
         },
         commerce: {
           regularPrice: product.price,
-          discountPrice: product.discountedPrice,
-          discountRate: product.discount,
+          ...(isDiscounted && {
+            discountPrice: product.discountedPrice,
+            discountRate: product.discount
+          }),
           currencyUnit: '원'
         },
         installTalk: true,
         buttons: [
           {
             title: '구매하기',
-            link: {
-              mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order`,
-              webUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/order`
-            }
-          },
-          {
-            title: '웹으로 보기',
             link: {
               mobileWebUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/products/${product.productId}`,
               webUrl: `${process.env.NEXT_PUBLIC_BASE_URL!}/products/${product.productId}`

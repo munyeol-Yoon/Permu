@@ -1,22 +1,16 @@
 'use client';
 
 import Navbar from '@/components/Navbar';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useCartsMutation } from '@/hooks/mutation';
 import { useCartsQuery } from '@/hooks/query';
+import useAuthQuery from '@/hooks/query/useAuthQuery';
 import useLocalCart from '@/hooks/useLocalCart';
-import { CartItem } from '@/types/cart';
 import { useCallback, useEffect, useMemo } from 'react';
 import { CartAccordion, CartEmpty, CartList, CartSelector } from './_components';
 
 const CartPage = () => {
-  const {
-    localCartList,
-    setLocalCartList,
-    deleteLocalCartItem: deleteCartItem,
-    updateLocalCartItem: updateCartItem
-  } = useLocalCart();
-  const { loggedUser } = useAuth();
+  const { localCartList, deleteLocalCartItem: deleteCartItem, updateLocalCartItem: updateCartItem } = useLocalCart();
+  const { data: loggedUser } = useAuthQuery();
   const { data: cartList } = useCartsQuery();
   const { addMutation, patchMutation, deleteMutation } = useCartsMutation();
 
@@ -93,30 +87,6 @@ const CartPage = () => {
   ]);
 
   useEffect(() => {
-    if (cartList?.length) {
-      const prevLocalCartList = localStorage.getItem('cart');
-
-      const parsedLocalCartList = prevLocalCartList ? JSON.parse(prevLocalCartList) : [];
-
-      const filteredCartList = cartList.filter(
-        (cartItem) =>
-          !parsedLocalCartList.find((localCartItem: CartItem) => localCartItem.productId === cartItem.productId)
-      );
-
-      const newCartList = [...parsedLocalCartList, ...filteredCartList];
-
-      localStorage.setItem('cart', JSON.stringify(newCartList));
-      setLocalCartList(newCartList);
-    } else {
-      const prevCartList = localStorage.getItem('cart');
-      if (prevCartList) {
-        const parsedPrevCartList = JSON.parse(prevCartList);
-        setLocalCartList(parsedPrevCartList);
-      }
-    }
-  }, [cartList, setLocalCartList]);
-
-  useEffect(() => {
     return () => {
       if (cartList?.length || localCartList.length) {
         syncCartData();
@@ -134,12 +104,12 @@ const CartPage = () => {
   }
 
   return (
-    <>
+    <div className="h-screen">
       <Navbar title="장바구니" isHome />
       <CartSelector cartList={localCartList} deleteCartItem={deleteCartItem} updateCartItem={updateCartItem} />
       <CartList cartList={localCartList} deleteCartItem={deleteCartItem} updateCartItem={updateCartItem} />
       <CartAccordion cartList={localCartList} />
-    </>
+    </div>
   );
 };
 
