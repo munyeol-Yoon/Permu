@@ -46,6 +46,7 @@ export type Database = {
       }
       Brands: {
         Row: {
+          bannerURL: string | null
           brandId: number
           enName: string | null
           initialCons: string | null
@@ -53,6 +54,7 @@ export type Database = {
           logoURL: string | null
         }
         Insert: {
+          bannerURL?: string | null
           brandId?: number
           enName?: string | null
           initialCons?: string | null
@@ -60,6 +62,7 @@ export type Database = {
           logoURL?: string | null
         }
         Update: {
+          bannerURL?: string | null
           brandId?: number
           enName?: string | null
           initialCons?: string | null

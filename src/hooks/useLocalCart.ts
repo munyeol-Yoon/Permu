@@ -1,8 +1,12 @@
 import { CartItem } from '@/types/cart';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useCartsQuery } from './query';
+import useAuthQuery from './query/useAuthQuery';
 
 const useLocalCart = () => {
   const [localCartList, setLocalCartList] = useState<CartItem[]>([]);
+  const { data: cartList } = useCartsQuery();
+  const { data: userInfo } = useAuthQuery();
 
   const addLocalCartItem = useCallback((cartItem: CartItem) => {
     const prevCartList = localStorage.getItem('cart');
@@ -40,6 +44,17 @@ const useLocalCart = () => {
       setLocalCartList(updatedCartList);
     }
   }, []);
+
+  useEffect(() => {
+    const prevCartList = localStorage.getItem('cart');
+    if (prevCartList) {
+      const parsedPrevCartList = JSON.parse(prevCartList);
+      setLocalCartList(parsedPrevCartList);
+    } else if (userInfo && cartList?.length) {
+      localStorage.setItem('cart', JSON.stringify(cartList));
+      setLocalCartList(cartList);
+    }
+  }, [cartList, userInfo]);
 
   return { localCartList, setLocalCartList, addLocalCartItem, deleteLocalCartItem, updateLocalCartItem };
 };

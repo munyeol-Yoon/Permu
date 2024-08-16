@@ -13,7 +13,6 @@ const Profile = () => {
   const { data: loggedUser, isPending } = useAuthQuery();
   const handleClick = () => showInfoAlert('준비중입니다!');
   const handleLogOut = () => logOutMutation();
-
   if (isPending) return <Loading />;
   const name = loggedUser?.userData.name;
 

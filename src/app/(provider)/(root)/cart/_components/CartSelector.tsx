@@ -1,7 +1,6 @@
 'use client';
 
 import { Checkbox } from '@/components/ui/checkbox';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { CartItem } from '@/types/cart';
 import { useMemo } from 'react';
 
@@ -12,8 +11,6 @@ interface CartSelectorProps {
 }
 
 const CartSelector = ({ cartList, deleteCartItem, updateCartItem }: CartSelectorProps) => {
-  const { loggedUser } = useAuth();
-
   const isSelectedAll = useMemo(() => {
     return cartList.every((cartItem) => cartItem.productSelected === true);
   }, [cartList]);
