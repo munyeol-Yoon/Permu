@@ -1,4 +1,5 @@
 'use client';
+import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { MYPAGE_ADDRESS_EDIT_PATHNAME } from '@/constant/pathname';
@@ -7,7 +8,7 @@ import useAddressQuery from '@/hooks/query/useAddressQuery';
 import Link from 'next/link';
 
 const AddressListPage = () => {
-  const { data: addressList } = useAddressQuery();
+  const { data: addressList, isPending } = useAddressQuery();
   const { deleteAddressMutation } = useAddressMutation();
 
   const handleDeleteAddressInfo = async (addressId: string) => {
@@ -16,6 +17,7 @@ const AddressListPage = () => {
     await mutateAsync(addressId);
   };
 
+  if (isPending) return <Loading />;
   return (
     <>
       <Navbar title="배송지 목록" isHome />

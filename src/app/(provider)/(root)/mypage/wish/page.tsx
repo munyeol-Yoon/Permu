@@ -43,7 +43,7 @@ const WishListPage = () => {
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-2 place-items-center">
+          <div className="grid grid-cols-2 place-items-center gap-x-4 gap-y-5">
             {wishes?.map((item: UserWish) => <ProductCard product={item.Products} key={item.productId} />)}
           </div>
         </div>

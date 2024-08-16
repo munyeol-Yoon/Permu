@@ -13,8 +13,9 @@ interface CartAccordionProps {
   cartList: CartItem[];
 }
 
-const CartAccordion = ({ cartList }: CartAccordionProps) => {
+  const CartAccordion = ({ cartList }: CartAccordionProps) => {
   const { data: loggedUser } = useAuthQuery();
+
   const selectedProductCount = useMemo(() => {
     if (cartList?.length) {
       return cartList?.reduce((acc, cur) => acc + Number(cur.productSelected), 0);
