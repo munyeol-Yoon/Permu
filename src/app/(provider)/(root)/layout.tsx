@@ -25,9 +25,9 @@ const RootLayout = ({ children }: PropsWithChildren) => {
   }, [handleScroll]);
 
   return (
-    <div className="max-h-screen flex xl:justify-end justify-center pr-[150px] gap-[45px]">
+    <div className="max-h-screen flex justify-center gap-[45px]">
       <Image src="/main_image.webp" fill priority alt="background" loading="eager" />
-      <div className="flex-col gap-3 xl:flex hidden">
+      <div className="flex-col justify-center gap-3 xl:flex hidden">
         <div className="relative w-[500px] h-[500px]">
           <Image src="/banner/main_banner.webp" fill alt="이벤트 이미지" className="object-contain absolute" />
         </div>
