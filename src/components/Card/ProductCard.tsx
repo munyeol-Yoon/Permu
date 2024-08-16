@@ -58,7 +58,7 @@ const ProductCard = ({ product }: ProductProps) => {
     });
   };
   return (
-    <div className="w-full h-[281px] flex flex-col mt-[16px]">
+    <div className="w-full h-[200px] sm:h-[281px] flex flex-col mt-[16px]">
       <div className="w-h-full relative">
         <Link href={`/products/${product.productId}`} onMouseDown={handleMouseDown}>
           <Image

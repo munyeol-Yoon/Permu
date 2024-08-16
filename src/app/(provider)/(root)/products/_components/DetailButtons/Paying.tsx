@@ -91,7 +91,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
               onClick={() => handleSelectSize(size)}
             >
               {size}
-              {category === '인센스' ? 'g' : 'mL'}
+              {category !== '인센스' || ('향초' && 'mL')}
             </Button>
           ))}
         </div>
