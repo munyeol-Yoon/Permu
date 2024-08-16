@@ -26,11 +26,11 @@ const ProductSlide = ({ Images }: SliderProps) => {
         <CarouselContent className="h-full">
           {Images?.map((image, idx) => (
             <CarouselItem key={idx}>
-              <div className="flex items-center justify-center relative w-full h-full">
+              <div className="flex items-center justify-center relative w-h-full">
                 <Image
                   src={image.ImageURL}
                   fill
-                  className="object-cover w-full h-full"
+                  className="object-cover w-h-full"
                   alt={image.title}
                   loading="eager"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 600px"
@@ -42,7 +42,7 @@ const ProductSlide = ({ Images }: SliderProps) => {
       </Carousel>
 
       {current > 0 && (
-        <div className="w-14 h-6 rounded-xl bg-[rgba(0,0,0,0.3)] flex justify-center items-center absolute bottom-5 right-5">
+        <div className="w-14 h-6 rounded-xl bg-[rgba(0,0,0,0.3)] flex-center absolute bottom-5 right-5">
           <span className="text-[13px] text-white font-medium">
             {current} / {Images?.length}
           </span>

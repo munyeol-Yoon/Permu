@@ -1,34 +1,24 @@
-'use client';
-import Loading from '@/components/Loading';
-import Navbar from '@/components/Navbar';
-import { useReviewsQuery } from '@/hooks/query';
+import { createClient } from '@/supabase/server';
 import { Params } from '@/types/products';
 import Image from 'next/image';
-import { useParams } from 'next/navigation';
-const ReviewImagesPage = () => {
-  const { productId } = useParams<Params['params']>();
-  const { data: reviews, isPending } = useReviewsQuery(productId);
-  const reviewsImages = reviews?.map((review) => review.ImagesURL);
+const ReviewImagesPage = async ({ params }: Params) => {
+  const { productId } = params;
+  const supabase = createClient();
+  const { data } = await supabase
+    .from('Reviews')
+    .select('imagesURL')
+    .eq('productId', productId)
+    .not('imagesURL', 'is', null);
 
-  if (isPending) return <Loading />;
+  const reviewsImages = data?.flatMap((review) => review.imagesURL) ?? [];
+  if (reviewsImages.length <= 0) return <div className="flex-center">이미지가 없습니다</div>;
   return (
-    <div className="relative max-w-[600px] flex flex-col h-full">
-      <Navbar title="전체후기사진 모아보기" isHome />
-
-      {isPending ? (
-        <Loading />
-      ) : (
-        <div className="grid grid-cols-3 gap-1">
-          {reviewsImages
-            ?.flat()
-            .slice(0, 7)
-            .map((reviewImage, index) => (
-              <div key={index} className="aspect-square relative">
-                <Image src={reviewImage} alt="리뷰 이미지" fill className="w-[200px] h-[200px] object-cover absolute" />
-              </div>
-            ))}
+    <div className="grid-col-3">
+      {reviewsImages?.map((reviewImage, index) => (
+        <div key={index} className="aspect-square relative">
+          <Image src={reviewImage} alt="리뷰 이미지" fill className="w-[200px] h-[200px] object-cover absolute" />
         </div>
-      )}
+      ))}
     </div>
   );
 };

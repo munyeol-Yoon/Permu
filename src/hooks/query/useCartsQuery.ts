@@ -1,14 +1,14 @@
 import { getCartsByUser } from '@/api/cart';
-import { useAuth } from '@/contexts/auth.context/auth.context';
 import { useQuery } from '@tanstack/react-query';
+import useAuthQuery from './useAuthQuery';
 
 const useCartsQuery = () => {
-  const { loggedUser, isLoggedIn } = useAuth();
+  const { data: loggedUser } = useAuthQuery();
 
   return useQuery({
     queryKey: ['Carts', loggedUser?.id],
     queryFn: () => getCartsByUser(loggedUser?.id ?? ''),
-    enabled: isLoggedIn
+    enabled: !!loggedUser
   });
 };
 

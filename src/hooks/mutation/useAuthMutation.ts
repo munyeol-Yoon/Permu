@@ -1,15 +1,20 @@
 import { loginWithEmail, logInWithProvider, logOut, patchUserInfo, signInWithOtp, verifyOtp } from '@/api/auth';
+import { getCartsByUser } from '@/api/cart';
 import { AUTH_SIGN_UP_ACCOUNT_FORM_PATHNAME, AUTH_SIGN_UP_COMPLETE_PATHNAME, HOME } from '@/constant/pathname';
+import { CartItem } from '@/types/cart';
 import { LoginForm } from '@/types/types';
 import { Provider, User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import useAlert from '../useAlert';
+import useLocalCart from '../useLocalCart';
 
 const useAuthMutation = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
+
   const { showSuccessAlert, showWarningAlert, showFailAlert } = useAlert();
+  const { setLocalCartList } = useLocalCart();
 
   const { mutate: logInWithProviderMutation } = useMutation<{ provider: string; url: string }, Error, Provider>({
     mutationFn: (provider) => logInWithProvider(provider),
@@ -24,9 +29,29 @@ const useAuthMutation = () => {
 
   const { mutate: logInWithEmailMutation } = useMutation<void, Error, LoginForm>({
     mutationFn: (loginForm) => loginWithEmail(loginForm),
-    onSuccess: (data) => {
+    onSuccess: async (data: any) => {
       queryClient.invalidateQueries({ queryKey: ['loggedUser'] });
+      const prevCartList = await getCartsByUser(data.user.id);
+      if (prevCartList.length) {
+        const prevLocalCartList = localStorage.getItem('cart');
+        if (prevLocalCartList) {
+          const parsedLocalCartList = prevLocalCartList ? JSON.parse(prevLocalCartList) : [];
+
+          const filteredCartList = prevCartList.filter(
+            (cartItem) =>
+              !parsedLocalCartList.find((localCartItem: CartItem) => localCartItem.productId === cartItem.productId)
+          );
+
+          const newCartList = [...parsedLocalCartList, ...filteredCartList];
+          localStorage.setItem('cart', JSON.stringify(newCartList));
+          setLocalCartList(newCartList);
+        }
+      }
+
       router.replace(HOME);
+    },
+    onError: () => {
+      showFailAlert('로그인이 실패하였습니다');
     }
   });
 
@@ -53,6 +78,7 @@ const useAuthMutation = () => {
     mutationFn: () => logOut(),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ['loggedUser'] });
+      localStorage.removeItem('cart');
       router.replace(HOME);
     }
   });

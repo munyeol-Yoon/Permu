@@ -97,6 +97,9 @@ input[type='number']::-webkit-outer-spin-button {
   body {
     @apply bg-gray-100 text-foreground;
   }
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
   .flex-row-10 {
     @apply flex flex-row gap-[10px] items-center;
   }
@@ -109,8 +112,17 @@ input[type='number']::-webkit-outer-spin-button {
   .flex-col-20 {
     @apply flex flex-col gap-[20px];
   }
+  .grid-col-4 {
+    @apply grid grid-cols-4 gap-4;
+  }
+  .grid-col-3 {
+    @apply grid grid-cols-3 gap-1;
+  }
   .p-5-2 {
     @apply px-5 py-2.5;
+  }
+  .p-2-4 {
+    @apply py-2 px-4;
   }
   .input-default {
     @apply bg-background border border-input;
@@ -120,5 +132,35 @@ input[type='number']::-webkit-outer-spin-button {
   }
   .input-border {
     @apply border-b-[1.5px] px-[40px] py-[20px] grow;
+  }
+  .accordion-title-container {
+    @apply flex flex-col justify-end h-[80px];
+  }
+  .accordion-title {
+    @apply font-bold leading-[50px];
+  }
+  .accordion {
+    @apply bg-[#FFFBEE] flex flex-col items-start w-full px-[20px];
+  }
+  .box-container {
+    @apply flex-row-10 justify-between p-5-2 w-full;
+  }
+  .box-container-center {
+    @apply flex-row-10 justify-center p-5-2 w-full;
+  }
+  .box-container-p-none {
+    @apply flex-row-10 justify-between;
+  }
+  .box-container-col {
+    @apply flex-col-10 justify-between p-5-2 w-full;
+  }
+  .w-h-132 {
+    @apply w-[132px] h-[132px];
+  }
+  .w-h-60 {
+    @apply w-[60px] h-[60px];
+  }
+  .w-h-full {
+    @apply w-full h-full;
   }
 }

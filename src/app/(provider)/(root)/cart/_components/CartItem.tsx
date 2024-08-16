@@ -9,8 +9,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/contexts/auth.context/auth.context';
-import useCart from '@/hooks/useCart';
 import { CartItem as CartItemType } from '@/types/cart';
 import Image from 'next/image';
 import { useState } from 'react';
@@ -35,9 +33,6 @@ const CartItem = ({ cartItem, updateCartItem, deleteCartItem }: CartItemProps) =
     productThumbnailURL,
     productVolume
   } = cartItem;
-
-  const { loggedUser } = useAuth();
-  const { updateCartItemSelected, updateCartItemCount, updateCartItemVolume } = useCart();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [container, setContainer] = useState<null | Element>(null);

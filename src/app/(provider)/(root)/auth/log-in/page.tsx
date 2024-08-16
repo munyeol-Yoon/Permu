@@ -83,8 +83,8 @@ const LogInPage = () => {
                   <Input id="orderId" placeholder="주문번호" className="mb-10" />
 
                   <div className="flex flex-col">
-                    <Button>주문내역 조회하기</Button>
-                    <Button variant="outline" asChild className=" bg-white text-black">
+                    <Button disabled>주문내역 조회하기</Button>
+                    <Button variant="outline" asChild>
                       <Link href={AUTH_SIGN_UP_PATHNAME}>회원가입</Link>
                     </Button>
                   </div>
