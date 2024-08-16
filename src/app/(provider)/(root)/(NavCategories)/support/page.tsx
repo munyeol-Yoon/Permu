@@ -4,7 +4,7 @@ import Footer from '../../_components/Footer';
 
 const SupportPage = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <h3 className="text-xl text-center py-5">고객센터</h3>
       <div className="relative h-[280px] w-full">
         <Image src={SupportImg} className="object-cover" alt="Support" fill />

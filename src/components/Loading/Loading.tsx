@@ -1,7 +1,11 @@
 import LinearProgress from '@mui/material/LinearProgress';
 
 const Loading = () => {
-  return <LinearProgress />;
+  return (
+    <div className="h-screen">
+      <LinearProgress />
+    </div>
+  );
 };
 
 export default Loading;
