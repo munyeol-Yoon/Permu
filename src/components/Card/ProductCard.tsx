@@ -44,7 +44,7 @@ const ProductCard = ({ product }: ProductProps) => {
     } else addMutation.mutate();
   };
 
-  const handleMouseOver = () => {
+  const handleMouseDown = () => {
     queryClient.prefetchQuery({
       queryKey: ['Reviews', product.productId, 0, 'createdAt', false],
       queryFn: async () =>
@@ -60,7 +60,7 @@ const ProductCard = ({ product }: ProductProps) => {
   return (
     <div className="w-full h-[281px] flex flex-col mt-[16px]">
       <div className="w-h-full relative">
-        <Link href={`/products/${product.productId}`} onMouseOver={handleMouseOver}>
+        <Link href={`/products/${product.productId}`} onMouseDown={handleMouseDown}>
           <Image
             src={product.thumbNailURL || ''}
             fill
