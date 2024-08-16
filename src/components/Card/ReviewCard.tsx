@@ -15,7 +15,13 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
     <div className="pr-4">
       <div className="w-full rounded overflow-hidden ">
         <div className="relative w-full h-[240px]">
-          <Image src={review.ImageURL} layout="fill" alt="테스트" className="object-cover" loading="lazy" />
+          <Image
+            src={review.ImageURL}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw"
+            alt="md리뷰 아이템 이미지"
+            loading="lazy"
+          />
         </div>
         <div className="flex flex-col mt-3">
           <p className="text-lg font-semibold">{review.title}</p>
