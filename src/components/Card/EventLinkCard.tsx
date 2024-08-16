@@ -19,7 +19,7 @@ const EventLinkCard = () => {
       <CarouselContent className="p-5-2">
         {MockData.map((item) => (
           <CarouselItem
-            className="basis-1/4 sm:basis-1/6 rounded-[14px] flex flex-col"
+            className="basis-1/4 sm:basis-1/6 rounded-[14px] flex flex-col cursor-pointer"
             key={item.title}
             onClick={() => handleClick(item)}
           >
