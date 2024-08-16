@@ -29,6 +29,7 @@ const EventLinkCard = () => {
                 src={item.ThumbnailImg}
                 fill
                 alt={item.title}
+                loading="eager"
               />
             </div>
             <div className="relative w-[72px] flex-col-10 justify-center">
