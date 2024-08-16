@@ -60,11 +60,11 @@ const ProductCard = ({ product }: ProductProps) => {
   };
   return (
     <Link
-      className="w-full h-[200px] sm:h-[281px] flex flex-col mt-[16px]"
+      className="w-full h-[281px] flex flex-col mt-[16px]"
       href={`/products/${product.productId}`}
       onClick={handleMouseClick}
     >
-      <div className="w-h-full relative">
+      <div className="w-h-full relative aspect-square max-w-[184px] max-h-[184px]">
         <Image
           src={product.thumbNailURL || ''}
           fill
