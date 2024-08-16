@@ -20,9 +20,9 @@ const DeliveryOptions = () => {
   return (
     <div>
       <div className="box-container">
-        <span className="text-gray-500">상품 배송 옵션</span>
+        <span className="text-[#B3B3B3] font-bold">상품 배송 옵션</span>
         {deliveryOptions.length > 3 && (
-          <span className="flex-row-10 items-center  text-gray-500 hover:cursor-pointer" onClick={handleOnOff}>
+          <span className="flex-row-10 items-center  text-[#B3B3B3] hover:cursor-pointer" onClick={handleOnOff}>
             배송 혜택 모두 보기 {isExpanded ? <ArrowBIcon /> : <ArrowRIcon />}
           </span>
         )}

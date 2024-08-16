@@ -37,6 +37,7 @@ const ProductCard = ({ product }: ProductProps) => {
   });
 
   const handleWish = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     if (!loggedUser) {
       showInfoAlert('로그인이 필요한 서비스 입니다');
@@ -44,7 +45,7 @@ const ProductCard = ({ product }: ProductProps) => {
     } else addMutation.mutate();
   };
 
-  const handleMouseOver = () => {
+  const handleMouseClick = () => {
     queryClient.prefetchQuery({
       queryKey: ['Reviews', product.productId, 0, 'createdAt', false],
       queryFn: async () =>
@@ -58,19 +59,22 @@ const ProductCard = ({ product }: ProductProps) => {
     });
   };
   return (
-    <div className="w-full h-[281px] flex flex-col mt-[16px]">
+    <Link
+      className="w-full h-[200px] sm:h-[281px] flex flex-col mt-[16px]"
+      href={`/products/${product.productId}`}
+      onClick={handleMouseClick}
+    >
       <div className="w-h-full relative">
-        <Link href={`/products/${product.productId}`} onMouseOver={handleMouseOver}>
-          <Image
-            src={product.thumbNailURL || ''}
-            fill
-            alt={title}
-            className="object-contain bg-[#FFFBEE]"
-            quality={20}
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 200px"
-          />
-        </Link>
+        <Image
+          src={product.thumbNailURL || ''}
+          fill
+          alt={title}
+          className="object-contain bg-[#FFFBEE]"
+          quality={20}
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 200px"
+        />
+
         <div
           className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
           onClick={(e) => handleWish(e)}
@@ -96,7 +100,7 @@ const ProductCard = ({ product }: ProductProps) => {
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

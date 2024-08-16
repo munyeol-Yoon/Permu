@@ -86,12 +86,12 @@ const Paying = ({ size, category, product }: PayingProps) => {
           {size?.map((size, index: number) => (
             <Button
               className="rounded-2xl h-[32px] px-4 py-0"
-              variant={selectedSize === size ? 'borderline' : 'defaultline'}
+              variant={selectedSize === size ? 'default' : 'borderline'}
               key={index}
               onClick={() => handleSelectSize(size)}
             >
               {size}
-              {category === '인센스' ? 'g' : 'mL'}
+              {category !== '인센스' || ('향초' && 'mL')}
             </Button>
           ))}
         </div>
@@ -130,7 +130,7 @@ const Paying = ({ size, category, product }: PayingProps) => {
                       className="w-full p-5-2 h-[40px] text-lg"
                     >
                       {size}
-                      {category === '인센스' ? 'g' : 'mL'}
+                      {category !== '인센스' || ('향초' && 'mL')}
                     </DropdownMenuCheckboxItem>
                   ))}
                 </DropdownMenuContent>

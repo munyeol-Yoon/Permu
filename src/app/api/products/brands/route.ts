@@ -14,7 +14,8 @@ export async function GET(request: NextRequest) {
     const { data, error } = await supabase
       .from('Products')
       .select('*, Brand:Brands(*), Category:Categories(*)')
-      .eq('brandId', 12);
+      .eq('brandId', 12)
+      .limit(9);
 
     if (error) throw error;
     const productWithDiscountedPrice: Product[] =
