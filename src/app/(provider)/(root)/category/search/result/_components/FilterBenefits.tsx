@@ -17,8 +17,8 @@ const FilterBenefits = ({ selectedBenefit, onBenefitChange }: FilterBenefitsProp
         >
           할인상품
         </FilterButton>
-        <FilterButton className="bg-[#d3d3d3] cursor-not-allowed">무료배송</FilterButton>
-        <FilterButton className="bg-[#d3d3d3] cursor-not-allowed">무료교환반품</FilterButton>
+        <FilterButton className="bg-[#d3d3d3] cursor-not-allowed text-[#B3B3B3]">무료배송</FilterButton>
+        <FilterButton className="bg-[#d3d3d3] cursor-not-allowed text-[#B3B3B3]">무료교환반품</FilterButton>
       </div>
     </div>
   );
