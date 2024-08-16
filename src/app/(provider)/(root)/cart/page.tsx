@@ -104,12 +104,12 @@ const CartPage = () => {
   }
 
   return (
-    <>
+    <div className="h-screen">
       <Navbar title="장바구니" isHome />
       <CartSelector cartList={localCartList} deleteCartItem={deleteCartItem} updateCartItem={updateCartItem} />
       <CartList cartList={localCartList} deleteCartItem={deleteCartItem} updateCartItem={updateCartItem} />
       <CartAccordion cartList={localCartList} />
-    </>
+    </div>
   );
 };
 
