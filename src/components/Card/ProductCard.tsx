@@ -59,43 +59,45 @@ const ProductCard = ({ product }: ProductProps) => {
     });
   };
   return (
-    <Link href={`/products/${product.productId}`} onClick={handleMouseClick}>
-      <div className="w-full h-[200px] sm:h-[281px] flex flex-col mt-[16px]">
-        <div className="w-h-full relative">
-          <Image
-            src={product.thumbNailURL || ''}
-            fill
-            alt={title}
-            className="object-contain bg-[#FFFBEE]"
-            quality={20}
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 200px"
-          />
+    <Link
+      className="w-full h-[200px] sm:h-[281px] flex flex-col mt-[16px]"
+      href={`/products/${product.productId}`}
+      onClick={handleMouseClick}
+    >
+      <div className="w-h-full relative">
+        <Image
+          src={product.thumbNailURL || ''}
+          fill
+          alt={title}
+          className="object-contain bg-[#FFFBEE]"
+          quality={20}
+          loading="lazy"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 200px"
+        />
 
-          <div
-            className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
-            onClick={(e) => handleWish(e)}
-          >
-            {userLike ? <BlueWishSVG /> : <WishSVG />}
-          </div>
+        <div
+          className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
+          onClick={(e) => handleWish(e)}
+        >
+          {userLike ? <BlueWishSVG /> : <WishSVG />}
         </div>
-        <div className="flex flex-col gap-1 mt-2">
-          <span className="text-xs line-clamp-1">{brandName}</span>
-          <p className="font-semibold line-clamp-1">{title.length > 9 ? title.slice(0, 9) + '...' : title}</p>
-          <div className="flex justify-between items-center">
-            <span className="font-semibold text-sm sm:text-base whitespace-pre">
-              {(discountedPrice || resultPrice || 0).toLocaleString()}원
-            </span>
-            &nbsp;
-            {(product.discount || 0) > 0 && (
-              <>
-                <span className="hidden sm:block flex-1 text-gray-500 text-xs line-through">
-                  {product.price?.toLocaleString()}
-                </span>
-                <p className="font-bold text-[#FF0000] text-sm">{product.discount}%</p>
-              </>
-            )}
-          </div>
+      </div>
+      <div className="flex flex-col gap-1 mt-2">
+        <span className="text-xs line-clamp-1">{brandName}</span>
+        <p className="font-semibold line-clamp-1">{title.length > 9 ? title.slice(0, 9) + '...' : title}</p>
+        <div className="flex justify-between items-center">
+          <span className="font-semibold text-sm sm:text-base whitespace-pre">
+            {(discountedPrice || resultPrice || 0).toLocaleString()}원
+          </span>
+          &nbsp;
+          {(product.discount || 0) > 0 && (
+            <>
+              <span className="hidden sm:block flex-1 text-gray-500 text-xs line-through">
+                {product.price?.toLocaleString()}
+              </span>
+              <p className="font-bold text-[#FF0000] text-sm">{product.discount}%</p>
+            </>
+          )}
         </div>
       </div>
     </Link>
