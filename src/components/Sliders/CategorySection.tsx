@@ -35,13 +35,12 @@ const CategorySection = ({ title, count }: CategorySectionProps) => {
     <div className="flex flex-col p-5-2">
       <CategoryMore title={title} />
 
-      <div className="w-full h-[300px] rounded mb-[16px] mt-4">
+      <div className="w-full h-[300px] rounded mb-[16px] mt-4 relative">
         <Image
           src={'https://img.29cm.co.kr/item/202401/11eebe9d80e9739391ebb5f8eb5447c1.jpg?width=700'}
-          width={570}
-          height={300}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw"
           alt="인기 급상승 제품 이미지1"
-          className="w-full h-[300px]"
           loading="eager"
         />
       </div>
