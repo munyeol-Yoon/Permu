@@ -5,7 +5,7 @@ import useAuthQuery from '@/hooks/query/useAuthQuery';
 import Link from 'next/link';
 
 const CartEmpty = () => {
-  const { data: isLoggedIn } = useAuthQuery();
+  const { data: loggedUser } = useAuthQuery();
 
   return (
     <div className="h-[calc(100vh-70px)] relative flex flex-col gap-9 items-center justify-center">
@@ -20,7 +20,7 @@ const CartEmpty = () => {
         <p>상품을 추가해보세요.</p>
       </div>
       <Button asChild>
-        <Link href={isLoggedIn ? 'mypage-wish' : '/auth/log-in'}>좋아요한 상품 보러 가기</Link>
+        <Link href={loggedUser ? 'mypage-wish' : '/auth/log-in'}>좋아요한 상품 보러 가기</Link>
       </Button>
 
       <Button asChild className="absolute bottom-0 w-[calc(100%-20px)]">

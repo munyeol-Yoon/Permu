@@ -13,8 +13,9 @@ interface CartAccordionProps {
   cartList: CartItem[];
 }
 
-const CartAccordion = ({ cartList }: CartAccordionProps) => {
-  const { data: isLoggedIn } = useAuthQuery();
+  const CartAccordion = ({ cartList }: CartAccordionProps) => {
+  const { data: loggedUser } = useAuthQuery();
+
   const selectedProductCount = useMemo(() => {
     if (cartList?.length) {
       return cartList?.reduce((acc, cur) => acc + Number(cur.productSelected), 0);
@@ -79,7 +80,7 @@ const CartAccordion = ({ cartList }: CartAccordionProps) => {
         </Accordion>
 
         <Link
-          href={isLoggedIn ? '/order' : '/auth/log-in'}
+          href={loggedUser ? '/order' : '/auth/log-in'}
           className={cn(
             'w-full text-center text-white px-5 py-[11.5px] rounded-sm my-2 bg-[#0348FF]',
             !selectedProductCount && 'opacity-50 pointer-events-none'

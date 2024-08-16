@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) return NextResponse.json({ success: false, details: error.message });
-    if (user) return NextResponse.json({ success: true, details: '로그인 성공' });
+    if (user) return NextResponse.json({ success: true, details: '로그인 성공', user });
   } catch (error) {
     return NextResponse.json({ success: false, details: error });
   }
