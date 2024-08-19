@@ -18,6 +18,6 @@ export type MyOrder = {
   orderId: string;
 };
 
-export interface OrderItemProps extends MyProduct {
-  option?: string;
-}
+// export interface OrderItemProps extends MyProduct {
+//   option?: string;
+// }

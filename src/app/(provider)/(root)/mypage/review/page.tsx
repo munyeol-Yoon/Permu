@@ -4,13 +4,17 @@ import Loading from '@/components/Loading';
 import Navbar from '@/components/Navbar';
 import { Accordion } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useUserReviewsQuery } from '@/hooks/query/mypage';
 import useOrderListQuery from '@/hooks/query/mypage/useOrderListQuery';
 import OrderCard from '../orders/_components/OrderCard';
+import ReviewItem from '../orders/_components/ReviewItem';
 
 const ReviewPage = () => {
   const { data: orders, isPending } = useOrderListQuery();
+  const { data: reviews, isPending: isWroteReviews } = useUserReviewsQuery();
 
   if (isPending) return <Loading />;
+  if (isWroteReviews) return <Loading />;
 
   return (
     <div>
@@ -32,9 +36,7 @@ const ReviewPage = () => {
 
         <TabsContent value="wrote">
           <Accordion type="single" collapsible>
-            {/* {MockReviews.map((review) => (
-              <ReviewItem review={review} key={review.reviewId} />
-            ))} */}
+            {reviews?.map((review: any) => <ReviewItem review={review} key={review.reviewId} />)}
           </Accordion>
         </TabsContent>
       </Tabs>

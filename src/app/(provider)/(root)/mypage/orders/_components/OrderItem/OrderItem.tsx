@@ -1,13 +1,12 @@
-import { OrderItemProps } from '@/types/myPage/order';
 import Image from 'next/image';
 
-const OrderItem = (orderItem: OrderItemProps) => {
+const OrderItem = ({ product }: any) => {
   const {
     title,
     thumbNailURL,
-    option = '옵션 정보 없음',
     Brands: { krName }
-  } = orderItem;
+  } = product;
+
   return (
     <div className="flex gap-x-5 my-3">
       <div className="w-[100px] h-[100px] aspect-square relative">
@@ -16,7 +15,7 @@ const OrderItem = (orderItem: OrderItemProps) => {
       <div className="flex flex-col gap-y-2.5">
         <p>{krName}</p>
         <p className="text-base font-semibold line-clamp-1">{title}</p>
-        <p className="text-muted">옵션 : {option}</p>
+        <p className="text-muted">옵션 : 옵션 정보 없음</p>
       </div>
     </div>
   );
