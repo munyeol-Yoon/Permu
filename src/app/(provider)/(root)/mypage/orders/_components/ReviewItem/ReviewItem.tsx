@@ -20,7 +20,7 @@ const renderStars = (count: number) => {
 const ReviewItem = ({ review }: any) => {
   const { Products, score, content, imagesURL, createdAt, productId, ...props } = review;
   const formattedDate = dayjs(createdAt).format('YYYY.MM.DD');
-  console.log('🔥', review);
+  // console.log('🔥', review);
 
   return (
     <AccordionItem value={crypto.randomUUID()}>

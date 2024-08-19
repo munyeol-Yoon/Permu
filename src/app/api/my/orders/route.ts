@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
       .from('Orders')
       .select(
         `
-        createAt, 
+        createdAt, 
         orderId, 
         deliverId, 
         OrdersDetail (
