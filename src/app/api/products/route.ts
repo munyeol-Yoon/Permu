@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       data?.map((data) => ({
         ...data,
         Brand: brandMap.get(data.brandId) || null,
-        Wish: wishes?.find((wish) => wish.productId === data.productId) || null,
+        Wish: wishes?.find((wish) => wish.productId === data.productId),
         discountedPrice: data.price - (data.price * data.discount) / 100
       })) || [];
     return NextResponse.json(productWithDiscountedPrice);
