@@ -40,7 +40,6 @@ const ReviewPage = () => {
     setCondition(condition);
   }, []);
 
-  const handleReviewWish = (reviewId: string) => {};
   const renderStars = (score: number) =>
     Array.from({ length: 5 }, (_, index) => (index < score ? <StarFillSVG key={index} /> : <StarSVG key={index} />));
 
