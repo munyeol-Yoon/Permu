@@ -1,6 +1,11 @@
+import { MyProduct } from '@/types/myPage/order';
 import Image from 'next/image';
 
-const OrderItem = ({ product }: any) => {
+interface OrderItemProps {
+  product: MyProduct;
+}
+
+const OrderItem = ({ product }: OrderItemProps) => {
   const {
     title,
     thumbNailURL,
