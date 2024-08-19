@@ -43,10 +43,10 @@ const useWishesMutation = ({ data, productId }: TWishMutation) => {
           previousProductsWish = productsWishData;
         }
 
-        queryClient.setQueryData(['Products', key, loggedUser?.id], (old: any) => {
+        queryClient.setQueryData(['Products', key, loggedUser?.id], (old: Product[]) => {
           if (!old) return old;
 
-          const updatedProducts = previousProductsWish?.map((product: Product) => {
+          const updatedProducts = old.map((product: Product) => {
             if (product.productId === productId) {
               return {
                 ...product,
@@ -65,8 +65,8 @@ const useWishesMutation = ({ data, productId }: TWishMutation) => {
         (old: { success: boolean; data: TWish | undefined | null; count: number }) => {
           if (!old) return { success: true, data: null, count: 0 };
           return isLiked
-            ? { success: true, data: null, count: old.count - 1 } // Remove wish
-            : { success: true, data: { productId, userId: loggedUser?.id }, count: old.count + 1 }; // Add wish
+            ? { success: true, data: null, count: old.count - 1 }
+            : { success: true, data: { productId, userId: loggedUser?.id }, count: old.count + 1 };
         }
       );
 
