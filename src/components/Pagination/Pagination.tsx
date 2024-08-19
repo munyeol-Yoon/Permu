@@ -25,20 +25,21 @@ const Pagination = ({ maxPage, pageCountPerPage, clickListener }: PaginationProp
 
   const leftPageClicked = (): void => {
     const getStartPage = startPage - pageCountPerPage > 1 ? startPage - pageCountPerPage : 1;
-    setCurrentPage(startPage - pageCountPerPage >= 1 ? currentPage - pageCountPerPage : startPage - 1);
+    const current = startPage - pageCountPerPage >= 1 ? currentPage - pageCountPerPage : startPage - 1;
+    setCurrentPage(current);
     setStartPage(getStartPage);
     setEndPage(getStartPage + pageCountPerPage - 1);
-    clickListener(currentPage);
+    clickListener(current);
   };
 
   const rightPageClicked = (): void => {
     const getEndPage = endPage + pageCountPerPage < maxPage ? endPage + pageCountPerPage : maxPage;
-    setCurrentPage(
-      endPage + pageCountPerPage < maxPage ? currentPage + pageCountPerPage : startPage + pageCountPerPage
-    );
+    const current =
+      endPage + pageCountPerPage < maxPage ? currentPage + pageCountPerPage : startPage + pageCountPerPage;
+    setCurrentPage(current);
     setStartPage(startPage + pageCountPerPage);
     setEndPage(getEndPage);
-    clickListener(currentPage);
+    clickListener(current);
   };
 
   const pageNumberClicked = (page: number): void => {
