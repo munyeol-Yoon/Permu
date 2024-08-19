@@ -11,6 +11,7 @@ import {
   MYPAGE_REVIEW_PATHNAME,
   MYPAGE_WISH_PATHNAME
 } from '@/constant/pathname';
+import { useUserReviewsQuery } from '@/hooks/query/mypage';
 import useCouponQuery from '@/hooks/query/mypage/useCouponQuery';
 import useAuthQuery from '@/hooks/query/useAuthQuery';
 import Banner from '@@/public/banner/tempBanner.svg';
@@ -33,8 +34,9 @@ const LINKS = [
 const MyMainPage = () => {
   const { data: loggedUser, isPending: isAuthPending } = useAuthQuery();
   const { data: coupons, isPending: isCouponPending } = useCouponQuery();
+  const { data: reviews, isPending: isReviewPending } = useUserReviewsQuery();
 
-  if (isAuthPending || (loggedUser && isCouponPending)) return <Loading />;
+  if (isAuthPending || (loggedUser && isCouponPending && isReviewPending)) return <Loading />;
 
   const mileage = loggedUser?.userData.mileage;
 
@@ -53,7 +55,7 @@ const MyMainPage = () => {
           {coupons?.length || '-'}
         </InfoCard>
         <InfoCard title="후기" href={getHref(MYPAGE_REVIEW_PATHNAME)}>
-          {'-'}
+          {reviews?.length || '-'}
         </InfoCard>
       </div>
       <Banner className="mx-auto my-4" />
