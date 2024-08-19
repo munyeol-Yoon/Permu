@@ -40,11 +40,12 @@ const ReviewPage = () => {
     setCondition(condition);
   }, []);
 
+  const handleReviewWish = (reviewId: string) => {};
   const renderStars = (score: number) =>
     Array.from({ length: 5 }, (_, index) => (index < score ? <StarFillSVG key={index} /> : <StarSVG key={index} />));
 
   const renderReviewItem = (review: ReviewType) => (
-    <div className="flex-col-10" key={review.reviewId}>
+    <div className="h-[400px]" key={review.reviewId}>
       <div className="grid grid-cols-[60px_1fr] grid-rows-2 gap-x-3">
         <ProfileImg className="w-h-60 row-span-2 rounded-full" />
         <span className="font-bold">{review.User.name}</span>
@@ -82,13 +83,13 @@ const ReviewPage = () => {
             className="w-h-132 object-cover"
           />
         ))}
-      </div>
-      <div
-        className="flex-center flex-col  hover:cursor-pointer w-h-132"
-        onClick={() => router.push(`/products/${productId}/review/images`)}
-      >
-        <ArrowRRoundSVG />
-        <span className="text-gray-500">전체 보기</span>
+        <div
+          className="flex-center flex-col  hover:cursor-pointer w-h-132"
+          onClick={() => router.push(`/products/${productId}/review/images`)}
+        >
+          <ArrowRRoundSVG />
+          <span className="text-gray-500">전체 보기</span>
+        </div>
       </div>
 
       <div className="p-5-2">
@@ -109,7 +110,8 @@ const ReviewPage = () => {
             </>
           )}
         </ul>
-        {reviews?.data.map(renderReviewItem)}
+        <div className="h-[800px] flex-col-20">{reviews?.data.map(renderReviewItem)}</div>
+
         <div className="text-center">
           {(reviews?.data ?? []).length > 0 && (
             <Pagination

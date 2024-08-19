@@ -79,7 +79,7 @@ const ProductCard = ({ product }: ProductProps) => {
           className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
           onClick={(e) => handleWish(e)}
         >
-          {userLike ? <BlueWishSVG /> : <WishSVG />}
+          {userLike && loggedUser?.id !== undefined ? <BlueWishSVG /> : <WishSVG />}
         </div>
       </div>
       <div className="flex flex-col gap-1 mt-2">
