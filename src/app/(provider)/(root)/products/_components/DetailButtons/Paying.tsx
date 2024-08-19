@@ -91,7 +91,6 @@ const Paying = ({ size, category, product }: PayingProps) => {
               onClick={() => handleSelectSize(size)}
             >
               {size}
-              {category !== '인센스' || ('향초' && 'mL')}
             </Button>
           ))}
         </div>
@@ -130,7 +129,6 @@ const Paying = ({ size, category, product }: PayingProps) => {
                       className="w-full p-5-2 h-[40px] text-lg"
                     >
                       {size}
-                      {category !== '인센스' || ('향초' && 'mL')}
                     </DropdownMenuCheckboxItem>
                   ))}
                 </DropdownMenuContent>
