@@ -4,11 +4,6 @@ import useAlert from '@/hooks/useAlert';
 import dayjs from 'dayjs';
 import OrderItem from '../OrderItem';
 
-// interface OrderCardProps {
-//   order: MyOrder;
-//   review?: boolean;
-// }
-
 const OrderCard = ({ order, review }: any) => {
   const { showInfoAlert } = useAlert();
   const { orderId, createdAt, OrdersDetail } = order;

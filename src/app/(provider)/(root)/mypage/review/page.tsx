@@ -36,7 +36,7 @@ const ReviewPage = () => {
 
         <TabsContent value="wrote">
           <Accordion type="single" collapsible>
-            {reviews?.map((review: any) => <ReviewItem review={review} key={review.reviewId} />)}
+            {reviews?.map((review) => <ReviewItem review={review} key={review.reviewId} />)}
           </Accordion>
         </TabsContent>
       </Tabs>

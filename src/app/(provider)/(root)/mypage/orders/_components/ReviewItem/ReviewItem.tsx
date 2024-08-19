@@ -1,4 +1,5 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { UserReview } from '@/hooks/query/mypage/useUserReviewsQuery';
 import FillStar from '@@/public/star/star-fill-icon.svg';
 import EmptyStar from '@@/public/star/star-icon.svg';
 import dayjs from 'dayjs';
@@ -7,20 +8,23 @@ import Image from 'next/image';
 import Link from 'next/link';
 import OrderItem from '../OrderItem';
 
+interface ReviewItemProps {
+  review: UserReview;
+}
+
 const renderStars = (count: number) => {
   const fullStars = Array(count)
     .fill(null)
-    .map((_, index) => <FillStar key={`full-${index}`} className="" />);
+    .map((_, index) => <FillStar key={`full-${index}`} />);
   const emptyStars = Array(5 - count)
     .fill(null)
-    .map((_, index) => <EmptyStar key={`empty-${index}`} className="" />);
+    .map((_, index) => <EmptyStar key={`empty-${index}`} />);
   return [...fullStars, ...emptyStars];
 };
 
-const ReviewItem = ({ review }: any) => {
+const ReviewItem = ({ review }: ReviewItemProps) => {
   const { Products, score, content, imagesURL, createdAt, productId, ...props } = review;
   const formattedDate = dayjs(createdAt).format('YYYY.MM.DD');
-  // console.log('🔥', review);
 
   return (
     <AccordionItem value={crypto.randomUUID()}>
@@ -34,7 +38,7 @@ const ReviewItem = ({ review }: any) => {
         <Link href={`/products/${productId}`}>
           <div className="flex justify-between items-center">
             <p className="flex items-center text-sm gap-x-2 my-[12px]">
-              <span className="flex gap-x-1 items-center">{renderStars(score)}</span>
+              <span className="flex gap-x-1 items-center">{renderStars(score || 0)}</span>
               <span>{formattedDate}</span>
             </p>
             <p className="flex items-center gap-x-2">
@@ -45,7 +49,7 @@ const ReviewItem = ({ review }: any) => {
 
           <div className="grid grid-cols-[1fr_135px] gap-4 mt-[14px]">
             <p className="text-base">{content}</p>
-            {imagesURL && (
+            {Array.isArray(imagesURL) && imagesURL.length > 0 && typeof imagesURL[0] === 'string' && (
               <div className="w-[135px] h-[135px] aspect-square relative">
                 <Image
                   src={imagesURL[0]}
