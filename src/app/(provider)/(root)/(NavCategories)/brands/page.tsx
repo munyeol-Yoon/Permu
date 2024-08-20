@@ -12,7 +12,7 @@ const BrandsPage = () => {
   const { showInfoAlert } = useAlert();
   const handleClick = () => showInfoAlert('준비중입니다!');
   return (
-    <div>
+    <div className="min-h-screen">
       <BrandBanner>
         <div className="w-full flex justify-center items-center text-xl font-bold">
           <span className="text-white">브랜드관</span>
