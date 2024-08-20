@@ -1,5 +1,5 @@
 import { Product } from '@/types/products';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FilterCriteriaType } from '../page';
 import FilterBenefits from './FilterBenefits';
 import FilterLabel from './FilterLabel';
@@ -17,6 +17,25 @@ const ResultFilter = ({ data, setFilterCriteria, onClose, filterOrder }: ResultF
   const [selectedPriceType, setSelectedPriceType] = useState<'high' | 'low' | 'all'>('all');
   const [priceRange, setPriceRange] = useState<[number, number]>([1000, 200000000]);
   const [selectedBenefit, setSelectedBenefit] = useState<'discount' | 'none'>('none');
+  const [filteredCount, setFilteredCount] = useState<number>(data.length);
+
+  useEffect(() => {
+    const filteredProducts = data.filter((product) => {
+      const price = product.price ?? 0;
+      const withinPriceRange = price >= priceRange[0] && price <= priceRange[1];
+      const isDiscounted = selectedBenefit === 'none' || (selectedBenefit === 'discount' && product.discount);
+
+      return withinPriceRange && isDiscounted;
+    });
+
+    if (selectedPriceType === 'high') {
+      filteredProducts.sort((a, b) => (b.price ?? 0) - (a.price ?? 0));
+    } else if (selectedPriceType === 'low') {
+      filteredProducts.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+    }
+
+    setFilteredCount(filteredProducts.length);
+  }, [data, selectedPriceType, priceRange, selectedBenefit]);
 
   const handlePriceRangeChange = (newPriceRange: [number, number]) => {
     setPriceRange(newPriceRange);
@@ -84,7 +103,7 @@ const ResultFilter = ({ data, setFilterCriteria, onClose, filterOrder }: ResultF
             초기화
           </button>
           <button className="bg-[#2c2c2c] text-white rounded px-4 py-2 w-[330px] h-[46px]" onClick={handleApplyClick}>
-            {data.length}개의 상품 보기
+            {filteredCount}개의 상품 보기
           </button>
         </div>
       </div>
