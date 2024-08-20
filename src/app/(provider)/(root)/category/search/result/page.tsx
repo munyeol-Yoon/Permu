@@ -17,7 +17,6 @@ export type FilterCriteriaType = {
 
 const ResultPageContent = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [filterCriteria, setFilterCriteria] = useState<FilterCriteriaType>({
     priceRange: [1000, 200000000],
     priceType: 'all',

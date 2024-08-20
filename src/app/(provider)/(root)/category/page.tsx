@@ -50,7 +50,7 @@ const CategoryPage = () => {
                     {group.items.map((item) => (
                       <div key={item.categoryId}>
                         <Link href={`${CATEGORY_SEARCH_RESULT_PATHNAME}?categoryId=${item.categoryId}`}>
-                          <div className="text-[#B3B3B3] hover:text-black">
+                          <div className="text-[#B3B3B3] hover:text-black mb-[22px]">
                             - {item.categorySubTitle ? item.categorySubTitle : '카테고리 준비중입니다.'}
                           </div>
                         </Link>
