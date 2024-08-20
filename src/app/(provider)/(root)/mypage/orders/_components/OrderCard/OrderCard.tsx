@@ -1,19 +1,13 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import useAlert from '@/hooks/useAlert';
-import { MyOrder } from '@/types/myPage/order';
 import dayjs from 'dayjs';
 import OrderItem from '../OrderItem';
 
-interface OrderCardProps {
-  order: MyOrder;
-  review?: boolean;
-}
-
-const OrderCard = ({ order, review }: OrderCardProps) => {
+const OrderCard = ({ order, review }: any) => {
   const { showInfoAlert } = useAlert();
-  const { orderId, createAt, OrdersDetail } = order;
-  const formattedDate = dayjs(createAt).format('YYYY.MM.DD');
+  const { orderId, createdAt, OrdersDetail } = order;
+  const formattedDate = dayjs(createdAt).format('YYYY.MM.DD');
   const handleClick = () => showInfoAlert('준비중입니다!');
 
   return (
@@ -26,10 +20,10 @@ const OrderCard = ({ order, review }: OrderCardProps) => {
       </AccordionTrigger>
 
       <AccordionContent>
-        {OrdersDetail.map((orderItem) => {
+        {OrdersDetail.map((orderItem: any) => {
           return (
             <div key={orderItem.productId} className="flex flex-col mb-3">
-              <OrderItem {...orderItem.Products} />
+              <OrderItem product={orderItem.Products} />
               {review ? (
                 <Button size="sm" onClick={handleClick} className="mt-6">
                   리뷰 작성하기

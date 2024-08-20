@@ -60,11 +60,11 @@ const ProductCard = ({ product }: ProductProps) => {
   };
   return (
     <Link
-      className="w-full h-[281px] flex flex-col mt-[16px]"
+      className="max-w-[170px] md:max-w-[184px] h-[281px] flex flex-col justify-center"
       href={`/products/${product.productId}`}
       onClick={handleMouseClick}
     >
-      <div className="w-h-full relative aspect-square max-w-[184px] max-h-[184px]">
+      <div className="w-h-full relative aspect-square max-h-[184px]">
         <Image
           src={product.thumbNailURL || ''}
           fill
@@ -79,9 +79,10 @@ const ProductCard = ({ product }: ProductProps) => {
           className="absolute bottom-2 right-2 z-20 w-[30px] h-[30px] flex items-center justify-center hover:cursor-pointer"
           onClick={(e) => handleWish(e)}
         >
-          {userLike ? <BlueWishSVG /> : <WishSVG />}
+          {userLike && loggedUser?.id !== undefined ? <BlueWishSVG /> : <WishSVG />}
         </div>
       </div>
+
       <div className="flex flex-col gap-1 mt-2">
         <span className="text-xs line-clamp-1">{brandName}</span>
         <p className="font-semibold line-clamp-1">{title.length > 9 ? title.slice(0, 9) + '...' : title}</p>

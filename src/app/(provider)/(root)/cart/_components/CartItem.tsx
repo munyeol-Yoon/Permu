@@ -97,7 +97,7 @@ const CartItem = ({ cartItem, updateCartItem, deleteCartItem }: CartItemProps) =
         </div>
         <p className="font-semibold mb-2.5">{productName}</p>
         <p className="text-xs text-[#B3B3B3] mb-1.5">
-          옵션 : {productSelectedVolume}ml, {productCount}개
+          옵션 : {productSelectedVolume}, {productCount}개
         </p>
         <div className="flex justify-between items-center w-full">
           <Button

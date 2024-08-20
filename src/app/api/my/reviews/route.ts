@@ -8,23 +8,8 @@ export async function GET(request: NextRequest) {
   const supabase = createClient();
   try {
     const { data, error } = await supabase
-      .from('Orders')
-      .select(
-        `
-        createdAt, 
-        orderId, 
-        deliverId, 
-        OrdersDetail (
-          productId,
-          Products (
-            title, 
-            thumbNailURL,
-            Brands(krName)
-          )
-        )
-      `
-      )
-
+      .from('Reviews')
+      .select('*, Products(title, thumbNailURL, Brands(krName))')
       .eq('userId', userId);
     if (error) throw error;
 
