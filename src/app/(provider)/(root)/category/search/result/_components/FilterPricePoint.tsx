@@ -49,7 +49,10 @@ const FilterPricePoint = ({ priceRange, handlePriceRangeChange }: FilterPricePoi
           value={maxPrice}
           onChange={handleMaxPriceChange}
         />
-        <button className="w-[83px] h-[46px] px-4 py-2 bg-[#b3b3b3] text-white rounded-md" onClick={handleApplyClick}>
+        <button
+          className="w-[83px] h-[46px] px-4 py-2 bg-[#b3b3b3] text-white rounded-md hover:bg-[#0348FF] active:bg-[#023BCC] active:text-white"
+          onClick={handleApplyClick}
+        >
           적용
         </button>
       </div>
