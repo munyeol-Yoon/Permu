@@ -20,7 +20,7 @@ const CartEmpty = () => {
         <p>상품을 추가해보세요.</p>
       </div>
       <Button asChild>
-        <Link href={loggedUser ? 'mypage-wish' : '/auth/log-in'}>좋아요한 상품 보러 가기</Link>
+        <Link href={loggedUser ? 'mypage/wish' : '/auth/log-in'}>좋아요한 상품 보러 가기</Link>
       </Button>
 
       <Button asChild className="absolute bottom-0 w-[calc(100%-20px)]">
